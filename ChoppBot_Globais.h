@@ -12,12 +12,14 @@
 
 // Global Variables - Declaration
 int gID_LefBuildint = -1;
-int gModoOperacao = -1; 
+String gModoOperacao = ""; 
 
-int gPin_BotaoDebug1 = -1;
 int gPin_BotaoDebug2 = -1;
+int gPin_BotaoDebug3 = -1;
+int gPin_BotaoDebug4 = -1;
 
 int gContaPasso_Debug = 0;
+
 
 
 unsigned long gTimeoutOpcao = 3000;		// tempo em ms para timeout das opcoes a serem escolhidas
@@ -28,15 +30,16 @@ unsigned long gTimeoutOpcao = 3000;		// tempo em ms para timeout das opcoes a se
 void InicializaVars() 
 {
 	gID_LefBuildint = LED_BUILTIN;
-	gModoOperacao = 1;   
+	gModoOperacao = "INICIO";   
 
 	// 1 = INICIO
-	// 2 = OPERACAO
-	// 3 = ADMIN
+	// 2 = STANDBY
+	// 3 = IDENTI
 	// 4 = STANDBY
 	// 5 = DEBUG
 
 
-	gPin_BotaoDebug1 = 3;
-	gPin_BotaoDebug2 = 7;
+	gPin_BotaoDebug2 = 2;
+	gPin_BotaoDebug3 = 3;
+	gPin_BotaoDebug4 = 4;
 }

@@ -10,13 +10,6 @@
 */
 
 
-	// 1 = INICIO
-	// 2 = OPERACAO
-	// 3 = ADMIN
-	// 4 = STANDBY
-	// 5 = DEBUG
-
-
 
 #include "ChoppBot_GLobais.h" 
 #include "ChoppBot_Suporte.h" 
@@ -40,9 +33,11 @@ void InitApp()
 
 	pinMode(gID_LefBuildint, OUTPUT);
 
-	pinMode(gPin_BotaoDebug1, INPUT);
-
 	pinMode(gPin_BotaoDebug2, INPUT);
+
+	pinMode(gPin_BotaoDebug3, INPUT);
+	
+	pinMode(gPin_BotaoDebug4, INPUT);
 	
 	Serial.begin(9600);
 	
@@ -50,6 +45,215 @@ void InitApp()
 	
 	// todo: inicializa hardware, fecha valvulas, etc
 }
+
+
+
+
+
+// ROTINA DE OPERACAO
+void Exec_OPERACAO()
+{
+	boolean Exec_Loop_PodeSair = false;
+
+	unsigned long time_inicio;
+	unsigned long time_atual;
+	unsigned long time_tempo_passado;
+	
+	gModoOperacao = "OPERACAO";
+
+	
+
+	time_inicio = millis();
+
+	while (Exec_Loop_PodeSair == false)
+	{
+
+
+		
+		//Serial.print("Escolha o chopp 1 ou 2:");	
+
+		time_atual = millis();
+		time_tempo_passado = time_atual - time_inicio;
+
+
+		if (time_tempo_passado >= gTimeoutOpcao)
+		{
+			Exec_Loop_PodeSair = true;
+			gModoOperacao = "STANDBY";
+		}
+
+
+		delay(500);
+
+	}
+
+}
+
+
+
+// ROTINA DE ADMIN
+void Exec_ADMIN()
+{
+	boolean Exec_Loop_PodeSair = false;
+
+	unsigned long time_inicio;
+	unsigned long time_atual;
+	unsigned long time_tempo_passado;
+
+	gModoOperacao = "ADMIN";
+
+	time_inicio = millis();
+
+	while (Exec_Loop_PodeSair == false)
+	{
+
+
+		time_atual = millis();
+		time_tempo_passado = time_atual - time_inicio;
+
+		if (time_tempo_passado >= gTimeoutOpcao)
+		{
+			Exec_Loop_PodeSair = true;
+			gModoOperacao = "STANDBY";
+		}
+
+		delay(500);
+	}
+
+}
+
+
+
+
+// ROTINA DE LOGIN
+void Exec_LOGIN()
+{
+	boolean Exec_Loop_PodeSair = false;
+
+	unsigned long time_inicio;
+	unsigned long time_atual;
+	unsigned long time_tempo_passado;
+
+	gModoOperacao = "LOGIN";
+
+	time_inicio = millis();
+
+	while (Exec_Loop_PodeSair == false)
+	{
+
+
+
+		LogTerm("LOGIN");
+
+
+
+
+		time_atual = millis();
+		time_tempo_passado = time_atual - time_inicio;
+
+		if (time_tempo_passado >= gTimeoutOpcao)
+		{
+			Exec_Loop_PodeSair = true;
+			gModoOperacao = "STANDBY";
+		}
+
+
+		delay(500);
+
+	}
+
+}
+
+
+
+
+
+// ROTINA DE DEBUG
+void Exec_DEBUG()
+{
+	boolean Exec_Loop_PodeSair = false;
+
+	unsigned long time_inicio;
+	unsigned long time_atual;
+	unsigned long time_tempo_passado;
+
+	gModoOperacao = "DEBUG";
+
+	time_inicio = millis();
+
+	while (Exec_Loop_PodeSair == false)
+	{
+
+
+
+		LogTerm("DEBUG");
+
+
+
+
+		time_atual = millis();
+		time_tempo_passado = time_atual - time_inicio;
+
+		if (time_tempo_passado >= gTimeoutOpcao)
+		{
+			Exec_Loop_PodeSair = true;
+			gModoOperacao = "STANDBY";
+		}
+
+		delay(500);
+
+
+	}
+
+}
+
+
+
+
+
+// ROTINA DE STANDBY
+void Exec_STANDBY()
+{
+	TestaInterrupts();
+
+	delay(500);
+}
+
+
+
+
+
+
+// Rotina que executa o procedimento de stand by
+void Exec_TESTE()
+{
+
+	boolean Exec_Loop_PodeSair = false;
+
+	LogTerm("Exec_STANDBY");
+
+	//ShowExample_Tela();
+
+	TELA_IniciaTela();
+
+	TELA_Texto("Linha1cccc");
+	TELA_Texto("Linha2");
+	TELA_Texto("Linha3");
+	TELA_Texto("Linha4");
+	TELA_Texto("Linha5");
+	TELA_Texto("Linha6");
+	TELA_Texto("Linha7");
+
+
+
+	while (Exec_Loop_PodeSair == false)
+	{
+		LogTerm("Exec_STANDBY");
+		delay(500);
+
+	}
+}
+
 
 
 
@@ -78,138 +282,45 @@ void TestaInterrupts()
 	// BOTOES FISICOS:
 	// ---------------
 
-	int buttonState1 = 0;  
 	int buttonState2 = 0;  
+	int buttonState3 = 0;  
+	int buttonState4 = 0;  
 
-	buttonState1 = digitalRead(gPin_BotaoDebug1);
 	buttonState2 = digitalRead(gPin_BotaoDebug2);
+	buttonState3 = digitalRead(gPin_BotaoDebug3);
+	buttonState4 = digitalRead(gPin_BotaoDebug4);
 
-
-	if (buttonState1 == HIGH) 
-	{
-
-		LogTerm("Botao apertado 1 ! -- Exec_OPERACAO");
-
-		Exec_OPERACAO();
-	}
 
 	if (buttonState2 == HIGH) 
 	{
-		LogTerm("Botao apertado 2 ! -- Exec_ADMIN");
+
+		LogTerm("Botao apertado 1 -- pino 2 ! -- Exec_LOGIN");
+
+		Exec_LOGIN();
+
+		//Exec_OPERACAO();
+
+	}
+
+	if (buttonState3 == HIGH) 
+	{
+		LogTerm("Botao apertado 2 -- pino 3 ! -- Exec_ADMIN");
 		
 		Exec_ADMIN();
 	}
 
 
 
-}
-
-
-
-
-// ROTINA DE OPERACAO
-void Exec_OPERACAO()
-{
-	boolean Exec_Loop_PodeSair = false;
-
-	unsigned long time_inicio;
-	unsigned long time_atual;
-	unsigned long time_tempo_passado;
-	
-	gModoOperacao = 2; 	// OPERACAO
-
-	
-
-	time_inicio = millis();
-
-	while (Exec_Loop_PodeSair == false)
+	if (buttonState4 == HIGH) 
 	{
-
-
+		LogTerm("Botao apertado 3 -- pino 4! -- Exec_DEBUG");
 		
-		Serial.print("Escolha o chopp 1 ou 2:");	
-
-		time_atual = millis();
-		time_tempo_passado = time_atual - time_inicio;
-
-
-		if (time_tempo_passado >= gTimeoutOpcao)
-		{
-			Exec_Loop_PodeSair = true;
-			gModoOperacao = 4; 	// Standby
-		}
-
-
-
-
+		Exec_DEBUG();
 	}
 
-}
 
-
-
-// ROTINA DE ADMIN
-void Exec_ADMIN()
-{
-	boolean Exec_Loop_PodeSair = false;
-
-	unsigned long time_inicio;
-	unsigned long time_atual;
-	unsigned long time_tempo_passado;
-
-	gModoOperacao = 3; 	// ADMIN
-
-	time_inicio = millis();
-
-	while (Exec_Loop_PodeSair == false)
-	{
-
-
-		time_atual = millis();
-		time_tempo_passado = time_atual - time_inicio;
-
-		if (time_tempo_passado >= gTimeoutOpcao)
-		{
-			Exec_Loop_PodeSair = true;
-			gModoOperacao = 4; 	// Standby
-		}
-
-
-	}
 
 }
-
-
-// Rotina que executa o procedimento de stand by
-void Exec_TESTE()
-{
-
-	boolean Exec_Loop_PodeSair = false;
-
-	LogTerm("Exec_STANDBY");
-
-	//ShowExample_Tela();
-
-	TELA_IniciaTela();
-
-	TELA_Texto("Linha1cccc");
-	TELA_Texto("Linha2");
-	TELA_Texto("Linha3");
-	TELA_Texto("Linha4");
-	TELA_Texto("Linha5");
-	TELA_Texto("Linha6");
-	TELA_Texto("Linha7");
-
-
-
-	while (Exec_Loop_PodeSair == false)
-	{
-
-
-
-	}
-}
-
 
 
 
@@ -239,73 +350,77 @@ void setup() {
 void loop() {
 
 
-	switch (gModoOperacao) {
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		case 1:
-			// INICIO
-			
-			LogTerm("Modo: Inicio");
+	if (gModoOperacao == "INICIO")
+	{
+		LogTerm("Modo: Inicio");
 
-			//Led_Light(true);
-			
-			gModoOperacao = 4; 	// Standby
+		//Led_Light(true);
+		
+		gModoOperacao = "STANDBY";
 
-			delay(500);
-			break;
+				
+	}
 
-		case 2:
-			// OPERACAO
-			
-			LogTerm("Modo: Operacao");
-			
-			//gModoOperacao = 4;	// Standby
-			
-			//delay(500);
-			break;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		case 3:
-			// ADMIN
+	if (gModoOperacao == "STANDBY")
+	{
+		LogTerm("Modo: StandBy");
+		
+		
 
-			LogTerm("Modo: ADMIN");
+		Exec_STANDBY();
 
-			//delay(500);
-			break;
-			
-		case 4:
-			// STANDBY
-			
-			LogTerm("Modo: StandBy");
-			
-			TestaInterrupts();
+		
+	}
 
-			//Exec_STANDBY();
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			//delay(200);
-			break;
-			
-		case 5:
-			// DEBUG
-			
-			////LogTerm("Modo: DEBUG");
-			
-			gContaPasso_Debug = gContaPasso_Debug + 1;
+	if (gModoOperacao == "LOGIN")
+	{
+		LogTerm("Modo: LOGIN");
 
-			if (gContaPasso_Debug == 2)
-			{
-				gContaPasso_Debug = 0;
-				gModoOperacao = 4;	// Standby
-			}
+		Exec_LOGIN();
+
+		
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	if (gModoOperacao == "OPERACAO")
+	{
+		LogTerm("Modo: Operacao");
+		
+		//gModoOperacao = 4;	// Standby
+
+		Exec_OPERACAO();
+
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	if (gModoOperacao == "ADMIN")
+	{
+		LogTerm("Modo: ADMIN");
+
+		Exec_ADMIN();
+		
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	if (gModoOperacao == "DEBUG")
+	{
+		LogTerm("Modo: DEBUG");
+
+		Exec_DEBUG();
 			
-			delay(500);
-			break;
+	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	}  
+	
 }
 
-
-	// 1 = INICIO
-	// 2 = OPERACAO
-	// 3 = ADMIN
-	// 4 = STANDBY
-	// 5 = DEBUG

@@ -11,8 +11,26 @@
 
 
 
-#include "ChoppBot_GLobais.h" 
-#include "ChoppBot_Suporte.h" 
+#include "BIB/Main/ChoppBot_Globais.h" 
+#include "BIB/Main/ChoppBot_Suporte.h" 
+
+//#include "BIB/Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
+//#include "BIB/Tela/ChoppBot_Tela_Main.h" 
+
+//banco de dados:
+#include <EDB.h>
+
+//#include "BIB/EDB/ChoppBot_DB_Engine_EDB_SDCARD.h" 
+//#include "BIB/EDB/ChoppBot_DB_Main_EDB_SDCARD.h" 
+
+
+
+
+// include the SD library:
+//#include <SPI.h>
+//#include <SD.h>
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,17 +49,30 @@ void InitApp()
 
 	InicializaVars();
 
-	pinMode(gID_LefBuildint, OUTPUT);
 
-	pinMode(gPin_BotaoDebug2, INPUT);
-
-	pinMode(gPin_BotaoDebug3, INPUT);
-	
-	pinMode(gPin_BotaoDebug4, INPUT);
-	
 	Serial.begin(9600);
+  	while (!Serial) 
+  	{
+    	; // wait for serial port to connect. Needed for native USB port only
+  	}	
+
+	pinMode(LED_BUILTIN, OUTPUT);
+
+	pinMode(2, INPUT);
+
+	pinMode(3, INPUT);
+	
+	pinMode(4, INPUT);
+	
+	pinMode(5, INPUT);
+	
+	
 	
 	Led_Light(false);
+
+
+
+
 	
 	// todo: inicializa hardware, fecha valvulas, etc
 }
@@ -83,7 +114,7 @@ void Exec_OPERACAO()
 		}
 
 
-		delay(500);
+		//delay(500);
 
 	}
 
@@ -117,7 +148,7 @@ void Exec_ADMIN()
 			gModoOperacao = "STANDBY";
 		}
 
-		delay(500);
+		//delay(500);
 	}
 
 }
@@ -143,7 +174,7 @@ void Exec_LOGIN()
 
 
 
-		LogTerm("LOGIN");
+		//LogTerm("LOGIN");
 
 
 
@@ -158,7 +189,7 @@ void Exec_LOGIN()
 		}
 
 
-		delay(500);
+		//delay(500);
 
 	}
 
@@ -186,7 +217,7 @@ void Exec_DEBUG()
 
 
 
-		LogTerm("DEBUG");
+		//LogTerm("LOGIN");
 
 
 
@@ -200,10 +231,11 @@ void Exec_DEBUG()
 			gModoOperacao = "STANDBY";
 		}
 
-		delay(500);
 
+		//delay(500);
 
 	}
+
 
 }
 
@@ -216,7 +248,7 @@ void Exec_STANDBY()
 {
 	TestaInterrupts();
 
-	delay(500);
+	//delay(500);
 }
 
 
@@ -230,25 +262,25 @@ void Exec_TESTE()
 
 	boolean Exec_Loop_PodeSair = false;
 
-	LogTerm("Exec_STANDBY");
+	LogTerm("Exec_TESTE");
 
 	//ShowExample_Tela();
 
-	TELA_IniciaTela();
+	// TELA_IniciaTela();
 
-	TELA_Texto("Linha1cccc");
-	TELA_Texto("Linha2");
-	TELA_Texto("Linha3");
-	TELA_Texto("Linha4");
-	TELA_Texto("Linha5");
-	TELA_Texto("Linha6");
-	TELA_Texto("Linha7");
+	// TELA_Texto("Linha1cccc");
+	// TELA_Texto("Linha2");
+	// TELA_Texto("Linha3");
+	// TELA_Texto("Linha4");
+	// TELA_Texto("Linha5");
+	// TELA_Texto("Linha6");
+	// TELA_Texto("Linha7");
 
 
 
 	while (Exec_Loop_PodeSair == false)
 	{
-		LogTerm("Exec_STANDBY");
+		LogTerm("Exec_TESTE");
 		delay(500);
 
 	}
@@ -282,13 +314,15 @@ void TestaInterrupts()
 	// BOTOES FISICOS:
 	// ---------------
 
-	int buttonState2 = 0;  
-	int buttonState3 = 0;  
-	int buttonState4 = 0;  
+	int buttonState2 = LOW;  
+	int buttonState3 = LOW;  
+	int buttonState4 = LOW;  
+	int buttonState5 = LOW;  
 
-	buttonState2 = digitalRead(gPin_BotaoDebug2);
-	buttonState3 = digitalRead(gPin_BotaoDebug3);
-	buttonState4 = digitalRead(gPin_BotaoDebug4);
+	buttonState2 = digitalRead(2);
+	buttonState3 = digitalRead(3);
+	buttonState4 = digitalRead(4);
+	buttonState5 = digitalRead(5);
 
 
 	if (buttonState2 == HIGH) 
@@ -296,7 +330,7 @@ void TestaInterrupts()
 
 		LogTerm("Botao apertado 1 -- pino 2 ! -- Exec_LOGIN");
 
-		Exec_LOGIN();
+		gModoOperacao = "LOGIN";
 
 		//Exec_OPERACAO();
 
@@ -306,7 +340,7 @@ void TestaInterrupts()
 	{
 		LogTerm("Botao apertado 2 -- pino 3 ! -- Exec_ADMIN");
 		
-		Exec_ADMIN();
+		gModoOperacao = "ADMIN";
 	}
 
 
@@ -315,7 +349,15 @@ void TestaInterrupts()
 	{
 		LogTerm("Botao apertado 3 -- pino 4! -- Exec_DEBUG");
 		
-		Exec_DEBUG();
+		gModoOperacao = "DEBUG";
+	}
+
+
+	if (buttonState5 == HIGH) 
+	{
+		LogTerm("Botao apertado 4 -- pino 5! -- Exec_OPERACAO");
+		
+		gModoOperacao = "OPERACAO";
 	}
 
 
@@ -349,6 +391,7 @@ void setup() {
 // INTERNA ARDUINO: LOOP ETERNO
 void loop() {
 
+	delay(250);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -358,6 +401,10 @@ void loop() {
 
 		//Led_Light(true);
 		
+		//SD_Init();
+
+		ShowExample_DB();
+
 		gModoOperacao = "STANDBY";
 
 				
@@ -391,7 +438,7 @@ void loop() {
 
 	if (gModoOperacao == "OPERACAO")
 	{
-		LogTerm("Modo: Operacao");
+		LogTerm("Modo: OPERACAO");
 		
 		//gModoOperacao = 4;	// Standby
 
@@ -422,5 +469,6 @@ void loop() {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
+
 }
 

@@ -20,8 +20,7 @@
 //banco de dados:
 #include <EDB.h>
 
-//#include "BIB/EDB/ChoppBot_DB_Engine_EDB_SDCARD.h" 
-//#include "BIB/EDB/ChoppBot_DB_Main_EDB_SDCARD.h" 
+
 
 
 
@@ -403,7 +402,9 @@ void loop() {
 		
 		//SD_Init();
 
-		ShowExample_DB();
+		//ShowExample_DB();
+
+		Init_Database();
 
 		gModoOperacao = "STANDBY";
 

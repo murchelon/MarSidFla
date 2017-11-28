@@ -20,7 +20,10 @@
 //banco de dados:
 #include <EDB.h>
 
-
+#define BOTAO1_PINO 2
+#define BOTAO2_PINO 3
+#define BOTAO3_PINO 4
+#define BOTAO4_PINO 5
 
 
 
@@ -46,76 +49,188 @@
 void InitApp()
 {
 
-	InicializaVars();
+  InicializaVars();
 
 
-	Serial.begin(9600);
-  	while (!Serial) 
-  	{
-    	; // wait for serial port to connect. Needed for native USB port only
-  	}	
+  Serial.begin(9600);
+    while (!Serial) 
+    {
+      ; // wait for serial port to connect. Needed for native USB port only
+    } 
 
-	pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 
-	pinMode(2, INPUT);
+  pinMode(BOTAO1_PINO, INPUT);
 
-	pinMode(3, INPUT);
-	
-	pinMode(4, INPUT);
-	
-	pinMode(5, INPUT);
-	
-	
-	
-	Led_Light(false);
-
-
+  pinMode(BOTAO2_PINO, INPUT);
+  
+  pinMode(BOTAO3_PINO, INPUT);
+  
+  pinMode(BOTAO4_PINO, INPUT);
+  
+  
+  
+  Led_Light(false);
 
 
-	
-	// todo: inicializa hardware, fecha valvulas, etc
+
+
+  
+  // todo: inicializa hardware, fecha valvulas, etc
+}
+
+
+
+
+    
+    
+// ROTINA DE INICIO
+void Exec_INICIO()
+{
+
+    //Led_Light(true);
+    
+    //SD_Init();
+
+    //ShowExample_DB();
+
+    //Init_Database();
+}
+
+
+
+
+// ROTINA DE INSTALACAO
+void Exec_INSTALACAO()
+{
+  boolean Exec_Loop_PodeSair = false;
+
+  unsigned long time_inicio;
+  unsigned long time_atual;
+  unsigned long time_tempo_passado;
+
+  int SegundosPassados;
+  int Last_SegundosPassados;
+  
+  //gModoOperacao = "INSTALACAO";
+
+  time_inicio = millis();
+
+  while (Exec_Loop_PodeSair == false)
+  {
+
+    time_atual = millis();
+    time_tempo_passado = time_atual - time_inicio;
+
+    SegundosPassados = floor(time_tempo_passado / 1000);
+    
+    if (SegundosPassados != Last_SegundosPassados)
+    {
+      LogTerm(SegundosPassados);
+    }
+    
+    
+    
+    if (time_tempo_passado >= gTimeoutOpcao)
+    {
+      Exec_Loop_PodeSair = true;
+    }
+
+    Last_SegundosPassados = SegundosPassados;
+
+    //delay(500);
+
+  }
 }
 
 
 
 
 
+// ROTINA DE LOGIN
+void Exec_LOGIN()
+{
+  boolean Exec_Loop_PodeSair = false;
+
+  unsigned long time_inicio;
+  unsigned long time_atual;
+  unsigned long time_tempo_passado;
+
+  int SegundosPassados;
+  int Last_SegundosPassados;
+  
+  time_inicio = millis();
+
+  while (Exec_Loop_PodeSair == false)
+  {
+
+    time_atual = millis();
+    time_tempo_passado = time_atual - time_inicio;
+
+    SegundosPassados = floor(time_tempo_passado / 1000);
+    
+    if (SegundosPassados != Last_SegundosPassados)
+    {
+      LogTerm(SegundosPassados);
+    }
+    
+    
+    
+    if (time_tempo_passado >= gTimeoutOpcao)
+    {
+      Exec_Loop_PodeSair = true;
+    }
+
+    Last_SegundosPassados = SegundosPassados;
+  }
+
+}
+
+
+
 // ROTINA DE OPERACAO
 void Exec_OPERACAO()
 {
-	boolean Exec_Loop_PodeSair = false;
+  boolean Exec_Loop_PodeSair = false;
 
-	unsigned long time_inicio;
-	unsigned long time_atual;
-	unsigned long time_tempo_passado;
-	
-	gModoOperacao = "OPERACAO";
+  unsigned long time_inicio;
+  unsigned long time_atual;
+  unsigned long time_tempo_passado;
+  
+  int SegundosPassados;
+  int Last_SegundosPassados;
+  
 
-	
+  time_inicio = millis();
 
-	time_inicio = millis();
-
-	while (Exec_Loop_PodeSair == false)
-	{
-
-
-		
-		//Serial.print("Escolha o chopp 1 ou 2:");	
-
-		time_atual = millis();
-		time_tempo_passado = time_atual - time_inicio;
+  while (Exec_Loop_PodeSair == false)
+  {
 
 
-		if (time_tempo_passado >= gTimeoutOpcao)
-		{
-			Exec_Loop_PodeSair = true;
-			gModoOperacao = "STANDBY";
-		}
+    
+    //Serial.print("Escolha o chopp 1 ou 2:");  
+
+    time_atual = millis();
+    time_tempo_passado = time_atual - time_inicio;
 
 
-		//delay(500);
+    SegundosPassados = floor(time_tempo_passado / 1000);
+    
+    if (SegundosPassados != Last_SegundosPassados)
+    {
+      LogTerm(SegundosPassados);
+    }
+    
+    
+    
+    if (time_tempo_passado >= gTimeoutOpcao)
+    {
+      Exec_Loop_PodeSair = true;
+    }
 
-	}
+    Last_SegundosPassados = SegundosPassados;
+
+  }
 
 }
 
@@ -124,75 +239,45 @@ void Exec_OPERACAO()
 // ROTINA DE ADMIN
 void Exec_ADMIN()
 {
-	boolean Exec_Loop_PodeSair = false;
+  boolean Exec_Loop_PodeSair = false;
 
-	unsigned long time_inicio;
-	unsigned long time_atual;
-	unsigned long time_tempo_passado;
+  unsigned long time_inicio;
+  unsigned long time_atual;
+  unsigned long time_tempo_passado;
 
-	gModoOperacao = "ADMIN";
+  int SegundosPassados;
+  int Last_SegundosPassados;
 
-	time_inicio = millis();
+  time_inicio = millis();
 
-	while (Exec_Loop_PodeSair == false)
-	{
-
-
-		time_atual = millis();
-		time_tempo_passado = time_atual - time_inicio;
-
-		if (time_tempo_passado >= gTimeoutOpcao)
-		{
-			Exec_Loop_PodeSair = true;
-			gModoOperacao = "STANDBY";
-		}
-
-		//delay(500);
-	}
-
-}
+  while (Exec_Loop_PodeSair == false)
+  {
 
 
+    time_atual = millis();
+    time_tempo_passado = time_atual - time_inicio;
 
+    SegundosPassados = floor(time_tempo_passado / 1000);
+    
+    if (SegundosPassados != Last_SegundosPassados)
+    {
+      LogTerm(SegundosPassados);
+    }
+    
+    
+    
+    if (time_tempo_passado >= gTimeoutOpcao)
+    {
+      Exec_Loop_PodeSair = true;
+    }
 
-// ROTINA DE LOGIN
-void Exec_LOGIN()
-{
-	boolean Exec_Loop_PodeSair = false;
-
-	unsigned long time_inicio;
-	unsigned long time_atual;
-	unsigned long time_tempo_passado;
-
-	gModoOperacao = "LOGIN";
-
-	time_inicio = millis();
-
-	while (Exec_Loop_PodeSair == false)
-	{
-
-
-
-		//LogTerm("LOGIN");
-
-
-
-
-		time_atual = millis();
-		time_tempo_passado = time_atual - time_inicio;
-
-		if (time_tempo_passado >= gTimeoutOpcao)
-		{
-			Exec_Loop_PodeSair = true;
-			gModoOperacao = "STANDBY";
-		}
-
-
-		//delay(500);
-
-	}
+    Last_SegundosPassados = SegundosPassados;
+    
+    //delay(500);
+  }
 
 }
+
 
 
 
@@ -201,54 +286,52 @@ void Exec_LOGIN()
 // ROTINA DE DEBUG
 void Exec_DEBUG()
 {
-	boolean Exec_Loop_PodeSair = false;
+  boolean Exec_Loop_PodeSair = false;
 
-	unsigned long time_inicio;
-	unsigned long time_atual;
-	unsigned long time_tempo_passado;
+  unsigned long time_inicio;
+  unsigned long time_atual;
+  unsigned long time_tempo_passado;
 
-	gModoOperacao = "DEBUG";
+  int SegundosPassados;
+  int Last_SegundosPassados;
+  
+  time_inicio = millis();
 
-	time_inicio = millis();
+  while (Exec_Loop_PodeSair == false)
+  {
 
-	while (Exec_Loop_PodeSair == false)
-	{
+    time_atual = millis();
+    time_tempo_passado = time_atual - time_inicio;
 
+    SegundosPassados = floor(time_tempo_passado / 1000);
+    
+    if (SegundosPassados != Last_SegundosPassados)
+    {
+      LogTerm(SegundosPassados);
+    }
+    
+    
+    
+    if (time_tempo_passado >= gTimeoutOpcao)
+    {
+      Exec_Loop_PodeSair = true;
+    }
 
-
-		//LogTerm("LOGIN");
-
-
-
-
-		time_atual = millis();
-		time_tempo_passado = time_atual - time_inicio;
-
-		if (time_tempo_passado >= gTimeoutOpcao)
-		{
-			Exec_Loop_PodeSair = true;
-			gModoOperacao = "STANDBY";
-		}
-
-
-		//delay(500);
-
-	}
+    Last_SegundosPassados = SegundosPassados;
 
 
+    //delay(500);
+
+  }
 }
 
 
+    
+    
+
+    
 
 
-
-// ROTINA DE STANDBY
-void Exec_STANDBY()
-{
-	TestaInterrupts();
-
-	//delay(500);
-}
 
 
 
@@ -259,32 +342,42 @@ void Exec_STANDBY()
 void Exec_TESTE()
 {
 
-	boolean Exec_Loop_PodeSair = false;
+  boolean Exec_Loop_PodeSair = false;
 
-	LogTerm("Exec_TESTE");
+  LogTerm("Exec_TESTE");
 
-	//ShowExample_Tela();
+  //ShowExample_Tela();
 
-	// TELA_IniciaTela();
+  // TELA_IniciaTela();
 
-	// TELA_Texto("Linha1cccc");
-	// TELA_Texto("Linha2");
-	// TELA_Texto("Linha3");
-	// TELA_Texto("Linha4");
-	// TELA_Texto("Linha5");
-	// TELA_Texto("Linha6");
-	// TELA_Texto("Linha7");
+  // TELA_Texto("Linha1cccc");
+  // TELA_Texto("Linha2");
+  // TELA_Texto("Linha3");
+  // TELA_Texto("Linha4");
+  // TELA_Texto("Linha5");
+  // TELA_Texto("Linha6");
+  // TELA_Texto("Linha7");
 
 
 
-	while (Exec_Loop_PodeSair == false)
-	{
-		LogTerm("Exec_TESTE");
-		delay(500);
+  while (Exec_Loop_PodeSair == false)
+  {
+    LogTerm("Exec_TESTE");
+    delay(500);
 
-	}
+  }
 }
 
+
+
+
+// ROTINA DE STANDBY
+void Exec_STANDBY()
+{
+  TestaInterrupts();
+
+  //delay(500);
+}
 
 
 
@@ -292,72 +385,70 @@ void Exec_TESTE()
 // Procedure que testa se ocorreu algum interrupt: O sistema fica em modo StandBy ate que alguem toque na tela, ou faca alguma outra acao que gere uma interrupcao
 void TestaInterrupts()
 {
+  //todo: testa se teve interrupt do biometrico, RFID, tela botoes, tela admin, tela screensaver, botoes fisicos
 
-	//todo: testa se teve interrupt do biometrico, RFID, tela botoes, tela admin, tela screensaver, botoes fisicos
+  // BIOMETRICO:
+  // RFID:
+  // TELA TOUCH - BOTOES:
+  // TELA TOUCH - ADMIN:
+  // TELA TOUCH - SCREEN SAVER:
 
+  // ---------------
+  // BOTOES FISICOS:
+  // ---------------
 
+  int buttonState1 = LOW;  
+  int buttonState2 = LOW;  
+  int buttonState3 = LOW;  
+  int buttonState4 = LOW;  
 
-	// BIOMETRICO:
-
-
-	// RFID:
-
-	// TELA TOUCH - BOTOES:
-
-	// TELA TOUCH - ADMIN:
-
-	// TELA TOUCH - SCREEN SAVER:
-
-
-	// ---------------
-	// BOTOES FISICOS:
-	// ---------------
-
-	int buttonState2 = LOW;  
-	int buttonState3 = LOW;  
-	int buttonState4 = LOW;  
-	int buttonState5 = LOW;  
-
-	buttonState2 = digitalRead(2);
-	buttonState3 = digitalRead(3);
-	buttonState4 = digitalRead(4);
-	buttonState5 = digitalRead(5);
+  buttonState1 = digitalRead(BOTAO1_PINO);
+  buttonState2 = digitalRead(BOTAO2_PINO);
+  buttonState3 = digitalRead(BOTAO3_PINO);
+  buttonState4 = digitalRead(BOTAO4_PINO);
 
 
-	if (buttonState2 == HIGH) 
-	{
+  if (buttonState1 == HIGH) 
+  {
 
-		LogTerm("Botao apertado 1 -- pino 2 ! -- Exec_LOGIN");
+    LogTerm("Botao apertado 1 -- pino 2 ! ");
+    //LogTerm("Botao apertado 1 -- pino 2 ! -- Exec_LOGIN");
 
-		gModoOperacao = "LOGIN";
+    //gModoOperacao = "LOGIN";
+  
+    
+    ApagaConteudoSD();
 
-		//Exec_OPERACAO();
+    LogTerm("Modo: == StandBy ==");
+    gModoOperacao = "STANDBY";
+    
 
-	}
 
-	if (buttonState3 == HIGH) 
-	{
-		LogTerm("Botao apertado 2 -- pino 3 ! -- Exec_ADMIN");
-		
-		gModoOperacao = "ADMIN";
-	}
+  }
+
+  if (buttonState2 == HIGH) 
+  {
+    LogTerm("Botao apertado 2 -- pino 3 ! -- Exec_ADMIN");
+    
+    gModoOperacao = "ADMIN";
+  }
 
 
 
-	if (buttonState4 == HIGH) 
-	{
-		LogTerm("Botao apertado 3 -- pino 4! -- Exec_DEBUG");
-		
-		gModoOperacao = "DEBUG";
-	}
+  if (buttonState3 == HIGH) 
+  {
+    LogTerm("Botao apertado 3 -- pino 4! -- Exec_DEBUG");
+    
+    gModoOperacao = "DEBUG";
+  }
 
 
-	if (buttonState5 == HIGH) 
-	{
-		LogTerm("Botao apertado 4 -- pino 5! -- Exec_OPERACAO");
-		
-		gModoOperacao = "OPERACAO";
-	}
+  if (buttonState4 == HIGH) 
+  {
+    LogTerm("Botao apertado 4 -- pino 5! -- Exec_OPERACAO");
+    
+    gModoOperacao = "OPERACAO";
+  }
 
 
 
@@ -380,96 +471,111 @@ void TestaInterrupts()
 // INTERNA ARDUINO: SETUP
 void setup() {
   
-	InitApp();
-
-
-	
+  InitApp();
+  
 }
 
 
 // INTERNA ARDUINO: LOOP ETERNO
 void loop() {
 
-	delay(250);
+  delay(50);
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	if (gModoOperacao == "INICIO")
-	{
-		LogTerm("Modo: Inicio");
+  if (gModoOperacao == "INICIO")
+  {
+    LogTerm("Modo: INICIO");
 
-		//Led_Light(true);
-		
-		//SD_Init();
+    Exec_INICIO();
 
-		//ShowExample_DB();
+    LogTerm("Modo: == StandBy ==");
+    gModoOperacao = "STANDBY";
 
-		Init_Database();
+        
+  }
 
-		gModoOperacao = "STANDBY";
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-				
-	}
+  if (gModoOperacao == "STANDBY")
+  {
+    
+    Exec_STANDBY();
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  }
 
-	if (gModoOperacao == "STANDBY")
-	{
-		LogTerm("Modo: StandBy");
-		
-		
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		Exec_STANDBY();
+  if (gModoOperacao == "LOGIN")
+  {
+    LogTerm("Modo: LOGIN");
 
-		
-	}
+    Exec_LOGIN();
+    
+    LogTerm("Modo: == StandBy ==");
+    gModoOperacao = "STANDBY";
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+  }
 
-	if (gModoOperacao == "LOGIN")
-	{
-		LogTerm("Modo: LOGIN");
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		Exec_LOGIN();
+  if (gModoOperacao == "OPERACAO")
+  {
+    LogTerm("Modo: OPERACAO");
+    
+    //gModoOperacao = 4;  // Standby
 
-		
-	}
+    Exec_OPERACAO();
+    
+    LogTerm("Modo: == StandBy ==");
+    gModoOperacao = "STANDBY";
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  }
 
-	if (gModoOperacao == "OPERACAO")
-	{
-		LogTerm("Modo: OPERACAO");
-		
-		//gModoOperacao = 4;	// Standby
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		Exec_OPERACAO();
+  if (gModoOperacao == "ADMIN")
+  {
+    LogTerm("Modo: ADMIN");
 
-	}
+    Exec_ADMIN();
+    
+    LogTerm("Modo: == StandBy ==");
+    gModoOperacao = "STANDBY";
+    
+  }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	if (gModoOperacao == "ADMIN")
-	{
-		LogTerm("Modo: ADMIN");
+  if (gModoOperacao == "DEBUG")
+  {
+    LogTerm("Modo: DEBUG");
 
-		Exec_ADMIN();
-		
-	}
+    Exec_DEBUG();
+    
+    LogTerm("Modo: == StandBy ==");
+    gModoOperacao = "STANDBY";
+      
+  }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	if (gModoOperacao == "DEBUG")
-	{
-		LogTerm("Modo: DEBUG");
+  
+ if (gModoOperacao == "INSTALACAO")
+  {
+    LogTerm("Modo: INSTALACAO");
 
-		Exec_DEBUG();
-			
-	}
+    Exec_INSTALACAO();
+    
+    LogTerm("Modo: == StandBy ==");
+    gModoOperacao = "STANDBY";
+      
+  }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	
+  
 
 }
 

@@ -29,6 +29,7 @@ void Led_Light(boolean Valor)
 void LogTerm (String Texto)
 {
 	Serial.println(Texto);
+	Serial.flush();
 	serialEventRun();
 }
 
@@ -37,6 +38,7 @@ void LogTerm (String Texto)
 void LogTerm (int Texto)
 {
 	Serial.println(Texto);
+	Serial.flush();
 	serialEventRun();
 }
 
@@ -45,6 +47,18 @@ void LogTerm (int Texto)
 void LogTerm (unsigned long Texto)
 {
 	Serial.println(Texto);
+	Serial.flush();
 	serialEventRun();
 }
+
+// Loga uma informacao no terminal - OVERRIDE int
+void LogTerm (double Texto)
+{
+
+	Serial.println(Texto);
+	Serial.flush();
+	serialEventRun();
+}
+
+
 

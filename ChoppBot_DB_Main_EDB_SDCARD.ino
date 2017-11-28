@@ -24,8 +24,13 @@
 // operations will return EDB_OUT_OF_RANGE for all records outside the usable range.
 #define RECORDS_TO_CREATE 10
 
-char* db_name = "ChoppBot_Users.db";
+char* db_name = "/db/users.db";
+
 File dbFile;
+
+
+
+
 
 // Arbitrary record definition for this table.
 // This should be modified to reflect your record needs.
@@ -54,9 +59,15 @@ inline void reader (unsigned long address, byte* data, unsigned int recsize) {
     digitalWrite(13, LOW);
 }
 
-// Create an EDB object with the appropriate write and read handlers
 
+
+
+// Create an EDB object with the appropriate write and read handlers
 EDB db(&writer, &reader);
+
+
+
+
 
 void Init_Database()
 {
@@ -66,19 +77,28 @@ void Init_Database()
     digitalWrite(13, LOW);
 
 
-    randomSeed(analogRead(0));
+    
 
-    if (!SD.begin(SD_PIN)) {
-        Serial.println("No SD-card.");
-        return;
+    if (!SD.begin(SD_PIN)) 
+    {
+      LogTerm("Cartão SD não localizado");
+      return;
+    }
+    else
+    {
+      LogTerm("Cartão SD inicializado com sucesso !");
     }
 
+
+    randomSeed(analogRead(0));
+    
+    
     // Check dir for db files
     if (!SD.exists("/db")) {
         Serial.println("Dir for Db files does not exist, creating...");
         SD.mkdir("/db");
     }
-
+    
     if (SD.exists(db_name)) {
 
         dbFile = SD.open(db_name, FILE_WRITE);
@@ -114,6 +134,19 @@ void Init_Database()
         Serial.println("DONE");
     }
 
+    
+    insertOneRecord(6, "Marcelo Rocha", 500, 1000);
+    insertOneRecord(7, "Andre Costa", 500, 1000);
+    
+    
+    //insertOneRecord(1);
+    //insertOneRecord(1, "Joao");
+    //insertOneRecord(2, "Antonio");
+
+    LogTerm("registros inseridos");
+    
+    selectAll();
+
     dbFile.close();
 
 
@@ -125,7 +158,7 @@ void Init_Database()
 void ShowExample_DB()
 {
 
-	
+  
     pinMode(13, OUTPUT);
     digitalWrite(13, LOW);
 
@@ -186,27 +219,141 @@ void ShowExample_DB()
     createRecords(RECORDS_TO_CREATE);
     countRecords();
     selectAll();
-    deleteOneRecord(RECORDS_TO_CREATE / 2);
-    countRecords();
-    selectAll();
-    appendOneRecord(RECORDS_TO_CREATE + 1);
-    countRecords();
-    selectAll();
-    insertOneRecord(RECORDS_TO_CREATE / 2);
-    countRecords();
-    selectAll();
-    updateOneRecord(RECORDS_TO_CREATE);
-    selectAll();
-    countRecords();
-    deleteAll();
-    Serial.println("Use insertRec() and deleteRec() carefully, they can be slow");
-    countRecords();
-    for (int i = 1; i <= 20; i++) insertOneRecord(1);  // inserting from the beginning gets slower and slower
-    countRecords();
-    for (int i = 1; i <= 20; i++) deleteOneRecord(1);  // deleting records from the beginning is slower than from the end
-    countRecords();
+    //deleteOneRecord(RECORDS_TO_CREATE / 2);
+    //countRecords();
+    //selectAll();
+    //appendOneRecord(RECORDS_TO_CREATE + 1);
+    //countRecords();
+    //selectAll();
+    //insertOneRecord(RECORDS_TO_CREATE / 2);
+    //countRecords();
+    //selectAll();
+    //updateOneRecord(RECORDS_TO_CREATE);
+    //selectAll();
+    //countRecords();
+    //deleteAll();
+    //Serial.println("Use insertRec() and deleteRec() carefully, they can be slow");
+    //countRecords();
+    //for (int i = 1; i <= 20; i++) insertOneRecord(1);  // inserting from the beginning gets slower and slower
+    //countRecords();
+    //for (int i = 1; i <= 20; i++) deleteOneRecord(1);  // deleting records from the beginning is slower than from the end
+    //countRecords();
+
 
     dbFile.close();
+}
+
+
+
+
+
+
+
+void ApagaConteudoSD()
+{
+
+    
+    File root;
+    int DeletedCount = 0;
+    int FolderDeleteCount = 0;
+    int FailCount = 0;
+    String rootpath = "/";    
+    
+    pinMode(13, OUTPUT);
+    digitalWrite(13, LOW);
+
+    
+    LogTerm("ApagaConteudoSD - INICIO");
+    
+    
+    if (!SD.begin(SD_PIN)) {
+        Serial.println("No SD-card.");
+        return;
+    }
+
+    
+    root = SD.open("/");
+    delay(2000);
+    
+
+
+    
+    //rm(root, rootpath);    
+    
+    
+    while (true) {
+
+      File entry = root.openNextFile();
+
+      
+      String localPath;
+    
+      if (! entry) {
+        // no more files
+        break;
+      }
+
+      
+      //Serial.print(entry.name());
+      
+      if (entry.isDirectory()) 
+      {
+
+        localPath = rootpath + entry.name() + rootpath + '\0';
+        char folderBuf[localPath.length()];
+        localPath.toCharArray(folderBuf, localPath.length() );
+        
+        //LogTerm(strcat("Removendo Diretorio ", entry.name()));
+
+        if( SD.rmdir( folderBuf ) )
+        {
+          Serial.print("Deleted folder ");
+          Serial.println(folderBuf);
+          FolderDeleteCount++;
+        } 
+        else
+        {
+          Serial.print("Unable to delete folder ");
+          Serial.println(folderBuf);
+          FailCount++;
+        }
+        
+
+      }
+      else
+      {
+      
+        localPath = rootpath + entry.name() + '\0';
+        char charBuf[localPath.length()];
+        localPath.toCharArray(charBuf, localPath.length() );
+
+        if( SD.remove( charBuf ) )
+        {
+          Serial.print("Deleted ");
+          Serial.println(localPath);
+          DeletedCount++;
+        } 
+        else
+        {
+          Serial.print("Failed to delete ");
+          Serial.println(localPath);
+          FailCount++;
+        }
+  
+        
+
+        //LogTerm(strcat("Removendo Arquivo ", entry.name()));
+
+      }
+      
+      entry.close();
+      
+      
+    }
+    
+    LogTerm("ApagaConteudoSD - FIM");
+
+    return;
 }
 
 
@@ -284,16 +431,18 @@ void updateOneRecord(int recno)
     Serial.println("DONE");
 }
 
-void insertOneRecord(int recno)
+void insertOneRecord(int _recno, String _Nome, int _Nivel, long _Saldo)
 {
     Serial.print("Inserting record at recno: ");
-    Serial.print(recno);
+    Serial.print(_recno);
     Serial.print("... ");
-    recUsuario.id = recno;
-    recUsuario.Nivel = 500;
-    recUsuario.Nome = "Sidney";
-    recUsuario.Saldo = 500.00;
-    EDB_Status result = db.insertRec(recno, EDB_REC recUsuario);
+    
+    recUsuario.id = _recno;
+    recUsuario.Nivel = _Nivel;
+    recUsuario.Nome = _Nome;
+    recUsuario.Saldo = _Saldo;
+    //EDB_Status result = db.insertRec(_recno, EDB_REC recUsuario);
+    EDB_Status result = db.appendRec(EDB_REC recUsuario);
     if (result != EDB_OK) printError(result);
     Serial.println("DONE");
 }

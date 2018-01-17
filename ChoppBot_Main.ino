@@ -20,10 +20,10 @@
 //banco de dados:
 #include <EDB.h>
 
-#define BOTAO1_PINO 2
-#define BOTAO2_PINO 3
-#define BOTAO3_PINO 4
-#define BOTAO4_PINO 5
+#define BOTAO1_PINO 52
+#define BOTAO2_PINO 51
+#define BOTAO3_PINO 50
+#define BOTAO4_PINO 49
 
 
 
@@ -92,7 +92,7 @@ void Exec_INICIO()
     
     //SD_Init();
 
-    //ShowExample_DB();
+    ShowExample_DB();
 
     //Init_Database();
 }
@@ -402,9 +402,9 @@ void TestaInterrupts()
   int buttonState3 = LOW;  
   int buttonState4 = LOW;  
 
-  buttonState1 = digitalRead(BOTAO1_PINO);
-  buttonState2 = digitalRead(BOTAO2_PINO);
-  buttonState3 = digitalRead(BOTAO3_PINO);
+  //buttonState1 = digitalRead(BOTAO1_PINO);
+  //buttonState2 = digitalRead(BOTAO2_PINO);
+  //buttonState3 = digitalRead(BOTAO3_PINO);
   buttonState4 = digitalRead(BOTAO4_PINO);
 
 

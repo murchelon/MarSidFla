@@ -16,7 +16,7 @@
 #include <SPI.h>
 #include <SD.h>
 
-#define SD_PIN 10  // SD Card CS pin
+#define SD_PIN 53  // SD Card CS pin
 #define TABLE_SIZE 8192
 
 // The number of demo records that should be created.  This should be less

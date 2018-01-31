@@ -1,4 +1,4 @@
-cs - 10
-mosi - 11
-miso - 12
-sck - 13
+cs -   10 42 53 - 53 (tab)
+mosi - 11 43 50 - 51 (tab)
+miso - 12 12 51 - 50 (tab)
+sck -  13 13 52 - 52 (tab)

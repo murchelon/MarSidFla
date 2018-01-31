@@ -5,7 +5,7 @@
 
   Main program to an automated chopp dispenser with several
   features like touchscreen, biometrical recognition and RFID
-  recognition. More to came.
+  recognition. More to came....
   
 */
 

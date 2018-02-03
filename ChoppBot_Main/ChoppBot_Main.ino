@@ -20,11 +20,17 @@
 //banco de dados:
 #include <EDB.h>
 
-#define BOTAO1_PINO 52
-#define BOTAO2_PINO 51
-#define BOTAO3_PINO 50
-#define BOTAO4_PINO 49
+#define BOTAO1_PINO 40
+#define BOTAO2_PINO 41
+#define BOTAO3_PINO 42
+#define BOTAO4_PINO 43
 
+
+#define gPinoRele_1 45
+#define gPinoRele_2 46
+#define gPinoRele_3 47
+
+int EstadoBotao_Rele1 = 0;
 
 // include the SD library:
 //#include <SPI.h>
@@ -68,6 +74,17 @@ void InitApp()
   pinMode(BOTAO4_PINO, INPUT);
   
   
+  //define reles como output
+  pinMode(gPinoRele_1, OUTPUT);
+  pinMode(gPinoRele_2, OUTPUT);
+  pinMode(gPinoRele_3, OUTPUT);
+
+
+  //define reles como desligados
+  //Estado inicial dos reles - desligados
+  digitalWrite(gPinoRele_1, HIGH);
+  digitalWrite(gPinoRele_2, HIGH);
+  digitalWrite(gPinoRele_3, HIGH);  
   
   Led_Light(false);
 
@@ -401,9 +418,9 @@ void TestaInterrupts()
   int buttonState3 = LOW;  
   int buttonState4 = LOW;  
 
-  //buttonState1 = digitalRead(BOTAO1_PINO);
-  //buttonState2 = digitalRead(BOTAO2_PINO);
-  //buttonState3 = digitalRead(BOTAO3_PINO);
+  buttonState1 = digitalRead(BOTAO1_PINO);
+  buttonState2 = digitalRead(BOTAO2_PINO);
+  buttonState3 = digitalRead(BOTAO3_PINO);
   buttonState4 = digitalRead(BOTAO4_PINO);
 
 
@@ -438,8 +455,24 @@ void TestaInterrupts()
   {
     LogTerm("Botao apertado 3 -- pino 4! -- Exec_DEBUG");
     
-    gModoOperacao = "DEBUG";
+    if (EstadoBotao_Rele1 == 1)
+    {
+      digitalWrite(gPinoRele_3, HIGH);
+      EstadoBotao_Rele1 = 0;
+      delay(300);
+    }
+    else
+    {
+      digitalWrite(gPinoRele_3, LOW);
+      EstadoBotao_Rele1 = 1;
+      delay(300);
+    }
+    
+
+    //gModoOperacao = "DEBUG";
   }
+
+
 
 
   if (buttonState4 == HIGH) 

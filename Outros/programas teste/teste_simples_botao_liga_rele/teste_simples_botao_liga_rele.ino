@@ -30,7 +30,7 @@ void setup()
   pinMode(gPinoRele_3, OUTPUT);
   pinMode(porta_botao3, INPUT);
 
-   pinMode(porta_botao4, INPUT);
+  pinMode(porta_botao4, INPUT);
   
 }
 

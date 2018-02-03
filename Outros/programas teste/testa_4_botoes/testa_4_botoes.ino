@@ -16,13 +16,17 @@ int estadorele2 = 1;
 int estadorele3 = 1;
 
 //Armazena o valor lido dos botoes
-int leitura1 = 0;
+int leitura1 = LOW;
 int leitura2 = 0;
 int leitura3 = 0;
 int leitura4 = 0;
  
 void setup()
 {
+
+  Serial.println("teste 124");
+
+
   //Define pinos para o rele como saida
   pinMode(gPinoRele_1, OUTPUT);
   pinMode(gPinoRele_2, OUTPUT);
@@ -38,69 +42,95 @@ void setup()
   digitalWrite(gPinoRele_1, HIGH);
   digitalWrite(gPinoRele_2, HIGH);
   digitalWrite(gPinoRele_3, HIGH);
+
 }
  
 void loop()
 {
-  //Verifica o acionamento do botao 1
-  leitura1 = digitalRead(gPinoRele_1);
-  if (leitura1 != 0)
-  {
-    while(digitalRead(porta_botao1) != 0)
-    {
-      delay(100);
-    }
-    //Inverte o estado da porta
-    estadorele1 = !estadorele1;
-    //Comandos para o rele 1
-    digitalWrite(gPinoRele_1, estadorele1);  
-  }   
   
-  //Verifica o acionamento do botao 2
-  leitura2 = digitalRead(gPinoRele_2);
-  if (leitura2 != 0)
-  {
-    while(digitalRead(porta_botao2) != 0)
-    {
-      delay(100);
-    }
-    //Inverte o estado da porta
-    estadorele2 = !estadorele2;
-    //Comandos para o rele 2
-    digitalWrite(gPinoRele_2, estadorele2);  
-  } 
+    Serial.println("rodando");
+    Serial.flush();
+    serialEventRun();    
 
-  //Verifica o acionamento do botao 3
-//  leitura1 = digitalRead(gPinoRele_3);
-//  if (leitura3 != 0)
-//  {
-//    while(digitalRead(porta_botao3) != 0)
+
+  //Verifica o acionamento do botao 1
+  leitura1 = digitalRead(porta_botao1);
+
+  if (leitura1 == HIGH)
+  {
+
+    Serial.println("APERTADO");
+    Serial.flush();
+    serialEventRun();    
+
+  }
+
+
+
+
+
+
+
+
+
+
+//   if (leitura1 != 0)
+//   {
+//     while(digitalRead(porta_botao1) != 0)
+//     {
+//       delay(100);
+//     }
+//     //Inverte o estado da porta
+//     estadorele1 = !estadorele1;
+//     //Comandos para o rele 1
+//     digitalWrite(gPinoRele_1, estadorele1);  
+//   }   
+  
+//   //Verifica o acionamento do botao 2
+//   leitura2 = digitalRead(gPinoRele_2);
+//   if (leitura2 != 0)
+//   {
+//     while(digitalRead(porta_botao2) != 0)
+//     {
+//       delay(100);
+//     }
+//     //Inverte o estado da porta
+//     estadorele2 = !estadorele2;
+//     //Comandos para o rele 2
+//     digitalWrite(gPinoRele_2, estadorele2);  
+//   } 
+
+//   //Verifica o acionamento do botao 3
+// //  leitura1 = digitalRead(gPinoRele_3);
+// //  if (leitura3 != 0)
+// //  {
+// //    while(digitalRead(porta_botao3) != 0)
+// //    {
+// //      delay(100);
+// //    }
+// //    //Inverte o estado da porta
+// //    estadorele1 = !estadorele1;
+// //    //Comandos para o rele 3
+// //    digitalWrite(gPinoRele_3, estadorele3);  
+// //  }   
+
+// //Verifica o acionamento do botao 4
+//     leitura1 = digitalRead(gPinoRele_3);
+//     if (leitura4 != 0)
+//   {
+//     while(digitalRead(porta_botao4) != 0)
 //    {
-//      delay(100);
-//    }
-//    //Inverte o estado da porta
-//    estadorele1 = !estadorele1;
-//    //Comandos para o rele 3
-//    digitalWrite(gPinoRele_3, estadorele3);  
-//  }   
-
-//Verifica o acionamento do botao 4
-    leitura1 = digitalRead(gPinoRele_3);
-    if (leitura4 != 0)
-  {
-    while(digitalRead(porta_botao4) != 0)
-   {
-      delay(100);
-    }
-    //Inverte o estado da porta
- //   estadorele1 = !estadorele1;
- //   estadorele2 = !estadorele2;
-    estadorele3 = !estadorele3;
+//       delay(100);
+//     }
+//     //Inverte o estado da porta
+//  //   estadorele1 = !estadorele1;
+//  //   estadorele2 = !estadorele2;
+//     estadorele3 = !estadorele3;
     
-    //Comandos para o rele 1,2 e 3
-//    digitalWrite(gPinoRele_1, estadorele1);
-//    digitalWrite(gPinoRele_2, estadorele2);  
-    digitalWrite(gPinoRele_3, estadorele3);    
-  }   
+//     //Comandos para o rele 1,2 e 3
+// //    digitalWrite(gPinoRele_1, estadorele1);
+// //    digitalWrite(gPinoRele_2, estadorele2);  
+//     digitalWrite(gPinoRele_3, estadorele3);    
+//   }   
 
 }

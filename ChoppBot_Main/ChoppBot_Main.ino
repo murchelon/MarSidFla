@@ -396,7 +396,7 @@ void Exec_STANDBY()
 }
 
 
-
+volatile uint8_t lastflowpinstate;
 
 // Procedure que testa se ocorreu algum interrupt: O sistema fica em modo StandBy ate que alguem toque na tela, ou faca alguma outra acao que gere uma interrupcao
 void TestaInterrupts()
@@ -473,6 +473,9 @@ void TestaInterrupts()
   }
 
 
+  lastflowpinstate = 0;
+  lastflowpinstate = digitalRead(38);
+  LogTerm(lastflowpinstate);
 
 
   if (buttonState4 == HIGH) 

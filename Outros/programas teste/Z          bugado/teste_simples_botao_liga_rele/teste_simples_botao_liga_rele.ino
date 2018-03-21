@@ -31,7 +31,11 @@ void setup()
   pinMode(porta_botao3, INPUT);
 
   pinMode(porta_botao4, INPUT);
-  
+
+  digitalWrite(gPinoRele_1, HIGH);
+  digitalWrite(gPinoRele_2, HIGH);
+  digitalWrite(gPinoRele_3, HIGH);
+
 }
 
 void loop() 
@@ -41,60 +45,24 @@ void loop()
   buttonState_2 = digitalRead(porta_botao2);
   buttonState_3 = digitalRead(porta_botao3);
   buttonState_4 = digitalRead(porta_botao4);
+
+
+
   
   //Se o botao 1 foi apertado
-  if (buttonState_1 == LOW) 
+  if (buttonState_1 == HIGH) 
   {
    // Liga o rele    
-    digitalWrite(gPinoRele_1, HIGH);  
+    digitalWrite(gPinoRele_1, LOW);  
+    delay(2000);
   } 
   else 
   {
     // Apaga o LED
     digitalWrite(gPinoRele_1
-    , LOW); 
+    , HIGH); 
   }
 
-//Se o botao 2 foi apertado
-  if (buttonState_2 == LOW) 
-  {
-   // Liga o rele    
-    digitalWrite(gPinoRele_2, HIGH);  
-  } 
-  else 
-  {
-    // Apaga o rele
-    digitalWrite(gPinoRele_2
-    , LOW); 
-  }
 
-//Se o botao 3 foi apertado
-  if (buttonState_3 == LOW) 
-  {
-   // Liga o rele    
-    digitalWrite(gPinoRele_3, HIGH);  
-  } 
-  else 
-  {
-    // Apaga o rele
-    digitalWrite(gPinoRele_3
-    , LOW); 
-  }
-  
-  //Se o botao 4 foi apertado
-  if (buttonState_4 == LOW) 
-  {
-   // Liga tds reles    
-    digitalWrite(gPinoRele_1, HIGH);
-    digitalWrite(gPinoRele_2, HIGH);
-    digitalWrite(gPinoRele_3, HIGH);  
-  } 
-  else 
-  {
-    // Apaga o rele
-    digitalWrite(gPinoRele_1, LOW);
-    digitalWrite(gPinoRele_2, LOW);
-    digitalWrite(gPinoRele_3, LOW); 
-  }
 }
 

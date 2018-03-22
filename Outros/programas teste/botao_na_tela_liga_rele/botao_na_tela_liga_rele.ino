@@ -32,6 +32,13 @@ int gPinoRele_3 = 47;
 
 // ________________________________________________
 
+
+int contador1; //Contador para saida 1
+int contador2; //Contador para saida 2
+
+// ________________________________________________
+
+
 void setup() 
 {
   Serial.begin(9600);
@@ -74,7 +81,19 @@ void setup()
   Serial.println("Waiting for valid finger...");
 
 
-  // ________________________________________________
+// ________________________________________________
+
+// Declarando dos pinos 7 e 8 como saidas digitais
+pinMode(7,OUTPUT);// Saida para o botao 1
+pinMode(8,OUTPUT);// Saida para o botao 2
+
+// Contadores para fazer as funções dos botões entre ON e OFF
+contador1 = 0; //Contador para saida 1
+contador2 = 0; //Contador para saida 2
+
+
+
+// ________________________________________________
 
 }
 

@@ -18,6 +18,14 @@
   Serial.begin(9600);  
   while (!Serial) {  
    ; // wait for serial port to connect. Needed for native USB port only  
+
+/********************* Add these Two Lines **********************/
+
+  pinMode(53, OUTPUT); // change this to 53 on a mega  // don't follow this!!
+  digitalWrite(53, HIGH); // Add this line
+/***************************************************************/
+
+   
   }  
    
    

@@ -42,8 +42,22 @@ uint16_t tx, ty;
 
 
 void interface(){
-  tft.fillRect(10,10,40,40,RA8875_WHITE);
-  tft.fillRect(10+(40*1)+(10*1),10,40,40,RA8875_BLUE);
+  tft.fillRect(100,100,200,200,RA8875_WHITE);
+
+          tft.changeMode(TEXT);
+          tft.setTextColor(RA8875_BLACK);
+          tft.setCursor (150, 150);
+          tft.setFontScale(6); 
+          tft.print (" 1 ");
+
+  
+  tft.fillRect(100+(200*1)+(100*1),100,200,200,RA8875_BLUE);
+
+          tft.changeMode(TEXT);
+          tft.setTextColor(RA8875_BLACK);
+          tft.setCursor (450, 150);
+          tft.setFontScale(6); 
+          tft.print (" 2 ");
 
   
 //  tft.fillRect(10+(40*2)+(10*2),10,40,40,RA8875_RED);
@@ -82,48 +96,67 @@ void loop()
   if (tft.touchDetect()){//easy!
       tft.touchReadPixel(&tx, &ty);//read directly in pixel!
         tx=800-tx;ty=480-ty;
-      if (ty >= 0 && ty <= 55){ //interface area
-        if ((tx > 10 && tx < (10+40))){
+      if (ty >= 0 && ty <= 550){ //interface area
+        if ((tx > 100 && tx < (100+200))){
           choosenColor = RA8875_WHITE;
           interface();
-          tft.fillRect(10,10,40,40,RA8875_BLACK);
+          tft.fillRect(100,100,200,200,RA8875_BLACK);
           tft.fillCircle(tft.width()-10,10,5,choosenColor);
+
+          delay(200);
+          tft.fillRect(100,100,200,200,RA8875_WHITE);          
+          
+          tft.setTextColor(RA8875_BLACK);
+          tft.setCursor (150, 150);
+          tft.setFontScale(6); 
+          tft.print (" 1 ");
+
                     
           Serial.println("Botao 1 apertado");
+
           
           tft.changeMode(TEXT);
           tft.setTextColor(RA8875_WHITE);
-          tft.setCursor (200, 200);
+          tft.setCursor (200, 400);
           tft.setFontScale(2); 
           tft.print ("Botao 1 apertado");
           
-          delay(2000);
+          delay(1000);
 
           tft.setTextColor(RA8875_BLACK);
-          tft.setCursor (200, 200);
+          tft.setCursor (200, 400);
           tft.setFontScale(2); 
           tft.print ("Botao 1 apertado");
           
 
         } 
-        else if ((tx > 10+(40*1)+(10*1) && tx < 10+(40*2)+(10*1))){
+        else if ((tx > 100+(200*1)+(100*1) && tx < 100+(200*2)+(100*1))){
           choosenColor = RA8875_BLUE;
           interface();
-          tft.fillRect(10+(40*1)+(10*1),10,40,40,RA8875_BLACK);
+          tft.fillRect(100+(200*1)+(100*1),100,200,200,RA8875_BLACK);
           tft.fillCircle(tft.width()-10,10,5,choosenColor);
+
+          delay(200);
+          tft.fillRect(100+(200*1)+(100*1),100,200,200,RA8875_BLUE);  
+
+                   
+          tft.setTextColor(RA8875_BLACK);
+          tft.setCursor (450, 150);
+          tft.setFontScale(6); 
+          tft.print (" 2 ");
           
           Serial.println("Botao 2 apertado");
           
           tft.changeMode(TEXT);
-          tft.setTextColor(RA8875_WHITE);
-          tft.setCursor (200, 200);
+          tft.setTextColor(RA8875_RED);
+          tft.setCursor (200, 400);
           tft.setFontScale(2); 
           tft.print ("Botao 2 apertado");
 
-                    delay(2000);
+          delay(1000);
 
           tft.setTextColor(RA8875_BLACK);
-          tft.setCursor (200, 200);
+          tft.setCursor (200, 400);
           tft.setFontScale(2); 
           tft.print ("Botao 2 apertado");
         } 

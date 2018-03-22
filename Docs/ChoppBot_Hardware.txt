@@ -1,2 +1,0 @@
-Push Button 1 wired to pin 3 with values D, M
-USB Serial 1 wired to pins 1 , 0 with value 9600

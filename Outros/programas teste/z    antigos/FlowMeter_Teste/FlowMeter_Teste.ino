@@ -17,7 +17,7 @@ All text above must be included in any redistribution
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 
 // which pin to use for reading the sensor? can use any pin!
-#define FLOWSENSORPIN 36
+#define FLOWSENSORPIN 37
 
 // count how many pulses!
 volatile uint16_t pulses = 0;

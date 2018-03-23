@@ -5,22 +5,12 @@
 #include <SPI.h>
 #include <RA8875.h>
 
-//Arduino DUE,Arduino mega2560,Arduino UNO
 #define RA8875_INT 4
 #define RA8875_CS 10 
 
 #define RA8875_RESET 9
 
-//#if defined(NEEDS_SET_MODULE)//Energia, this case is for stellaris/tiva
-
 //RA8875 tft = RA8875(3);//select SPI module 3
-/*
-for module 3 (stellaris)
-SCLK:  PD_0
-MOSI:  PD_3
-MISO:  PD_2
-SS:    PD_1
-*/
 //#else
 
 RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);//Teensy3/arduino's
@@ -41,6 +31,16 @@ int contador4; //Contador para saida 4
 int gPinoRele_1 = 45;
 int gPinoRele_2 = 46;
 int gPinoRele_3 = 47;
+
+// biometrico ________________________________________
+
+#include <Adafruit_Fingerprint.h>
+
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(12, 13);
+
+Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
+
 
 // flowmeter________________________________________
 
@@ -244,6 +244,24 @@ void setup()
   digitalWrite(gPinoRele_1, HIGH);
   digitalWrite(gPinoRele_2, HIGH);
   digitalWrite(gPinoRele_3, HIGH);
+
+// setup // biometrico______________________________________________________________
+
+
+ // set the data rate for the sensor serial port
+  finger.begin(57600);
+  
+  if (finger.verifyPassword()) {
+    Serial.println("Found fingerprint sensor!");
+  } else {
+    Serial.println("Did not find fingerprint sensor :(");
+    while (1) { delay(1); }
+  }
+
+  finger.getTemplateCount();
+  Serial.print("Sensor contains "); Serial.print(finger.templateCount); Serial.println(" templates");
+  Serial.println("Waiting for valid finger...");
+
   
 // setup // botao ________________________________________________
 

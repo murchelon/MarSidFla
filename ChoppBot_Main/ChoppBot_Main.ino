@@ -14,21 +14,37 @@
 #include "BIB/Main/ChoppBot_Globais.h" 
 #include "BIB/Main/ChoppBot_Suporte.h" 
 
-//#include "BIB/Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
-//#include "BIB/Tela/ChoppBot_Tela_Main.h" 
+
+
+#include "BIB/Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
+#include "BIB/Tela/ChoppBot_Tela_Main.h" 
+
+
+
+#include "BIB/Biometrico/ChoppBot_Bio_Engine_Adafruit_Fingerprint.h" 
+#include "BIB/Biometrico/ChoppBot_Bio_Main.h" 
+
+
+
 
 //banco de dados:
 #include <EDB.h>
 
-#define BOTAO1_PINO 40
-#define BOTAO2_PINO 41
-#define BOTAO3_PINO 42
-#define BOTAO4_PINO 43
+//#define BOTAO1_PINO 40
+//#define BOTAO2_PINO 41
+//#define BOTAO3_PINO 42
+//#define BOTAO4_PINO 43
 
+
+// RELE ======================================================================
 
 #define gPinoRele_1 45
 #define gPinoRele_2 46
 #define gPinoRele_3 47
+
+
+
+
 
 int EstadoBotao_Rele1 = 0;
 
@@ -65,19 +81,19 @@ void InitApp()
 
   pinMode(LED_BUILTIN, OUTPUT);
 
-  pinMode(BOTAO1_PINO, INPUT);
+  //pinMode(BOTAO1_PINO, INPUT);
 
-  pinMode(BOTAO2_PINO, INPUT);
+  //pinMode(BOTAO2_PINO, INPUT);
   
-  pinMode(BOTAO3_PINO, INPUT);
+  //pinMode(BOTAO3_PINO, INPUT);
   
-  pinMode(BOTAO4_PINO, INPUT);
+  //pinMode(BOTAO4_PINO, INPUT);
   
   
   //define reles como output
-  pinMode(gPinoRele_1, OUTPUT);
-  pinMode(gPinoRele_2, OUTPUT);
-  pinMode(gPinoRele_3, OUTPUT);
+  //pinMode(gPinoRele_1, OUTPUT);
+  //pinMode(gPinoRele_2, OUTPUT);
+  //pinMode(gPinoRele_3, OUTPUT);
 
 
   //define reles como desligados
@@ -89,9 +105,15 @@ void InitApp()
   Led_Light(false);
 
 
+  TELA_IniciaTela();
+  Render_Interface();
 
 
+  BIOMETRICO_Inicia();
   
+
+
+
   // todo: inicializa hardware, fecha valvulas, etc
 }
 
@@ -108,7 +130,7 @@ void Exec_INICIO()
     
     //SD_Init();
 
-    ShowExample_DB();
+    //ShowExample_DB();
 
     //Init_Database();
 }
@@ -199,6 +221,8 @@ void Exec_LOGIN()
 
     Last_SegundosPassados = SegundosPassados;
   }
+
+  gModoOperacao = "STANDBY";
 
 }
 
@@ -390,9 +414,16 @@ void Exec_TESTE()
 // ROTINA DE STANDBY
 void Exec_STANDBY()
 {
-  TestaInterrupts();
-
+  //TestaInterrupts();
+  LogTerm("Exec_STANDBY");
   //delay(500);
+
+  if (tft.touchDetect())
+  {
+    TELA_Texto("Entrando em modo LOGIN");
+
+    gModoOperacao = "LOGIN";
+  }
 }
 
 
@@ -413,6 +444,7 @@ void TestaInterrupts()
   // BOTOES FISICOS:
   // ---------------
 
+  /*
   int buttonState1 = LOW;  
   int buttonState2 = LOW;  
   int buttonState3 = LOW;  
@@ -485,9 +517,10 @@ void TestaInterrupts()
     gModoOperacao = "OPERACAO";
   }
 
-
+  */
 
 }
+
 
 
 

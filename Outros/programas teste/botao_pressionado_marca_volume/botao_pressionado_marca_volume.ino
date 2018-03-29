@@ -354,11 +354,14 @@ void loop()
 //loop // ROTINA BOTAO 1 _______________________________________________________________
 
  
-  if (tft.touchDetect()){//easy!
+  if (tft.touchDetect())
+  {//easy!
       tft.touchReadPixel(&tx, &ty);//read directly in pixel!
         tx=800-tx;ty=480-ty;
-      if (ty >= 0 && ty <= 450){ //interface area
-        if ((tx > 100 && tx < (100+200))){
+      if (ty >= 0 && ty <= 450)
+      { //interface area
+        if ((tx > 100 && tx < (100+200)))
+        {
           choosenColor = RA8875_WHITE;
           interface();
           tft.fillRect(80,80,150,150,RA8875_BLACK);

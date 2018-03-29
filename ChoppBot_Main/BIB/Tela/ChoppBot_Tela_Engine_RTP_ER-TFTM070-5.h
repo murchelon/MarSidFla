@@ -19,6 +19,8 @@ Works with Arduino 1.6.0 IDE
 
 #define RA8875_RESET 9
 
+
+
 //#if defined(NEEDS_SET_MODULE)//Energia, this case is for stellaris/tiva
 
 //RA8875 tft = RA8875(3);//select SPI module 3

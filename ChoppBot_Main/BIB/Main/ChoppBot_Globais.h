@@ -24,7 +24,7 @@ String gModoOperacao = "";
 
 
 
-const unsigned long gTimeoutOpcao = 3000;		// tempo em ms para timeout das opcoes a serem escolhidas
+const unsigned long gTimeoutOpcao = 7000;		// tempo em ms para timeout das opcoes a serem escolhidas
 
 
 

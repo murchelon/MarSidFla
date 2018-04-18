@@ -106,10 +106,10 @@ void InitApp()
 
 
   TELA_IniciaTela();
-  Render_Interface();
+  
 
 
-  BIOMETRICO_Inicia();
+  //BIOMETRICO_Inicia();
   
 
 
@@ -198,6 +198,8 @@ void Exec_LOGIN()
   int Last_SegundosPassados;
   
   time_inicio = millis();
+
+  BIOMETRICO_Inicia();
 
   while (Exec_Loop_PodeSair == false)
   {
@@ -414,16 +416,137 @@ void Exec_TESTE()
 // ROTINA DE STANDBY
 void Exec_STANDBY()
 {
+
+
+  uint16_t tx, ty;
+
+  Render_Interface();
+
   //TestaInterrupts();
-  LogTerm("Exec_STANDBY");
+  
   //delay(500);
+
+
 
   if (tft.touchDetect())
   {
-    TELA_Texto("Entrando em modo LOGIN");
 
-    gModoOperacao = "LOGIN";
+
+
+    tft.touchReadPixel(&tx, &ty);
+
+    tx = 800 - tx;
+    ty = 480 - ty;
+
+
+
+    // if (IndexBotao == 1)
+    // {
+
+    //   tft.fillRect(gOffset_W, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+    // }
+    // else
+    // {
+
+    //   gPosicaoAtual_X = gOffset_W + IndexBotao * gTamBotao_W + IndexBotao * gOffset_W;
+
+    //   gPosicaoAtual_X = gPosicaoAtual_X - gOffset_W - gTamBotao_W;
+
+    //   tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+
+    //   //tft.fillRect(Offset_W + TamBotao_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_YELLOW);
+    //   //tft.fillRect(Offset_W + TamBotao_W + TamBotao_W + Offset_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_MAGENTA);
+
+    // }
+
+
+    //if (1==1)
+    //if ((tx > 120 && tx < (240)))
+    //if ((tx > gOffset_W && tx < (gTamBotao_W)))    
+    
+    //gModoOperacao = "LOGIN";tx
+
+    //botao 1:
+    if (tx > gOffset_W && tx < gTamBotao_W + gOffset_W)  
+    {
+
+      if (ty > gOffset_H && ty < gTamBotao_H + gOffset_H) 
+      {
+        TELA_Texto("BOTAO 1 APERTADO");
+
+        Serial.print("tx = ");
+        Serial.print(tx); 
+
+        Serial.print(" | ty = ");
+        Serial.println(ty); 
+
+        //tft.changeMode(GRAPHIC);
+
+        
+
+        LimpaTela();
+     
+
+        delay(1000);
+
+        gModoOperacao = "LOGIN";
+      }
+
+    }
+
+
+
+    //botao 2:
+    if (tx > 2 * gOffset_W + gTamBotao_W && tx < 2 * gOffset_W + 2 * gTamBotao_W )  
+    {
+
+      if (ty > gOffset_H && ty < gTamBotao_H + gOffset_H) 
+      {
+        TELA_Texto("BOTAO 2 APERTADO");
+
+        Serial.print("tx = ");
+        Serial.print(tx); 
+
+        Serial.print(" | ty = ");
+        Serial.println(ty); 
+
+        //tft.changeMode(GRAPHIC);
+        delay(1000);
+      }
+
+    }
+
+
+
+
+    //botao 3:
+    if (tx > 3 * gOffset_W + gTamBotao_W && tx < 3 * gOffset_W + 3 * gTamBotao_W )  
+    {
+
+      if (ty > gOffset_H && ty < gTamBotao_H + gOffset_H) 
+      {
+        TELA_Texto("BOTAO 3 APERTADO");
+
+        Serial.print("tx = ");
+        Serial.print(tx); 
+
+        Serial.print(" | ty = ");
+        Serial.println(ty); 
+
+        //tft.changeMode(GRAPHIC);
+
+        delay(1000);
+      }
+
+    }
+
+
+
+
+
+
   }
+
 }
 
 
@@ -580,8 +703,8 @@ void loop() {
 
     Exec_LOGIN();
     
-    LogTerm("Modo: == StandBy ==");
-    gModoOperacao = "STANDBY";
+    //LogTerm("Modo: == StandBy ==");
+    //gModoOperacao = "STANDBY";
 
     
   }

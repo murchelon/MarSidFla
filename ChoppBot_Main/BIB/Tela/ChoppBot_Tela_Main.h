@@ -9,6 +9,15 @@ uint16_t gPosTxt_X = 0;
 uint16_t gPosTxt_Y = 0;
 uint16_t gTxtSize = 15;
 
+
+int gTamBotao_W = 120;
+int gTamBotao_H = 120;
+int gOffset_W = 50;
+int gOffset_H = 50;
+
+int gPosicaoAtual_X = 0;
+
+
 //tft.getCursor(&currentX,&currentY);
 
 // inicializa tela var principal da tela
@@ -67,18 +76,50 @@ void TELA_Texto(String Texto)
 void Render_Botao(int IndexBotao, String Texto, String Cor)
 {
  
-  int TamBotao_W = 80;
-  int TamBotao_H = 80;
-  int Offset_W = 60;
-  int Offset_H = 60;
 
-  int Offset_Atual_W = 0;
 
-  Offset_Atual_W = Offset_W * IndexBotao;
+  //Offset_Atual_W = Offset_W * IndexBotao;
 
-  Offset_Atual_W = Offset_Atual_W + (TamBotao_W * IndexBotao);
+  //Offset_Atual_W = Offset_Atual_W + (TamBotao_W * IndexBotao);
 
-  tft.fillRect(Offset_W, Offset_H, Offset_W + TamBotao_W, Offset_H + TamBotao_H, RA8875_WHITE);
+  //tft.fillRect(Offset_W, Offset_H, Offset_W + TamBotao_W, Offset_H + TamBotao_H, RA8875_WHITE);
+
+/*
+ RA8875_BLACK            0x0000
+ RA8875_BLUE             0x001F
+ RA8875_RED              0xF800
+ RA8875_GREEN            0x07E0
+ RA8875_CYAN             0x07FF
+ RA8875_MAGENTA          0xF81F
+ RA8875_YELLOW           0xFFE0  
+ RA8875_WHITE            0xFFFF
+*/
+
+
+
+
+  if (IndexBotao == 1)
+  {
+
+    tft.fillRect(gOffset_W, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+  }
+  else
+  {
+
+    gPosicaoAtual_X = gOffset_W + IndexBotao * gTamBotao_W + IndexBotao * gOffset_W;
+
+    gPosicaoAtual_X = gPosicaoAtual_X - gOffset_W - gTamBotao_W;
+
+    tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+
+    //tft.fillRect(Offset_W + TamBotao_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_YELLOW);
+    //tft.fillRect(Offset_W + TamBotao_W + TamBotao_W + Offset_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_MAGENTA);
+
+  }
+
+  
+
+
 
   pinMode(7,OUTPUT);// Saida para o botao 1
 
@@ -105,8 +146,8 @@ void Render_Botao(int IndexBotao, String Texto, String Cor)
   //Offset_W = Offset_W + (IndexBotao * (Offset_W + TamBotao_W));
 
   
-  tft.changeMode(TEXT);
-  tft.setTextColor(RA8875_BLACK);
+  //tft.changeMode(TEXT);
+  //tft.setTextColor(RA8875_BLACK);
   //tft.setCursor (110, 120);
   //tft.setFontScale(6); 
   //tft.print (" 1 ");
@@ -118,9 +159,10 @@ void Render_Interface()
 {
   if (gTela_Hardware == "ER-TFTM070-5")
   {  
-    Render_Botao(1, "1", "BRANCO");
-    Render_Botao(2, "2", "AZUL");
-    //Render_Botao(3, "3", "MAGENTA");
+    Render_Botao(1, "LOGIN", "BRANCO");
+    Render_Botao(2, "TESTE1", "AZUL");
+    Render_Botao(3, "TESTE2", "MAGENTA");
+
   }
 
 }
@@ -165,4 +207,11 @@ void Render_Interface2()
 
   }
 
+}
+
+
+
+void LimpaTela()
+{
+  tft.fillScreen(RA8875_BLACK);  
 }

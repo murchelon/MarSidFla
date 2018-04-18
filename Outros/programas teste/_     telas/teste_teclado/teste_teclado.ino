@@ -66,6 +66,13 @@ tft.fillRect(500, 50, 260,340,RA8875_WHITE);
   tft.print ("8");
   tft.setCursor(500+(bot_offset*3)+(bot_size*2)+20,50 + (bot_offset * 3)+(bot_size*2)); 
   tft.print ("9");
+
+  tft.setCursor(500+(bot_offset*1)+(bot_size*0)+20,50 + (bot_offset * 4)+(bot_size*3)); 
+  tft.print ("foOK");
+  tft.setCursor(500+(bot_offset*2)+(bot_size*1)+20,50 + (bot_offset * 4)+(bot_size*3)); 
+  tft.print ("8");
+  tft.setCursor(500+(bot_offset*3)+(bot_size*2)+20,50 + (bot_offset * 4)+(bot_size*3)); 
+  tft.print ("9");
   
   tft.setCursor(500+(bot_offset*2)+(bot_size*0) + 30,50 + (bot_offset * 4)+(bot_size*3)); 
   tft.print ("0");

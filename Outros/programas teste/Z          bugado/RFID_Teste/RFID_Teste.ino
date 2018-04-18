@@ -6,7 +6,7 @@
 #include <LiquidCrystal.h>
  
 #define SS_PIN 53
-#define RST_PIN 28
+#define RST_PIN 30
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance.
  
 LiquidCrystal lcd(6, 7, 5, 4, 3, 2); 

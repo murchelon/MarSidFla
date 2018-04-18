@@ -83,10 +83,20 @@ void setup()
 
 uint16_t choosenColor = 0;
 
+//_________________________________________ teste pressao
 
+#define MINPRESSURE 10       //check for any touch 0 would mostly be too senitive.
+#define MAXPRESSURE 1000
+
+//______________________________________________________________________________
 
 void loop() 
-{    tft.changeMode(TEXT);
+
+{    
+
+
+  
+  tft.changeMode(TEXT);
    tft.setTextColor(RA8875_WHITE);
   tft.setCursor (300, 0);
   tft.setFontScale(2); 

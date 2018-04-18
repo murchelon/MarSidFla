@@ -6,18 +6,13 @@
 #include <LiquidCrystal.h>
  
 #define SS_PIN 53
-#define RST_PIN 28
+#define RST_PIN 30
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance.
  
 LiquidCrystal lcd(6, 7, 5, 4, 3, 2); 
  
 char st[20];
 
-// desliga CS do SD card ____________________________________________
-
-int ass = 24;
-
-// desliga CS do SD card ____________________________________________
  
 void setup() 
 {
@@ -26,19 +21,32 @@ void setup()
   
   //______________________________________________________________________
 
-      pinMode(ass, OUTPUT);
-      digitalWrite(ass, HIGH);
+//void RFID_ON (void)
+//{
+digitalWrite (24, HIGH); //desabilita o SD
+//digitalWrite (53, LOW); //habilita o RFID
+//}
+
+// void SD_ON (void)
+// {
+// digitalWrite (53, HIGH); //desabilita o RFID
+// digitalWrite (24, LOW); //habilita o SD
+// }
   //______________________________________________________________________
       
   
   
   SPI.begin();    // Inicia  SPI bus
-  mfrc522.PCD_Init(); // Inicia MFRC522
+
+//  rfid.begin(53);
+  
+  mfrc522.PCD_Init(53,30); // Inicia MFRC522
   Serial.println("Aproxime o seu cartao do leitor...");
   Serial.println();
   //Define o número de colunas e linhas do LCD:  
   lcd.begin(16, 2);  
   mensageminicial();
+    
 
 }
  

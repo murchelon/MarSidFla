@@ -18,6 +18,12 @@ uint16_t newX, newY;
 int bot_size = 60;
 int bot_offset = 20;
 
+int num = ("");
+int num1 = 1;
+int num2 = 2;
+int num3 = 3;
+int num4 = 4;
+int num5 = 5;
 
 void numerico(){
 
@@ -36,13 +42,13 @@ tft.fillRect(500, 50, 260,340,RA8875_WHITE);
   tft.fillRect(500+(bot_offset*1)+(bot_size*0),50 + (bot_offset * 3)+(bot_size*2),bot_size,bot_size,RA8875_BLUE); //y =  *3 terceira fileira de botoes
   tft.fillRect(500+(bot_offset*2)+(bot_size*1),50 + (bot_offset * 3)+(bot_size*2),bot_size,bot_size,RA8875_BLUE); //y =  *3 terceira fileira de botoes
   tft.fillRect(500+(bot_offset*3)+(bot_size*2),50 + (bot_offset * 3)+(bot_size*2),bot_size,bot_size,RA8875_BLUE); //y =  *3 terceira fileira de botoes
+
+  tft.fillRect(500+(bot_offset*1)+(bot_size*0),50 + (bot_offset * 4)+(bot_size*3),bot_size,bot_size,RA8875_BLUE); //y =  *4 quarta fileira de botoes
+  tft.fillRect(500+(bot_offset*2)+(bot_size*1),50 + (bot_offset * 4)+(bot_size*3),bot_size,bot_size,RA8875_BLUE); //y =  *4 quarta fileira de botoes
+  tft.fillRect(500+(bot_offset*3)+(bot_size*2),50 + (bot_offset * 4)+(bot_size*3),bot_size,bot_size,RA8875_BLUE); //y =  *4 quarta fileira de botoes
   
-  tft.fillRect(500+(bot_offset*2)+(bot_size*0),50 + (bot_offset * 4)+(bot_size*3),bot_size*1.5,bot_size,RA8875_BLUE); //y =  *4 quarta fileira de botoes
-  tft.fillRect(500+(bot_offset*4)+(bot_size*1),50 + (bot_offset * 4)+(bot_size*3),bot_size*1.5,bot_size,RA8875_BLUE); //y =  *4 quarta fileira de botoes
+ // numero botoes _____________________________________________________________
 
-  // numero botoes _____________________________________________________________
-
-    //tft.changeMode(TEXT);
     tft.setTextColor(RA8875_WHITE);
     tft.setFontScale(2); 
 
@@ -67,17 +73,18 @@ tft.fillRect(500, 50, 260,340,RA8875_WHITE);
   tft.setCursor(500+(bot_offset*3)+(bot_size*2)+20,50 + (bot_offset * 3)+(bot_size*2)); 
   tft.print ("9");
 
-  tft.setCursor(500+(bot_offset*1)+(bot_size*0)+20,50 + (bot_offset * 4)+(bot_size*3)); 
-  tft.print ("foOK");
-  tft.setCursor(500+(bot_offset*2)+(bot_size*1)+20,50 + (bot_offset * 4)+(bot_size*3)); 
-  tft.print ("8");
-  tft.setCursor(500+(bot_offset*3)+(bot_size*2)+20,50 + (bot_offset * 4)+(bot_size*3)); 
-  tft.print ("9");
-  
-  tft.setCursor(500+(bot_offset*2)+(bot_size*0) + 30,50 + (bot_offset * 4)+(bot_size*3)); 
-  tft.print ("0");
-  tft.setCursor(500+(bot_offset*4)+(bot_size*1)+20 ,50 + (bot_offset * 4)+(bot_size*3)); 
+  tft.setCursor(500+(bot_offset*1)+(bot_size*0)+20-2,50 + (bot_offset * 4)+(bot_size*3)); 
   tft.print ("OK");
+  tft.setCursor(500+(bot_offset*2)+(bot_size*1)+20,50 + (bot_offset * 4)+(bot_size*3)); 
+  tft.print ("0");
+  tft.setCursor(500+(bot_offset*3)+(bot_size*2)+20-2,50 + (bot_offset * 4)+(bot_size*3)); 
+  tft.print ("BK");
+
+  
+ // tft.setCursor(500+(bot_offset*2)+(bot_size*0) + 30,50 + (bot_offset * 4)+(bot_size*3)); 
+ // tft.print ("0");
+ // tft.setCursor(500+(bot_offset*4)+(bot_size*1)+20 ,50 + (bot_offset * 4)+(bot_size*3)); 
+ // tft.print ("OK");
 
 }
 
@@ -124,6 +131,7 @@ void loop()
                       tft.print ("1");
                       tft.getCursor(newX,80);
                       newX = newX + 20;
+                      num = num && num1;
                                     
         }
 
@@ -142,6 +150,7 @@ void loop()
                       tft.print ("2");
                       tft.getCursor(newX,80);
                       newX = newX + 20;
+                      num = num && num2;
                                     
         }
 
@@ -161,6 +170,7 @@ void loop()
                       tft.print ("3");
                       tft.getCursor(newX,80);
                       newX = newX + 20;
+                      num = num && num3;
                                     
         }
               if (ty >= 50 + (bot_offset * 2)+ (bot_size * 1) && ty <= 50 + (bot_offset * 2) + (bot_size * 2) && (tx > 500 + bot_offset && tx < 500 + bot_offset + bot_size) )
@@ -178,6 +188,7 @@ void loop()
                       tft.print ("4");
                       tft.getCursor(newX,80);
                       newX = newX + 20;
+                      num = num && num4;
                                     
         }
 
@@ -196,6 +207,7 @@ void loop()
                       tft.print ("5");
                       tft.getCursor(newX,80);
                       newX = newX + 20;
+                      num = num && num5;
                                     
         }
  if (ty >= 50 + (bot_offset * 2)+ (bot_size * 1) && ty <= 50 + (bot_offset * 2) + (bot_size * 2) && (tx > 500 + bot_offset *3 + bot_size * 2 && tx < 500 + bot_offset * 3 + bot_size * 3) )
@@ -272,13 +284,38 @@ void loop()
                                     
         }
 
-              if (ty >= 50 + (bot_offset * 4)+ (bot_size * 3) && ty <= 50 + (bot_offset * 4) + (bot_size * 4) && (tx > 500 + bot_offset * 2 && tx < 500 + bot_offset + bot_size*1.5) )
+//____________________________________________
+
+              if (ty >= 50 + (bot_offset * 4)+ (bot_size * 3) && ty <= 50 + (bot_offset * 4) + (bot_size * 4) && (tx > 500 + bot_offset && tx < 500 + bot_offset + bot_size) )
                                                                                                                 
         {
                 
                 tft.touchDetect(false);
-                delay(500);
-                tft.fillRect(500+(bot_offset*2)+(bot_size*0),50 + (bot_offset * 4)+(bot_size*3),bot_size*1.5,bot_size,RA8875_WHITE);
+                tft.fillRect(500+(bot_offset*1)+(bot_size*0),50 + (bot_offset * 4)+(bot_size*3),bot_size,bot_size,RA8875_WHITE);
+                delay(200);
+                
+                numerico();
+                
+                      tft.setTextColor(RA8875_BLACK);
+                      tft.setCursor (newX, 80); 
+                      tft.print ("OK");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+
+                      tft.setTextColor(RA8875_YELLOW);
+                      tft.setCursor (newX +20, 80+100); 
+                      tft.print (num);
+                     
+
+
+        }
+
+ if (ty >= 50 + (bot_offset * 4)+ (bot_size * 3) && ty <= 50 + (bot_offset * 4) + (bot_size * 4) && (tx > 500 + bot_offset *2 + bot_size && tx < 500 + bot_offset * 3 + bot_size * 2) )
+                                                                                                                
+        {
+                
+                tft.touchDetect(false);
+                tft.fillRect(500+(bot_offset*2)+(bot_size*1),50 + (bot_offset * 4)+(bot_size*3),bot_size,bot_size,RA8875_WHITE);
                 delay(200);
                 
                 numerico();
@@ -290,27 +327,25 @@ void loop()
                       newX = newX + 20;
                                     
         }
-
-              if (ty >= 50 + (bot_offset * 4)+ (bot_size * 3) && ty <= 50 + (bot_offset * 4) + (bot_size * 4) && (tx > 500 + bot_offset * 4 +(bot_size*1) && tx < 500 + bot_offset *4 + (bot_size*1.5)*2) )
+        
+ if (ty >= 50 + (bot_offset * 4)+ (bot_size * 3) && ty <= 50 + (bot_offset * 4) + (bot_size * 4) && (tx > 500 + bot_offset *3 + bot_size * 2 && tx < 500 + bot_offset * 3 + bot_size * 3) )
                                                                                                                 
         {
                 
                 tft.touchDetect(false);
-                delay(500);
-                tft.fillRect(500+(bot_offset*4)+(bot_size*1),50 + (bot_offset * 4)+(bot_size*3),bot_size*1.5,bot_size,RA8875_WHITE);
+                tft.fillRect(500+(bot_offset*3)+(bot_size*2),50 + (bot_offset * 4)+(bot_size*3),bot_size,bot_size,RA8875_WHITE);
                 delay(200);
                 
                 numerico();
                 
-                      tft.fillRect(80,80,300,60, RA8875_YELLOW);
-                      newX = 85;
-
-                      
-                                    
+                      tft.setTextColor(RA8875_BLACK);
+                      tft.setCursor (newX, 80); 
+                      tft.print ("BK");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      //num = num && num1;           
+        
+        
         }
-        
-        
   }
-  
-
 }

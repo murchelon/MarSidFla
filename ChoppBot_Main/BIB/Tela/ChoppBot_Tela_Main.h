@@ -10,18 +10,28 @@ uint16_t gPosTxt_Y = 0;
 uint16_t gTxtSize = 15;
 
 
-int gTamBotao_W = 120;
-int gTamBotao_H = 120;
+int gTamBotao_W = 180;
+int gTamBotao_H = 180;
+
 int gOffset_W = 50;
 int gOffset_H = 50;
 
 int gPosicaoAtual_X = 0;
 
+int gTotalBotoes = 0;
 
 //tft.getCursor(&currentX,&currentY);
 
 // inicializa tela var principal da tela
 //RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);//Teensy3/arduino's
+
+
+
+void TELA_LimpaTela()
+{
+  tft.fillScreen(RA8875_BLACK);  
+}
+
 
 
 // Funcao que inicializa a tela sendo usada no momento
@@ -73,10 +83,20 @@ void TELA_Texto(String Texto)
 
 
 
-void Render_Botao(int IndexBotao, String Texto, String Cor)
+
+void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 {
  
 
+
+
+  int OffSet_TextoBotao_W = 19;
+  int OffSet_TextoBotao_H = 20;
+
+  int OffSet_TextoTitulo_W = 0;
+  int OffSet_TextoTitulo_H = 170;
+
+  int OffSet_TextoTitulo2_H = 20;
 
   //Offset_Atual_W = Offset_W * IndexBotao;
 
@@ -98,19 +118,100 @@ void Render_Botao(int IndexBotao, String Texto, String Cor)
 
 
 
-  if (IndexBotao == 1)
+  if (IndexBotao == 10)
   {
 
-    tft.fillRect(gOffset_W, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+    /*
+    tft.setFontScale(1); 
+
+    // Desenha o quadrado do botao
+    //tft.fillRect(gOffset_W, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+
+    IndexBotao--;
+    gPosicaoAtual_X = gOffset_W + (IndexBotao * gTamBotao_W) + (IndexBotao * gOffset_W);
+
+
+    tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+
+    // Render o numero dentro do botao
+    tft.setTextColor(RA8875_BLACK);
+    tft.setCursor (gOffset_W + OffSet_TextoBotao_W, gOffset_H + OffSet_TextoBotao_H);
+    
+    tft.print (IndexBotao);
+
+
+    // Render o titulo 
+    tft.setFontScale(0.4);
+    tft.changeMode(TEXT);
+    tft.setTextColor(RA8875_WHITE);
+
+    tft.setCursor (gOffset_W + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoTitulo_H);    
+    tft.print (Texto);
+
+
+    // Render Titulo2
+    if (Texto2 != "")
+    {
+      tft.setCursor (gOffset_W + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoTitulo_H + OffSet_TextoTitulo2_H);
+      tft.print (Texto2);
+    }
+   
+
+    gTotalBotoes = 1;
+    */
+
+
   }
   else
   {
 
-    gPosicaoAtual_X = gOffset_W + IndexBotao * gTamBotao_W + IndexBotao * gOffset_W;
+    //IndexBotao--;
+    tft.setFontScale(1); 
+
+    gPosicaoAtual_X = gOffset_W + (IndexBotao * gTamBotao_W) + (IndexBotao * gOffset_W);
 
     gPosicaoAtual_X = gPosicaoAtual_X - gOffset_W - gTamBotao_W;
 
-    tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+    // Desenha o quadrado do botao
+    if (Cor == "BRANCO")
+    {
+      tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+    }
+    
+    if (Cor == "AZUL")
+    {
+      tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_BLUE);
+    }
+    
+    if (Cor == "MAGENTA")
+    {
+      tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_MAGENTA);
+    }
+    
+
+    // Render o numero dentro do botao
+    tft.setTextColor(RA8875_BLACK);
+    tft.setCursor (gPosicaoAtual_X + OffSet_TextoBotao_W, gOffset_H + OffSet_TextoBotao_H);
+
+    tft.print (IndexBotao);
+
+    // Render o titulo 
+    tft.setFontScale(0.4);
+    tft.changeMode(TEXT);
+    tft.setTextColor(RA8875_WHITE);
+
+    tft.setCursor (gPosicaoAtual_X + OffSet_TextoBotao_W + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H);    
+    tft.print (Texto);
+
+    // Render Titulo2
+    if (Texto2 != "")
+    {
+      tft.setCursor (gPosicaoAtual_X + OffSet_TextoBotao_W + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H + OffSet_TextoTitulo2_H); 
+      tft.print (Texto2);
+    }
+
+
+    gTotalBotoes++;
 
     //tft.fillRect(Offset_W + TamBotao_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_YELLOW);
     //tft.fillRect(Offset_W + TamBotao_W + TamBotao_W + Offset_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_MAGENTA);
@@ -155,13 +256,13 @@ void Render_Botao(int IndexBotao, String Texto, String Cor)
 }
 
 
-void Render_Interface()
+void TELA_Render_Interface()
 {
   if (gTela_Hardware == "ER-TFTM070-5")
   {  
-    Render_Botao(1, "LOGIN", "BRANCO");
-    Render_Botao(2, "TESTE1", "AZUL");
-    Render_Botao(3, "TESTE2", "MAGENTA");
+    TELA_Render_Botao(1, "BRANCO", "Valor 10", "BRANCO");
+    TELA_Render_Botao(2, "AZUL", "Valor 20", "AZUL");
+    TELA_Render_Botao(3, "MAGENTA", "wwww", "MAGENTA");
 
   }
 
@@ -170,7 +271,141 @@ void Render_Interface()
 
 
 
-void Render_Interface2()
+void TELA_VerificaTouch()
+{
+
+  uint16_t tx, ty;
+
+  if (tft.touchDetect())
+  {
+
+
+
+    tft.touchReadPixel(&tx, &ty);
+
+    tx = 800 - tx;
+    ty = 480 - ty;
+
+
+
+    // if (IndexBotao == 1)
+    // {
+
+    //   tft.fillRect(gOffset_W, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+    // }
+    // else
+    // {
+
+    //   gPosicaoAtual_X = gOffset_W + IndexBotao * gTamBotao_W + IndexBotao * gOffset_W;
+
+    //   gPosicaoAtual_X = gPosicaoAtual_X - gOffset_W - gTamBotao_W;
+
+    //   tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
+
+    //   //tft.fillRect(Offset_W + TamBotao_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_YELLOW);
+    //   //tft.fillRect(Offset_W + TamBotao_W + TamBotao_W + Offset_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_MAGENTA);
+
+    // }
+
+
+    //if (1==1)
+    //if ((tx > 120 && tx < (240)))
+    //if ((tx > gOffset_W && tx < (gTamBotao_W)))    
+    
+    //gModoOperacao = "LOGIN";tx
+
+
+
+    if (gModoOperacao == "STANDBY")
+    {
+
+
+      //botao 1:
+      if (tx > gOffset_W && tx < gTamBotao_W + gOffset_W)  
+      {
+
+        if (ty > gOffset_H && ty < gTamBotao_H + gOffset_H) 
+        {
+          TELA_Texto("BOTAO 1 APERTADO");
+
+          Serial.print("tx = ");
+          Serial.print(tx); 
+
+          Serial.print(" | ty = ");
+          Serial.println(ty); 
+
+          //tft.changeMode(GRAPHIC);
+
+          
+
+          //TELA_LimpaTela();
+       
+
+          delay(1000);
+
+          //gModoOperacao = "LOGIN";
+        }
+
+      }
+
+
+
+      //botao 2:
+      if (tx > 2 * gOffset_W + gTamBotao_W && tx < 2 * gOffset_W + 2 * gTamBotao_W )  
+      {
+
+        if (ty > gOffset_H && ty < gTamBotao_H + gOffset_H) 
+        {
+          TELA_Texto("BOTAO 2 APERTADO");
+
+          Serial.print("tx = ");
+          Serial.print(tx); 
+
+          Serial.print(" | ty = ");
+          Serial.println(ty); 
+
+          //tft.changeMode(GRAPHIC);
+          delay(1000);
+        }
+
+      }
+
+
+
+
+      //botao 3:
+      if (tx > 3 * gOffset_W + gTamBotao_W && tx < 3 * gOffset_W + 3 * gTamBotao_W )  
+      {
+
+        if (ty > gOffset_H && ty < gTamBotao_H + gOffset_H) 
+        {
+          TELA_Texto("BOTAO 3 APERTADO");
+
+          Serial.print("tx = ");
+          Serial.print(tx); 
+
+          Serial.print(" | ty = ");
+          Serial.println(ty); 
+
+          //tft.changeMode(GRAPHIC);
+
+          delay(1000);
+        }
+
+      }
+
+
+
+    }
+
+  }
+
+}
+
+
+
+
+void TELA_Render_Interface_OLD()
 {
   if (gTela_Hardware == "ER-TFTM070-5")
   {  
@@ -211,7 +446,3 @@ void Render_Interface2()
 
 
 
-void LimpaTela()
-{
-  tft.fillScreen(RA8875_BLACK);  
-}

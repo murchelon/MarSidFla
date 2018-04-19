@@ -48,6 +48,8 @@
 
 int EstadoBotao_Rele1 = 0;
 
+volatile uint8_t lastflowpinstate;
+
 // include the SD library:
 //#include <SPI.h>
 //#include <SD.h>
@@ -380,7 +382,7 @@ void Exec_DEBUG()
 
 
 
-// Rotina que executa o procedimento de stand by
+// Rotina que executa o procedimento de TESTE
 void Exec_TESTE()
 {
 
@@ -418,142 +420,38 @@ void Exec_STANDBY()
 {
 
 
-  uint16_t tx, ty;
+  
 
-  Render_Interface();
+  TELA_Render_Interface();
 
   //TestaInterrupts();
   
   //delay(500);
 
+  
 
-
-  if (tft.touchDetect())
-  {
-
-
-
-    tft.touchReadPixel(&tx, &ty);
-
-    tx = 800 - tx;
-    ty = 480 - ty;
-
-
-
-    // if (IndexBotao == 1)
-    // {
-
-    //   tft.fillRect(gOffset_W, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
-    // }
-    // else
-    // {
-
-    //   gPosicaoAtual_X = gOffset_W + IndexBotao * gTamBotao_W + IndexBotao * gOffset_W;
-
-    //   gPosicaoAtual_X = gPosicaoAtual_X - gOffset_W - gTamBotao_W;
-
-    //   tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
-
-    //   //tft.fillRect(Offset_W + TamBotao_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_YELLOW);
-    //   //tft.fillRect(Offset_W + TamBotao_W + TamBotao_W + Offset_W + Offset_W, Offset_H, TamBotao_W, TamBotao_H, RA8875_MAGENTA);
-
-    // }
-
-
-    //if (1==1)
-    //if ((tx > 120 && tx < (240)))
-    //if ((tx > gOffset_W && tx < (gTamBotao_W)))    
-    
-    //gModoOperacao = "LOGIN";tx
-
-    //botao 1:
-    if (tx > gOffset_W && tx < gTamBotao_W + gOffset_W)  
-    {
-
-      if (ty > gOffset_H && ty < gTamBotao_H + gOffset_H) 
-      {
-        TELA_Texto("BOTAO 1 APERTADO");
-
-        Serial.print("tx = ");
-        Serial.print(tx); 
-
-        Serial.print(" | ty = ");
-        Serial.println(ty); 
-
-        //tft.changeMode(GRAPHIC);
-
-        
-
-        LimpaTela();
-     
-
-        delay(1000);
-
-        gModoOperacao = "LOGIN";
-      }
-
-    }
-
-
-
-    //botao 2:
-    if (tx > 2 * gOffset_W + gTamBotao_W && tx < 2 * gOffset_W + 2 * gTamBotao_W )  
-    {
-
-      if (ty > gOffset_H && ty < gTamBotao_H + gOffset_H) 
-      {
-        TELA_Texto("BOTAO 2 APERTADO");
-
-        Serial.print("tx = ");
-        Serial.print(tx); 
-
-        Serial.print(" | ty = ");
-        Serial.println(ty); 
-
-        //tft.changeMode(GRAPHIC);
-        delay(1000);
-      }
-
-    }
-
-
-
-
-    //botao 3:
-    if (tx > 3 * gOffset_W + gTamBotao_W && tx < 3 * gOffset_W + 3 * gTamBotao_W )  
-    {
-
-      if (ty > gOffset_H && ty < gTamBotao_H + gOffset_H) 
-      {
-        TELA_Texto("BOTAO 3 APERTADO");
-
-        Serial.print("tx = ");
-        Serial.print(tx); 
-
-        Serial.print(" | ty = ");
-        Serial.println(ty); 
-
-        //tft.changeMode(GRAPHIC);
-
-        delay(1000);
-      }
-
-    }
-
-
-
-
-
-
-  }
 
 }
 
 
-volatile uint8_t lastflowpinstate;
+
 
 // Procedure que testa se ocorreu algum interrupt: O sistema fica em modo StandBy ate que alguem toque na tela, ou faca alguma outra acao que gere uma interrupcao
 void TestaInterrupts()
+{
+  
+
+  TELA_VerificaTouch();
+
+
+}
+
+
+
+
+
+// Procedure que testa se ocorreu algum interrupt: O sistema fica em modo StandBy ate que alguem toque na tela, ou faca alguma outra acao que gere uma interrupcao
+void TestaInterrupts_OLD()
 {
   //todo: testa se teve interrupt do biometrico, RFID, tela botoes, tela admin, tela screensaver, botoes fisicos
 
@@ -671,6 +569,9 @@ void setup() {
 void loop() {
 
   delay(50);
+
+  TestaInterrupts();
+
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

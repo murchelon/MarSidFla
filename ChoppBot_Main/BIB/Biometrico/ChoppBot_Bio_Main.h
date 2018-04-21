@@ -34,7 +34,7 @@ void BIOMETRICO_Inicia()
 
 	finger.begin(57600);
 
-	TELA_Texto("biometrico inicializado");
+	TELA_Texto("biometrico inicializado", "");
 
 	if (finger.verifyPassword())
 	{

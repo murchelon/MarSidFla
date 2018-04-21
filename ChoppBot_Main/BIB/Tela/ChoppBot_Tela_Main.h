@@ -10,11 +10,11 @@ uint16_t gPosTxt_Y = 0;
 uint16_t gTxtSize = 15;
 
 
-int gTamBotao_W = 150;
-int gTamBotao_H = 150;
+int gTamBotao_W = 180;
+int gTamBotao_H = 180;
 
-int gOffset_W = 60;
-int gOffset_H = 50;
+int gOffset_W = 65;
+int gOffset_H = 140;
 
 int gPosicaoAtual_X = 0;
 
@@ -82,6 +82,8 @@ void TELA_Texto(String Texto, String Cor)
     {
       tft.setTextColor(RA8875_MAGENTA);
     }
+
+    tft.setFontScale(0);
     
     tft.setCursor(gPosTxt_X, gPosTxt_Y);
 
@@ -133,22 +135,33 @@ void TELA_LogTerm_XY()
   //tft.changeMode(TEXT);
   
 
-  // botao1:
-  sprintf(TheTexto,"BOT1: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- posY = %d", gTouch_X, gTouch_Y, gOffset_W, gTamBotao_W + gOffset_W, gOffset_H, gTamBotao_H + gOffset_H, gPosTxt_Y);  
-  TELA_Texto(TheTexto, "");
+  if (gModoOperacao == "OPERACAO")
+  {
 
-  // botao2:
-  sprintf(TheTexto,"BOT2: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- posY = %d", gTouch_X, gTouch_Y, 2 * gOffset_W + gTamBotao_W, 2 * gOffset_W + 2 * gTamBotao_W , gOffset_H, gTamBotao_H + gOffset_H, gPosTxt_Y);  
-  TELA_Texto(TheTexto, "");
+    // botao1:
+    sprintf(TheTexto,"BOT1: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- posY = %d", gTouch_X, gTouch_Y, gOffset_W, gTamBotao_W + gOffset_W, gOffset_H, gTamBotao_H + gOffset_H, gPosTxt_Y);  
+    TELA_Texto(TheTexto, "");
 
-  // botao3:
-  sprintf(TheTexto,"BOT3: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- posY = %d", gTouch_X, gTouch_Y, 3 * gOffset_W + 2 * gTamBotao_W, 3 * gOffset_W + 3 * gTamBotao_W , gOffset_H, gTamBotao_H + gOffset_H, gPosTxt_Y);  
-  TELA_Texto(TheTexto, "");
+    // botao2:
+    sprintf(TheTexto,"BOT2: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- posY = %d", gTouch_X, gTouch_Y, 2 * gOffset_W + gTamBotao_W, 2 * gOffset_W + 2 * gTamBotao_W , gOffset_H, gTamBotao_H + gOffset_H, gPosTxt_Y);  
+    TELA_Texto(TheTexto, "");
+
+    // botao3:
+    sprintf(TheTexto,"BOT3: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- posY = %d", gTouch_X, gTouch_Y, 3 * gOffset_W + 2 * gTamBotao_W, 3 * gOffset_W + 3 * gTamBotao_W , gOffset_H, gTamBotao_H + gOffset_H, gPosTxt_Y);  
+    TELA_Texto(TheTexto, "");
+
+  }
+  else
+  {
+    // Apenas X Y:
+    sprintf(TheTexto,"XY: X = %d | Y = %d", gTouch_X, gTouch_Y);  
+    TELA_Texto(TheTexto, "");
+    TELA_Texto(gModoOperacao, "VERMELHO");
+  }
 
 
-  // Apenas X Y:
-  //sprintf(TheTexto,"XY: X = %d | Y = %d", gTouch_X, gTouch_Y);  
-  //TELA_Texto(TheTexto, "");
+
+
 
   //tft.changeMode(GRAPHIC);
 
@@ -193,11 +206,11 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 
 
 
-  int OffSet_TextoBotao_W = 19;
-  int OffSet_TextoBotao_H = 20;
+  int OffSet_TextoBotao_W = gTamBotao_W / 2 - 11;
+  int OffSet_TextoBotao_H = gTamBotao_H / 2 - 27;
 
   int OffSet_TextoTitulo_W = 0;
-  int OffSet_TextoTitulo_H = 140;
+  int OffSet_TextoTitulo_H = 130;
 
   int OffSet_TextoTitulo2_H = 25;
 
@@ -269,7 +282,7 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
   {
 
     //IndexBotao--;
-    tft.setFontScale(1); 
+    
 
     gPosicaoAtual_X = gOffset_W + (IndexBotao * gTamBotao_W) + (IndexBotao * gOffset_W);
 
@@ -293,6 +306,7 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
     
 
     // Render o numero dentro do botao
+    tft.setFontScale(2); 
     tft.setTextColor(RA8875_BLACK);
     tft.setCursor (gPosicaoAtual_X + OffSet_TextoBotao_W, gOffset_H + OffSet_TextoBotao_H);
 
@@ -328,13 +342,39 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 }
 
 
-void TELA_Render_Interface_STANDBY()
+void TELA_Render_Interface_OPERACAO()
 {
   if (gTela_Hardware == "ER-TFTM070-5")
   {  
     TELA_Render_Botao(1, "Imperial IPA", "R$ 25,00 / Litro", "BRANCO");
     TELA_Render_Botao(2, "Hoocus Pocus", "R$ 19,00 / Litro", "AZUL");
     TELA_Render_Botao(3, "Duchese", "R$ 32,00 / Litro", "MAGENTA");
+
+    tft.setTextColor(RA8875_WHITE);
+    tft.setCursor (125, 30);
+    tft.setFontScale(2); 
+    tft.print ("Escolha a sua torneira:");    
+
+  }
+
+}
+
+
+
+void TELA_Render_Interface_STANDBY()
+{
+  if (gTela_Hardware == "ER-TFTM070-5")
+  {  
+
+    tft.setTextColor(RA8875_YELLOW);
+    tft.setCursor (195, 150);
+    tft.setFontScale(3); 
+    tft.print ("ChoppBot 1.0");    
+
+    tft.setTextColor(RA8875_WHITE);
+    tft.setCursor (180, 310);
+    tft.setFontScale(1); 
+    tft.print ("Toque na tela para iniciar");    
 
   }
 
@@ -343,17 +383,15 @@ void TELA_Render_Interface_STANDBY()
 
 
 
-void TELA_VerificaTouch_STANDBY()
+
+
+void TELA_VerificaTouch_OPERACAO()
 {
 
   if (gTela_Hardware == "ER-TFTM070-5")
   {  
 
-
-
-
     //tft.changeMode(GRAPHIC);
-
 
     if (tft.touchDetect())
     {
@@ -363,10 +401,7 @@ void TELA_VerificaTouch_STANDBY()
       gTouch_X = 800 - gTouch_X;
       gTouch_Y = 480 - gTouch_Y;
 
-
-
       //TELA_LogTerm_XY(); 
-
 
       //botao 1:
       if (gTouch_X >= gOffset_W && gTouch_X <= gTamBotao_W + gOffset_W)  
@@ -379,14 +414,12 @@ void TELA_VerificaTouch_STANDBY()
           {
 
             gBotao1_Apertado = true;
+
             LogTerm("BOTAO 1 APERTADO");
             TELA_Texto("BOTAO 1 APERTADO", "BRANCO");
-
-
-
+            delay(500);
 
             gBotao1_Apertado = false;
-
 
           }
 
@@ -404,11 +437,11 @@ void TELA_VerificaTouch_STANDBY()
         {
           LogTerm("BOTAO 2 APERTADO");
           TELA_Texto("BOTAO 2 APERTADO", "AZUL");
+          delay(500);
           //TELA_LogTerm_XY();        
         }
 
       }
-
 
 
 
@@ -419,7 +452,8 @@ void TELA_VerificaTouch_STANDBY()
         if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
         {
           LogTerm("BOTAO 3 APERTADO");
-          TELA_Texto("BOTAO 3 APERTADO", "MAGENTA");   
+          TELA_Texto("BOTAO 3 APERTADO", "MAGENTA");  
+          delay(500); 
              
         }
 
@@ -438,43 +472,46 @@ void TELA_VerificaTouch_STANDBY()
 
 
 
-void TELA_Render_Interface_OLD()
+
+
+void TELA_VerificaTouch_STANDBY()
 {
+
   if (gTela_Hardware == "ER-TFTM070-5")
   {  
-    tft.fillRect(80,80,150,150,RA8875_WHITE);
 
-    tft.changeMode(TEXT);
-    tft.setTextColor(RA8875_BLACK);
-    tft.setCursor (110, 120);
-    tft.setFontScale(6); 
-    tft.print (" 1 ");
+    
 
+    if (tft.touchDetect())
+    {
 
-    tft.fillRect(80+(150*1)+(80*1),80,150,150,RA8875_BLUE);
+      tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
-    tft.changeMode(TEXT);
-    tft.setTextColor(RA8875_BLACK);
-    tft.setCursor (340, 120);
-    tft.setFontScale(6); 
-    tft.print (" 2 ");
+      gTouch_X = 800 - gTouch_X;
+      gTouch_Y = 480 - gTouch_Y;
 
-    tft.fillRect(80+(150*2)+(80*2),80,150,150,RA8875_MAGENTA);
+      //TELA_LogTerm_XY(); 
 
-    tft.changeMode(TEXT);
-    tft.setTextColor(RA8875_BLACK);
-    tft.setCursor (570, 120);
-    tft.setFontScale(6); 
-    tft.print (" 3 ");
+      //tft.changeMode(GRAPHIC);
+
+      gModoOperacao = "OPERACAO";
 
 
-    //  botão cancel
+      TELA_LimpaTela();
+
+      delay(500);
+ 
 
 
-    tft.fillRect(720,450,50,450,RA8875_RED);
+      //TELA_Texto("vai para prox telaz", "MAGENTA"); 
+
+
+    }
 
   }
 
 }
+
+
 
 

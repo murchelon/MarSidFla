@@ -266,6 +266,10 @@ void Exec_LOGIN()
 // ROTINA DE OPERACAO
 void Exec_OPERACAO()
 {
+  TELA_Render_Interface_OPERACAO();
+
+
+  /*
   boolean Exec_Loop_PodeSair = false;
 
   unsigned long time_inicio;
@@ -306,6 +310,8 @@ void Exec_OPERACAO()
     Last_SegundosPassados = SegundosPassados;
 
   }
+
+  */
 
 }
 
@@ -518,7 +524,7 @@ void TestaInterrupts()
 
   if (gModoOperacao == "OPERACAO")
   {
-
+    TELA_VerificaTouch_OPERACAO();
   }
 
   if (gModoOperacao == "ADMIN")
@@ -678,10 +684,9 @@ void loop() {
 
     Exec_INICIO();
 
-    LogTerm("Modo: == StandBy ==");
+    
     gModoOperacao = "STANDBY";
-
-        
+    LogTerm("Modo: == StandBy ==");
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -716,9 +721,7 @@ void loop() {
     //gModoOperacao = 4;  // Standby
 
     Exec_OPERACAO();
-    
-    LogTerm("Modo: == StandBy ==");
-    gModoOperacao = "STANDBY";
+
 
   }
 

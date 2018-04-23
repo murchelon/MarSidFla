@@ -27,12 +27,41 @@ String gModoOperacao = "";
 const unsigned long gTimeoutOpcao = 7000;		// tempo em ms para timeout das opcoes a serem escolhidas
 
 
+//#define BOTAO1_PINO 40
+//#define BOTAO2_PINO 41
+//#define BOTAO3_PINO 42
+//#define BOTAO4_PINO 43
+
+
+// RELE ======================================================================
+
+#define gPinoRele_1 45
+#define gPinoRele_2 46
+#define gPinoRele_3 47
+
+
+
+
+
+int EstadoBotao_Rele1 = 0;
+
+volatile uint8_t lastflowpinstate;
+
+// include the SD library:
+//#include <SPI.h>
+//#include <SD.h>
+
+
+
+
+
 
 // Init global vars with their operational values
 void InicializaVars() 
 {
 
 	gModoOperacao = "INICIO";   
+	gTamBotao_H = POSICAO_PADRAO_BTN_Y;
 
 	// 1 = INICIO
 	// 2 = STANDBY

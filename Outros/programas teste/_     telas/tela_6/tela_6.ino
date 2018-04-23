@@ -101,7 +101,6 @@ uint16_t choosenColor = 0;
 
 
 void loop() 
-
 {    
 
   tft.changeMode(TEXT);

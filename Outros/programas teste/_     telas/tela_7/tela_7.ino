@@ -11,7 +11,7 @@ Tela 7 - manutenção
 
 #define RA8875_RESET 9
 
-
+ 
 RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);
 
 

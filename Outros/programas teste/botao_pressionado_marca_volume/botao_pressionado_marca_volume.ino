@@ -5,7 +5,7 @@
 #include <SPI.h>
 #include <RA8875.h>
 
-//Arduino DUE,Arduino mega2560,Arduino UNO
+
 #define RA8875_INT 4
 #define RA8875_CS 10 
 
@@ -23,11 +23,14 @@ SS:    PD_1
 */
 //#else
 
-RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);//Teensy3/arduino's
+RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);
 
 //#endif
 
 uint16_t tx, ty;
+
+int ajuste = 23;
+
 
 // botão ________________________________________
 
@@ -299,7 +302,7 @@ void loop()
   liters /= 60.0;
 
   float liters1 = pulses1;
-  liters1 /= 7.5;
+  liters1 /= ajuste;
   liters1 /= 60.0;
 
   float liters2 = pulses2;

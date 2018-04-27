@@ -12,6 +12,9 @@ teclado numerico
 
 RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);
 
+
+
+
 uint16_t tx, ty;
 uint16_t newX, newY;
 
@@ -21,19 +24,19 @@ int bot_corner = 10;
 
 int board_corner = 20;
 
+int num = ("");
+int num1 = 1;
+int num2 = 2;
+int num3 = 3;
+int num4 = 4;
+int num5 = 5;
+int num6 = 6;
+int num7 = 7;
+int num8 = 8;
+int num9 = 9;
+int num0 = 0;
 
-String stringnum;
-String stringnum1=  String(1);
-String stringnum2=  String(2);
-String stringnum3=  String(3);
-String stringnum4=  String(4);
-String stringnum5=  String(5);
-String stringnum6=  String(6);
-String stringnum7=  String(7);
-String stringnum8=  String(8);
-String stringnum9=  String(9);
-String stringnum0=  String(0);
-
+String valor;
 
 void numerico(){
 
@@ -111,17 +114,19 @@ void setup()
 
     tft.fillRect(80,80,300,60, RA8875_YELLOW);
 
-
-   stringnum = String();
+  valor = String();
   
   numerico();
   newX = 85;
+
+
+  
 }
 
 
 void loop() 
 {   
-       Serial.begin(9600);
+  
       tft.changeMode(GRAPHIC);
     
   if (tft.touchDetect()){
@@ -133,25 +138,24 @@ void loop()
            
         {
                 
-                tft.touchDetect(false);
+                
                 tft.fillRoundRect(500 + bot_offset,50 + bot_offset,bot_size,bot_size,bot_corner,RA8875_WHITE);
                 delay(200);
                 
+      
                 numerico();
-                
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+       
+                    tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("1");
-                      //tft.getCursor(newX,80);
-                      //newX = newX + 20;
-                      stringnum = ".";
-                      Serial.println(stringnum);
-                      //Serial.println(stringnum1);
-                      //Serial.println(stringnum2);
-                      //Serial.println(stringnum3);
-                      //Serial.println(stringnum4);
-                      tft.print (stringnum);
+                      tft.print ("1");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
                       //num = num && num1;
+                      valor = valor + 7;
+                      
+                      tft.setTextColor(RA8875_BLACK,RA8875_BLUE);
+                      tft.setCursor (newX, 150); 
+                      tft.print (valor);
                                     
         }
 
@@ -165,20 +169,18 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("2");
-                      //tft.getCursor(newX,80);
-                      //newX = newX + 20;
-                      stringnum = stringnum && stringnum2;
-                      tft.print (stringnum);
-                      //num = num && num2;
+                      tft.print ("2");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      num = num && num2;
                                     
         }
 
         
               if (ty >= 50 + (bot_offset * 1) && ty <= 50 + (bot_offset * 1) + (bot_size * 1) && (tx > 500+(bot_offset*2)+(bot_size*1) + bot_size && tx < 500+(bot_offset*2)+(bot_size*2) + bot_size) ) //interface area
-           
+                  
         {
                 
                 tft.touchDetect(false);
@@ -187,14 +189,12 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("3");
-                      //tft.getCursor(newX,80);
-                      //newX = newX + 20;
-                      stringnum = stringnum && stringnum3;
-                      tft.print (stringnum);
-                      //num = num && num3;
+                      tft.print ("3");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      num = num && num3;
                                     
         }
               if (ty >= 50 + (bot_offset * 2)+ (bot_size * 1) && ty <= 50 + (bot_offset * 2) + (bot_size * 2) && (tx > 500 + bot_offset && tx < 500 + bot_offset + bot_size) )
@@ -207,14 +207,12 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("4");
-                     // tft.getCursor(newX,80);
-                      //newX = newX + 20;
-                      stringnum = stringnum && stringnum4;
-                      tft.print (stringnum);
-                      //num = num && num4;
+                      tft.print ("4");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      num = num && num4;
                                     
         }
 
@@ -228,14 +226,12 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("5");
-                      //tft.getCursor(newX,80);
-                      //newX = newX + 20;
-                      stringnum = stringnum && stringnum5;
-                      tft.print (stringnum);
-                      //num = num && num5;
+                      tft.print ("5");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      num = num && num5;
                                     
         }
  if (ty >= 50 + (bot_offset * 2)+ (bot_size * 1) && ty <= 50 + (bot_offset * 2) + (bot_size * 2) && (tx > 500 + bot_offset *3 + bot_size * 2 && tx < 500 + bot_offset * 3 + bot_size * 3) )
@@ -248,14 +244,12 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("6");
-                      //tft.getCursor(newX,80);
-                      //newX = newX + 20;
-                      stringnum = stringnum && stringnum6;
-                      tft.print (stringnum);
-                      //num = num && num6;
+                      tft.print ("6");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      num = num && num6;
                                     
         }
 
@@ -271,14 +265,12 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                     // tft.print ("7");
-                     // tft.getCursor(newX,80);
-                     // newX = newX + 20;
-                      stringnum = stringnum && stringnum7;
-                      tft.print (stringnum);
-                      //num = num && num7;
+                      tft.print ("7");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      num = num && num7;
                                     
         }
 
@@ -292,14 +284,12 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("8");
-                      //tft.getCursor(newX,80);
-                      //newX = newX + 20;
-                      stringnum = stringnum && stringnum8;
-                      tft.print (stringnum);
-                      //num = num && num8;
+                      tft.print ("8");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      num = num && num8;
                                     
         }
         
@@ -313,14 +303,12 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("9");
-                      //tft.getCursor(newX,80);
-                      //newX = newX + 20;
-                      stringnum = stringnum && stringnum9;
-                      tft.print (stringnum);
-                      //num = num && num9;
+                      tft.print ("9");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      num = num && num9;
                                     
         }
 
@@ -336,16 +324,15 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("OK");
-                      //tft.getCursor(newX,80);
-                      //newX = newX + 20;
+                      tft.print ("OK");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
 
                       tft.setTextColor(RA8875_YELLOW);
                       tft.setCursor (85, 150); 
-                      tft.print (stringnum);
-                      //tft.print (num);
+                      tft.print (num);
 
         }
 
@@ -359,14 +346,12 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
+                      tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
-                      //tft.print ("0");
-                      //tft.getCursor(newX,80);
-                      //newX = newX + 20;
-                      stringnum = stringnum && stringnum0;
-                      tft.print (stringnum);
-                      //num = num && num0;
+                      tft.print ("0");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
+                      num = num && num0;
                                     
         }
         
@@ -380,22 +365,19 @@ void loop()
                 
                 numerico();
                 
-                      tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
-                      //newX = newX - 20;
-                      tft.setCursor (newX, 80);
-                      //tft.print ("BK");
-                      //tft.getCursor(newX,80);
-                      //tft.print ("0");
-                      
-                      stringnum.remove((stringnum.length ()-1));
-                      tft.print (stringnum);
+                      tft.setTextColor(RA8875_BLACK);
+                      tft.setCursor (newX, 80); 
+                      tft.print ("BK");
+                      tft.getCursor(newX,80);
+                      newX = newX + 20;
 
-                      //stringnum = stringnum && stringnum0;
-                      //stringnum.length ();
-                      //tft.setTextColor(RA8875_YELLOW);
+
+                      tft.setTextColor(RA8875_YELLOW);
                       tft.setCursor (85, 180); 
-                      tft.print (" deucerto ?");
+                      tft.print (" nao sei fazer back space");
 
+                               
+        
         
         }
   }

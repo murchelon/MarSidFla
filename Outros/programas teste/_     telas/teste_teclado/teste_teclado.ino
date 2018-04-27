@@ -17,9 +17,9 @@ uint16_t newX, newY;
 
 int bot_size = 60;
 int bot_offset = 20;
-int bot_corner = 2;
+int bot_corner = 10;
 
-int board_corner = 5;
+int board_corner = 20;
 
 int num = ("");
 int num1 = 1;
@@ -32,6 +32,8 @@ int num7 = 7;
 int num8 = 8;
 int num9 = 9;
 int num0 = 0;
+
+String valor;
 
 void numerico(){
 
@@ -81,11 +83,11 @@ tft.fillRoundRect(500, 50, 260,340,board_corner,RA8875_WHITE);
   tft.setCursor(500+(bot_offset*3)+(bot_size*2)+20,50 + (bot_offset * 3)+(bot_size*2)); 
   tft.print ("9");
 
-  tft.setCursor(500+(bot_offset*1)+(bot_size*0)+20-5,50 + (bot_offset * 4)+(bot_size*3)); 
+  tft.setCursor(500+(bot_offset*1)+(bot_size*0)+20-15,50 + (bot_offset * 4)+(bot_size*3)); 
   tft.print ("OK");
   tft.setCursor(500+(bot_offset*2)+(bot_size*1)+20,50 + (bot_offset * 4)+(bot_size*3)); 
   tft.print ("0");
-  tft.setCursor(500+(bot_offset*3)+(bot_size*2)+20-5,50 + (bot_offset * 4)+(bot_size*3)); 
+  tft.setCursor(500+(bot_offset*3)+(bot_size*2)+20-15,50 + (bot_offset * 4)+(bot_size*3)); 
   tft.print ("BK");
 
   
@@ -108,6 +110,8 @@ void setup()
     tft.print ("DIGITE O VALOR:");
 
     tft.fillRect(80,80,300,60, RA8875_YELLOW);
+
+  valor = String();
   
   numerico();
   newX = 85;
@@ -131,15 +135,20 @@ void loop()
                 tft.touchDetect(false);
                 tft.fillRoundRect(500 + bot_offset,50 + bot_offset,bot_size,bot_size,bot_corner,RA8875_WHITE);
                 delay(200);
-                
+      
                 numerico();
-                
-                      tft.setTextColor(RA8875_BLACK);
+       
+                    tft.setTextColor(RA8875_BLACK);
                       tft.setCursor (newX, 80); 
                       tft.print ("1");
                       tft.getCursor(newX,80);
                       newX = newX + 20;
-                      num = num && num1;
+                      //num = num && num1;
+                      valor = valor + 7;
+                      
+                      tft.setTextColor(RA8875_BLACK,RA8875_BLUE);
+                      tft.setCursor (newX, 150); 
+                      tft.print (valor);
                                     
         }
 
@@ -164,7 +173,7 @@ void loop()
 
         
               if (ty >= 50 + (bot_offset * 1) && ty <= 50 + (bot_offset * 1) + (bot_size * 1) && (tx > 500+(bot_offset*2)+(bot_size*1) + bot_size && tx < 500+(bot_offset*2)+(bot_size*2) + bot_size) ) //interface area
-           
+                  
         {
                 
                 tft.touchDetect(false);

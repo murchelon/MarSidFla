@@ -1,0 +1,5 @@
+repo: ec2b5129231fab4205b4a7da7a168c83a1931c1a
+node: ec2b5129231fab4205b4a7da7a168c83a1931c1a
+branch: default
+latesttag: null
+latesttagdistance: 1

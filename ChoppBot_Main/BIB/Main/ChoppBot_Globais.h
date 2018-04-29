@@ -61,7 +61,7 @@ void InicializaVars()
 {
 
 	gModoOperacao = "INICIO";   
-	gTamBotao_H = POSICAO_PADRAO_BTN_Y;
+	
 
 	// 1 = INICIO
 	// 2 = STANDBY

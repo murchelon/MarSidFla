@@ -225,7 +225,7 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
     int OffSet_TextoBotao_H = gTamBotao_H / 2 - 27;
 
     int OffSet_TextoTitulo_W = 0;
-    int OffSet_TextoTitulo_H = 110;
+    int OffSet_TextoTitulo_H = 140;
 
     int OffSet_TextoTitulo2_H = 25;
 
@@ -281,8 +281,12 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
     //tft.changeMode(TEXT);
     tft.setTextColor(RA8875_WHITE);
 
-    tft.setCursor (gPosicaoAtual_X + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H);    
-    tft.print (Texto);
+    // Render Titulo
+    if (Texto != "")
+    {
+      tft.setCursor (gPosicaoAtual_X + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H);    
+      tft.print (Texto);
+    }
 
     // Render Titulo2
     if (Texto2 != "")
@@ -349,7 +353,7 @@ void TELA_Render_Interface_LOGIN()
 
     TELA_Render_Botao(1, "LEITOR BIOMETRICO", "", "BRANCO");
     TELA_Render_Botao(2, "LEITOR DE CARTAO", "", "AZUL");
-    TELA_Render_Botao(3, "Tela de Operacao", "", "MAGENTA");
+    TELA_Render_Botao(3, "ABRE TECLADO", "", "MAGENTA");
 
  
 
@@ -380,6 +384,8 @@ void TELA_Render_Interface_STANDBY()
 
 
 
+//Este include tem de ficar neste local devido a ordem das chamadas das funcoes. Senao, da erro
+#include "../Teclado/ChoppBot_Teclado.h" 
 
 
 void TELA_VerificaTouch_STANDBY()
@@ -393,11 +399,17 @@ void TELA_VerificaTouch_STANDBY()
 
       gModoOperacao = "LOGIN";
       //gModoOperacao = "OPERACAO";
+      //gModoOperacao = "DEBUG";
+
 
 
       TELA_LimpaTela();
 
       delay(500);
+
+
+
+      
 
     }
 
@@ -418,6 +430,8 @@ void TELA_VerificaTouch_LOGIN()
 
     if (tft.touchDetect())
     {
+      //TELA_LogTerm_XY();
+      //LogTerm("TELA_VerificaTouch_LOGIN");
 
       tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
@@ -466,9 +480,9 @@ void TELA_VerificaTouch_LOGIN()
         if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
         {
 
-          gModoOperacao = "OPERACAO"; 
+          gModoOperacao = "DEBUG"; 
 
-          TELA_Texto("Abre a tela de OPERACAO", "MAGENTA");
+          TELA_Texto("Abrindo TECLADO", "MAGENTA");
 
           TELA_LimpaTela();
 
@@ -494,11 +508,13 @@ void TELA_VerificaTouch_OPERACAO()
   if (gTela_Hardware == "ER-TFTM070-5")
   {  
 
+    
+
     //tft.changeMode(GRAPHIC);
 
     if (tft.touchDetect())
     {
-
+      
       tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
       gTouch_X = 800 - gTouch_X;
@@ -561,6 +577,24 @@ void TELA_VerificaTouch_OPERACAO()
   }
 
 }
+
+
+
+
+
+
+void TELA_VerificaTouch_DEBUG()
+{
+
+  if (gTela_Hardware == "ER-TFTM070-5")
+  {  
+
+    TELA_VerificaTouch_TECLADO();
+  
+  }
+
+}
+
 
 
 

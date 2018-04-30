@@ -16,6 +16,7 @@
 
 
 
+
 #include "BIB/Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
 #include "BIB/Tela/ChoppBot_Tela_Main.h" 
 
@@ -49,7 +50,7 @@ void InitApp()
   InicializaVars();
 
 
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   while (!Serial) 
   {
@@ -285,43 +286,7 @@ void Exec_ADMIN()
 // ROTINA DE DEBUG
 void Exec_DEBUG()
 {
-  boolean Exec_Loop_PodeSair = false;
-
-  unsigned long time_inicio;
-  unsigned long time_atual;
-  unsigned long time_tempo_passado;
-
-  int SegundosPassados;
-  int Last_SegundosPassados;
-  
-  time_inicio = millis();
-
-  while (Exec_Loop_PodeSair == false)
-  {
-
-    time_atual = millis();
-    time_tempo_passado = time_atual - time_inicio;
-
-    SegundosPassados = floor(time_tempo_passado / 1000);
-    
-    if (SegundosPassados != Last_SegundosPassados)
-    {
-      LogTerm(SegundosPassados);
-    }
-    
-    
-    
-    if (time_tempo_passado >= gTimeoutOpcao)
-    {
-      Exec_Loop_PodeSair = true;
-    }
-
-    Last_SegundosPassados = SegundosPassados;
-
-
-    //delay(500);
-
-  }
+  TELA_Render_Interface_TECLADO(500, 56);   // posicao x e y
 }
 
 
@@ -442,7 +407,7 @@ void TestaInterrupts()
 
   if (gModoOperacao == "DEBUG")
   {
-
+    TELA_VerificaTouch_DEBUG();
   }
 
   if (gModoOperacao == "TESTE")
@@ -552,12 +517,9 @@ void loop() {
 
   if (gModoOperacao == "DEBUG")
   {
-    LogTerm("Modo: DEBUG");
+    //LogTerm("Modo: DEBUG -- teclado");
 
     Exec_DEBUG();
-    
-    LogTerm("Modo: == StandBy ==");
-    gModoOperacao = "STANDBY";
       
   }
 

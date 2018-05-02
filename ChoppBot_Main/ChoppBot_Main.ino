@@ -50,7 +50,7 @@ void InitApp()
   InicializaVars();
 
 
-  Serial.begin(115200);
+  Serial.begin(9600);
   
   while (!Serial) 
   {
@@ -242,6 +242,8 @@ void Exec_ADMIN()
 
   time_inicio = millis();
 
+  TELA_Texto("MODO ADMIN: Saindo em "+ String(gTimeoutOpcao / 1000) + " segundos...", "BRANCO");
+
   while (Exec_Loop_PodeSair == false)
   {
 
@@ -251,9 +253,12 @@ void Exec_ADMIN()
 
     SegundosPassados = floor(time_tempo_passado / 1000);
     
+    
+
     if (SegundosPassados != Last_SegundosPassados)
     {
       LogTerm(SegundosPassados);
+      TELA_Texto(String(SegundosPassados), "AMARELO");
     }
     
     
@@ -267,6 +272,8 @@ void Exec_ADMIN()
     
     //delay(500);
   }
+
+  TELA_LimpaTela();
 
 }
 
@@ -287,6 +294,7 @@ void Exec_ADMIN()
 void Exec_DEBUG()
 {
   TELA_Render_Interface_TECLADO(500, 56);   // posicao x e y
+  TELA_Render_ValorTec_TECLADO();
 }
 
 
@@ -387,27 +395,27 @@ void TestaInterrupts()
 
   if (gModoOperacao == "STANDBY")
   {
-    TELA_VerificaTouch_STANDBY();
+      TELA_VerificaTouch_STANDBY();
   }
   
   if (gModoOperacao == "LOGIN")
   {
-    TELA_VerificaTouch_LOGIN();
+      TELA_VerificaTouch_LOGIN();
   }
   
   if (gModoOperacao == "OPERACAO")
   {
-    TELA_VerificaTouch_OPERACAO();
+      TELA_VerificaTouch_OPERACAO();
   }
 
   if (gModoOperacao == "ADMIN")
   {
-
+      TELA_VerificaTouch_ADMIN();
   }
 
   if (gModoOperacao == "DEBUG")
   {
-    TELA_VerificaTouch_DEBUG();
+      TELA_VerificaTouch_DEBUG();
   }
 
   if (gModoOperacao == "TESTE")

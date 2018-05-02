@@ -1,29 +1,9 @@
 
 
-bool gTeclado_Renderizado = false;
 
 
 
-const int TECLADO_TOTAL_BOTOES = 12;
-
-
-
-
-String aTeclado_PosBotoes[TECLADO_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
-												"X02,TAM,Y02,TAM",
-												"X03,TAM,Y03,TAM",
-												"X04,TAM,Y04,TAM",
-												"X05,TAM,Y05,TAM",
-												"X06,TAM,Y06,TAM",
-												"X07,TAM,Y07,TAM",
-												"X08,TAM,Y08,TAM",
-												"X09,TAM,Y09,TAM",
-												"X10,TAM,Y10,TAM",
-												"X11,TAM,Y11,TAM",
-												"X12,TAM,Y12,TAM"
-												};
-
-
+int ContaClickMurch = 0;
 
 
 void TELA_Render_Interface_TECLADO(int Param_Inicio_X, int Param_Inicio_Y)
@@ -94,6 +74,13 @@ void TELA_Render_Interface_TECLADO(int Param_Inicio_X, int Param_Inicio_Y)
 		int btnVoltar_PosAtual_Y = 0;
 
 
+		// vars auxiliares para armazenar as posicoes dos botoes senhdo renderizados
+		String temp_pos_X= "";
+		String temp_pos_Y = "";
+		String temp_size_W = "";
+		String temp_size_H = "";
+
+
 	    // calcula o tamanho do fundo baseando-se nos botes
 	    Size_Fundo_W = (3 * Size_Botao_W) + (2 * Botoes_Offset_EntreBot_W) + (2 * Botoes_Offset_Inicio_W);	
 		Size_Fundo_H = (4 * Size_Botao_H) + (3 * Botoes_Offset_EntreBot_H) + (2 * Botoes_Offset_Inicio_H);	
@@ -107,7 +94,6 @@ void TELA_Render_Interface_TECLADO(int Param_Inicio_X, int Param_Inicio_Y)
 
 	    Botao_PosAtual_X = Inicio_X;
 	    Botao_PosAtual_Y = Inicio_Y;
-
 
 
 
@@ -148,42 +134,18 @@ void TELA_Render_Interface_TECLADO(int Param_Inicio_X, int Param_Inicio_Y)
 				}
 
 
+				String temp_pos_X = FormatComZerosAesq(Botao_PosAtual_X);
+				String temp_pos_Y = FormatComZerosAesq(Botao_PosAtual_Y);
+				String temp_size_W = FormatComZerosAesq(Size_Botao_W);
+				String temp_size_H = FormatComZerosAesq(Size_Botao_H);
 
-				//char strTemp[16]; 
 
-				//strTemp = "";
+				// armazena as posicoes dos botoes para uso no touch
+				//aTeclado_PosBotoes[ContaTxtBotao - 1] = String("Pos: ") + ContaTxtBotao + String(" ") + temp_pos_X + String(",") + temp_size_W + String(",") + temp_pos_Y + String(",") + temp_size_H;
+				aTeclado_PosBotoes[ContaTxtBotao - 1] = temp_pos_X + String(",") + temp_size_W + String(",") + temp_pos_Y + String(",") + temp_size_H;
 
-				aTeclado_PosBotoes[0] = "cwcwwecwec" + Botao_PosAtual_X; 
 
-		    	if (ContaTxtBotao <= 9)
-		    	{
-			    	//sprintf(strTemp, "00%d,TAM,Y01,TAM", ContaTxtBotao); 
-			    	//aTeclado_PosBotoes[0] = Botao_PosAtual_X + "," + Size_Botao_W + "," + Botao_PosAtual_Y + "," + Size_Botao_H;
-			    	//aTeclado_PosBotoes[0] = "cwcwwecwec"; 
-		    	}
 
-		    	if ((ContaTxtBotao >= 10) && (ContaTxtBotao <= 99))
-		    	{
-			    	//sprintf(strTemp, "0%d,TAM,Y01,TAM", ContaTxtBotao);
-			    	//aTeclado_PosBotoes[0] = Botao_PosAtual_X + "," + Size_Botao_W + "," + Botao_PosAtual_Y + "," + Size_Botao_H;  	    		
-		    	}
-
-		    	if ((ContaTxtBotao >= 100) && (ContaTxtBotao <= 999))
-		    	{
-		    		//sprintf(strTemp, "%d,TAM,Y01,TAM", ContaTxtBotao); 
-		    		//aTeclado_PosBotoes[0] = Botao_PosAtual_X + "," + Size_Botao_W + "," + Botao_PosAtual_Y + "," + Size_Botao_H; 
-		    		//aTeclado_PosBotoes[0] = Botao_PosAtual_X + ","; 
-
-		    	}
-
-		    	if (ContaTxtBotao >= 1000)
-		    	{
-		    		//sprintf(strTemp, "999,TAM,Y01,TAM", ContaTxtBotao); 
-		    		//aTeclado_PosBotoes[0] = Botao_PosAtual_X + "," + Size_Botao_W + "," + Botao_PosAtual_Y + "," + Size_Botao_H;
-		    	}
-
-				//"X12,TAM,Y12,TAM"	
-		    	
 		    }
 		}
 	    
@@ -214,7 +176,6 @@ void TELA_Render_Interface_TECLADO(int Param_Inicio_X, int Param_Inicio_Y)
 			    Botao_PosAtual_X = Botao_PosAtual_X + (ContaBotao * Size_Botao_W) + (ContaBotao * Botoes_Offset_EntreBot_W);
 			    Botao_PosAtual_Y = Botao_PosAtual_Y + (ContaLinha * Size_Botao_H) + (ContaLinha * Botoes_Offset_EntreBot_W);
 			       	
-		    	//tft.fillRoundRect(Botao_PosAtual_X, BBotao_PosAtual_Yotao_PosAtual_Y, Size_Botao_W, Size_Botao_H, 10, RA8875_BLUE);
 
 				
 			    ContaTxtBotao++;
@@ -262,17 +223,27 @@ void TELA_Render_Interface_TECLADO(int Param_Inicio_X, int Param_Inicio_Y)
 	    LabelNum_PosAtual_X = Inicio_X - 430;
 		LabelNum_PosAtual_Y = Inicio_Y + 75;
 
-	    btnVoltar_PosAtual_X = Inicio_X - (430 / 2) - (150 / 2) - 20;
-		btnVoltar_PosAtual_Y = Inicio_Y + Size_Fundo_H - 60;
-
 		tft.fillRoundRect(LabelNum_PosAtual_X, LabelNum_PosAtual_Y, Size_LabelNum_W, Size_LabelNum_H, 5, RA8875_YELLOW);
 
+		// adiciona posicoes do labelnum para touch
+		aTeclado_PosBotoes[12] = LabelNum_PosAtual_X + String(",") + Size_LabelNum_W + String(",") + LabelNum_PosAtual_Y + String(",") + Size_LabelNum_H;
+
+
 		// Botao Voltar
-		tft.fillRoundRect(btnVoltar_PosAtual_X, btnVoltar_PosAtual_Y, 150, 60, 5, RA8875_BLUE);
+
+	    btnVoltar_PosAtual_X = Inicio_X - (430 / 2) - (150 / 2) - 32;
+		btnVoltar_PosAtual_Y = Inicio_Y + Size_Fundo_H - 85;
+
+		tft.fillRoundRect(btnVoltar_PosAtual_X, btnVoltar_PosAtual_Y, 170, 60, 5, RA8875_BLUE);
+
 	    tft.setTextColor(RA8875_WHITE);
 	    tft.setFontScale(1); 
-	    tft.setCursor (btnVoltar_PosAtual_X + (60 / 2) - 2, btnVoltar_PosAtual_Y + 13); 
-	    tft.print ("Voltar");	
+	    tft.setCursor (btnVoltar_PosAtual_X + (60 / 2) - 18, btnVoltar_PosAtual_Y + 11); 
+	    tft.print ("<< Voltar");
+
+		// adiciona posicoes do voltar para touch
+		aTeclado_PosBotoes[13] = btnVoltar_PosAtual_X + String(",170,") + btnVoltar_PosAtual_Y + String(",60");
+
   	}
 
 
@@ -282,30 +253,43 @@ void TELA_Render_Interface_TECLADO(int Param_Inicio_X, int Param_Inicio_Y)
 }
 
 
-    
- 
-        
-String getValue(String data, char separator, int index)
+void TELA_Render_ValorTec_TECLADO()
 {
-    int found = 0;
-    int strIndex[] = { 0, -1 };
-    int maxIndex = data.length() - 1;
+	if (gTela_Hardware == "ER-TFTM070-5")
+	{  
 
-    for (int i = 0; i <= maxIndex && found <= index; i++) {
-        if (data.charAt(i) == separator || i == maxIndex) {
-            found++;
-            strIndex[0] = strIndex[1] + 1;
-            strIndex[1] = (i == maxIndex) ? i+1 : i;
-        }
-    }
-    return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+		//gTeclado_ValAtual = "123456789012345";
+
+		// posicoes do box labelnum
+		//String temp_pos_X_box = getValue(aTeclado_PosBotoes[13], ',', 0);
+		//String temp_size_W_box = getValue(aTeclado_PosBotoes[13], ',', 1);
+		//String temp_pos_Y_box = getValue(aTeclado_PosBotoes[13], ',', 2);
+		//String temp_size_H_box = getValue(aTeclado_PosBotoes[13], ',', 3);
+
+		//tft.fillRoundRect(temp_pos_X_box.toInt() , temp_pos_Y_box.toInt(), temp_size_W_box.toInt(), temp_size_H_box.toInt(), 5, RA8875_YELLOW);
+
+
+
+		String temp_pos_X = getValue(aTeclado_PosBotoes[12], ',', 0);
+		String temp_size_W = getValue(aTeclado_PosBotoes[12], ',', 1);
+		String temp_pos_Y = getValue(aTeclado_PosBotoes[12], ',', 2);
+		String temp_size_H = getValue(aTeclado_PosBotoes[12], ',', 3);
+
+
+
+
+	    tft.setTextColor(RA8875_BLACK, RA8875_YELLOW);
+	    tft.setFontScale(2); 
+	    tft.setCursor (temp_pos_X.toInt() + 3, temp_pos_Y.toInt() + 2); 
+	    tft.print (gTeclado_ValAtual);	
+
+
+
+
+	  	
+  	}	
 }
 
-
-String posX_Inicio = "";
-String posX_Fim = "";
-String posY_Inicio = "";
-String posY_Fim = "";
 
 
 void TELA_VerificaTouch_TECLADO()
@@ -317,35 +301,201 @@ void TELA_VerificaTouch_TECLADO()
     if (tft.touchDetect())
     {
 
-		
-
 		tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
 		gTouch_X = 800 - gTouch_X;
 		gTouch_Y = 480 - gTouch_Y;
+		
+
+
 
 		//TELA_LogTerm_XY(); 
 
-		for(int x = 0 ; x <= TECLADO_TOTAL_BOTOES - 1 ; x++)
+		for(int x = 0 ; x <= ctTECLADO_TOTAL_BOTOES - 1 ; x++)
 		{
+			String temp_pos_X = getValue(aTeclado_PosBotoes[x], ',', 0);
+			String temp_size_W = getValue(aTeclado_PosBotoes[x], ',', 1);
+			String temp_pos_Y = getValue(aTeclado_PosBotoes[x], ',', 2);
+			String temp_size_H= getValue(aTeclado_PosBotoes[x], ',', 3);
 
 
 
-			//TELA_Texto(aTeclado_PosBotoes[x], "BRANCO");
-			//LogTerm(aTeclado_PosBotoes[x]);
+			if (temp_size_H != "TAM")
+			{
 
-			String posX_Inicio = getValue(aTeclado_PosBotoes[x], ',', 0);
-			String posX_Fim = getValue(aTeclado_PosBotoes[x], ',', 1);
-			String posY_Inicio = getValue(aTeclado_PosBotoes[x], ',', 2);
-			String posY_Fim = getValue(aTeclado_PosBotoes[x], ',', 3);
 
-			//char TheTexto[100]; 
+				if ((gTouch_X >= temp_pos_X.toInt()) && (gTouch_X <= temp_pos_X.toInt() + temp_size_W.toInt()))  
+				{
+
+					if ((gTouch_Y >= temp_pos_Y.toInt()) && (gTouch_Y <= temp_pos_Y.toInt() + temp_size_H.toInt())) 
+					{
+
+
+
+						// Esquema de DEBounce ---- inicio
+
+						gBounce_ContaClick++;
+
+
+						if (gBounce_ContaClick == 1)
+						{
+							// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
+
+							//debug:
+							//TELA_Texto(String(x + 1), "BRANCO");
+							LogTerm(x + 1);
+							//----
+
+
+							switch (x) 
+							{
+								case 9:			// tecla << backspace:
+
+									if (gTeclado_ValAtual.length() >= 0)
+									{
+										gTeclado_ValAtual = gTeclado_ValAtual.substring(0, gTeclado_ValAtual.length() - 1);
+
+
+										String temp_pos_X_limpa = getValue(aTeclado_PosBotoes[12], ',', 0);
+										String temp_size_W_limpa = getValue(aTeclado_PosBotoes[12], ',', 1);
+										String temp_pos_Y_limpa = getValue(aTeclado_PosBotoes[12], ',', 2);
+										String temp_size_H_limpa = getValue(aTeclado_PosBotoes[12], ',', 3);
+
+
+									    tft.setTextColor(RA8875_BLACK, RA8875_YELLOW);
+									    tft.setFontScale(2); 
+									    tft.setCursor (temp_pos_X_limpa.toInt() + 3, temp_pos_Y_limpa.toInt() + 2); 
+
+									    tft.print ("               ");
+
+									    tft.setCursor (temp_pos_X_limpa.toInt() + 3, temp_pos_Y_limpa.toInt() + 2);
+										
+
+									}
+
+									break;
+
+
+								case 10:		// tecla 0 (zero)
+
+									if (gTeclado_ValAtual.length() <= 14)
+									{
+										gTeclado_ValAtual = gTeclado_ValAtual + String("0");
+									}
+
+									break;
+
+
+								case 11:		// tecla OK:
+
+								    tft.setTextColor(RA8875_RED);
+								    tft.setFontScale(2); 
+								    tft.setCursor (70, 210); 
+								    tft.print ("Obrigado !");	
+
+								    // debug remover hahahaha ----
+
+								    if (ContaClickMurch >= 6)
+								    {
+								    	TELA_Texto("Assim vou beber de graca para o resto da vida!!!!", "VERDE");
+								    }
+								    else
+								    {
+								    	TELA_Texto("Valeu ! Credito feito para a conta do Murch na Exp Cervej!", "VERMELHO");
+								    }
+								    
+								    ContaClickMurch++;
+
+								    // ---------------------
+									break;
+
+
+								case 12:		// labelnum - local onde exibe os numeros:
+
+									break;
+
+
+								case 13:		// botao voltar:
+
+									TELA_LimpaTela();
+
+									gTeclado_Renderizado = false;
+									gTeclado_ValAtual = "";
+
+									ContaClickMurch = 0;
+
+									gModoOperacao = "LOGIN";
+									//gModoOperacao = "INICIO";
+									//gModoOperacao = "LOGIN";
+									//gModoOperacao = "OPERACAO";
+									//gModoOperacao = "DEBUG";
+
+									
+									delay(700);
+
+									break;
+
+								default:
+
+									if (gTeclado_ValAtual.length() <= 14)
+									{
+										gTeclado_ValAtual = gTeclado_ValAtual + String(x + 1);
+									}
+
+							}
+
+
+
+
+
+							
+							TELA_Render_ValorTec_TECLADO();
+
+							// -----------------------------------
+
+							gBounce_time_inicio = millis();
+						}
+
+
+						gBounce_time_atual = millis();
+						gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+
+						gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+						LogTerm(gBounce_time_tempo_passado);
+
+						if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+						{
+							//LogTerm(time_tempo_passado);
+						}
+
+
+
+						if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+						{
+
+							gBounce_ContaClick = 0;		
+
+						}
+
+						gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+						// Esquema de DEBounce ---- FIM
+
+
+
+
+					}
+
+				}
+
+			}	
+
+				
 			
-			//sprintf(TheTexto, "aTeclado_PosBotoes[%d] = %c", x, aTeclado_PosBotoes[x]);
-
-			LogTerm(aTeclado_PosBotoes[x]);
-
 		}
+
+
 
 
     }

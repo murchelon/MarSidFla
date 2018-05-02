@@ -30,9 +30,9 @@ int gTotalBotoes = 0;
 uint16_t gTouch_X, gTouch_Y;
 
 
-bool gBotao1_Apertado = false;
-bool gBotao2_Apertado = false;
-bool gBotao3_Apertado = false;
+//bool gBotao1_Apertado = false;
+//bool gBotao2_Apertado = false;
+//bool gBotao3_Apertado = false;
 
 
 // var com a posicao Y padrao para desenhar botoes
@@ -115,6 +115,13 @@ void TELA_Texto(String Texto, String Cor)
     {
       TELA_LimpaTela();
       gPosTxt_Y = 0;
+
+
+      if (gModoOperacao == 'DEBUG')
+      {
+        gTeclado_Renderizado = false;
+      }
+
 
     }
 
@@ -355,7 +362,8 @@ void TELA_Render_Interface_LOGIN()
     TELA_Render_Botao(2, "LEITOR DE CARTAO", "", "AZUL");
     TELA_Render_Botao(3, "ABRE TECLADO", "", "MAGENTA");
 
- 
+    // Area para chamar admin
+    //tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
 
   }
 
@@ -492,11 +500,90 @@ void TELA_VerificaTouch_LOGIN()
       }
 
 
+      //botao ADMIN:
+      if (gTouch_X >= 700 && gTouch_X <= 700 + 100)  
+      {
+
+        if (gTouch_Y >= 0 && gTouch_Y <= 0 + 100) 
+        {
+
+          gModoOperacao = "ADMIN"; 
+
+          TELA_Texto("Abrindo ADMIN", "MAGENTA");
+
+          TELA_LimpaTela();
+
+          delay(500);          
+        }
+
+      }
+
+
+        
+
+
     }
 
   }
 
 }
+
+
+
+
+
+
+
+
+
+void TELA_VerificaTouch_ADMIN()
+{
+
+  if (gTela_Hardware == "ER-TFTM070-5")
+  {  
+
+    if (tft.touchDetect())
+    {
+
+
+      //TELA_LogTerm_XY();
+      //LogTerm("TELA_VerificaTouch_ADMIN");
+
+      tft.touchReadPixel(&gTouch_X, &gTouch_Y);
+
+      gTouch_X = 800 - gTouch_X;
+      gTouch_Y = 480 - gTouch_Y;
+
+
+
+      //botao 1:
+      if (gTouch_X >= gOffset_W && gTouch_X <= gTamBotao_W + gOffset_W)  
+      {
+
+        if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
+        {
+
+
+
+
+        }
+
+      }
+
+
+        
+
+
+    }
+
+  }
+
+}
+
+
+
+
+
 
 
 

@@ -10,20 +10,6 @@
 
 
 
-// Ativa/desativa o led de debug (led imbutido no arduino)
-void Led_Light(boolean Valor) 
-{
-	if (Valor == true)
-	{
-		digitalWrite(LED_BUILTIN, HIGH);    
-	}
-	else
-	{
-		digitalWrite(LED_BUILTIN, LOW); 
-	}
-  
-}
-
 
 // Loga uma informacao no terminal
 void LogTerm (String Texto)
@@ -60,6 +46,61 @@ void LogTerm (double Texto)
 	serialEventRun();
 }
 
+
+
+
+
+
+
+// Ativa/desativa o led de debug (led imbutido no arduino)
+void Led_Light(boolean Valor) 
+{
+	if (Valor == true)
+	{
+		digitalWrite(LED_BUILTIN, HIGH);    
+	}
+	else
+	{
+		digitalWrite(LED_BUILTIN, LOW); 
+	}
+  
+}
+
+
+
+// verifica se o LedON deve estar ativo ou nao . Led do arduino que indica o correto funcionamento do programa
+void ExecLedON_Beat() 
+{
+
+	gLedON_time_atual = millis();
+
+	gLedON_time_tempo_passado = gLedON_time_atual - gLedON_time_inicio;
+
+	gLedON_SegundosPassados = floor(gLedON_time_tempo_passado / 1000);
+
+	//LogTerm(gLedON_SegundosPassados);
+
+	if (gLedON_Last_SegundosPassados != gLedON_SegundosPassados)
+	{
+		//LogTerm(gLedON_time_tempo_passado);
+	}
+
+
+	if (gLedON_time_tempo_passado >= ctLED_ON_TEMPO)
+	{
+
+		gLedON_time_inicio = millis();
+
+		Led_Light(!gLedON_EstadoAtual);
+
+		gLedON_EstadoAtual = !gLedON_EstadoAtual;
+
+		//LogTerm(gLedON_EstadoAtual);
+	}
+
+	gLedON_Last_SegundosPassados = gLedON_SegundosPassados;
+  
+}
 
 
 

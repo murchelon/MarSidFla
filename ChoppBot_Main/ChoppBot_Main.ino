@@ -47,54 +47,57 @@
 void InitApp()
 {
 
-  InicializaVars();
+    Serial.begin(9600);
+
+    while (!Serial) 
+    {
+        ; // wait for serial port to connect. Needed for native USB port only
+    } 
 
 
-  Serial.begin(9600);
-  
-  while (!Serial) 
-  {
-    ; // wait for serial port to connect. Needed for native USB port only
-  } 
-
-  pinMode(LED_BUILTIN, OUTPUT);
-
-  //pinMode(BOTAO1_PINO, INPUT);
-
-  //pinMode(BOTAO2_PINO, INPUT);
-  
-  //pinMode(BOTAO3_PINO, INPUT);
-  
-  //pinMode(BOTAO4_PINO, INPUT);
-  
-  
-  //define reles como output
-  //pinMode(gPinoRele_1, OUTPUT);
-  //pinMode(gPinoRele_2, OUTPUT);
-  //pinMode(gPinoRele_3, OUTPUT);
-
-
-  //define reles como desligados
-  //Estado inicial dos reles - desligados
-  digitalWrite(gPinoRele_1, HIGH);
-  digitalWrite(gPinoRele_2, HIGH);
-  digitalWrite(gPinoRele_3, HIGH);  
-  
-  Led_Light(false);
-
-
-  TELA_IniciaTela();
-
-  
-  
-
-
-  //BIOMETRICO_Inicia();
-  
+    InicializaVars();
 
 
 
-  // todo: inicializa hardware, fecha valvulas, etc
+
+    pinMode(LED_BUILTIN, OUTPUT);
+
+    //pinMode(BOTAO1_PINO, INPUT);
+
+    //pinMode(BOTAO2_PINO, INPUT);
+
+    //pinMode(BOTAO3_PINO, INPUT);
+
+    //pinMode(BOTAO4_PINO, INPUT);
+
+
+    //define reles como output
+    //pinMode(gPinoRele_1, OUTPUT);
+    //pinMode(gPinoRele_2, OUTPUT);
+    //pinMode(gPinoRele_3, OUTPUT);
+
+
+    //define reles como desligados
+    //Estado inicial dos reles - desligados
+    //digitalWrite(gPinoRele_1, HIGH);
+    //digitalWrite(gPinoRele_2, HIGH);
+    //digitalWrite(gPinoRele_3, HIGH);  
+
+    Led_Light(false);
+
+
+    TELA_IniciaTela();
+
+
+
+
+
+    //BIOMETRICO_Inicia();
+
+
+
+
+    // todo: inicializa hardware, fecha valvulas, etc
 }
 
 
@@ -112,7 +115,7 @@ void Exec_INICIO()
 {
 
     //Led_Light(true);
-    
+
     //SD_Init();
 
     //ShowExample_DB();
@@ -452,100 +455,108 @@ void setup() {
 
 
 // INTERNA ARDUINO: LOOP ETERNO
-void loop() {
+void loop() 
+{
 
-  delay(50);
+    //Led_Light(false);
 
-  TestaInterrupts();
+    delay(50);
 
+    ExecLedON_Beat();
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Led_Light(true);
+    //LogTerm("estou no loop");
 
-  if (gModoOperacao == "INICIO")
-  {
-    LogTerm("Modo: INICIO");
-
-    Exec_INICIO();
-
-    
-    gModoOperacao = "STANDBY";
-    LogTerm("Modo: == StandBy ==");
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  if (gModoOperacao == "STANDBY")
-  {
-    
-    Exec_STANDBY();
-
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  if (gModoOperacao == "LOGIN")
-  {
-    LogTerm("Modo: LOGIN");
-
-    Exec_LOGIN();
-    
-    //LogTerm("Modo: == StandBy ==");
-    //gModoOperacao = "STANDBY";
-
-    
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  if (gModoOperacao == "OPERACAO")
-  {
-    LogTerm("Modo: OPERACAO");
-    
-    //gModoOperacao = 4;  // Standby
-
-    Exec_OPERACAO();
+    TestaInterrupts();
 
 
-  }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if (gModoOperacao == "INICIO")
+    {
+        LogTerm("Modo: INICIO");
 
-  if (gModoOperacao == "ADMIN")
-  {
-    LogTerm("Modo: ADMIN");
+        Exec_INICIO();
 
-    Exec_ADMIN();
-    
-    LogTerm("Modo: == StandBy ==");
-    gModoOperacao = "STANDBY";
-    
-  }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        gModoOperacao = "STANDBY";
+        LogTerm("Modo: == StandBy ==");
+    }
 
-  if (gModoOperacao == "DEBUG")
-  {
-    //LogTerm("Modo: DEBUG -- teclado");
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Exec_DEBUG();
-      
-  }
+    if (gModoOperacao == "STANDBY")
+    {
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        Exec_STANDBY();
 
-  
- if (gModoOperacao == "INSTALACAO")
-  {
-    LogTerm("Modo: INSTALACAO");
+    }
 
-    Exec_INSTALACAO();
-    
-    LogTerm("Modo: == StandBy ==");
-    gModoOperacao = "STANDBY";
-      
-  }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if (gModoOperacao == "LOGIN")
+    {
+        LogTerm("Modo: LOGIN");
+
+        Exec_LOGIN();
+
+        //LogTerm("Modo: == StandBy ==");
+        //gModoOperacao = "STANDBY";
+
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    if (gModoOperacao == "OPERACAO")
+    {
+        LogTerm("Modo: OPERACAO");
+
+        //gModoOperacao = 4;  // Standby
+
+        Exec_OPERACAO();
+
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    if (gModoOperacao == "ADMIN")
+    {
+        LogTerm("Modo: ADMIN");
+
+        Exec_ADMIN();
+
+        LogTerm("Modo: == StandBy ==");
+        gModoOperacao = "STANDBY";
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    if (gModoOperacao == "DEBUG")
+    {
+        //LogTerm("Modo: DEBUG -- teclado");
+
+        Exec_DEBUG();
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    if (gModoOperacao == "INSTALACAO")
+    {
+        LogTerm("Modo: INSTALACAO");
+
+        Exec_INSTALACAO();
+
+        LogTerm("Modo: == StandBy ==");
+        gModoOperacao = "STANDBY";
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   
 

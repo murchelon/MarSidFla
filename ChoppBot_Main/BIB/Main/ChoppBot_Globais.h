@@ -63,8 +63,8 @@ String aTeclado_PosBotoes[ctTECLADO_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
 												   "X10,TAM,Y10,TAM",
 												   "X11,TAM,Y11,TAM",
 												   "X12,TAM,Y12,TAM",
-												   "X13,TAM,Y12,TAM",
-												   "X14,TAM,Y12,TAM"
+												   "X13,TAM,Y13,TAM",
+												   "X14,TAM,Y14,TAM"
 												   };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +98,30 @@ int gBounce_Last_SegundosPassados;
 
 // var que conta o numero de cliques executaados no botao
 int gBounce_ContaClick = 0;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// LED INDICADOR DE PROGRAMA RODANDO COM SUCESSO
+// ---------------------
+//
+// O  led do arduino é usado para indicar o funcionamento do programa. ele pisca em um intervalo de tempo determinado
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Tempo de alternancia da luz do led
+const int ctLED_ON_TEMPO = 2400;		// tempo em ms
+	
+
+// permitindo que um novo clique ocorra
+unsigned long gLedON_time_inicio;
+unsigned long gLedON_time_atual;
+unsigned long gLedON_time_tempo_passado;
+
+int gLedON_SegundosPassados;
+int gLedON_Last_SegundosPassados;
+bool gLedON_EstadoAtual;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,4 +165,8 @@ volatile uint8_t lastflowpinstate;
 void InicializaVars() 
 {
 	gModoOperacao = "INICIO";  
+
+	gLedON_time_inicio = millis();
+	gLedON_EstadoAtual = false;
+
 }

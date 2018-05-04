@@ -29,7 +29,8 @@ RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);
 
 uint16_t tx, ty;
 
-int ajuste = 23;
+// int ajuste = 23; original por especificacao
+int ajuste = 38;
 
 
 // botão ________________________________________
@@ -298,7 +299,7 @@ void loop()
 // FLOW METER____________________________________________________
 
  float liters = pulses;
-  liters /= 7.5;
+  liters /= ajuste;
   liters /= 60.0;
 
   float liters1 = pulses1;
@@ -306,7 +307,7 @@ void loop()
   liters1 /= 60.0;
 
   float liters2 = pulses2;
-  liters2 /= 7.5;
+  liters2 /= ajuste;
   liters2 /= 60.0;
  
 //  Serial.println(level);

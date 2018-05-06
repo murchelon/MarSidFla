@@ -1,28 +1,29 @@
 
 // returns -1 if failed, otherwise returns ID #
-int getFingerprintIDez() {
-  uint8_t p = finger.getImage();
-  if (p != FINGERPRINT_OK)  return -1;
+int getFingerprintIDez() 
+{
+	uint8_t p = finger.getImage();
+	if (p != FINGERPRINT_OK)  return -1;
 
-  p = finger.image2Tz();
-  if (p != FINGERPRINT_OK)  return -1;
+	p = finger.image2Tz();
+	if (p != FINGERPRINT_OK)  return -1;
 
-  p = finger.fingerFastSearch();
-  if (p != FINGERPRINT_OK)  return -1;
-  
-  // found a match!
-  Serial.print("Found ID #"); Serial.print(finger.fingerID); 
-  Serial.print(" with confidence of "); Serial.println(finger.confidence);
+	p = finger.fingerFastSearch();
+	if (p != FINGERPRINT_OK)  return -1;
 
-  //digitalWrite(gPinoRele_1, LOW);
-  Serial.print("passei aqui 1\n");
-  delay(5000);
-  //digitalWrite(gPinoRele_1, HIGH);
-  Serial.print("fui 1\n");
+	// found a match!
+	Serial.print("Found ID #"); Serial.print(finger.fingerID); 
+	Serial.print(" with confidence of "); Serial.println(finger.confidence);
+
+	//digitalWrite(gPinoRele_1, LOW);
+	Serial.print("passei aqui 1\n");
+	delay(5000);
+	//digitalWrite(gPinoRele_1, HIGH);
+	Serial.print("fui 1\n");
 
 
-  
-  return finger.fingerID; 
+
+	return finger.fingerID; 
 }
 
 

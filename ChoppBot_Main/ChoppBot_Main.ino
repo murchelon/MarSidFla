@@ -114,6 +114,8 @@ void InitApp()
 void Exec_INICIO()
 {
 
+    LogTerm("== [Modo Atual: INICIO] ==");
+    
     //Led_Light(true);
 
     //SD_Init();
@@ -121,6 +123,13 @@ void Exec_INICIO()
     //ShowExample_DB();
 
     //Init_Database();
+
+
+    
+
+    gModoOperacao = "STANDBY";
+
+
 }
 
 
@@ -137,44 +146,50 @@ void Exec_INICIO()
 // ROTINA DE INSTALACAO
 void Exec_INSTALACAO()
 {
-  boolean Exec_Loop_PodeSair = false;
 
-  unsigned long time_inicio;
-  unsigned long time_atual;
-  unsigned long time_tempo_passado;
-
-  int SegundosPassados;
-  int Last_SegundosPassados;
-  
-  //gModoOperacao = "INSTALACAO";
-
-  time_inicio = millis();
-
-  while (Exec_Loop_PodeSair == false)
-  {
-
-    time_atual = millis();
-    time_tempo_passado = time_atual - time_inicio;
-
-    SegundosPassados = floor(time_tempo_passado / 1000);
-    
-    if (SegundosPassados != Last_SegundosPassados)
+    if (gTelaRenderizada_INSTALACAO == false)
     {
-      LogTerm(SegundosPassados);
-    }
-    
-    
-    
-    if (time_tempo_passado >= gTimeoutOpcao)
+        LogTerm("== [Modo Atual: INSTALACAO] ==");
+    }  
+
+    boolean Exec_Loop_PodeSair = false;
+
+    unsigned long time_inicio;
+    unsigned long time_atual;
+    unsigned long time_tempo_passado;
+
+    int SegundosPassados;
+    int Last_SegundosPassados;
+
+    //gModoOperacao = "INSTALACAO";
+
+    time_inicio = millis();
+
+    while (Exec_Loop_PodeSair == false)
     {
-      Exec_Loop_PodeSair = true;
+
+        time_atual = millis();
+        time_tempo_passado = time_atual - time_inicio;
+
+        SegundosPassados = floor(time_tempo_passado / 1000);
+
+        if (SegundosPassados != Last_SegundosPassados)
+        {
+            LogTerm(SegundosPassados);
+        }
+
+
+
+        if (time_tempo_passado >= gTimeoutOpcao)
+        {
+            Exec_Loop_PodeSair = true;
+        }
+
+        Last_SegundosPassados = SegundosPassados;
+
+        //delay(500);
+
     }
-
-    Last_SegundosPassados = SegundosPassados;
-
-    //delay(500);
-
-  }
 }
 
 
@@ -192,6 +207,10 @@ void Exec_INSTALACAO()
 // ROTINA DE LOGIN
 void Exec_LOGIN()
 {
+    if (gTelaRenderizada_LOGIN == false)
+    {
+        LogTerm("== [Modo Atual: LOGIN] ==");
+    }  
 
     TELA_Render_Interface_LOGIN();
 
@@ -212,8 +231,12 @@ void Exec_LOGIN()
 // ROTINA DE OPERACAO
 void Exec_OPERACAO()
 {
+    if (gTelaRenderizada_OPERACAO == false)
+    {
+        LogTerm("== [Modo Atual: OPERACAO] ==");
+    }  
 
-  TELA_Render_Interface_OPERACAO();
+    TELA_Render_Interface_OPERACAO();
 
 }
 
@@ -234,49 +257,61 @@ void Exec_OPERACAO()
 // ROTINA DE ADMIN
 void Exec_ADMIN()
 {
-  boolean Exec_Loop_PodeSair = false;
+    boolean Exec_Loop_PodeSair = false;
 
-  unsigned long time_inicio;
-  unsigned long time_atual;
-  unsigned long time_tempo_passado;
+    unsigned long time_inicio;
+    unsigned long time_atual;
+    unsigned long time_tempo_passado;
 
-  int SegundosPassados;
-  int Last_SegundosPassados;
+    int SegundosPassados;
+    int Last_SegundosPassados;
 
-  time_inicio = millis();
-
-  TELA_Texto("MODO ADMIN: Saindo em "+ String(gTimeoutOpcao / 1000) + " segundos...", "BRANCO");
-
-  while (Exec_Loop_PodeSair == false)
-  {
-
-
-    time_atual = millis();
-    time_tempo_passado = time_atual - time_inicio;
-
-    SegundosPassados = floor(time_tempo_passado / 1000);
-    
-    
-
-    if (SegundosPassados != Last_SegundosPassados)
+    if (gTelaRenderizada_ADMIN == false)
     {
-      LogTerm(SegundosPassados);
-      TELA_Texto(String(SegundosPassados), "AMARELO");
-    }
-    
-    
-    
-    if (time_tempo_passado >= gTimeoutOpcao)
+        LogTerm("== [Modo Atual: ADMIN] ==");
+    }  
+
+    gTelaRenderizada_ADMIN = true;
+
+
+    time_inicio = millis();
+
+    TELA_Texto("MODO ADMIN: Saindo em "+ String(gTimeoutOpcao / 1000) + " segundos...", "BRANCO");
+
+    while (Exec_Loop_PodeSair == false)
     {
-      Exec_Loop_PodeSair = true;
+
+
+        time_atual = millis();
+        time_tempo_passado = time_atual - time_inicio;
+
+        SegundosPassados = floor(time_tempo_passado / 1000);
+
+
+
+        if (SegundosPassados != Last_SegundosPassados)
+        {
+            //LogTerm(SegundosPassados);
+            TELA_Texto(String(SegundosPassados), "AMARELO");
+        }
+
+
+
+        if (time_tempo_passado >= gTimeoutOpcao)
+        {
+            Exec_Loop_PodeSair = true;
+        }
+
+        Last_SegundosPassados = SegundosPassados;
+
+        //delay(500);
     }
 
-    Last_SegundosPassados = SegundosPassados;
-    
-    //delay(500);
-  }
+    TELA_LimpaTela();
 
-  TELA_LimpaTela();
+    gTelaRenderizada_ADMIN = false;
+    gModoOperacao = "STANDBY";
+
 
 }
 
@@ -296,8 +331,15 @@ void Exec_ADMIN()
 // ROTINA DE DEBUG
 void Exec_DEBUG()
 {
-  TELA_Render_Interface_TECLADO(500, 56);   // posicao x e y
-  TELA_Render_ValorTec_TECLADO();
+    if (gTelaRenderizada_DEBUG == false)
+    {
+        LogTerm("== [Modo Atual: DEBUG] ==");
+    }  
+
+    gTelaRenderizada_DEBUG = true;
+
+    TELA_RenderTecUnificado_NUM();
+
 }
 
 
@@ -325,30 +367,35 @@ void Exec_DEBUG()
 void Exec_TESTE()
 {
 
-  boolean Exec_Loop_PodeSair = false;
+    if (gTelaRenderizada_TESTE == false)
+    {
+        LogTerm("== [Modo Atual: TESTE] ==");
+    }  
 
-  LogTerm("Exec_TESTE");
+    boolean Exec_Loop_PodeSair = false;
 
-  //ShowExample_Tela();
-
-  // TELA_IniciaTela();
-
-  // TELA_Texto("Linha1cccc");
-  // TELA_Texto("Linha2");
-  // TELA_Texto("Linha3");
-  // TELA_Texto("Linha4");
-  // TELA_Texto("Linha5");
-  // TELA_Texto("Linha6");
-  // TELA_Texto("Linha7");
-
-
-
-  while (Exec_Loop_PodeSair == false)
-  {
     LogTerm("Exec_TESTE");
-    delay(500);
 
-  }
+    //ShowExample_Tela();
+
+    // TELA_IniciaTela();
+
+    // TELA_Texto("Linha1cccc");
+    // TELA_Texto("Linha2");
+    // TELA_Texto("Linha3");
+    // TELA_Texto("Linha4");
+    // TELA_Texto("Linha5");
+    // TELA_Texto("Linha6");
+    // TELA_Texto("Linha7");
+
+
+
+    while (Exec_Loop_PodeSair == false)
+    {
+        LogTerm("Exec_TESTE");
+        delay(500);
+
+    }
 }
 
 
@@ -366,8 +413,13 @@ void Exec_TESTE()
 // ROTINA DE STANDBY
 void Exec_STANDBY()
 {
+    if (gTelaRenderizada_STANDBY == false)
+    {
+        LogTerm("== [Modo Atual: STANDBY] ==");
+    }    
+    
 
-  TELA_Render_Interface_STANDBY();
+    TELA_Render_Interface_STANDBY();
 
 }
 
@@ -386,45 +438,45 @@ void TestaInterrupts()
 
 
 
-  if (gModoOperacao == "INICIO")
-  {
+    if (gModoOperacao == "INICIO")
+    {
 
-  }
+    }
 
-  if (gModoOperacao == "INSTALACAO")
-  {
+    if (gModoOperacao == "INSTALACAO")
+    {
 
-  }
+    }
 
-  if (gModoOperacao == "STANDBY")
-  {
-      TELA_VerificaTouch_STANDBY();
-  }
-  
-  if (gModoOperacao == "LOGIN")
-  {
-      TELA_VerificaTouch_LOGIN();
-  }
-  
-  if (gModoOperacao == "OPERACAO")
-  {
-      TELA_VerificaTouch_OPERACAO();
-  }
+    if (gModoOperacao == "STANDBY")
+    {
+        TELA_VerificaTouch_STANDBY();
+    }
 
-  if (gModoOperacao == "ADMIN")
-  {
-      TELA_VerificaTouch_ADMIN();
-  }
+    if (gModoOperacao == "LOGIN")
+    {
+        TELA_VerificaTouch_LOGIN();
+    }
 
-  if (gModoOperacao == "DEBUG")
-  {
-      TELA_VerificaTouch_DEBUG();
-  }
+    if (gModoOperacao == "OPERACAO")
+    {
+        TELA_VerificaTouch_OPERACAO();
+    }
 
-  if (gModoOperacao == "TESTE")
-  {
+    if (gModoOperacao == "ADMIN")
+    {
+        TELA_VerificaTouch_ADMIN();
+    }
 
-  }
+    if (gModoOperacao == "DEBUG")
+    {
+        TELA_VerificaTouch_DEBUG();
+    }
+
+    if (gModoOperacao == "TESTE")
+    {
+
+    }
 
 
 
@@ -449,7 +501,7 @@ void TestaInterrupts()
 // INTERNA ARDUINO: SETUP
 void setup() {
   
-  InitApp();
+    InitApp();
   
 }
 
@@ -461,6 +513,9 @@ void loop()
     //Led_Light(false);
 
     delay(50);
+
+    //debug:
+    //delay(1000);
 
     ExecLedON_Beat();
 
@@ -474,72 +529,42 @@ void loop()
 
     if (gModoOperacao == "INICIO")
     {
-        LogTerm("Modo: INICIO");
-
-        Exec_INICIO();
-
-
-        gModoOperacao = "STANDBY";
-        LogTerm("Modo: == StandBy ==");
+        Exec_INICIO();       
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (gModoOperacao == "STANDBY")
     {
-
         Exec_STANDBY();
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (gModoOperacao == "LOGIN")
     {
-        LogTerm("Modo: LOGIN");
-
         Exec_LOGIN();
-
-        //LogTerm("Modo: == StandBy ==");
-        //gModoOperacao = "STANDBY";
-
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (gModoOperacao == "OPERACAO")
     {
-        LogTerm("Modo: OPERACAO");
-
-        //gModoOperacao = 4;  // Standby
-
         Exec_OPERACAO();
-
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (gModoOperacao == "ADMIN")
     {
-        LogTerm("Modo: ADMIN");
-
         Exec_ADMIN();
-
-        LogTerm("Modo: == StandBy ==");
-        gModoOperacao = "STANDBY";
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (gModoOperacao == "DEBUG")
     {
-        //LogTerm("Modo: DEBUG -- teclado");
-
         Exec_DEBUG();
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

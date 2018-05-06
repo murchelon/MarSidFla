@@ -40,12 +40,13 @@ const unsigned long gTimeoutOpcao = 7000;		// tempo em ms para timeout das opcoe
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool gTeclado_Renderizado = false;
+
 
 
 String gTeclado_ValAtual = "";
 
 
+//const int ctTECLADO_TOTAL_BOTOES = 14;
 const int ctTECLADO_TOTAL_BOTOES = 14;
 
 
@@ -103,7 +104,7 @@ int gBounce_ContaClick = 0;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // LED INDICADOR DE PROGRAMA RODANDO COM SUCESSO
-// ---------------------
+// ---------------------------------------------
 //
 // O  led do arduino é usado para indicar o funcionamento do programa. ele pisca em um intervalo de tempo determinado
 //
@@ -122,6 +123,31 @@ unsigned long gLedON_time_tempo_passado;
 int gLedON_SegundosPassados;
 int gLedON_Last_SegundosPassados;
 bool gLedON_EstadoAtual;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// TELA
+// ----
+//
+// variaveis que controlam se a tela esta desenhada, para impedir que ela fique sendo redesenhada o tempo todo e
+// var que define o tipo de tela sendo usado 
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// var que define a tela sendo usada
+String gTela_Hardware;		// ER-TFTM070-5 | TERMINAL definidos na rotina de iniciar vars
+
+// Vars de controle que verificam se uma determinada tela esta renderizada para nao render de novo
+bool gTelaRenderizada_TecNum;
+bool gTelaRenderizada_STANDBY;
+bool gTelaRenderizada_LOGIN;
+bool gTelaRenderizada_OPERACAO;
+bool gTelaRenderizada_INSTALACAO;
+bool gTelaRenderizada_ADMIN;
+bool gTelaRenderizada_DEBUG;
+bool gTelaRenderizada_TESTE;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,5 +194,19 @@ void InicializaVars()
 
 	gLedON_time_inicio = millis();
 	gLedON_EstadoAtual = false;
+
+
+	//String gTela_Hardware = String("ER-TFTM070-5"); 		// tela LCD 7pol Touch Resistive
+	gTela_Hardware = String("TERMINAL"); 		// saidas de texto para o terminal (console)	
+
+	// controle de render de tela
+	gTelaRenderizada_TecNum = false;
+	gTelaRenderizada_STANDBY = false;	
+	gTelaRenderizada_LOGIN = false;
+	gTelaRenderizada_OPERACAO = false;	
+	gTelaRenderizada_INSTALACAO = false;
+	gTelaRenderizada_ADMIN = false;
+	gTelaRenderizada_DEBUG = false;
+	gTelaRenderizada_TESTE = false;
 
 }

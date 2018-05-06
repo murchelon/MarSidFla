@@ -1,6 +1,6 @@
 Itens ToDo, do murch, para muito em breve:
 
-- Ver programa exemplo kegbot que cebola colocou no meu lap
+- Ver programa exemplo kegbot que cebola colocou no meu lap (onde esta ? nao achei)
 - portar choppbot para rodar em stripped arduino (sem tela, com terminal)
 - portar choppbot para rodar no uno ardusim
 - resolver if do cebola
@@ -11,3 +11,17 @@ Itens ToDo, do murch, para muito em breve:
 - fazer o SD funcionar no programa principal
 - fazero RFID funcionar no programa principal
 - fazer o biometrico funcionar no programa principal
+OKOK! - Arrumar identacao para TAB (4 espacos)
+- fazer os 2 teclados (alpha e num) poderem ser chamados de qualquer tela, sem que tenhamos de alterar o gModoOperacao
+
+mais para frente:
+
+- biometrico total
+- banco de dados com bib binaria
+- rotina de backup
+- rotina de instalacao
+- melhorar as funcoes quw criam botao isolados. Fazer ficar igual ao esquema feito para o teclado num e alpha
+
+PROBLEMAS CONHECIDOS:
+
+- Tela parou de funcionar

@@ -49,6 +49,19 @@ void LogTerm (double Texto)
 
 
 
+String ReadConsoleInput()
+{
+
+	if (Serial.available() > 0) 
+	{
+		return Serial.readString();
+	}
+	else
+	{
+		return String("");
+	}
+
+}
 
 
 

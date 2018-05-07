@@ -344,24 +344,97 @@ void loop()
 
 // curva com baixa velocidade
 
-if (pulses2 <= pulse_ideal - (ajuste_fino_baixo *0) ) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*1))
-   { pulses4 = pulses2 }
-if (pulses2 <= pulse_ideal - (ajuste_fino_baixo *1) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*2))
-   { pulses4 = pulses2 - 1 }   
-if (pulses2 <= pulse_ideal - (ajuste_fino_baixo *2) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*3))
-   { pulses4 = pulses2 - 2 } 
-if (pulses2 <= pulse_ideal - (ajuste_fino_baixo *3) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*4))
-   { pulses4 = pulses2 - 3 }     
-if (pulses2 <= pulse_ideal - (ajuste_fino_baixo *4) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*5))
-   { pulses4 = pulses2 - 4 }   
-if (pulses2 <= pulse_ideal - (ajuste_fino_baixo *5) + 1) 
-   { pulses4 = 0}   
 
 
+if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 0))) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 1))))
+{
+    pulses4 = pulses2;
+}
+
+if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 1) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 2))))
+{
+    pulses4 = pulses2 - 1;
+}
+
+if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 2) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 3))))
+{
+    pulses4 = pulses2 - 2;
+}
+
+if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 3) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 4))))
+{
+    pulses4 = pulses2 - 3;
+}
+
+if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 4) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 5))))
+{
+    pulses4 = pulses2 - 4;
+}
+
+
+if (pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 5) + 1))
+{ 
+    pulses4 = 0;
+}   
+
+/*
+if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 0) ) && (pulses2 > pulse_ideal - (ajuste_fino_baixo*1))
+{
+   pulses4 = pulses2;
+}
+
+if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 1) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*2))
+{ 
+    pulses4 = pulses2 - 1;
+}  
+
+if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 2) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*3))
+{
+    pulses4 = pulses2 - 2;
+} 
+
+if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 3) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*4))
+{ 
+    pulses4 = pulses2 - 3;
+} 
+
+if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 4) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*5))
+{
+    pulses4 = pulses2 - 4;
+} 
+
+if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 5) + 1) 
+{ 
+    pulses4 = 0;
+}   
+
+*/
 
 // curva com alta velocidade
 
 
+if ((pulses2 <= (pulse_ideal + (ajuste_fino_alto * 1) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_alto * 0) + 1)))
+{
+    pulses4 = pulses2 + 1;
+}
+
+if ((pulses2 <= (pulse_ideal + (ajuste_fino_alto * 2) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_alto * 1) + 2)))
+{
+    pulses4 = pulses2 + 2;
+}
+
+if ((pulses2 <= (pulse_ideal + (ajuste_fino_alto * 3) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_alto * 2) + 2)))
+{
+    pulses4 = pulses2 + 3;
+}
+
+if (pulses2 > (pulse_ideal + (ajuste_fino_alto * 3) + 2))
+{
+    pulses4 = pulses2 + 4;
+}
+
+
+/*
 if (pulses2 <= pulse_ideal + (ajuste_fino_alto *1) + 1) && (pulse2 >  (pulse_ideal + (ajuste_fino_alto*0)+1))
    { pulses4 = pulses2 + 1 }   
 if (pulses2 <= pulse_ideal + (ajuste_fino_alto *2) + 1) && (pulse2 >  (pulse_ideal + (ajuste_fino_alto*1)+2))
@@ -371,6 +444,7 @@ if (pulses2 <= pulse_ideal + (ajuste_fino_alto *3) + 1) && (pulse2 >  (pulse_ide
 if (pulses2 >  (pulse_ideal + (ajuste_fino_alto*3)+2))
    { pulses4 = pulses2 + 4 }   
  
+ */
 
     // teste com o bico 3
 

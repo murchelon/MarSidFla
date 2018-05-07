@@ -13,6 +13,7 @@ Works with Arduino 1.6.0 IDE
 #include <SPI.h>
 #include <RA8875.h>
 
+
 //Arduino DUE,Arduino mega2560,Arduino UNO
 #define RA8875_INT 4
 #define RA8875_CS 10 

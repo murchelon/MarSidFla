@@ -47,7 +47,7 @@ String gTeclado_ValAtual = "";
 
 
 //const int ctTECLADO_TOTAL_BOTOES = 14;
-const int ctTECLADO_TOTAL_BOTOES = 14;
+#define ctTECLADO_TOTAL_BOTOES 14
 
 
 // var que armazena a posicao inicial xy renderizada dos botoes e seu tamanho para poder serem usadas no touch

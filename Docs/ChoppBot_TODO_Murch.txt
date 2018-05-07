@@ -16,11 +16,20 @@ OKOK! - Arrumar identacao para TAB (4 espacos)
 
 mais para frente:
 
+- avisar de algum modo, quando a quantidade chegar em determinado nivel. email, sms ou algo 
+- medir quanto tem de chopp ainda. Exibir em litros e/ou em pints
 - biometrico total
 - banco de dados com bib binaria
 - rotina de backup
 - rotina de instalacao
 - melhorar as funcoes quw criam botao isolados. Fazer ficar igual ao esquema feito para o teclado num e alpha
+- colocar sensor de temperatura para medir a temp do chopp
+
+mega mais para frente
+
+- gameficacao
+- acesso via http / webserver
+- ipad ou similar opcional.. com o visual fodastico que mostra tudo do choppbot 
 
 PROBLEMAS CONHECIDOS:
 

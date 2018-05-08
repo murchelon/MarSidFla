@@ -83,8 +83,20 @@ void InitApp()
     //digitalWrite(gPinoRele_2, HIGH);
     //digitalWrite(gPinoRele_3, HIGH);  
 
+
     Led_Light(false);
 
+    // da uma piscada no led interno para demonstrar inicio
+    for (int x = 0 ; x <= 10 ; x++)
+    {
+        Led_Light(false);
+        delay(40);
+        Led_Light(true);
+        delay(40);
+        //LogTerm("ok to aqui");
+    }
+
+    Led_Light(false);
 
     TELA_IniciaTela();
 
@@ -512,7 +524,7 @@ void loop()
 
     //Led_Light(false);
 
-    delay(50);
+    //delay(50);
 
     //debug:
     //delay(1000);

@@ -52,6 +52,9 @@ digitalWrite (24, HIGH); //desabilita o SD
  
 void loop() 
 {
+  
+
+//}
   // Look for new cards
   if ( ! mfrc522.PICC_IsNewCardPresent()) 
   {

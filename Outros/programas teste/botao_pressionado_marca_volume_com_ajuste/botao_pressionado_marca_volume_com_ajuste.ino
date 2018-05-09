@@ -58,12 +58,13 @@ volatile uint16_t pulses1 = 0;
 volatile uint16_t pulses2 = 0;
 
 
-int ajuste_fino_baixo = 6;
+int ajuste_fino_baixo = 20;
 int pulse_ideal = 114;
-int ajuste_fino_alto = 12;
+int ajuste_fino_alto = 20;
 
 
 volatile uint16_t pulses4 = 0;  // so para teste
+volatile uint16_t pulses5 = 0;  // so para teste
 
 
 // track the state of the pulse pin
@@ -147,12 +148,6 @@ SIGNAL(TIMER2_COMPA_vect) {
   lastflowratetimer2 = 0;
 }
 
-// vars AJUSTE DA VELOCIDADE ____________________________________________________  
- 
-    
-//int ajuste_fino_baixo;
-//int pulse _ideal;
-//int ajuste_fino_alto;
 
 
 // void useInterrupt________________________________________
@@ -349,43 +344,57 @@ void loop()
 if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 0))) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 1))))
 {
     pulses4 = pulses2;
+
+    Serial.println(" ideal");
 }
 
 if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 1) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 2))))
 {
     pulses4 = pulses2 - 1;
+
+    Serial.println(" - 1");
 }
 
 if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 2) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 3))))
 {
     pulses4 = pulses2 - 2;
+
+    Serial.println(" - 2");
 }
 
 if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 3) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 4))))
 {
     pulses4 = pulses2 - 3;
+
+    Serial.println(" - 3");
 }
 
 if ((pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 4) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_baixo * 5))))
 {
     pulses4 = pulses2 - 4;
+
+    Serial.println(" - 4");
 }
 
 
 if (pulses2 <= (pulse_ideal - (ajuste_fino_baixo * 5) + 1))
 { 
     pulses4 = 0;
+
+    Serial.println(" desligar");
 }   
 
 /*
 if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 0) ) && (pulses2 > pulse_ideal - (ajuste_fino_baixo*1))
 {
    pulses4 = pulses2;
+
 }
 
 if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 1) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*2))
 { 
     pulses4 = pulses2 - 1;
+
 }  
 
 if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 2) + 1) && (pulses2 >  pulse_ideal - (ajuste_fino_baixo*3))
@@ -415,31 +424,43 @@ if (pulses2 <= pulse_ideal - (ajuste_fino_baixo * 5) + 1)
 
 if ((pulses2 <= (pulse_ideal + (ajuste_fino_alto * 1) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_alto * 0) + 1)))
 {
-    pulses4 = pulses2 + 1;
+    pulses4 = pulses2 + 10;
+
+    Serial.println(" + 10");
 }
 
 if ((pulses2 <= (pulse_ideal + (ajuste_fino_alto * 2) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_alto * 1) + 2)))
 {
-    pulses4 = pulses2 + 2;
+    pulses4 = pulses2 + 20;
+
+    Serial.println(" + 20");
 }
 
 if ((pulses2 <= (pulse_ideal + (ajuste_fino_alto * 3) + 1)) && (pulses2 > (pulse_ideal - (ajuste_fino_alto * 2) + 2)))
 {
-    pulses4 = pulses2 + 3;
+    pulses4 = pulses2 + 30;
+
+      pulses5 = 30;
+
+    Serial.println(" + 30");
 }
 
 if (pulses2 > (pulse_ideal + (ajuste_fino_alto * 3) + 2))
 {
-    pulses4 = pulses2 + 4;
+    pulses4 = pulses2 + 40;
+
+    pulses5 = 40;
+
+    Serial.println(" + 40");
 }
 
 
 /*
-if (pulses2 <= pulse_ideal + (ajuste_fino_alto *1) + 1) && (pulse2 >  (pulse_ideal + (ajuste_fino_alto*0)+1))
+if (pulses2 <= pulse_ideal + (ajuste_fino_alto *1) + 1) && (pulses2 >  (pulse_ideal + (ajuste_fino_alto*0)+1))
    { pulses4 = pulses2 + 1 }   
-if (pulses2 <= pulse_ideal + (ajuste_fino_alto *2) + 1) && (pulse2 >  (pulse_ideal + (ajuste_fino_alto*1)+2))
+if (pulses2 <= pulse_ideal + (ajuste_fino_alto *2) + 1) && (pulses2 >  (pulse_ideal + (ajuste_fino_alto*1)+2))
    { pulses4 = pulses2 + 2 } 
-if (pulses2 <= pulse_ideal + (ajuste_fino_alto *3) + 1) && (pulse2 >  (pulse_ideal + (ajuste_fino_alto*2)+2))
+if (pulses2 <= pulse_ideal + (ajuste_fino_alto *3) + 1) && (pulses2 >  (pulse_ideal + (ajuste_fino_alto*2)+2))
    { pulses4 = pulses2 + 3 }     
 if (pulses2 >  (pulse_ideal + (ajuste_fino_alto*3)+2))
    { pulses4 = pulses2 + 4 }   
@@ -453,10 +474,10 @@ if (pulses2 >  (pulse_ideal + (ajuste_fino_alto*3)+2))
          tft.setFontScale(1); 
          tft.print (pulses2); tft.print ("  pulsos");   
 
-         tft.setTextColor(RA8875_BLACK,RA8875_MAGENTA);
+         tft.setTextColor(RA8875_BLACK,RA8875_YELLOW);
          tft.setCursor (550, 380);
          tft.setFontScale(1); 
-         tft.print (pulses4); tft.print ("  pulsos");   
+         tft.print (pulses5); tft.print ("  adicionados ");   
 
 
 // FIM AJUSTE DA VELOCIDADE ____________________________________________________  

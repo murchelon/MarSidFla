@@ -1,5 +1,5 @@
 //Programa : RFID - Controle de Acesso leitor RFID
-//Autor : FILIPEFLOP
+//Autor : conradt
  
 #include <SPI.h>
 #include <MFRC522.h>
@@ -9,22 +9,29 @@
 #define RST_PIN 30
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance.
  
-LiquidCrystal lcd(6, 7, 5, 4, 3, 2); 
+//LiquidCrystal lcd(6, 7, 5, 4, 3, 2); 
  
 char st[20];
+
+  
+
 
  
 void setup() 
 {
-  Serial.begin(9600); // Inicia a serial
+  Serial.begin(115200); // Inicia a serial
  
   
   //______________________________________________________________________
 
 //void RFID_ON (void)
 //{
+
+    pinMode(24, OUTPUT);
+  	pinMode(53, OUTPUT);
+
 digitalWrite (24, HIGH); //desabilita o SD
-//digitalWrite (53, LOW); //habilita o RFID
+digitalWrite (53, LOW); //habilita o RFID
 //}
 
 // void SD_ON (void)
@@ -44,8 +51,8 @@ digitalWrite (24, HIGH); //desabilita o SD
   Serial.println("Aproxime o seu cartao do leitor...");
   Serial.println();
   //Define o número de colunas e linhas do LCD:  
-  lcd.begin(16, 2);  
-  mensageminicial();
+  //lcd.begin(16, 2);  
+  //mensageminicial();
     
 
 }
@@ -81,35 +88,35 @@ void loop()
   conteudo.toUpperCase();
   if (conteudo.substring(1) == "ED 78 03 CA") //UID 1 - Chaveiro
   {
-    Serial.println("Ola FILIPEFLOP !");
+    Serial.println("Ola  !");
     Serial.println();
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Ola FILIPEFLOP !");
-    lcd.setCursor(0,1);
-    lcd.print("Acesso liberado!");
+   // lcd.clear();
+   // lcd.setCursor(0,0);
+   // lcd.print("Ola FILIPEFLOP !");
+   // lcd.setCursor(0,1);
+   // lcd.print("Acesso liberado!");
     delay(3000);
-    mensageminicial();
+    //mensageminicial();
   }
  
   if (conteudo.substring(1) == "BD 9B 06 7D") //UID 2 - Cartao
   {
     Serial.println("Ola Cartao !");
     Serial.println();
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Ola Cartao !");
-    lcd.setCursor(0,1);
-    lcd.print("Acesso Negado !");
+   // lcd.clear();
+    //lcd.setCursor(0,0);
+    //lcd.print("Ola Cartao !");
+    //lcd.setCursor(0,1);
+    //lcd.print("Acesso Negado !");
     delay(3000);
-    mensageminicial();
+    //mensageminicial();
   }
 } 
  
 void mensageminicial()
 {
-  lcd.clear();
-  lcd.print(" Aproxime o seu");  
-  lcd.setCursor(0,1);
-  lcd.print("cartao do leitor");  
+  //lcd.clear();
+  //lcd.print(" Aproxime o seu");  
+  //lcd.setCursor(0,1);
+  //lcd.print("cartao do leitor");  
 }

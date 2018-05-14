@@ -29,7 +29,7 @@ const uint8_t SD_CHIP_SELECT = 24;
  * For example, with the Ethernet shield, set DISABLE_CHIP_SELECT
  * to 10 to disable the Ethernet controller.
  */
-const int8_t DISABLE_CHIP_SELECT = -1;
+const int8_t DISABLE_CHIP_SELECT = 53;
 
 #if USE_SDIO
 // Use faster SdioCardEX

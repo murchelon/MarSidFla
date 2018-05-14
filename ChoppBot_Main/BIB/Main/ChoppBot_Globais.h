@@ -8,6 +8,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+// cor e uint16_t
+
+
+
+
 // Modo de operacao atual da maquina. indica qual a funcionalidade e telas que a maquina deve exibir em qualquer dado momento
 // Pode ser um dos valoes abaixo
 // INICIO
@@ -21,6 +27,9 @@
 
 String gModoOperacao = ""; 
 
+// var que define se a aplicacao esta no modo debug. isto faz com que algumas msgs de debug
+// sejam exibidas na tela e/ou no terminal
+bool gModoDebug;
 
 const unsigned long gTimeoutOpcao = 7000;		// tempo em ms para timeout das opcoes a serem escolhidas
 
@@ -36,37 +45,87 @@ const unsigned long gTimeoutOpcao = 7000;		// tempo em ms para timeout das opcoe
 // TECLADO
 // -------
 //
-// Vars necessarias para o teclado numerico 
+// Vars necessarias para o teclado numerico e alfanumerico
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
-String gTeclado_ValAtual = "";
+String gTecladoNum_ValAtual = "";
+String gTecladoAlfa_ValAtual = "";
 
 
-//const int ctTECLADO_TOTAL_BOTOES = 14;
-#define ctTECLADO_TOTAL_BOTOES 14
+//const int ctTECLADO_NUM_TOTAL_BOTOES = 14;
+#define ctTECLADO_NUM_TOTAL_BOTOES 14
+#define ctTECLADO_ALFA_TOTAL_BOTOES 42
+
+
 
 
 // var que armazena a posicao inicial xy renderizada dos botoes e seu tamanho para poder serem usadas no touch
 // var iniciada com os valores abaixo e depois modificada quando os botoes do teclado sao renderizados
-String aTeclado_PosBotoes[ctTECLADO_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
-												   "X02,TAM,Y02,TAM",
-												   "X03,TAM,Y03,TAM",
-												   "X04,TAM,Y04,TAM",
-												   "X05,TAM,Y05,TAM",
-												   "X06,TAM,Y06,TAM",
-												   "X07,TAM,Y07,TAM",
-												   "X08,TAM,Y08,TAM",
-												   "X09,TAM,Y09,TAM",
-												   "X10,TAM,Y10,TAM",
-												   "X11,TAM,Y11,TAM",
-												   "X12,TAM,Y12,TAM",
-												   "X13,TAM,Y13,TAM",
-												   "X14,TAM,Y14,TAM"
-												   };
+
+String aTecladoNum_PosBotoes[ctTECLADO_NUM_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
+														   "X02,TAM,Y02,TAM",
+														   "X03,TAM,Y03,TAM",
+														   "X04,TAM,Y04,TAM",
+														   "X05,TAM,Y05,TAM",
+														   "X06,TAM,Y06,TAM",
+														   "X07,TAM,Y07,TAM",
+														   "X08,TAM,Y08,TAM",
+														   "X09,TAM,Y09,TAM",
+														   "X10,TAM,Y10,TAM",
+														   "X11,TAM,Y11,TAM",
+														   "X12,TAM,Y12,TAM",
+														   "X13,TAM,Y13,TAM",
+														   "X14,TAM,Y14,TAM"
+														   };
+
+
+String aTecladoAlfa_PosBotoes[ctTECLADO_ALFA_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
+															"X02,TAM,Y02,TAM",
+															"X03,TAM,Y03,TAM",
+															"X04,TAM,Y04,TAM",
+															"X05,TAM,Y05,TAM",
+															"X06,TAM,Y06,TAM",
+															"X07,TAM,Y07,TAM",
+															"X08,TAM,Y08,TAM",
+															"X09,TAM,Y09,TAM",
+															"X10,TAM,Y10,TAM",
+															"X11,TAM,Y11,TAM",
+															"X12,TAM,Y12,TAM",
+															"X13,TAM,Y13,TAM",
+															"X14,TAM,Y14,TAM",
+															"X15,TAM,Y15,TAM",
+															"X16,TAM,Y16,TAM",
+															"X17,TAM,Y17,TAM",
+															"X18,TAM,Y18,TAM",
+															"X19,TAM,Y19,TAM",
+															"X20,TAM,Y20,TAM",
+															"X21,TAM,Y21,TAM",
+															"X22,TAM,Y22,TAM",
+															"X23,TAM,Y23,TAM",
+															"X24,TAM,Y24,TAM",
+															"X25,TAM,Y25,TAM",
+															"X26,TAM,Y26,TAM",
+															"X27,TAM,Y27,TAM",
+															"X28,TAM,Y28,TAM",
+															"X29,TAM,Y29,TAM",
+															"X30,TAM,Y30,TAM",
+															"X31,TAM,Y31,TAM",
+															"X32,TAM,Y32,TAM",
+															"X33,TAM,Y33,TAM",
+															"X34,TAM,Y34,TAM",
+															"X35,TAM,Y35,TAM",
+															"X36,TAM,Y36,TAM",
+															"X37,TAM,Y37,TAM",
+															"X38,TAM,Y38,TAM",
+															"X39,TAM,Y39,TAM",
+															"X40,TAM,Y40,TAM",
+															"X41,TAM,Y41,TAM",
+														  	"X42,TAM,Y42,TAM"
+														   };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -78,8 +137,10 @@ String aTeclado_PosBotoes[ctTECLADO_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// Tempo de sensibilidade dos botoes em uma determinada tela. Para evitar o double press
-const int ctBOUNCE_SENSIB_BOTAO = 50;		
+//  numero de clicks de sensibilidade dos botoes em uma determinada tela. Para evitar o double press
+//const int ctBOUNCE_SENSIB_BOTAO = 50;		
+#define ctBOUNCE_SENSIB_BOTAO 80
+
 	
 
 
@@ -112,8 +173,10 @@ int gBounce_ContaClick = 0;
 
 
 // Tempo de alternancia da luz do led
-const int ctLED_ON_TEMPO = 2400;		// tempo em ms
-	
+//const int ctLED_ON_TEMPO = 2400;		// tempo em ms
+#define ctLED_ON_TEMPO 2400
+
+		
 
 // permitindo que um novo clique ocorra
 unsigned long gLedON_time_inicio;
@@ -141,6 +204,7 @@ String gTela_Hardware;		// ER-TFTM070-5 | TERMINAL definidos na rotina de inicia
 
 // Vars de controle que verificam se uma determinada tela esta renderizada para nao render de novo
 bool gTelaRenderizada_TecNum;
+bool gTelaRenderizada_TecAlfa;
 bool gTelaRenderizada_STANDBY;
 bool gTelaRenderizada_LOGIN;
 bool gTelaRenderizada_OPERACAO;
@@ -192,6 +256,10 @@ void InicializaVars()
 {
 	gModoOperacao = "INICIO";  
 
+	//gModoDebug = true;
+	gModoDebug = false;
+
+
 	gLedON_time_inicio = millis();
 	gLedON_EstadoAtual = false;
 
@@ -201,6 +269,7 @@ void InicializaVars()
 
 	// controle de render de tela
 	gTelaRenderizada_TecNum = false;
+	gTelaRenderizada_TecAlfa = false;
 	gTelaRenderizada_STANDBY = false;	
 	gTelaRenderizada_LOGIN = false;
 	gTelaRenderizada_OPERACAO = false;	
@@ -208,5 +277,9 @@ void InicializaVars()
 	gTelaRenderizada_ADMIN = false;
 	gTelaRenderizada_DEBUG = false;
 	gTelaRenderizada_TESTE = false;
+
+	gTecladoNum_ValAtual = String("");
+	gTecladoAlfa_ValAtual = String("");
+										 	
 
 }

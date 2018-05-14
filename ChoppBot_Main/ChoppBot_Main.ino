@@ -350,7 +350,8 @@ void Exec_DEBUG()
 
     gTelaRenderizada_DEBUG = true;
 
-    TELA_RenderTecUnificado_NUM();
+    //TELA_RenderTecUnificado_NUM();
+    TELA_RenderTecUnificado_ALFA();
 
 }
 
@@ -522,9 +523,10 @@ void setup() {
 void loop() 
 {
 
+    
     //Led_Light(false);
 
-    //delay(50);
+    delay(50);
 
     //debug:
     //delay(1000);

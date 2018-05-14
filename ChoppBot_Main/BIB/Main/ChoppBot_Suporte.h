@@ -167,3 +167,12 @@ String getValue(String data, char separator, int index)
 
     //return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
+
+String CharFromAsc2(int Asc2Value)
+{
+    char ret;
+
+    ret = Asc2Value;
+
+    return String(ret);
+}

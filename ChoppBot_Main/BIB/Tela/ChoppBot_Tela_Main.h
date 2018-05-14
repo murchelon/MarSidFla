@@ -132,7 +132,9 @@ void TELA_Texto(String Texto, String Cor)
 			// pela rotina de desenho da tela
 			if (gModoOperacao == 'DEBUG')
 			{
-				gTelaRenderizada_TecNum = false;
+				//gTelaRenderizada_TecNum = false;
+				gTelaRenderizada_TecAlfa = false;
+
 			}
 
 
@@ -152,6 +154,7 @@ void TELA_LogTerm_XY()
 	char TheTexto[100]; 
 
 
+	/*
 	if (gTela_Hardware == "ER-TFTM070-5")
 	{
 
@@ -176,7 +179,7 @@ void TELA_LogTerm_XY()
 
 		//tft.changeMode(TEXT);
 	}
-
+	*/
 
 
 	if (gModoOperacao == "OPERACAO")
@@ -200,7 +203,9 @@ void TELA_LogTerm_XY()
 		// Apenas X Y:
 		sprintf(TheTexto,"XY: X = %d | Y = %d", gTouch_X, gTouch_Y);  
 		TELA_Texto(TheTexto, "");
-		TELA_Texto(gModoOperacao, "VERMELHO");
+		//TELA_Texto(gModoOperacao, "VERMELHO");
+
+		LogTerm(TheTexto);
 	}
 
 	//tft.changeMode(GRAPHIC);
@@ -395,7 +400,8 @@ void TELA_Render_Interface_LOGIN()
 			LogTerm("Escolha o seu metodo de identificacao e digite o numero correspondente no console:");
 			LogTerm("1 - LEITOR BIOMETRICO");
 			LogTerm("2 - LEITOR DE CARTAO");
-			LogTerm("3 - ABRE TECLADO NUMERICO");
+			//LogTerm("3 - ABRE TECLADO NUMERICO");
+			LogTerm("3 - ABRE TECLADO ALFA");
 
 
 		}
@@ -418,7 +424,8 @@ void TELA_Render_Interface_LOGIN()
 
 			TELA_Render_Botao(1, "LEITOR BIOMETRICO", "", "BRANCO");
 			TELA_Render_Botao(2, "LEITOR DE CARTAO", "", "AZUL");
-			TELA_Render_Botao(3, "ABRE TECLADO NUMERICO", "", "MAGENTA");
+			//TELA_Render_Botao(3, "ABRE TECLADO NUMERICO", "", "MAGENTA");
+			TELA_Render_Botao(3, "ABRE TECLADO ALFA", "", "MAGENTA");
 
 			// Area para chamar admin
 			//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
@@ -480,7 +487,8 @@ void TELA_Render_Interface_OPERACAO()
 
 
 //Este include tem de ficar neste local devido a ordem das chamadas das funcoes. Senao, da erro
-#include "../Teclado/ChoppBot_Teclado.h" 
+#include "../Teclado/ChoppBot_Teclado_NUM.h" 
+#include "../Teclado/ChoppBot_Teclado_ALFA.h" 
 
 
 
@@ -570,7 +578,8 @@ void TELA_VerificaTouch_LOGIN()
 			gModoOperacao = "DEBUG";
 			gTelaRenderizada_LOGIN = false;
 
-			LogTerm("TECLADO NUM SELECIONADO");
+			//LogTerm("TECLADO NUM SELECIONADO");
+			LogTerm("TECLADO ALFA SELECIONADO");
 
 			TELA_LimpaTela();
 
@@ -654,7 +663,8 @@ void TELA_VerificaTouch_LOGIN()
 					gTelaRenderizada_LOGIN = false;
 					gModoOperacao = "DEBUG"; 
 
-					TELA_Texto("TECLADO NUM SELECIONADO", "MAGENTA");
+					//TELA_Texto("TECLADO NUM SELECIONADO", "MAGENTA");
+					TELA_Texto("TECLADO ALFA SELECIONADO", "MAGENTA");
 
 					TELA_LimpaTela();
 
@@ -663,6 +673,7 @@ void TELA_VerificaTouch_LOGIN()
 
 			}
 
+			/*
 
 			//botao ADMIN:
 			if (gTouch_X >= 700 && gTouch_X <= 700 + 100)  
@@ -670,6 +681,7 @@ void TELA_VerificaTouch_LOGIN()
 
 				if (gTouch_Y >= 0 && gTouch_Y <= 0 + 100) 
 				{
+
 
 					gTelaRenderizada_LOGIN = false;
 					gModoOperacao = "ADMIN"; 
@@ -682,6 +694,8 @@ void TELA_VerificaTouch_LOGIN()
 				}
 
 			}
+
+			*/
 
 
 		}
@@ -828,7 +842,8 @@ void TELA_VerificaTouch_OPERACAO()
 void TELA_VerificaTouch_DEBUG()
 {
 
-	TELA_VerificaTouch_TECLADO();
+	//TELA_VerificaTouch_TECLADO_NUM();
+	TELA_VerificaTouch_TECLADO_ALFA();
 
 }
 

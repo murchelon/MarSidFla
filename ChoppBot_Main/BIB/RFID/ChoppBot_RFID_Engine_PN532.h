@@ -3,10 +3,6 @@ Adafruit PN532 NFC/RFID breakout boards
 https://www.adafruit.com/products/364
 */
 
-
-#define USE_SDIO 0
-
-const uint8_t SD_CHIP_SELECT = 24;
 /*
  * Set DISABLE_CHIP_SELECT to disable a second SPI device.
  * For example, with the Ethernet shield, set DISABLE_CHIP_SELECT

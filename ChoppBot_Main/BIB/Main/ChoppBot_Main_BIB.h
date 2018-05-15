@@ -25,8 +25,17 @@
 #include <Adafruit_PN532.h>
 #include "../RFID/ChoppBot_RFID_Engine_PN532.h" 
 
-// RFID MAIN
+// LEITOR RFID MAIN
 #include "../RFID/ChoppBot_RFID_Main.h" 
+
+
+
+// LEITOR SD Adafruit
+#include <SdFat.h>
+#include "../SD/ChoppBot_SD_Engine_SDFat.h" 
+
+// LEITOR SD MAIN
+#include "../SD/ChoppBot_SD_Main.h" 
 
 
 
@@ -38,15 +47,13 @@
 #include "../Tela/ChoppBot_Tela_Main.h" 
 
 
-// BIOMETRICO:
+// LEITOR BIOMETRICO ADAFRUIT
 #include <Adafruit_Fingerprint.h>
 #include <SoftwareSerial.h>
 #include "../Biometrico/ChoppBot_Bio_Engine_Adafruit_Fingerprint.h" 
+
+// LEITOR BIOMETRICO MAIN
 #include "../Biometrico/ChoppBot_Bio_Main.h" 
-
-
-// LEITOR SD
-#include "SdFat.h"
 
 
 

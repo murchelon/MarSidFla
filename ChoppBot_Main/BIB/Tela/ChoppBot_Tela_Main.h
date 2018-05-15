@@ -579,6 +579,11 @@ void TELA_VerificaTouch_LOGIN()
 			ret = RFID_Exec_Leitura();
 
 			LogTerm(ret);
+
+			ret = SD_TestaCartao();
+
+			LogTerm(ret);
+
 			
 		}
 

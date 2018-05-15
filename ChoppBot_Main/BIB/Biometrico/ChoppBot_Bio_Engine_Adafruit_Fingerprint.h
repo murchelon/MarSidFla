@@ -1,7 +1,6 @@
 
 
-#include <Adafruit_Fingerprint.h>
-#include <SoftwareSerial.h>
+
 
 
 SoftwareSerial mySerial(12, 13);

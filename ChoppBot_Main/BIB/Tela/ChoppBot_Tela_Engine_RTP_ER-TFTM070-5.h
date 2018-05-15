@@ -1,7 +1,7 @@
 /***************************************************
 //Web: http://www.buydisplay.com
 EastRising Technology Co.,LTD
-Examples for ER-TFTM070-5 
+Examples for ER-TFTM070-5 A
 Hardware SPI,4-Wire SPI Interface,5V Power Supply
 
 Basic Text Functions
@@ -10,8 +10,6 @@ Teensy3,Teensy3.1,Arduino UNO,Arduino YUN,Arduino Leonardo,Stellaris
 Works with Arduino 1.6.0 IDE 
 ****************************************************/
 
-#include <SPI.h>
-#include <RA8875.h>
 
 
 //Arduino DUE,Arduino mega2560,Arduino UNO

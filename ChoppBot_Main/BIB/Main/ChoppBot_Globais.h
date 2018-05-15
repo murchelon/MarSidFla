@@ -13,6 +13,9 @@
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Modo de operacao atual da maquina. indica qual a funcionalidade e telas que a maquina deve exibir em qualquer dado momento
 // Pode ser um dos valoes abaixo
@@ -24,19 +27,14 @@
 // ADMIN
 // DEBUG
 // TESTE
-
 String gModoOperacao = ""; 
 
 // var que define se a aplicacao esta no modo debug. isto faz com que algumas msgs de debug
 // sejam exibidas na tela e/ou no terminal
 bool gModoDebug;
 
-const unsigned long gTimeoutOpcao = 7000;		// tempo em ms para timeout das opcoes a serem escolhidas
-
-//const int gPin_BotaoDebug2 = 2;
-//const int gPin_BotaoDebug3 = 3;
-//const int gPin_BotaoDebug4 = 4;
-//const int gPin_BotaoDebug5 = 5;
+// tempo em ms para timeout das opcoes a serem escolhidas
+const unsigned long gTimeoutOpcao = 7000;		
 
 
 

@@ -11,25 +11,14 @@
 
 
 
-#include "BIB/Main/ChoppBot_Globais.h" 
-#include "BIB/Main/ChoppBot_Suporte.h" 
+#include "BIB/Main/ChoppBot_Main_BIB.h" 
 
-
-
-
-#include "BIB/Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
-#include "BIB/Tela/ChoppBot_Tela_Main.h" 
-
-
-
-#include "BIB/Biometrico/ChoppBot_Bio_Engine_Adafruit_Fingerprint.h" 
-#include "BIB/Biometrico/ChoppBot_Bio_Main.h" 
 
 
 
 
 //banco de dados:
-#include <EDB.h>
+//#include <EDB.h>
 
 
 

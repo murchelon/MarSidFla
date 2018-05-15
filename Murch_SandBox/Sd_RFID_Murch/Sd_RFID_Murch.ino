@@ -19,25 +19,18 @@ const uint8_t SD_CHIP_SELECT = 24;
  */
 const int8_t DISABLE_CHIP_SELECT = 24;
 
+
+
+
+
+
 SdFat sd;
-
-
-
-
-
-
-
-
 
 // serial output steam
 ArduinoOutStream cout(Serial);
 
-
-
-
 // global for card size
 uint32_t cardSize;
-
 
 // store error strings in flash
 #define sdErrorMsg(msg) sd.errorPrint(F(msg));

@@ -7,8 +7,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 // GLOBAIS
 #include "ChoppBot_Globais.h" 
+
 
 // Funcoes de suporte ChoppBot
 #include "ChoppBot_Suporte.h" 
@@ -18,11 +20,22 @@
 #include <SPI.h>
 
 
+// LEITOR RFID PN532 -- Murch
+#include <Wire.h>
+#include <Adafruit_PN532.h>
+#include "../RFID/ChoppBot_RFID_Engine_PN532.h" 
+
+// RFID MAIN
+#include "../RFID/ChoppBot_RFID_Main.h" 
+
+
+
 // TELA ER-TFTM070-5
 #include <RA8875.h>
 #include "../Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
-#include "../Tela/ChoppBot_Tela_Main.h" 
 
+// TELA MAIN
+#include "../Tela/ChoppBot_Tela_Main.h" 
 
 
 // BIOMETRICO:
@@ -32,7 +45,14 @@
 #include "../Biometrico/ChoppBot_Bio_Main.h" 
 
 
-//banco de dados:
+// LEITOR SD
+#include "SdFat.h"
+
+
+
+
+
+// BANCO DE DADOS EDB
 //#include <EDB.h>
 
 

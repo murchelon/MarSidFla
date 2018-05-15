@@ -36,12 +36,15 @@
 void InitApp()
 {
 
-    Serial.begin(9600);
+    Serial.begin(115200);       // 115200 pois o RFID precisa desta velocidade, para acompanharmos o que ele escreve no serial
 
+
+    // Wait for USB Serial 
     while (!Serial) 
     {
-        ; // wait for serial port to connect. Needed for native USB port only
-    } 
+        SysCall::yield();
+    }
+
 
 
     InicializaVars();

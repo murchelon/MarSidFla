@@ -403,6 +403,8 @@ void TELA_Render_Interface_LOGIN()
 			//LogTerm("3 - ABRE TECLADO NUMERICO");
 			LogTerm("3 - ABRE TECLADO ALFA");
 
+			LogTerm("4 - ADMIN");
+
 
 		}
 
@@ -563,17 +565,24 @@ void TELA_VerificaTouch_LOGIN()
 		}
 
 
-		if (retConsole == "1")
+		if (retConsole.toInt() == 1)
 		{
 			LogTerm("LEITOR BIOMETRICO SELECIONADO");
 		}
 
-		if (retConsole == "2")
+		if (retConsole.toInt() == 2)
 		{
 			LogTerm("LEITOR RFID SELECIONADO");
+
+			String ret;
+
+			ret = RFID_Exec_Leitura();
+
+			LogTerm(ret);
+			
 		}
 
-		if (retConsole == "3")
+		if (retConsole.toInt() == 3)
 		{
 			gModoOperacao = "DEBUG";
 			gTelaRenderizada_LOGIN = false;
@@ -586,7 +595,7 @@ void TELA_VerificaTouch_LOGIN()
 			delay(500);   
 		}
 
-		if ((retConsole == "ADMIN") || (retConsole  == "admin"))
+		if (retConsole.toInt() == 4)
 		{
 			gModoOperacao = "ADMIN"; 
 			gTelaRenderizada_LOGIN = false;

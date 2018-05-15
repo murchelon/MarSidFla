@@ -262,8 +262,8 @@ void InicializaVars()
 	gLedON_EstadoAtual = false;
 
 
-	gTela_Hardware = String("ER-TFTM070-5"); 		// tela LCD 7pol Touch Resistive
-	//gTela_Hardware = String("TERMINAL"); 		// saidas de texto para o terminal (console)	
+	//gTela_Hardware = String("ER-TFTM070-5"); 		// tela LCD 7pol Touch Resistive
+	gTela_Hardware = String("TERMINAL"); 		// saidas de texto para o terminal (console)	
 
 	// controle de render de tela
 	gTelaRenderizada_TecNum = false;

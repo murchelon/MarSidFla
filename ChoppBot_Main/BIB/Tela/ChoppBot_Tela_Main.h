@@ -215,6 +215,164 @@ void TELA_LogTerm_XY()
 
 
 
+
+void TELA_Render_MsgBox(String Texto)
+{
+
+	int MaxChars = 40;
+
+
+	int Size_Fundo_W;
+	int Size_Fundo_H;
+
+	int TamanhoTexto;
+	int TotalLinhas;
+	
+	int ContaLinha;
+
+	int Size_Char_W = 16;
+	int Size_Char_H = 25;
+
+	int Inicio_X = Size_Char_W;
+	//int Inicio_Y = Size_Char_H;
+	int Inicio_Y = 100;
+
+	String Texto_Ajustado = "";
+
+	if (gTelaRenderizada_MSGBOX == false)
+	{
+
+
+		// ajusta texto para incorporar quebra de linha
+
+
+		TamanhoTexto = Texto.length();
+
+		if (TamanhoTexto <= MaxChars)
+		{
+			TotalLinhas = 1;
+		}
+		else
+		{
+			if (TamanhoTexto % MaxChars == 0)
+			{
+				TotalLinhas = floor(TamanhoTexto / MaxChars);
+			}
+			else
+			{
+				TotalLinhas = floor(TamanhoTexto / MaxChars) + 1;
+			}
+
+			
+		}
+		
+
+		Size_Fundo_W = (TamanhoTexto * Size_Char_W) + 3;
+		Size_Fundo_H = (TotalLinhas * Size_Char_H) + 2;
+
+
+		if (Size_Fundo_W > ((MaxChars * Size_Char_W) + 3))
+		{
+			Size_Fundo_W = (MaxChars * Size_Char_W) + 3;
+		}
+
+
+		//int Fundo_X = Inicio_X - Size_Char_W;
+		int Fundo_X = 380 - Size_Fundo_W / 2;
+		int Fundo_Y = Inicio_Y - Size_Char_H;
+		int Fundo_W = Size_Fundo_W + 2 * Size_Char_W;
+		int Fundo_H = TotalLinhas * Size_Char_H + 2 * Size_Char_H;
+
+		//sombra
+		tft.fillRoundRect(Fundo_X + 8, Fundo_Y + 8, Fundo_W, Fundo_H, 0, RA8875_MAGENTA);
+		
+		//fundo/frame branco
+		tft.fillRoundRect(Fundo_X, Fundo_Y, Fundo_W, Fundo_H, 0, RA8875_WHITE);
+
+		
+		//tft.fillRoundRect(Inicio_X - Size_Char_W + 2, Inicio_Y - Size_Char_H + 2, Size_Fundo_W + 2 * Size_Char_W - 4, Size_Fundo_H + 2 * Size_Char_H - 4, 0, RA8875_BLUE);
+
+		for (ContaLinha = 1 ; ContaLinha <= TotalLinhas ; ContaLinha++)
+		{
+
+			int Linha_X = Fundo_X + 2;
+			int Linha_Y = Fundo_Y + 2;
+			int Linha_W = Size_Fundo_W + 2 * Size_Char_W - 4;
+			int Linha_H = Size_Fundo_H + 2 * Size_Char_H - 6;
+
+			tft.fillRoundRect(Linha_X, Linha_Y, Linha_W, Linha_H, 0, RA8875_BLUE);
+	
+		}
+
+	    //tft.fillRoundRect(Inicio_X, Inicio_Y, Size_Fundo_W, Size_Fundo_H, 20, RA8875_WHITE);
+		//tft.fillRoundRect(LabelNum_PosAtual_X + 2, LabelNum_PosAtual_Y + 2, Size_LabelNum_W - 4, Size_LabelNum_H, 0, RA8875_MAGENTA);
+					
+		tft.setFontScale(1); 
+		tft.setTextColor(RA8875_WHITE);
+		//tft.setTextColor(RA8875_GREEN);
+
+
+		//int Texto_X = Inicio_X + 1;
+		int Texto_X = (380 - Size_Fundo_W / 2) + 1 + Size_Char_W;
+		int Texto_Y = Inicio_Y - 4;
+
+		for (ContaLinha = 1 ; ContaLinha <= TotalLinhas ; ContaLinha++)
+		{
+
+			//Texto_Y += (ContaLinha - 1) * Size_Char_H;
+			if (ContaLinha == 1)
+			{
+				Texto_Y = Inicio_Y - 4;
+			}
+			else
+			{
+				Texto_Y = (Inicio_Y - 4) + (ContaLinha - 1) * Size_Char_H;
+			}
+
+			tft.setCursor (Texto_X, Texto_Y);
+
+			int TextoString_Inicio = (ContaLinha - 1) * MaxChars;
+			int TextoString_Fim = (ContaLinha) * MaxChars;
+
+			tft.print(Texto.substring(TextoString_Inicio, TextoString_Fim));
+			//tft.print(Texto.substring(0, MaxChars));
+
+			//Texto_Y = ((ContaLinha - 1) * Size_Char_H);
+	
+		}		
+
+		/*
+
+		LogTerm("TamanhoTexto = " + String(TamanhoTexto));
+		LogTerm("MaxChars = " + String(MaxChars));
+		LogTerm("TotalLinhas = " + String(TotalLinhas));
+		LogTerm("Size_Char_W = " + String(Size_Char_W));
+		LogTerm("Size_Char_H = " + String(Size_Char_H));
+		LogTerm("Size_Fundo_W = " + String(Size_Fundo_W));
+		LogTerm("Size_Fundo_H = " + String(Size_Fundo_H));
+		LogTerm("==================");		
+		*/
+
+	}
+
+		gTelaRenderizada_MSGBOX = true;
+				
+
+
+}
+
+
+
+
+
+//Estes includes tem de ficar neste local devido a ordem das chamadas das funcoes. Senao, da erro
+#include "../Teclado/ChoppBot_Teclado_NUM.h" 
+#include "../Teclado/ChoppBot_Teclado_ALFA.h" 
+
+#include "../RFID/ChoppBot_RFID_Main.h" 
+
+
+
 // Funcao que inicializa a tela sendo usada no momento
 void TELA_IniciaTela()
 {
@@ -238,7 +396,6 @@ void TELA_IniciaTela()
 	}
 
 }
-
 
 
 
@@ -365,12 +522,12 @@ void TELA_Render_Interface_STANDBY()
 		{  
 
 			tft.setTextColor(RA8875_YELLOW);
-			tft.setCursor (195, 150);
+			tft.setCursor (210, 150);
 			tft.setFontScale(3); 
 			tft.print ("ChoppBot 1.0");    
 
 			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (180, 310);
+			tft.setCursor (195, 310);
 			tft.setFontScale(1); 
 			tft.print ("Toque na tela para iniciar");    
 
@@ -488,12 +645,6 @@ void TELA_Render_Interface_OPERACAO()
 
 
 
-//Este include tem de ficar neste local devido a ordem das chamadas das funcoes. Senao, da erro
-#include "../Teclado/ChoppBot_Teclado_NUM.h" 
-#include "../Teclado/ChoppBot_Teclado_ALFA.h" 
-
-
-
 void TELA_VerificaTouch_STANDBY()
 {
 
@@ -572,17 +723,15 @@ void TELA_VerificaTouch_LOGIN()
 
 		if (retConsole.toInt() == 2)
 		{
-			LogTerm("LEITOR RFID SELECIONADO");
+			LogTerm("LEITOR RFID SELECIONADO VIA TERMINAL");
 
-			String ret;
 
-			ret = RFID_Exec_Leitura();
+			gModoOperacao_SubTela = "LER_RFID";
 
-			LogTerm(ret);
 
-			ret = SD_TestaCartao();
+			gTelaRenderizada_LOGIN = false;
 
-			LogTerm(ret);
+
 
 			
 		}
@@ -658,10 +807,27 @@ void TELA_VerificaTouch_LOGIN()
 
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
-					LogTerm("LEITOR RFID SELECIONADO");
-					TELA_Texto("LEITOR RFID SELECIONADO", "AZUL");
-					//delay(500);
-					//TELA_LogTerm_XY();        
+
+					//TELA_Texto("LEITOR RFID SELECIONADO VIA TELA", "AZUL");
+
+
+					LogTerm("LEITOR RFID SELECIONADO VIA TELA");
+
+					//LogTerm("Aproxime o cartao da leitora RFID ...");
+
+					gModoOperacao_SubTela = "LER_RFID";
+
+
+					gTelaRenderizada_LOGIN = false;
+
+					TELA_LimpaTela();
+
+					delay(500);   
+
+
+
+
+
 				}
 
 			}
@@ -860,6 +1026,7 @@ void TELA_VerificaTouch_DEBUG()
 	TELA_VerificaTouch_TECLADO_ALFA();
 
 }
+
 
 
 

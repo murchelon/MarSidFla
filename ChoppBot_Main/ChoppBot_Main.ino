@@ -17,10 +17,6 @@
 
 
 
-//banco de dados:
-//#include <EDB.h>
-
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,9 +45,13 @@ void InitApp()
 
     InicializaVars();
 
+    // Inicia o LED do rfid
+    pinMode(ctPINO_LED_RFID, OUTPUT);
 
+    // Inicia o BUZZER
+    pinMode(ctPINO_BUZZER, OUTPUT);
 
-
+    // inicia o led interno arduino, usado para mostrar que o programa esta rodando
     pinMode(LED_BUILTIN, OUTPUT);
 
     //pinMode(BOTAO1_PINO, INPUT);
@@ -92,7 +92,7 @@ void InitApp()
 
     TELA_IniciaTela();
 
-
+    
 
 
 
@@ -119,7 +119,14 @@ void Exec_INICIO()
 {
 
     LogTerm("== [Modo Atual: INICIO] ==");
+
+    BUZZER_TocaSom("LIGAR"); 
+
     
+    gModoOperacao = "STANDBY";
+
+    
+
     //Led_Light(true);
 
     //SD_Init();
@@ -129,10 +136,15 @@ void Exec_INICIO()
     //Init_Database();
 
 
-    
 
-    gModoOperacao = "STANDBY";
+    //TELA_Render_MsgBox("X");
+    //TELA_Render_MsgBox("Meu nome e MARCELO wef webfwef dd d dX");
+    //TELA_Render_MsgBox("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456");
+    //TELA_Render_MsgBox("12345678901234567890!@#$%^&*()abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
+    //TELA_Render_MsgBox("Ola! Meu nome e MARCELO ROCHA. Eu estou verificando o tamanho desta caixa de msgbox para que seja possivel escerever um texto demasiadamente grande sem problemas. Obrigado.");
+    //TELA_Render_MsgBox("Ola! Meu nome e MARCELO ROCHA.^Eu estou verificando o tamanho desta caixa de msgbox^para que seja possivel escerever um texto demasiadamente grande sem problemas. Obrigado.^^Teste^opa");
+    //TELA_Render_MsgBox("Teste de oula linha:^Linha2^Linha3^Linha4");
 
 }
 
@@ -432,6 +444,30 @@ void Exec_STANDBY()
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  ROTINAS SECUNDARIAS (Rotinas como tela para edicao de dados, ler rfid, etc)
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+   
+
+
+void Exec_LER_RFID()
+{
+    if (gTelaRenderizada_LER_RFID == false)
+    {
+        LogTerm("== [Modo Atual: LOGIN -- SubTela: LER_RFID] ==");
+        TELA_Render_Interface_LER_RFID();
+    }  
+
+    
+
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -460,7 +496,18 @@ void TestaInterrupts()
 
     if (gModoOperacao == "LOGIN")
     {
-        TELA_VerificaTouch_LOGIN();
+
+        if (gModoOperacao_SubTela == "")
+        {
+            TELA_VerificaTouch_LOGIN();
+        }
+
+        if (gModoOperacao_SubTela == "LER_RFID")
+        {
+            TELA_VerificaTouch_LER_RFID();
+        }
+
+        
     }
 
     if (gModoOperacao == "OPERACAO")
@@ -504,10 +551,9 @@ void TestaInterrupts()
 
 
 // INTERNA ARDUINO: SETUP
-void setup() {
-  
-    InitApp();
-  
+void setup()
+{  
+    InitApp();  
 }
 
 
@@ -549,7 +595,18 @@ void loop()
 
     if (gModoOperacao == "LOGIN")
     {
-        Exec_LOGIN();
+
+        if (gModoOperacao_SubTela == "")
+        {
+            Exec_LOGIN();  
+        }
+        
+       if (gModoOperacao_SubTela == "LER_RFID")
+        {
+            Exec_LER_RFID();  
+        }
+        
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

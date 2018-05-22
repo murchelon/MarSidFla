@@ -1,11 +1,27 @@
 
 
+String SD_IniciaCartao()
+{
+
+}
+
+
+String SD_GetFirstRegFromFile(String FullPathFile)
+{
+
+}
+
+
+
+
+
+
 String SD_TestaCartao()
 {
 
 	uint32_t cardSize;
 
-	SdFat sd;
+	SdFat SD;
 
 	String ret = "1|";
 
@@ -14,7 +30,7 @@ String SD_TestaCartao()
 	uint32_t t = millis();
 
 	// not over 50 MHz. Try a lower speed if SPI errors occur.
-	if (!sd.cardBegin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
+	if (!SD.cardBegin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
 	{
 		LogTerm("SD: Falha na inicializacao do cartao SD");
 
@@ -26,7 +42,7 @@ String SD_TestaCartao()
 
 	ret += String(t) + String("ms|");
 
-	cardSize = sd.card()->cardSize();
+	cardSize = SD.card()->cardSize();
 
 	if (cardSize == 0) 
 	{
@@ -42,7 +58,7 @@ String SD_TestaCartao()
 	//cout << F("\ninit time: ") << t << " ms" << endl;
 	//cout << F("\nCard type: ");
 
-	switch (sd.card()->type())
+	switch (SD.card()->type())
 	{
 		case SD_CARD_TYPE_SD1:
 			ret += "SD1";
@@ -71,3 +87,5 @@ String SD_TestaCartao()
 
 	return ret;	
 }
+
+

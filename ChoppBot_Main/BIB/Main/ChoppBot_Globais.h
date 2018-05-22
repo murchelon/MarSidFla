@@ -28,6 +28,7 @@
 // DEBUG
 // TESTE
 String gModoOperacao = ""; 
+String gModoOperacao_SubTela = "";
 
 // var que define se a aplicacao esta no modo debug. isto faz com que algumas msgs de debug
 // sejam exibidas na tela e/ou no terminal
@@ -36,7 +37,8 @@ bool gModoDebug;
 // tempo em ms para timeout das opcoes a serem escolhidas
 const unsigned long gTimeoutOpcao = 7000;		
 
-
+// pino do buzzer
+#define ctPINO_BUZZER 32
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -211,6 +213,49 @@ bool gTelaRenderizada_ADMIN;
 bool gTelaRenderizada_DEBUG;
 bool gTelaRenderizada_TESTE;
 
+bool gTelaRenderizada_LER_RFID;
+
+bool gTelaRenderizada_MSGBOX;
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// RFID
+// ----
+//
+// variavel que controla qual o RFID que estamos usando
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// var que define a tela sendo usada
+String gRFID_Hardware;		// ER-TFTM070-5 | TERMINAL definidos na rotina de iniciar vars
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// VARIAVEIS DE SESSAO
+// -------------------
+//
+// variaveis qye controlam o login e pessoa logada
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+bool gSessao_Logado;
+int gSessao_IDUser;
+int gSessao_Nivel;
+String gSessao_Nome;
+
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,30 +285,32 @@ int EstadoBotao_Rele1 = 0;
 
 volatile uint8_t lastflowpinstate;
 
-// include the SD library:
-//#include <SPI.h>
-//#include <SD.h>
-
-
-
-
 
 
 // Init global vars with their operational values
 void InicializaVars() 
 {
+
+	// variaveis princiais
 	gModoOperacao = "INICIO";  
+	gModoOperacao_SubTela = "";
+	
+	gModoDebug = true;
+	//gModoDebug = false;
 
-	//gModoDebug = true;
-	gModoDebug = false;
 
-
+	// led de indicao de funcionamento
 	gLedON_time_inicio = millis();
 	gLedON_EstadoAtual = false;
 
 
-	//gTela_Hardware = String("ER-TFTM070-5"); 		// tela LCD 7pol Touch Resistive
-	gTela_Hardware = String("TERMINAL"); 		// saidas de texto para o terminal (console)	
+	// Modo de output a ser usado
+	gTela_Hardware = String("ER-TFTM070-5"); 		// tela LCD 7pol Touch Resistive
+	//gTela_Hardware = String("TERMINAL"); 		// saidas de texto para o terminal (console)	
+
+	// RFID - Hardware utilizado
+	//gRFID_Hardware = "MFRC522";
+	gRFID_Hardware = "PN532";
 
 	// controle de render de tela
 	gTelaRenderizada_TecNum = false;
@@ -275,9 +322,18 @@ void InicializaVars()
 	gTelaRenderizada_ADMIN = false;
 	gTelaRenderizada_DEBUG = false;
 	gTelaRenderizada_TESTE = false;
-
+	gTelaRenderizada_LER_RFID = false;
+	gTelaRenderizada_MSGBOX = false;
+	//teclado
 	gTecladoNum_ValAtual = String("");
 	gTecladoAlfa_ValAtual = String("");
-										 	
+				
+
+	// Variaveis de sessao:
+	gSessao_Logado = false;
+	gSessao_IDUser = -1;
+	gSessao_Nivel = -1;
+	gSessao_Nome = "";
+						 	
 
 }

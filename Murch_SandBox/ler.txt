@@ -15,3 +15,13 @@ https://github.com/miguelbalboa/rfid/issues/130
 https://github.com/miguelbalboa/rfid
 
 https://arduino.stackexchange.com/questions/48952/rfid-reader-and-sd-card-shield-wont-work-together
+
+https://www.baldengineer.com/arduino-f-macro.html
+
+
+;; calculadora de resistor:
+https://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-resistor-color-code-4-band
+
+
+tela:
+https://os.mbed.com/components/RA8875-Based-Display/

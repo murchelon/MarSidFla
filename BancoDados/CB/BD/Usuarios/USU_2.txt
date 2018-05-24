@@ -1,2 +1,2 @@
-IDUser;CPF;DataCad;Nome;Nivel
-2;2;18/05/2018;Sidney;500
+IDUser;CPF;DataCad;Nome;Nivel;SaldoAtual
+2;28965321544;18/05/2018;Cebola;500;1000

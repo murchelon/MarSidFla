@@ -1,2 +1,2 @@
-IDUser;CPF;DataCad;Nome;Nivel
-3;3;18/05/2018;Joao da Silva;100
+IDUser;CPF;DataCad;Nome;Nivel;SaldoAtual
+3;55478512544;18/05/2018;Operador Loja 1;300;0

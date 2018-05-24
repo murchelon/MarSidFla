@@ -553,7 +553,7 @@ void TELA_Render_Interface_LOGIN()
 		if (gTela_Hardware == "TERMINAL")
 		{  
 
-			LogTerm("Ola! Seja vem vindo!");
+			LogTerm("Ola! Seja bem vindo!");
 			LogTerm("Escolha o seu metodo de identificacao e digite o numero correspondente no console:");
 			LogTerm("1 - LEITOR BIOMETRICO");
 			LogTerm("2 - LEITOR DE CARTAO");

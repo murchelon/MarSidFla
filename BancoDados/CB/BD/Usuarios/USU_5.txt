@@ -1,0 +1,2 @@
+IDUser;CPF;DataCad;Nome;Nivel;SaldoAtual
+5;66587458966;18/05/2018;Cliente1;100;200

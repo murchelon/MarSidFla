@@ -242,20 +242,249 @@ void TELA_Render_Interface_LER_RFID()
 		{
 			Login_RFID = Login_RFID.substring(2);
 
+			
+
 			String ret;
 
+			//ret = SD_TestaCartao();
+
+			//LogTerm(ret);	
+
+			// zera as vars para cada tentativa de login
+			gSessao_Logado = false;
+			gSessao_IDUser = -1;
+			gSessao_Nome = "";
+			gSessao_Nivel = -1;
+
+
+			String retIDUser = "";
+
+			retIDUser = BANCO_GetIDUserFromLogin(Login_RFID, "RFID");
+
+
+			if (gModoDebug == true)
+			{
+				LogTerm("BANCO_GetIDUserFromLogin(" + Login_RFID + ") = " + retIDUser);
+			}
 			
-			BUZZER_TocaSom("SUCESSO");
 
 
-			ret = SD_TestaCartao();
+			if (retIDUser.substring(0, 2) == "-1")
+			{
+				// erro foda de sd
 
-			LogTerm(ret);	
+				BUZZER_TocaSom("ERRO");
+
+				// ocorreu um erro. imprime a msg de erro na tela
+				if (gTela_Hardware == "TERMINAL")
+				{  
+					LogTerm("Ocorreu um erro ao efetuar a leitura do cartao SD: Login");
+				}
+
+				if (gTela_Hardware == "ER-TFTM070-5")
+				{  
+
+					TELA_LimpaTela();
+
+					
+
+					if (gModoDebug == true)
+					{
+						TELA_Render_MsgBox("Ocorreu um erro ao efetuar a leitura do cartao SD: Login");
+					}
+					else
+					{
+						TELA_Render_MsgBox("Ocorreu um erro ao efetuar a leitura do cartao SD: Login:  " + retIDUser);
+					}
+
+					delay(7000);
+
+					TELA_LimpaTela();
+
+					gTelaRenderizada_MSGBOX = false;
+					gTelaRenderizada_LER_RFID = false;
+					
+				}
 
 
-			ret = BANCO_GetUserFromLogin(Login_RFID, "RFID");
 
-			LogTerm(ret);	
+				
+
+			}
+
+			if (retIDUser.substring(0, 1) == "0")
+			{
+				// erro nao existe o LOGIN CADASTRADO
+
+				BUZZER_TocaSom("ERRO");
+
+				// ocorreu um erro. imprime a msg de erro na tela
+				if (gTela_Hardware == "TERMINAL")
+				{  
+					LogTerm("Cartao nao cadastrado. Por favor procure o caixa para maiores informacoes");
+
+
+				}
+
+				if (gTela_Hardware == "ER-TFTM070-5")
+				{  
+
+					TELA_LimpaTela();
+
+					
+
+					if (gModoDebug == true)
+					{
+						TELA_Render_MsgBox("Cartao nao cadastrado. Por favor procure o caixa para maiores informacoes");
+					}
+					else
+					{
+						TELA_Render_MsgBox("Cartao nao cadastrado. Por favor procure o caixa para maiores informacoes: " + retIDUser);
+					}
+
+					delay(7000);
+
+					TELA_LimpaTela();
+
+					gTelaRenderizada_MSGBOX = false;
+					gTelaRenderizada_LER_RFID = false;
+					
+				}
+
+
+
+
+			}
+
+			if (retIDUser.substring(0, 1) == "1")
+			{
+	
+
+				//LogTerm("IDUser: " + retIDUser);
+
+				String retUserData = "";
+
+				retUserData = BANCO_GetUserDataFromIDUser(retIDUser.substring(2));
+
+				if (gModoDebug == true)
+				{
+					LogTerm("BANCO_GetUserDataFromIDUser(" + retIDUser.substring(2) + ") = " + retUserData);
+				}
+
+				//LogTerm("retUserData: " + retUserData);
+
+				if (retUserData.substring(0, 2) == "-1")
+				{
+					// erro foda de sd
+
+					BUZZER_TocaSom("ERRO");
+
+					// ocorreu um erro. imprime a msg de erro na tela
+					if (gTela_Hardware == "TERMINAL")
+					{  
+						LogTerm("Ocorreu um erro ao efetuar a leitura do cartao SD: Usuario");
+
+					}
+
+					if (gTela_Hardware == "ER-TFTM070-5")
+					{  
+
+						TELA_LimpaTela();
+
+						
+
+						if (gModoDebug == true)
+						{
+							TELA_Render_MsgBox("Ocorreu um erro ao efetuar a leitura do cartao SD: Usuario");
+						}
+						else
+						{
+							TELA_Render_MsgBox("Ocorreu um erro ao efetuar a leitura do cartao SD: Usuario:  " + retUserData);
+						}
+
+						delay(7000);
+
+						TELA_LimpaTela();
+
+						gTelaRenderizada_MSGBOX = false;
+						gTelaRenderizada_LER_RFID = false;
+						
+					}
+
+
+				}
+
+				if (retUserData.substring(0, 1) == "0")
+				{
+
+
+					// erro nao existe o USUARIO CADASTRADO
+
+					BUZZER_TocaSom("ERRO");
+
+					// ocorreu um erro. imprime a msg de erro na tela
+					if (gTela_Hardware == "TERMINAL")
+					{  
+						LogTerm("Usuario nao localizado. Este cartao esta associado a um usuario que nao foi localizado no sistema. Por favor procure o caixa para maiores informacoes");
+
+					}
+
+					if (gTela_Hardware == "ER-TFTM070-5")
+					{  
+
+						TELA_LimpaTela();
+
+						
+
+						if (gModoDebug == true)
+						{
+							TELA_Render_MsgBox("Usuario nao localizado. Este cartao esta associado a um usuario que nao foi localizado no sistema. Por favor procure o caixa para maiores informacoes");
+						}
+						else
+						{
+							TELA_Render_MsgBox("Usuario nao localizado. Este cartao esta associado a um usuario que nao foi localizado no sistema. Por favor procure o caixa para maiores informacoes: " + retUserData);
+						}
+
+						delay(7000);
+
+						TELA_LimpaTela();
+
+						gTelaRenderizada_MSGBOX = false;
+						gTelaRenderizada_LER_RFID = false;
+						
+					}
+
+				}
+
+
+
+
+				if (retUserData.substring(0, 1) == "1")
+				{
+					// usuario existe
+
+					BUZZER_TocaSom("SUCESSO");
+
+
+					gSessao_Logado = true;
+
+					gSessao_IDUser = retIDUser.substring(2).toInt();
+					gSessao_Nome = getValue(retUserData.substring(2), ';', 3);
+					gSessao_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
+
+
+				}
+
+
+
+			}
+
+
+			
+			LogTerm("gSessao_Logado: " + String(gSessao_Logado));
+			LogTerm("gSessao_IDUser: " + String(gSessao_IDUser));
+			LogTerm("gSessao_Nivel: " + String(gSessao_Nivel));
+			LogTerm("gSessao_Nome: " + gSessao_Nome);
 
 
 

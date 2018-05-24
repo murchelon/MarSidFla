@@ -1,15 +1,97 @@
 
 
-String SD_IniciaCartao()
-{
 
-}
 
 
 String SD_GetFirstRegFromFile(String FullPathFile)
 {
 
+	SdFat SD;
+
+	File file;
+
+	String ret = "1|";
+
+	String buff = "";
+
+	int ContaEnter = 0;
+
+	int CharAtual;
+
+	uint32_t t = millis();
+
+	// not over 50 MHz. Try a lower speed if SPI errors occur.
+	if (!SD.begin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
+	{
+		LogTerm("SD: Falha na inicializacao do cartao SD");
+
+		ret = "-1|Falha na inicializacao do cartao SD";
+
+		return ret;	
+	}
+
+	t = millis() - t;	
+
+	//FullPathFile_Login = Login + ".txt";
+
+
+	// Create the file.
+	file = SD.open(FullPathFile, FILE_READ);
+	if (!file) 
+	{
+		LogTerm("SD: Falha na abertura do arquivo: " + FullPathFile);
+
+		ret = "-2|Falha na abertura do arquivo: " + FullPathFile;
+
+		return ret;	
+	}
+	else
+	{
+
+		if (gModoDebug == true)
+		{
+			LogTerm("SD: Arquivo aberto com sucesso: " + FullPathFile);
+		}
+		
+
+		while (file.available()) 
+		{
+			//LogTerm(file.read());
+
+			CharAtual = file.read();
+
+			if (CharAtual == 13)
+			{
+				ContaEnter++;
+			}
+			
+			if (ContaEnter >= 1)
+			{
+				if ((CharAtual != 10) && (CharAtual != 13))
+				{
+					ret += CharFromAsc2(CharAtual);
+
+					//LogTerm(CharAtual);
+					//Serial.write(CharAtual);
+				}
+				
+			}
+
+			//Serial.write(CharAtual);
+			//Serial.println(CharAtual);
+
+			//LogTerm(CharAtual);
+			
+		}		
+
+	}
+
+	file.close();
+
+	return ret;
 }
+
+
 
 
 

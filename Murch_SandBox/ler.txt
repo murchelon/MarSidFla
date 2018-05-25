@@ -25,3 +25,10 @@ https://www.digikey.com/en/resources/conversion-calculators/conversion-calculato
 
 tela:
 https://os.mbed.com/components/RA8875-Based-Display/
+
+MEEEU:
+http://www.rinkydinkelectronics.com/library.php?id=92
+
+https://forum.arduino.cc/index.php?topic=256491.0
+
+

@@ -176,3 +176,13 @@ String CharFromAsc2(int Asc2Value)
 
     return String(ret);
 }
+
+// retorna a cor em int16 a partir de rgb
+uint16_t rgb565_from_triplet(uint8_t red, uint8_t green, uint8_t blue)
+{
+  red   >>= 3;
+  green >>= 2;
+  blue  >>= 3;
+  return (red << 11) | (green << 5) | blue;
+}
+

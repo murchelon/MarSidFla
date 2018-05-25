@@ -92,7 +92,7 @@ void InitApp()
 
     TELA_IniciaTela();
 
-    
+    BUZZER_TocaSom("LIGAR");
 
 
 
@@ -120,31 +120,18 @@ void Exec_INICIO()
 
     LogTerm("== [Modo Atual: INICIO] ==");
 
-    BUZZER_TocaSom("LIGAR"); 
-
     
     gModoOperacao = "STANDBY";
 
-    
 
-    //Led_Light(true);
-
-    //SD_Init();
-
-    //ShowExample_DB();
-
-    //Init_Database();
-
-
-
-    //TELA_Render_MsgBox("X");
+    //TELA_Render_MsgBox("", "X");
     //TELA_Render_MsgBox("Meu nome e MARCELO wef webfwef dd d dX");
     //TELA_Render_MsgBox("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456");
     //TELA_Render_MsgBox("12345678901234567890!@#$%^&*()abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
     //TELA_Render_MsgBox("Ola! Meu nome e MARCELO ROCHA. Eu estou verificando o tamanho desta caixa de msgbox para que seja possivel escerever um texto demasiadamente grande sem problemas. Obrigado.");
-    //TELA_Render_MsgBox("Ola! Meu nome e MARCELO ROCHA.^Eu estou verificando o tamanho desta caixa de msgbox^para que seja possivel escerever um texto demasiadamente grande sem problemas. Obrigado.^^Teste^opa");
-    //TELA_Render_MsgBox("Teste de oula linha:^Linha2^Linha3^Linha4");
+    //TELA_Render_MsgBox("Super teste de Janela", "Ola! Meu nome e MARCELO ROCHA.^Eu estou verificando o tamanho desta caixa de msgbox^para que seja possivel escerever um texto demasiadamente grande sem problemas. Obrigado.^^Teste^opa");
+    //TELA_Render_MsgBox("Teste de Enter", "Teste de oula linha:^Linha2");
 
 }
 

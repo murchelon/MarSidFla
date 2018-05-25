@@ -1,6 +1,31 @@
 
 
 
+#define Black           0x0000      /*   0,   0,   0 */
+#define Navy            0x000F      /*   0,   0, 128 */
+#define DarkGreen       0x03E0      /*   0, 128,   0 */
+#define DarkCyan        0x03EF      /*   0, 128, 128 */
+#define Maroon          0x7800      /* 128,   0,   0 */
+#define Purple          0x780F      /* 128,   0, 128 */
+#define Olive           0x7BE0      /* 128, 128,   0 */
+#define LightGrey       0xC618      /* 192, 192, 192 */
+#define DarkGrey        0x7BEF      /* 128, 128, 128 */
+#define Blue            0x001F      /*   0,   0, 255 */
+#define Green           0x07E0      /*   0, 255,   0 */
+#define Cyan            0x07FF      /*   0, 255, 255 */
+#define Red             0xF800      /* 255,   0,   0 */
+#define Magenta         0xF81F      /* 255,   0, 255 */
+#define Yellow          0xFFE0      /* 255, 255,   0 */
+#define White           0xFFFF      /* 255, 255, 255 */
+#define Orange          0xFD20      /* 255, 165,   0 */
+#define GreenYellow     0xAFE5      /* 173, 255,  47 */
+#define Pink            0xF81F
+
+//#define CinzaShadow     		rgb565_from_triplet(205, 205, 205)       /* 205, 205, 205 */
+#define CinzaShadow     		rgb565_from_triplet(99, 99, 99)       /* 205, 205, 205 */
+#define CinzaFundoTitMsgBox     	rgb565_from_triplet(201, 201, 201)       /* 205, 205, 205 */
+
+
 
 
 
@@ -216,7 +241,7 @@ void TELA_LogTerm_XY()
 
 
 
-void TELA_Render_MsgBox(String Texto)
+void TELA_Render_MsgBox(String Titulo, String Texto)
 {
 
 	int MaxChars = 40;
@@ -235,9 +260,19 @@ void TELA_Render_MsgBox(String Texto)
 
 	int Inicio_X = Size_Char_W;
 	//int Inicio_Y = Size_Char_H;
-	int Inicio_Y = 100;
+	int Inicio_Y = 150;
 
 	String Texto_Ajustado = "";
+
+	int BarraTitulo_H;
+
+	BarraTitulo_H = 40;
+
+	if (Titulo == "")
+	{
+		BarraTitulo_H = 0;
+	}
+
 
 	if (gTelaRenderizada_MSGBOX == false)
 	{
@@ -266,7 +301,19 @@ void TELA_Render_MsgBox(String Texto)
 			
 		}
 		
+		/*
+		for (int x=0 ; x <= TamanhoTexto ; x++)
+		{
+			if (Texto.substring(x, x+1) == "^")
+			{
+				TotalLinhas++;				
+			}
 
+			//LogTerm("Char: " + Texto.substring(x, 1) + " / TotalLinhas = " + TotalLinhas);
+
+		}		
+		*/
+		
 		Size_Fundo_W = (TamanhoTexto * Size_Char_W) + 3;
 		Size_Fundo_H = (TotalLinhas * Size_Char_H) + 2;
 
@@ -284,10 +331,30 @@ void TELA_Render_MsgBox(String Texto)
 		int Fundo_H = TotalLinhas * Size_Char_H + 2 * Size_Char_H;
 
 		//sombra
-		tft.fillRoundRect(Fundo_X + 8, Fundo_Y + 8, Fundo_W, Fundo_H, 0, RA8875_MAGENTA);
+		tft.fillRoundRect(Fundo_X + 8, Fundo_Y - BarraTitulo_H + 8, Fundo_W, Fundo_H + BarraTitulo_H, 0, CinzaShadow);
 		
+
+
+
 		//fundo/frame branco
 		tft.fillRoundRect(Fundo_X, Fundo_Y, Fundo_W, Fundo_H, 0, RA8875_WHITE);
+
+		
+		//titulo
+		if (Titulo != "")
+		{
+			tft.fillRoundRect(Fundo_X, Fundo_Y - BarraTitulo_H, Fundo_W, BarraTitulo_H, 0, RA8875_WHITE);
+
+			tft.fillRoundRect(Fundo_X + 2, Fundo_Y - BarraTitulo_H + 2, Fundo_W - 4, BarraTitulo_H - 2, 0, CinzaFundoTitMsgBox);
+
+			tft.setFontScale(1); 
+			tft.setTextColor(RA8875_BLACK);
+			tft.setCursor (Fundo_X + 6, Fundo_Y - BarraTitulo_H + 4);
+			tft.print(Titulo);			
+		}
+
+
+
 
 		
 		//tft.fillRoundRect(Inicio_X - Size_Char_W + 2, Inicio_Y - Size_Char_H + 2, Size_Fundo_W + 2 * Size_Char_W - 4, Size_Fundo_H + 2 * Size_Char_H - 4, 0, RA8875_BLUE);
@@ -316,6 +383,11 @@ void TELA_Render_MsgBox(String Texto)
 		int Texto_X = (380 - Size_Fundo_W / 2) + 1 + Size_Char_W;
 		int Texto_Y = Inicio_Y - 4;
 
+
+
+		String LinhaToPrint;
+
+
 		for (ContaLinha = 1 ; ContaLinha <= TotalLinhas ; ContaLinha++)
 		{
 
@@ -334,7 +406,17 @@ void TELA_Render_MsgBox(String Texto)
 			int TextoString_Inicio = (ContaLinha - 1) * MaxChars;
 			int TextoString_Fim = (ContaLinha) * MaxChars;
 
-			tft.print(Texto.substring(TextoString_Inicio, TextoString_Fim));
+			LinhaToPrint = Texto.substring(TextoString_Inicio, TextoString_Fim);
+
+			// remove o espaco se for a primeira linha
+			if (LinhaToPrint.substring(0, 1) == " ")
+			{
+				LinhaToPrint = LinhaToPrint.substring(1);
+			}
+
+			//LinhaToPrint.replace("^", "\r\n\n");
+
+			tft.print(LinhaToPrint);
 			//tft.print(Texto.substring(0, MaxChars));
 
 			//Texto_Y = ((ContaLinha - 1) * Size_Char_H);

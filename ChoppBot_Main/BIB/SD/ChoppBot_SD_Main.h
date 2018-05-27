@@ -2,7 +2,8 @@
 
 
 
-
+#define MAX_TENTATIVA_READ 2
+#define DELAY_TENTATIVA_READ 1000
 
 // retorna formato: CodRetorno|descricao
 // Param byref: aRetRegs - contera todos os registros do arquivo, se existirem
@@ -26,10 +27,30 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 	uint32_t t = millis();
 
 
+
+	int ContaTentativa = 0;
+	bool SucessoTentativa = false;
+
+
 	// not over 50 MHz. Try a lower speed if SPI errors occur.
 	if (!SD.begin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
 	{
 		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
+
+		while ((ContaTentativa <= MAX_TENTATIVA_READ) && (SucessoTentativa == false))
+		{
+			LogTerm(F("SD: Realizando nova tentativa..."));
+			delay(DELAY_TENTATIVA_READ);
+
+			if (SD.begin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
+			{
+				SucessoTentativa = true;
+			}
+
+			ContaTentativa++;
+
+		}
+
 
 		ret = "-1|Falha na inicializacao do cartao SD";
 
@@ -40,12 +61,34 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 
 	//FullPathFile_Login = Login + ".txt";
 
+	ContaTentativa = 0;
+	SucessoTentativa = false;
 
-	// Create the file.
+
 	file = SD.open(FullPathFile, FILE_READ);
+
 	if (!file) 
 	{
 		LogTerm("SD: Falha na abertura do arquivo: " + FullPathFile);
+
+
+		while ((ContaTentativa <= MAX_TENTATIVA_READ) && (SucessoTentativa == false))
+		{
+			LogTerm(F("SD: Realizando nova tentativa..."));
+			delay(DELAY_TENTATIVA_READ);
+
+			file = SD.open(FullPathFile, FILE_READ);
+
+			if (file) 
+			{
+				SucessoTentativa = true;
+			}
+
+
+			ContaTentativa++;
+
+		}
+
 
 		ret = "-2|Falha na abertura do arquivo: " + FullPathFile;
 
@@ -137,10 +180,33 @@ String SD_GetFirstRegFromFile(String FullPathFile)
 
 	uint32_t t = millis();
 
+
+
+
+
+	int ContaTentativa = 0;
+	bool SucessoTentativa = false;
+
+
 	// not over 50 MHz. Try a lower speed if SPI errors occur.
 	if (!SD.begin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
 	{
 		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
+
+		while ((ContaTentativa <= MAX_TENTATIVA_READ) && (SucessoTentativa == false))
+		{
+			LogTerm(F("SD: Realizando nova tentativa..."));
+			delay(DELAY_TENTATIVA_READ);
+
+			if (SD.begin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
+			{
+				SucessoTentativa = true;
+			}
+
+			ContaTentativa++;
+
+		}
+
 
 		ret = "-1|Falha na inicializacao do cartao SD";
 
@@ -149,14 +215,38 @@ String SD_GetFirstRegFromFile(String FullPathFile)
 
 	t = millis() - t;	
 
+
+
 	//FullPathFile_Login = Login + ".txt";
 
+	ContaTentativa = 0;
+	SucessoTentativa = false;
 
-	// Create the file.
+
 	file = SD.open(FullPathFile, FILE_READ);
+
 	if (!file) 
 	{
 		LogTerm("SD: Falha na abertura do arquivo: " + FullPathFile);
+
+
+
+		while ((ContaTentativa <= MAX_TENTATIVA_READ) && (SucessoTentativa == false))
+		{
+			LogTerm(F("SD: Realizando nova tentativa..."));
+			delay(DELAY_TENTATIVA_READ);
+
+			file = SD.open(FullPathFile, FILE_READ);
+
+			if (file) 
+			{
+				SucessoTentativa = true;
+			}
+
+
+			ContaTentativa++;
+
+		}
 
 		ret = "-2|Falha na abertura do arquivo: " + FullPathFile;
 

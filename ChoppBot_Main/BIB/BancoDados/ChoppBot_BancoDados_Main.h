@@ -15,6 +15,8 @@ String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
 
 	String FullPathFile_Engatados = "";
 
+	
+
 	//ctMAX_TORNEIRAS
 	FullPathFile_Engatados = "CB/BD/Chopp/Engatados.txt";
 
@@ -36,24 +38,91 @@ String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
 
 	if (retFunc.substring(0, 1) == "1")
 	{
-		// array 
 
-		/*
-		// desativa torneiras desejadas
+		String IDsChoppDesejados = "";
+
+		// recupera o nome e preco de cada chopp
 		for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
 		{
-			String temp_Ativo = aRetChoppsEngat[x];
-
-			temp_Ativo = getValue(aRetChoppsEngat[x], ';', 5);
-			//LogTerm("x = "+ String(x) + " | temp_Ativo = " + temp_Ativo);
-
-			if (temp_Ativo.toInt() == 0)
+			if (aRetChoppsEngat[x] != "")
 			{
-				aRetChoppsEngat[x] = "";
+				String temp_IDChopp = "";
+
+				temp_IDChopp = getValue(aRetChoppsEngat[x], ';', 2);
+				//LogTerm("x = "+ String(x) + " | temp_Ativo = " + temp_Ativo);
+
+				IDsChoppDesejados += temp_IDChopp + ", ";
 			}
 		}	 	
-		*/
+		
+		if (IDsChoppDesejados.substring(IDsChoppDesejados.length() - 2, 2) == ", ")
+		{
+			IDsChoppDesejados = IDsChoppDesejados.substring(0, IDsChoppDesejados.length() - 2);
+		}
 
+		LogTerm('IDsChoppDesejados = ' + IDsChoppDesejados);
+
+
+		ret = retFunc;
+		return ret;
+
+	}
+
+	return ret;
+}
+
+
+// recupera os dadoa (linha) de um ou mais IDs de uma vez. tenho de indicar quais os ids e qual a posicao que o ID solicitado se enconta
+// retorna formato: CodRetorno|Descricao
+// 1 retorna a linha com dados do chopp
+// -2 para chopp nao existe. 
+// -1 erros outros
+String BANCO_GetDataFromIDs(String aIDsDesejados)
+{
+	String ret = "1|";
+
+	return ret;
+}
+
+
+
+// retorna formato: CodRetorno|Descricao
+// 1 retorna a linha com dados do chopp
+// -2 para chopp nao existe. 
+// -1 erros outros
+String BANCO_GetChoppDataFromIDChopp(String IDChopp)
+{
+
+	String ret = "1|";
+
+	String FullPathFile_Chopps = "";
+
+	#define MAX_CHOPPS 50
+
+	String aChopps[MAX_CHOPPS];
+
+	String retFunc = "";
+
+	retFunc = SD_GetAllRegsFromFile(FullPathFile_Chopps, aChopps, MAX_CHOPPS);
+
+
+	if (retFunc.substring(0, 2) == "-1")
+	{
+		// erro de sd card
+		ret = retFunc;
+		return ret;
+	}
+
+	if (retFunc.substring(0, 2) == "-2")
+	{
+		// erro de chopp nao existe
+		ret = "0|"+ retFunc.substring(3);
+		return ret;
+	}
+
+	if (retFunc.substring(0, 1) == "1")
+	{
+		// chopp encontrado. Retornando todos os dados do chopp (linha)
 		ret = retFunc;
 		return ret;
 

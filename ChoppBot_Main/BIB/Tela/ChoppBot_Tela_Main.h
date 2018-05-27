@@ -692,6 +692,8 @@ void TELA_Render_Interface_OPERACAO()
 	if (gTelaRenderizada_OPERACAO == false)
 	{
 
+		
+
 		if (gTela_Hardware == "TERMINAL")
 		{  
 			LogTerm(F("1 - Imperial IPA - R$ 25,00 / Litro"));

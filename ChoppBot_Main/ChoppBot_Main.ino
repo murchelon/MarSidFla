@@ -32,6 +32,9 @@
 void InitApp()
 {
 
+
+
+
     Serial.begin(115200);       // 115200 pois o RFID precisa desta velocidade, para acompanharmos o que ele escreve no serial
 
 
@@ -110,7 +113,18 @@ void InitApp()
 
     LogTerm(F("====  Engates  ===="));
 
-    BANCO_DefineChoppEngatados(gaEngatados);    
+    String retEngatados = "";
+
+    retEngatados = BANCO_DefineChoppEngatados(gaEngatados);  
+
+    if (retEngatados.substring(0, 1) != "1") 
+    {
+        LogTerm(F("MAIN: Falha ao carregar arquivo com os chopps engatados"));
+        LogTerm("MAIN: Erro: " + retEngatados.substring(3));
+        LogTerm(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."));
+        delay(10000);
+        resetFunc();        
+    }
 
     // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
     for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
@@ -163,7 +177,8 @@ void InitApp()
 
     // todo: inicializa hardware, fecha valvulas, etc
 
-    LogTerm(F("MAIN: Sistema Inicializado"));
+    LogTerm(F("MAIN: Sistema Inicializado."));
+
 
 }
 

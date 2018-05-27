@@ -503,7 +503,7 @@ void TELA_Render_Interface_LER_RFID()
 
 					}
 
-					//gModoOperacao = "OPERACAO";
+					gModoOperacao = "OPERACAO";
 
 
 

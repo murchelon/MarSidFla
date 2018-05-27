@@ -10,6 +10,7 @@
 
 
 
+void(*resetFunc) (void) = 0;  // funcao interna do arduino que reseta o arduino
 
 // Loga uma informacao no terminal
 void LogTerm (String Texto)

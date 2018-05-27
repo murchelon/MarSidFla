@@ -11,9 +11,9 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 	{ 
 		if (gTelaRenderizada_TecNum == false)
 		{
-			LogTerm("TECLADO NUMERICO");
+			LogTerm(F("TECLADO NUMERICO"));
 			LogTerm("Valor ATUAL da gTecladoNum_ValAtual: " + gTecladoNum_ValAtual);
-			LogTerm("Digite um valor numerico no console e tecle enter. Digite VOLTAR para voltar a tela anterior.");
+			LogTerm(F("Digite um valor numerico no console e tecle enter. Digite VOLTAR para voltar a tela anterior."));
 
 			gTelaRenderizada_TecNum = true;	
 		}		
@@ -29,7 +29,7 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 		if (gTelaRenderizada_TecNum == false)
 		{
 		  	
-		  	//LogTerm("TELA_Render_Interface_TECLADO");
+		  	//LogTerm(F("TELA_Render_Interface_TECLADO");
 
 		  	gTelaRenderizada_TecNum = true;
 
@@ -335,7 +335,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 		if ((retConsole == "VOLTAR") || (retConsole == "voltar"))
 		{
-			LogTerm("VOLTAR");
+			LogTerm(F("VOLTAR"));
 
 			gTelaRenderizada_TecNum = false;
 			//gTecladoNum_ValAtual = "";
@@ -400,7 +400,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 								//debug:
 								//TELA_Texto(String(x + 1), "BRANCO");
-								LogTerm(x + 1);
+								//LogTerm(x + 1);
 								//----
 
 

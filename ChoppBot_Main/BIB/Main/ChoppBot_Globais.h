@@ -27,6 +27,11 @@
 // ADMIN
 // DEBUG
 // TESTE
+
+// VERSAO DA APLICACAO
+#define VersaoAPP "1.0"
+
+
 String gModoOperacao = ""; 
 String gModoOperacao_SubTela = "";
 
@@ -39,6 +44,14 @@ const unsigned long gTimeoutOpcao = 7000;
 
 // pino do buzzer
 #define ctPINO_BUZZER 32
+
+// Numero maximo de torneiras possiveis no sistema
+#define ctMAX_TORNEIRAS 4
+
+String gaEngatados[ctMAX_TORNEIRAS];	
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -291,6 +304,9 @@ volatile uint8_t lastflowpinstate;
 void InicializaVars() 
 {
 
+
+
+
 	// variaveis princiais
 	gModoOperacao = "INICIO";  
 	gModoOperacao_SubTela = "";
@@ -334,6 +350,11 @@ void InicializaVars()
 	gSessao_IDUser = -1;
 	gSessao_Nivel = -1;
 	gSessao_Nome = "";
-						 	
+					
+	// inicializa var de engatados
+	for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+	{
+		gaEngatados[x] = "";
+	}	 	
 
 }

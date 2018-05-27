@@ -76,7 +76,7 @@ void TELA_LimpaTela()
 
 	if (gTela_Hardware == "TERMINAL")
 	{
-		LogTerm("TELA -> LimpaTela()"); 
+		LogTerm(F("TELA -> LimpaTela()")); 
 	}
 }
 
@@ -309,7 +309,7 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 				TotalLinhas++;				
 			}
 
-			//LogTerm("Char: " + Texto.substring(x, 1) + " / TotalLinhas = " + TotalLinhas);
+			//LogTerm(F("Char: " + Texto.substring(x, 1) + " / TotalLinhas = " + TotalLinhas);
 
 		}		
 		*/
@@ -425,14 +425,14 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 
 		/*
 
-		LogTerm("TamanhoTexto = " + String(TamanhoTexto));
-		LogTerm("MaxChars = " + String(MaxChars));
-		LogTerm("TotalLinhas = " + String(TotalLinhas));
-		LogTerm("Size_Char_W = " + String(Size_Char_W));
-		LogTerm("Size_Char_H = " + String(Size_Char_H));
-		LogTerm("Size_Fundo_W = " + String(Size_Fundo_W));
-		LogTerm("Size_Fundo_H = " + String(Size_Fundo_H));
-		LogTerm("==================");		
+		LogTerm(F("TamanhoTexto = " + String(TamanhoTexto));
+		LogTerm(F("MaxChars = " + String(MaxChars));
+		LogTerm(F("TotalLinhas = " + String(TotalLinhas));
+		LogTerm(F("Size_Char_W = " + String(Size_Char_W));
+		LogTerm(F("Size_Char_H = " + String(Size_Char_H));
+		LogTerm(F("Size_Fundo_W = " + String(Size_Fundo_W));
+		LogTerm(F("Size_Fundo_H = " + String(Size_Fundo_H));
+		LogTerm(F("==================");		
 		*/
 
 	}
@@ -591,12 +591,12 @@ void TELA_Render_Interface_STANDBY()
 	if (gTelaRenderizada_STANDBY == false)
 	{
 
-        //LogTerm("== [Modo Atual: STANDBY] ==");
+        //LogTerm(F("== [Modo Atual: STANDBY] ==");
 
 
 		if (gTela_Hardware == "TERMINAL")
 		{  
-			LogTerm("ChoppBot 1.0");
+			LogTerm("ChoppBot " + String(VersaoAPP));
 			LogTerm("Tecle algo no console para iniciar...");
 		}
 
@@ -606,7 +606,8 @@ void TELA_Render_Interface_STANDBY()
 			tft.setTextColor(RA8875_YELLOW);
 			tft.setCursor (210, 150);
 			tft.setFontScale(3); 
-			tft.print ("ChoppBot 1.0");    
+			tft.print ("ChoppBot " + String(VersaoAPP));    
+			//tft.print ("ChoppBot 1.0");    
 
 			tft.setTextColor(RA8875_WHITE);
 			tft.setCursor (195, 310);
@@ -630,19 +631,19 @@ void TELA_Render_Interface_LOGIN()
 	if (gTelaRenderizada_LOGIN == false)
 	{
 
-		//LogTerm("== [Modo Atual: LOGIN] ==");
+		//LogTerm(F("== [Modo Atual: LOGIN] ==");
 
 		if (gTela_Hardware == "TERMINAL")
 		{  
 
-			LogTerm("Ola! Seja bem vindo!");
-			LogTerm("Escolha o seu metodo de identificacao e digite o numero correspondente no console:");
-			LogTerm("1 - LEITOR BIOMETRICO");
-			LogTerm("2 - LEITOR DE CARTAO");
-			//LogTerm("3 - ABRE TECLADO NUMERICO");
-			LogTerm("3 - ABRE TECLADO ALFA");
+			LogTerm(F("Ola! Seja bem vindo!"));
+			LogTerm(F("Escolha o seu metodo de identificacao e digite o numero correspondente no console:"));
+			LogTerm(F("1 - LEITOR BIOMETRICO"));
+			LogTerm(F("2 - LEITOR DE CARTAO"));
+			//LogTerm(F("3 - ABRE TECLADO NUMERICO"));
+			LogTerm(F("3 - ABRE TECLADO ALFA"));
 
-			LogTerm("4 - ADMIN");
+			LogTerm(F("4 - ADMIN"));
 
 
 		}
@@ -686,16 +687,16 @@ void TELA_Render_Interface_LOGIN()
 void TELA_Render_Interface_OPERACAO()
 {
 
-	//LogTerm("== [Modo Atual: OPERACAO] ==");
+	//LogTerm(F("== [Modo Atual: OPERACAO] ==");
 
 	if (gTelaRenderizada_OPERACAO == false)
 	{
 
 		if (gTela_Hardware == "TERMINAL")
 		{  
-			LogTerm("1 - Imperial IPA - R$ 25,00 / Litro");
-			LogTerm("2 - Hoocus Pocus - R$ 19,00");
-			LogTerm("3 - Duchese - R$ 32,00 / Litro");
+			LogTerm(F("1 - Imperial IPA - R$ 25,00 / Litro"));
+			LogTerm(F("2 - Hoocus Pocus - R$ 19,00"));
+			LogTerm(F("3 - Duchese - R$ 32,00 / Litro"));
 		}
 
 
@@ -800,12 +801,12 @@ void TELA_VerificaTouch_LOGIN()
 
 		if (retConsole.toInt() == 1)
 		{
-			LogTerm("LEITOR BIOMETRICO SELECIONADO");
+			//LogTerm(F("LEITOR BIOMETRICO SELECIONADO");
 		}
 
 		if (retConsole.toInt() == 2)
 		{
-			LogTerm("LEITOR RFID SELECIONADO VIA TERMINAL");
+			//LogTerm(F("LEITOR RFID SELECIONADO VIA TERMINAL");
 
 
 			gModoOperacao_SubTela = "LER_RFID";
@@ -823,8 +824,8 @@ void TELA_VerificaTouch_LOGIN()
 			gModoOperacao = "DEBUG";
 			gTelaRenderizada_LOGIN = false;
 
-			//LogTerm("TECLADO NUM SELECIONADO");
-			LogTerm("TECLADO ALFA SELECIONADO");
+			//LogTerm(F("TECLADO NUM SELECIONADO");
+			//LogTerm(F("TECLADO ALFA SELECIONADO");
 
 			TELA_LimpaTela();
 
@@ -836,7 +837,7 @@ void TELA_VerificaTouch_LOGIN()
 			gModoOperacao = "ADMIN"; 
 			gTelaRenderizada_LOGIN = false;
 
-			LogTerm("ADMIN SELECIONADO");
+			//LogTerm(F("ADMIN SELECIONADO");
 
 			TELA_LimpaTela();
 
@@ -856,7 +857,7 @@ void TELA_VerificaTouch_LOGIN()
 		if (tft.touchDetect())
 		{
 			//TELA_LogTerm_XY();
-			//LogTerm("TELA_VerificaTouch_LOGIN");
+			//LogTerm(F("TELA_VerificaTouch_LOGIN");
 
 			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
@@ -872,7 +873,7 @@ void TELA_VerificaTouch_LOGIN()
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
 
-					LogTerm("LEITOR BIOMETRICO SELECIONADO");
+					LogTerm(F("LEITOR BIOMETRICO SELECIONADO"));
 					TELA_Texto("LEITOR BIOMETRICO SELECIONADO", "BRANCO");
 
 					//TELA_Render_Botao(1, "", "", "PRETO");
@@ -893,9 +894,9 @@ void TELA_VerificaTouch_LOGIN()
 					//TELA_Texto("LEITOR RFID SELECIONADO VIA TELA", "AZUL");
 
 
-					LogTerm("LEITOR RFID SELECIONADO VIA TELA");
+					//LogTerm(F("LEITOR RFID SELECIONADO VIA TELA"));
 
-					//LogTerm("Aproxime o cartao da leitora RFID ...");
+					//LogTerm(F("Aproxime o cartao da leitora RFID ...");
 
 					gModoOperacao_SubTela = "LER_RFID";
 
@@ -986,7 +987,7 @@ void TELA_VerificaTouch_ADMIN()
 
 
 			//TELA_LogTerm_XY();
-			//LogTerm("TELA_VerificaTouch_ADMIN");
+			//LogTerm(F("TELA_VerificaTouch_ADMIN");
 
 			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
@@ -1051,7 +1052,7 @@ void TELA_VerificaTouch_OPERACAO()
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
 
-					LogTerm("BOTAO 1 APERTADO");
+					LogTerm(F("BOTAO 1 APERTADO"));
 					TELA_Texto("BOTAO 1 APERTADO", "BRANCO");
 
 				}
@@ -1066,7 +1067,7 @@ void TELA_VerificaTouch_OPERACAO()
 
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
-					LogTerm("BOTAO 2 APERTADO");
+					LogTerm(F("BOTAO 2 APERTADO"));
 					TELA_Texto("BOTAO 2 APERTADO", "AZUL");
 					//delay(500);
 					//TELA_LogTerm_XY();        
@@ -1082,7 +1083,7 @@ void TELA_VerificaTouch_OPERACAO()
 
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
-					LogTerm("BOTAO 3 APERTADO");
+					LogTerm(F("BOTAO 3 APERTADO"));
 					TELA_Texto("BOTAO 3 APERTADO", "MAGENTA");  
 					//delay(500); 
 

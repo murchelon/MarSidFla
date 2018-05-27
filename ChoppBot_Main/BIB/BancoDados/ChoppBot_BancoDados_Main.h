@@ -1,9 +1,74 @@
 
 
 
-// retorna:
-// 0 para arquivo nao existe
-// 1 para arquivo existe. retona os dados do usuario
+
+// retorna formato: CodRetorno|descricao
+// Param byref: aRetChoppsEngat contera a lista de chopps engatados, se exitirem
+// 1 para a funcao rodou certo 
+// -1 e -2 erros outros
+String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
+{
+
+	String ret = "1";
+
+	String retFunc = "";
+
+	String FullPathFile_Engatados = "";
+
+	//ctMAX_TORNEIRAS
+	FullPathFile_Engatados = "CB/BD/Chopp/Engatados.txt";
+
+	// inicializa var de engatados
+	for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+	{
+		aRetChoppsEngat[x] = "";
+	}	
+
+
+	retFunc = SD_GetAllRegsFromFile(FullPathFile_Engatados, aRetChoppsEngat, ctMAX_TORNEIRAS);
+
+	if ((retFunc.substring(0, 2) == "-1") || (retFunc.substring(0, 2) == "-2"))
+	{
+		// erro de sd card
+		ret = retFunc;
+		return ret;
+	}
+
+	if (retFunc.substring(0, 1) == "1")
+	{
+		// array 
+
+		/*
+		// desativa torneiras desejadas
+		for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+		{
+			String temp_Ativo = aRetChoppsEngat[x];
+
+			temp_Ativo = getValue(aRetChoppsEngat[x], ';', 5);
+			//LogTerm("x = "+ String(x) + " | temp_Ativo = " + temp_Ativo);
+
+			if (temp_Ativo.toInt() == 0)
+			{
+				aRetChoppsEngat[x] = "";
+			}
+		}	 	
+		*/
+
+		ret = retFunc;
+		return ret;
+
+	}
+
+	return ret;
+}
+
+
+
+
+
+// retorna formato: CodRetorno|Descricao
+// 1 retorna a linha com dados do usuario
+// -2 para usuario nao existe. 
 // -1 erros outros
 String BANCO_GetUserDataFromIDUser(String IDUser)
 {
@@ -46,8 +111,7 @@ String BANCO_GetUserDataFromIDUser(String IDUser)
 }
 
 
-
-// retorna:
+// retorna formato: CodRetorno|Descricao
 // 0 para arquivo nao existe
 // 1 para arquivo existe. retona os dados do usuario
 // -1 erros outros

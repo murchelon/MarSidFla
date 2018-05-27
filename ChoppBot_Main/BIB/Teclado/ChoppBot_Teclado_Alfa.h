@@ -545,7 +545,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 								//TELA_Texto(String(x), "BRANCO");
 
-								String TesteBug = "";
+								//String TesteBug = "";
 
 
 								switch (x) 
@@ -635,11 +635,11 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 
 										
-
+										/*
 										TesteBug = "PORRA !!!!   Tocou em X=" + String(gTouch_X) + " e Y=" + String(gTouch_Y) + 
 												" -- testou:   X >> " + String(gTouch_X) + " >= " + String(temp_pos_X.toInt()) + " e " + String(gTouch_X) + " <= " + String(temp_pos_X.toInt() + temp_size_W.toInt()) +
 												" -- Y >> " + String(gTouch_Y) + " >= " + String(temp_pos_Y.toInt()) + " e " + String(gTouch_Y) + " <= " + String(temp_pos_Y.toInt() + temp_size_H.toInt());
-
+										*/
 										//LogTerm(TesteBug);
 										//TELA_Texto(TesteBug, "VERDE");
 

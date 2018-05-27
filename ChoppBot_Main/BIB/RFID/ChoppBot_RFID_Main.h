@@ -53,7 +53,7 @@ String RFID_Exec_Leitura()
 		{
 			if (gModoDebug == true)
 			{
-				LogTerm("RFID: Placa PN53x nao localizada");
+				LogTerm(F("RFID: Placa PN53x nao localizada"));
 			} 
 			
 
@@ -66,9 +66,9 @@ String RFID_Exec_Leitura()
 		{
 			RFID_SetStatusLed(true); 
 
-			LogTerm("RFID: Placa PN53x localizada com sucesso");
-			Serial.print("RFID: Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
-			Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
+			LogTerm(F("RFID: Placa PN53x localizada com sucesso"));
+			//Serial.print("RFID: Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
+			//Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
 		} 		
 
 
@@ -103,10 +103,10 @@ String RFID_Exec_Leitura()
 
 			
 
-			LogTerm("RFID: Leitura efetuada com sucesso !");
+			LogTerm(F("RFID: Leitura efetuada com sucesso !"));
 
-			Serial.print("RFID: UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
-			Serial.print("RFID: UID Value: ");
+			//Serial.print("RFID: UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
+			//Serial.print("RFID: UID Value: ");
 
 			for (uint8_t i=0; i < uidLength; i++) 
 			{
@@ -120,14 +120,14 @@ String RFID_Exec_Leitura()
 
 				idCartao += aux1;
 
-				Serial.print(" 0x");Serial.print(uid[i], HEX); 
+				//Serial.print(" 0x");Serial.print(uid[i], HEX); 
 
 				//TELA_Texto("LEITOR RFID SELECIONADO VIA TELA", "MAGENTA");
 
 
 			}
 			
-			Serial.print("\n");
+			//Serial.print("\n");
 
 			idCartao.toUpperCase();
 
@@ -135,7 +135,7 @@ String RFID_Exec_Leitura()
 
 			
 
-			LogTerm("RFID: Cartao decoded: " + idCartao);
+			LogTerm("RFID: Cartao lido: " + idCartao);
 
 			//TELA_Texto("Cartao decodec: " + idCartao, "MAGENTA");
 
@@ -150,7 +150,7 @@ String RFID_Exec_Leitura()
 			//Serial.println("Ocorreum um timeout da leitura do cartao");
 
 
-			LogTerm("RFID: Timeout de leitura");
+			LogTerm(F("RFID: Timeout de leitura"));
 
 			ret = "0|RFID: Timeout de leitura";
 				
@@ -183,13 +183,13 @@ void TELA_Render_Interface_LER_RFID()
 	if (gTelaRenderizada_LER_RFID == false)
 	{
 
-        //LogTerm("== [Modo Atual: STANDBY] ==");
+        //LogTerm(F("== [Modo Atual: STANDBY] ==");
 
 
 		if (gTela_Hardware == "TERMINAL")
 		{  
-			LogTerm("Encoste o cartao ou chaveiro de identificacao no leitor...");
-			//LogTerm("Digite algo no teclado para voltar");
+			LogTerm(F("Encoste o cartao ou chaveiro de identificacao no leitor..."));
+			//LogTerm(F("Digite algo no teclado para voltar");
 
 		}
 
@@ -235,7 +235,7 @@ void TELA_Render_Interface_LER_RFID()
 
 		Login_RFID = RFID_Exec_Leitura();
 
-		LogTerm(Login_RFID);
+		//LogTerm(Login_RFID);
 
 
 		if (Login_RFID.substring(0,2) == "1|")
@@ -264,7 +264,7 @@ void TELA_Render_Interface_LER_RFID()
 
 			if (gModoDebug == true)
 			{
-				LogTerm("BANCO_GetIDUserFromLogin(" + Login_RFID + ") = " + retIDUser);
+				//LogTerm(F("BANCO_GetIDUserFromLogin(" + Login_RFID + ") = " + retIDUser);
 			}
 			
 
@@ -278,7 +278,7 @@ void TELA_Render_Interface_LER_RFID()
 				// ocorreu um erro. imprime a msg de erro na tela
 				if (gTela_Hardware == "TERMINAL")
 				{  
-					LogTerm("Ocorreu um erro ao efetuar a leitura do cartao SD: Login");
+					LogTerm(F("Ocorreu um erro ao efetuar a leitura do cartao SD: Login"));
 				}
 
 				if (gTela_Hardware == "ER-TFTM070-5")
@@ -321,7 +321,7 @@ void TELA_Render_Interface_LER_RFID()
 				// ocorreu um erro. imprime a msg de erro na tela
 				if (gTela_Hardware == "TERMINAL")
 				{  
-					LogTerm("O cartao utilizado nao esta cadastrado. Por favor procure o caixa para maiores informacoes.");
+					LogTerm(F("O cartao utilizado nao esta cadastrado. Por favor procure o caixa para maiores informacoes."));
 
 
 				}
@@ -360,7 +360,7 @@ void TELA_Render_Interface_LER_RFID()
 			{
 	
 
-				//LogTerm("IDUser: " + retIDUser);
+				//LogTerm(F("IDUser: " + retIDUser);
 
 				String retUserData = "";
 
@@ -368,10 +368,10 @@ void TELA_Render_Interface_LER_RFID()
 
 				if (gModoDebug == true)
 				{
-					LogTerm("BANCO_GetUserDataFromIDUser(" + retIDUser.substring(2) + ") = " + retUserData);
+					//LogTerm(F("BANCO_GetUserDataFromIDUser(" + retIDUser.substring(2) + ") = " + retUserData);
 				}
 
-				//LogTerm("retUserData: " + retUserData);
+				//LogTerm(F("retUserData: " + retUserData);
 
 				if (retUserData.substring(0, 2) == "-1")
 				{
@@ -382,7 +382,7 @@ void TELA_Render_Interface_LER_RFID()
 					// ocorreu um erro. imprime a msg de erro na tela
 					if (gTela_Hardware == "TERMINAL")
 					{  
-						LogTerm("Ocorreu um erro ao efetuar a leitura do cartao SD: Usuario");
+						LogTerm(F("Ocorreu um erro ao efetuar a leitura do cartao SD: Usuario"));
 
 					}
 
@@ -425,7 +425,7 @@ void TELA_Render_Interface_LER_RFID()
 					// ocorreu um erro. imprime a msg de erro na tela
 					if (gTela_Hardware == "TERMINAL")
 					{  
-						LogTerm("Usuario nao localizado. Este cartao esta associado a um usuario que nao foi localizado no sistema. Por favor procure o caixa para maiores informacoes");
+						LogTerm(F("Usuario nao localizado. Este cartao esta associado a um usuario que nao foi localizado no sistema. Por favor procure o caixa para maiores informacoes"));
 
 					}
 
@@ -473,16 +473,13 @@ void TELA_Render_Interface_LER_RFID()
 					gSessao_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
 
 
-					// ocorreu um erro. imprime a msg de erro na tela
-					if (gTela_Hardware == "TERMINAL")
-					{  
-						LogTerm("Usuario LOGADO");
-						LogTerm("gSessao_Logado: " + String(gSessao_Logado));
-						LogTerm("gSessao_IDUser: " + String(gSessao_IDUser));
-						LogTerm("gSessao_Nivel: " + String(gSessao_Nivel));
-						LogTerm("gSessao_Nome: " + gSessao_Nome);						
+					LogTerm(F("MAIN: Usuario LOGADO"));
+					//LogTerm("gSessao_IDUser: " + String(gSessao_IDUser));
+					LogTerm("MAIN: Nome: " + gSessao_Nome);	
+					LogTerm("MAIN: Nivel: " + String(gSessao_Nivel));
+						
 
-					}
+
 
 					if (gTela_Hardware == "ER-TFTM070-5")
 					{  
@@ -491,6 +488,9 @@ void TELA_Render_Interface_LER_RFID()
 						
 
 						TELA_Render_MsgBox("Usuario Identificado", "Ola ! Seja bem vindo " + gSessao_Nome + " ! -- gSessao_Logado = " + String(gSessao_Logado) + " | gSessao_IDUser = " + String(gSessao_IDUser) + " | gSessao_Nivel = " + String(gSessao_Nivel));
+						//TELA_Render_MsgBox("Usuario Identificado", "Ola ! Seja bem vindo " + gSessao_Nome + " !");
+
+
 
 						delay(7000);
 
@@ -499,7 +499,11 @@ void TELA_Render_Interface_LER_RFID()
 						gTelaRenderizada_MSGBOX = false;
 						gTelaRenderizada_LER_RFID = false;
 						
+						
+
 					}
+
+					//gModoOperacao = "OPERACAO";
 
 
 
@@ -524,7 +528,7 @@ void TELA_Render_Interface_LER_RFID()
 			// ocorreu um erro. imprime a msg de erro na tela
 			if (gTela_Hardware == "TERMINAL")
 			{  
-				LogTerm("Ocorreu um erro ao realizar a leitura do cartao/chaveiro RFID:");
+				LogTerm(F("Ocorreu um erro ao realizar a leitura do cartao/chaveiro RFID:"));
 				LogTerm(Login_RFID.substring(2));
 
 

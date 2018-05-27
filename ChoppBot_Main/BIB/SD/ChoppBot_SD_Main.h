@@ -3,6 +3,123 @@
 
 
 
+
+// retorna formato: CodRetorno|descricao
+// Param byref: aRetRegs - contera todos os registros do arquivo, se existirem
+// 1 para a funcao rodou certo 
+// -1 erros outros
+String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSizeRetArray)
+{
+
+	SdFat SD;
+
+	File file;
+
+	String ret = "1|";
+
+	String buff = "";
+
+	int ContaEnter = 0;
+
+	int CharAtual;
+
+	uint32_t t = millis();
+
+
+	// not over 50 MHz. Try a lower speed if SPI errors occur.
+	if (!SD.begin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
+	{
+		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
+
+		ret = "-1|Falha na inicializacao do cartao SD";
+
+		return ret;	
+	}
+
+	t = millis() - t;	
+
+	//FullPathFile_Login = Login + ".txt";
+
+
+	// Create the file.
+	file = SD.open(FullPathFile, FILE_READ);
+	if (!file) 
+	{
+		LogTerm("SD: Falha na abertura do arquivo: " + FullPathFile);
+
+		ret = "-2|Falha na abertura do arquivo: " + FullPathFile;
+
+		return ret;	
+	}
+	else
+	{
+
+		if (gModoDebug == true)
+		{
+			LogTerm("SD: Arquivo aberto com sucesso: " + FullPathFile);
+		}
+		
+
+		int ContaReg = 0; 
+
+		while (file.available()) 
+		{
+			//LogTerm(file.read());
+
+			CharAtual = file.read();
+
+			if (CharAtual == 13)
+			{
+				ContaEnter++;
+			}
+			
+			if (ContaEnter >= 1)
+			{
+
+				switch (CharAtual) 
+				{
+					case 10:
+
+						//tft.fillRoundRect(Botao_PosAtual_X, Botao_PosAtual_Y, Size_Botao_W, Size_Botao_H, 10, RA8875_GREEN);
+						break;
+
+					case 13:
+
+						ContaReg++;
+						break;
+
+					default:
+
+						if (ContaReg <= MaxSizeRetArray)
+						{
+							aRetRegs[ContaReg - 1] += CharFromAsc2(CharAtual);
+						}
+						
+						break;
+				}
+
+
+				
+			}
+
+			//Serial.write(CharAtual);
+			//Serial.println(CharAtual);
+
+			//LogTerm(CharAtual);
+			
+		}		
+
+	}
+
+	file.close();
+
+	return ret;
+}
+
+
+
+
+
 String SD_GetFirstRegFromFile(String FullPathFile)
 {
 
@@ -23,7 +140,7 @@ String SD_GetFirstRegFromFile(String FullPathFile)
 	// not over 50 MHz. Try a lower speed if SPI errors occur.
 	if (!SD.begin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
 	{
-		LogTerm("SD: Falha na inicializacao do cartao SD");
+		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
 
 		ret = "-1|Falha na inicializacao do cartao SD";
 
@@ -114,7 +231,7 @@ String SD_TestaCartao()
 	// not over 50 MHz. Try a lower speed if SPI errors occur.
 	if (!SD.cardBegin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
 	{
-		LogTerm("SD: Falha na inicializacao do cartao SD");
+		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
 
 		ret = "0|Falha na inicializacao do cartao SD";
 		return ret;	
@@ -128,7 +245,7 @@ String SD_TestaCartao()
 
 	if (cardSize == 0) 
 	{
-		LogTerm("SD: Falha ao obter o tamanho do cartao SD");
+		LogTerm(F("SD: Falha ao obter o tamanho do cartao SD"));
 
 		ret = "0|Falha ao obter o tamanho do cartao SD";
 		return ret;	

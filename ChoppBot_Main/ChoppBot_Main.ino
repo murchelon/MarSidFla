@@ -11,25 +11,10 @@
 
 
 
-#include "BIB/Main/ChoppBot_Globais.h" 
-#include "BIB/Main/ChoppBot_Suporte.h" 
+#include "BIB/Main/ChoppBot_Main_BIB.h" 
 
 
 
-
-#include "BIB/Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
-#include "BIB/Tela/ChoppBot_Tela_Main.h" 
-
-
-
-#include "BIB/Biometrico/ChoppBot_Bio_Engine_Adafruit_Fingerprint.h" 
-#include "BIB/Biometrico/ChoppBot_Bio_Main.h" 
-
-
-
-
-//banco de dados:
-#include <EDB.h>
 
 
 
@@ -47,19 +32,43 @@
 void InitApp()
 {
 
-    Serial.begin(9600);
 
+
+
+    Serial.begin(115200);       // 115200 pois o RFID precisa desta velocidade, para acompanharmos o que ele escreve no serial
+
+
+    // Wait for USB Serial 
     while (!Serial) 
     {
-        ; // wait for serial port to connect. Needed for native USB port only
-    } 
+        SysCall::yield();
+    }
+
 
 
     InicializaVars();
 
 
 
+    LogTerm(F("/////////////////////////////////////////////////////"));
+    LogTerm(F("///                                               ///"));
+    LogTerm("///  ChoppBot " + String(VersaoAPP) + "                                 ///");
+    LogTerm(F("///  ============                                 ///"));
+    LogTerm(F("///                                               ///"));
+    LogTerm(F("///  by Murch & Cebola                            ///"));
+    LogTerm(F("///                                               ///"));
+    LogTerm(F("/////////////////////////////////////////////////////"));
+    LogTerm(F(""));
+    LogTerm(F("MAIN: Inicializando sistema..."));
 
+
+    // Inicia o LED do rfid
+    pinMode(ctPINO_LED_RFID, OUTPUT);
+
+    // Inicia o BUZZER
+    pinMode(ctPINO_BUZZER, OUTPUT);
+
+    // inicia o led interno arduino, usado para mostrar que o programa esta rodando
     pinMode(LED_BUILTIN, OUTPUT);
 
     //pinMode(BOTAO1_PINO, INPUT);
@@ -93,16 +102,73 @@ void InitApp()
         delay(40);
         Led_Light(true);
         delay(40);
-        //LogTerm("ok to aqui");
+        //LogTerm(F("ok to aqui"));
     }
 
     Led_Light(false);
 
     TELA_IniciaTela();
 
+    BUZZER_TocaSom("LIGAR");
+
+    LogTerm(F("====  Engates  ===="));
+
+    String retEngatados = "";
+
+    retEngatados = BANCO_DefineChoppEngatados(gaEngatados);  
+
+    if (retEngatados.substring(0, 1) != "1") 
+    {
+        LogTerm(F("MAIN: Falha ao carregar arquivo com os chopps engatados"));
+        LogTerm("MAIN: Erro: " + retEngatados.substring(3));
+        LogTerm(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."));
+        delay(10000);
+        resetFunc();        
+    }
+
+    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
+    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+    {
+
+        if (gaEngatados[x] != "")
+        {
+
+            String tmp_Nome;
+            String tmp_Volume;
+            //String tmp_DataCad;
+            //String tmp_DataExp;
+            String tmp_Ativa;
+
+            tmp_Nome = getValue(gaEngatados[x], ';', 2);
+            tmp_Volume = getValue(gaEngatados[x], ';', 3);
+            //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
+            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
+            tmp_Ativa = getValue(gaEngatados[x], ';', 5);
+
+            //LogTerm(gaEngatados[x]);
+
+            LogTerm("Torneira [" + String(x) + "] -- Nome: " + tmp_Nome);
+            LogTerm("Torneira [" + String(x) + "] -- Volume Atual: " + tmp_Volume);
+            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Cadastro: " + tmp_DataCad);
+            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Expiracao: " + tmp_DataExp);
+
+            if (tmp_Ativa == "1")
+            {
+                LogTerm("Torneira [" + String(x) + "] -- Ativa: SIM");
+            }
+            else
+            {
+                LogTerm("Torneira [" + String(x) + "] -- Ativa: NAO"); 
+            }
+            
+            LogTerm(F("---------"));
+
+        }
 
 
+    }
 
+    
 
     //BIOMETRICO_Inicia();
 
@@ -110,6 +176,10 @@ void InitApp()
 
 
     // todo: inicializa hardware, fecha valvulas, etc
+
+    LogTerm(F("MAIN: Sistema Inicializado."));
+
+
 }
 
 
@@ -126,21 +196,21 @@ void InitApp()
 void Exec_INICIO()
 {
 
-    LogTerm("== [Modo Atual: INICIO] ==");
-    
-    //Led_Light(true);
-
-    //SD_Init();
-
-    //ShowExample_DB();
-
-    //Init_Database();
-
+    LogTerm(F("== [Modo Atual: INICIO] =="));
 
     
-
     gModoOperacao = "STANDBY";
 
+
+
+    //TELA_Render_MsgBox("", "X");
+    //TELA_Render_MsgBox("Meu nome e MARCELO wef webfwef dd d dX");
+    //TELA_Render_MsgBox("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456");
+    //TELA_Render_MsgBox("12345678901234567890!@#$%^&*()abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+
+    //TELA_Render_MsgBox("Ola! Meu nome e MARCELO ROCHA. Eu estou verificando o tamanho desta caixa de msgbox para que seja possivel escerever um texto demasiadamente grande sem problemas. Obrigado.");
+    //TELA_Render_MsgBox("Super teste de Janela", "Ola! Meu nome e MARCELO ROCHA.^Eu estou verificando o tamanho desta caixa de msgbox^para que seja possivel escerever um texto demasiadamente grande sem problemas. Obrigado.^^Teste^opa");
+    //TELA_Render_MsgBox("Teste de Enter", "Teste de oula linha:^Linha2");
 
 }
 
@@ -161,7 +231,7 @@ void Exec_INSTALACAO()
 
     if (gTelaRenderizada_INSTALACAO == false)
     {
-        LogTerm("== [Modo Atual: INSTALACAO] ==");
+        LogTerm(F("== [Modo Atual: INSTALACAO] =="));
     }  
 
     boolean Exec_Loop_PodeSair = false;
@@ -221,7 +291,7 @@ void Exec_LOGIN()
 {
     if (gTelaRenderizada_LOGIN == false)
     {
-        LogTerm("== [Modo Atual: LOGIN] ==");
+        LogTerm(F("== [Modo Atual: LOGIN] =="));
     }  
 
     TELA_Render_Interface_LOGIN();
@@ -245,7 +315,7 @@ void Exec_OPERACAO()
 {
     if (gTelaRenderizada_OPERACAO == false)
     {
-        LogTerm("== [Modo Atual: OPERACAO] ==");
+        LogTerm(F("== [Modo Atual: OPERACAO] =="));
     }  
 
     TELA_Render_Interface_OPERACAO();
@@ -280,7 +350,7 @@ void Exec_ADMIN()
 
     if (gTelaRenderizada_ADMIN == false)
     {
-        LogTerm("== [Modo Atual: ADMIN] ==");
+        LogTerm(F("== [Modo Atual: ADMIN] =="));
     }  
 
     gTelaRenderizada_ADMIN = true;
@@ -345,12 +415,13 @@ void Exec_DEBUG()
 {
     if (gTelaRenderizada_DEBUG == false)
     {
-        LogTerm("== [Modo Atual: DEBUG] ==");
+        LogTerm(F("== [Modo Atual: DEBUG] =="));
     }  
 
     gTelaRenderizada_DEBUG = true;
 
-    TELA_RenderTecUnificado_NUM();
+    //TELA_RenderTecUnificado_NUM();
+    TELA_RenderTecUnificado_ALFA();
 
 }
 
@@ -381,12 +452,12 @@ void Exec_TESTE()
 
     if (gTelaRenderizada_TESTE == false)
     {
-        LogTerm("== [Modo Atual: TESTE] ==");
+        LogTerm(F("== [Modo Atual: TESTE] =="));
     }  
 
     boolean Exec_Loop_PodeSair = false;
 
-    LogTerm("Exec_TESTE");
+    LogTerm(F("Exec_TESTE"));
 
     //ShowExample_Tela();
 
@@ -404,7 +475,7 @@ void Exec_TESTE()
 
     while (Exec_Loop_PodeSair == false)
     {
-        LogTerm("Exec_TESTE");
+        LogTerm(F("Exec_TESTE"));
         delay(500);
 
     }
@@ -427,7 +498,7 @@ void Exec_STANDBY()
 {
     if (gTelaRenderizada_STANDBY == false)
     {
-        LogTerm("== [Modo Atual: STANDBY] ==");
+        LogTerm(F("== [Modo Atual: STANDBY] =="));
     }    
     
 
@@ -435,6 +506,30 @@ void Exec_STANDBY()
 
 }
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  ROTINAS SECUNDARIAS (Rotinas como tela para edicao de dados, ler rfid, etc)
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+   
+
+
+void Exec_LER_RFID()
+{
+    if (gTelaRenderizada_LER_RFID == false)
+    {
+        LogTerm(F("== [Modo Atual: LOGIN -- SubTela: LER_RFID] =="));
+        TELA_Render_Interface_LER_RFID();
+    }  
+
+    
+
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -467,7 +562,18 @@ void TestaInterrupts()
 
     if (gModoOperacao == "LOGIN")
     {
-        TELA_VerificaTouch_LOGIN();
+
+        if (gModoOperacao_SubTela == "")
+        {
+            TELA_VerificaTouch_LOGIN();
+        }
+
+        if (gModoOperacao_SubTela == "LER_RFID")
+        {
+            TELA_VerificaTouch_LER_RFID();
+        }
+
+        
     }
 
     if (gModoOperacao == "OPERACAO")
@@ -511,10 +617,9 @@ void TestaInterrupts()
 
 
 // INTERNA ARDUINO: SETUP
-void setup() {
-  
-    InitApp();
-  
+void setup()
+{  
+    InitApp();  
 }
 
 
@@ -522,9 +627,10 @@ void setup() {
 void loop() 
 {
 
+    
     //Led_Light(false);
 
-    //delay(50);
+    delay(50);
 
     //debug:
     //delay(1000);
@@ -532,7 +638,7 @@ void loop()
     ExecLedON_Beat();
 
     //Led_Light(true);
-    //LogTerm("estou no loop");
+    //LogTerm(F("estou no loop");
 
     TestaInterrupts();
 
@@ -555,7 +661,18 @@ void loop()
 
     if (gModoOperacao == "LOGIN")
     {
-        Exec_LOGIN();
+
+        if (gModoOperacao_SubTela == "")
+        {
+            Exec_LOGIN();  
+        }
+        
+       if (gModoOperacao_SubTela == "LER_RFID")
+        {
+            Exec_LER_RFID();  
+        }
+        
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -584,11 +701,11 @@ void loop()
 
     if (gModoOperacao == "INSTALACAO")
     {
-        LogTerm("Modo: INSTALACAO");
+        LogTerm(F("Modo: INSTALACAO"));
 
         Exec_INSTALACAO();
 
-        LogTerm("Modo: == StandBy ==");
+        LogTerm(F("Modo: == StandBy =="));
         gModoOperacao = "STANDBY";
 
     }

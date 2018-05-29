@@ -1,13 +1,13 @@
 Itens ToDo, do murch, para muito em breve:
 
-- Ver programa exemplo kegbot que cebola colocou no meu lap (onde esta ? nao achei)
-- portar choppbot para rodar em stripped arduino (sem tela, com terminal)
-- portar choppbot para rodar no uno ardusim
-- resolver if do cebola
+OKOK! - Ver programa exemplo kegbot que cebola colocou no meu lap (onde esta ? nao achei)
+OKOK! - portar choppbot para rodar em stripped arduino (sem tela, com terminal)
+OKOK! - portar choppbot para rodar no uno ardusim (portado para o Simulator)
+OKOK! - resolver if do cebola
 - criar breadboard de testes com botoes fisicos para usar o stripped arduino sem a margarida
 - criar botoes e sd e bio e rfid no uno ardusim
 - na breadboard dos botoes, colocar fisicamente SD e RFID para poder testar em casa sem a margarida
-- criar teclado alfanumerico
+OKOK! - criar teclado alfanumerico
 - fazer o SD funcionar no programa principal
 - fazero RFID funcionar no programa principal
 - fazer o biometrico funcionar no programa principal
@@ -33,4 +33,4 @@ mega mais para frente
 
 PROBLEMAS CONHECIDOS:
 
-- Tela parou de funcionar
+- tem um bug estrano no voltar do tec alfa

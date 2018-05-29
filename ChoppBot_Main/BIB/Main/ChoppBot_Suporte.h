@@ -10,6 +10,7 @@
 
 
 
+void(*resetFunc) (void) = 0;  // funcao interna do arduino que reseta o arduino
 
 // Loga uma informacao no terminal
 void LogTerm (String Texto)
@@ -167,3 +168,22 @@ String getValue(String data, char separator, int index)
 
     //return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
+
+String CharFromAsc2(int Asc2Value)
+{
+    char ret;
+
+    ret = Asc2Value;
+
+    return String(ret);
+}
+
+// retorna a cor em int16 a partir de rgb
+uint16_t rgb565_from_triplet(uint8_t red, uint8_t green, uint8_t blue)
+{
+  red   >>= 3;
+  green >>= 2;
+  blue  >>= 3;
+  return (red << 11) | (green << 5) | blue;
+}
+

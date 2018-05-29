@@ -1,0 +1,2 @@
+IDUser;CPF;DataCad;Nome;Nivel;SaldoAtual
+4;24875145877;24/05/2018;Monica Balog;100;179,26

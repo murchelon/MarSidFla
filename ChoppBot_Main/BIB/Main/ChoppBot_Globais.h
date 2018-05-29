@@ -29,7 +29,7 @@
 // TESTE
 
 // VERSAO DA APLICACAO
-#define VersaoAPP "1.0"
+#define VersaoAPP F("1.0")
 
 
 String gModoOperacao = ""; 
@@ -308,8 +308,8 @@ void InicializaVars()
 
 
 	// variaveis princiais
-	gModoOperacao = "INICIO";  
-	gModoOperacao_SubTela = "";
+	gModoOperacao = F("INICIO");  
+	gModoOperacao_SubTela = F("");
 	
 	gModoDebug = true;
 	//gModoDebug = false;
@@ -321,12 +321,12 @@ void InicializaVars()
 
 
 	// Modo de output a ser usado
-	gTela_Hardware = String("ER-TFTM070-5"); 		// tela LCD 7pol Touch Resistive
+	gTela_Hardware = F("ER-TFTM070-5"); 		// tela LCD 7pol Touch Resistive
 	//gTela_Hardware = String("TERMINAL"); 		// saidas de texto para o terminal (console)	
 
 	// RFID - Hardware utilizado
 	//gRFID_Hardware = "MFRC522";
-	gRFID_Hardware = "PN532";
+	gRFID_Hardware = F("PN532");
 
 	// controle de render de tela
 	gTelaRenderizada_TecNum = false;
@@ -341,8 +341,8 @@ void InicializaVars()
 	gTelaRenderizada_LER_RFID = false;
 	gTelaRenderizada_MSGBOX = false;
 	//teclado
-	gTecladoNum_ValAtual = String("");
-	gTecladoAlfa_ValAtual = String("");
+	gTecladoNum_ValAtual = F("");
+	gTecladoAlfa_ValAtual = F("");
 				
 
 	// Variaveis de sessao:
@@ -354,7 +354,7 @@ void InicializaVars()
 	// inicializa var de engatados
 	for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
 	{
-		gaEngatados[x] = "";
+		gaEngatados[x] = F("");
 	}	 	
 
 }

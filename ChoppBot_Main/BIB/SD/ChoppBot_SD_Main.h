@@ -14,7 +14,7 @@
 String SD_InicializaCartaoSD(SdFat &LeitorSD)
 {
 
-	String ret = "1|SD Inicializado";
+	String ret = F("1|SD Inicializado");
 
 	int ContaTentativa = 0;
 	bool SucessoTentativa = false;
@@ -40,7 +40,7 @@ String SD_InicializaCartaoSD(SdFat &LeitorSD)
 		}
 
 
-		ret = "-1|Falha na inicializacao do cartao SD";
+		ret = F("-1|Falha na inicializacao do cartao SD");
 
 		return ret;	
 	}
@@ -58,7 +58,7 @@ String SD_InicializaCartaoSD(SdFat &LeitorSD)
 String SD_AbreArqTexto(String FullPathFile, SdFat &LeitorSD, File &objArquivo)
 {
 
-	String ret = "1|Arquivo Aberto";
+	String ret = F("1|Arquivo Aberto");
 
 	int ContaTentativa = 0;
 	bool SucessoTentativa = false;
@@ -70,7 +70,7 @@ String SD_AbreArqTexto(String FullPathFile, SdFat &LeitorSD, File &objArquivo)
 
 	if (!objArquivo) 
 	{
-		LogTerm("SD: Falha na abertura do arquivo: " + FullPathFile);
+		LogTerm(String(F("SD: Falha na abertura do arquivo: ")) + FullPathFile);
 
 
 		while ((ContaTentativa <= MAX_TENTATIVA_READ) && (SucessoTentativa == false))
@@ -93,7 +93,7 @@ String SD_AbreArqTexto(String FullPathFile, SdFat &LeitorSD, File &objArquivo)
 		}
 
 
-		ret = "-1|Falha na abertura do arquivo: " + FullPathFile;
+		ret = String(F("-1|Falha na abertura do arquivo: ")) + FullPathFile;
 
 		return ret;	
 
@@ -113,9 +113,9 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 
 	
 
-	String ret = "1|";
+	String ret = F("1|");
 
-	String buff = "";
+	String buff =F("");
 
 	int ContaEnter = 0;
 
@@ -126,11 +126,11 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 	//bool SucessoTentativa = false;
 
 	SdFat SD;
-	String retSD = "";
+	String retSD = F("");
 
 	retSD = SD_InicializaCartaoSD(SD);
 
-	if (retSD.substring(0, 1) != "1")
+	if (retSD.substring(0, 1) != F("1"))
 	{
 		return retSD;
 	}
@@ -138,11 +138,11 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 
 
 	File file;
-	String retFile = "";
+	String retFile = F("");
 
 	retFile = SD_AbreArqTexto(FullPathFile, SD, file);
 
-	if (retFile.substring(0, 1) != "1")
+	if (retFile.substring(0, 1) != F("1"))
 	{
 		return retFile;
 	}
@@ -151,7 +151,7 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 
 		if (gModoDebug == true)
 		{
-			LogTerm("SD: Arquivo aberto com sucesso: " + FullPathFile);
+			LogTerm(String(F("SD: Arquivo aberto com sucesso: ")) + FullPathFile);
 		}
 		
 
@@ -222,9 +222,9 @@ String SD_GetFirstRegFromFile(String FullPathFile)
 
 
 
-	String ret = "1|";
+	String ret = F("1|");
 
-	String buff = "";
+	String buff = F("");
 
 	int ContaEnter = 0;
 
@@ -236,11 +236,11 @@ String SD_GetFirstRegFromFile(String FullPathFile)
 
 
 	SdFat SD;
-	String retSD = "";
+	String retSD = F("");
 
 	retSD = SD_InicializaCartaoSD(SD);
 
-	if (retSD.substring(0, 1) != "1")
+	if (retSD.substring(0, 1) != F("1"))
 	{
 		return retSD;
 	}
@@ -248,11 +248,11 @@ String SD_GetFirstRegFromFile(String FullPathFile)
 
 
 	File file;
-	String retFile = "";
+	String retFile = F("");
 
 	retFile = SD_AbreArqTexto(FullPathFile, SD, file);
 
-	if (retFile.substring(0, 1) != "1")
+	if (retFile.substring(0, 1) != F("1"))
 	{
 		return retFile;
 	}
@@ -261,7 +261,7 @@ String SD_GetFirstRegFromFile(String FullPathFile)
 
 		if (gModoDebug == true)
 		{
-			LogTerm("SD: Arquivo aberto com sucesso: " + FullPathFile);
+			LogTerm(String(F("SD: Arquivo aberto com sucesso: ")) + FullPathFile);
 		}
 		
 
@@ -316,7 +316,7 @@ String SD_TestaCartao()
 
 	SdFat SD;
 
-	String ret = "1|";
+	String ret = F("1|");
 
 
 
@@ -327,13 +327,13 @@ String SD_TestaCartao()
 	{
 		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
 
-		ret = "0|Falha na inicializacao do cartao SD";
+		ret = F("0|Falha na inicializacao do cartao SD");
 		return ret;	
 	}
 
 	t = millis() - t;	
 
-	ret += String(t) + String("ms|");
+	ret += String(t) + String(F("ms|"));
 
 	cardSize = SD.card()->cardSize();
 
@@ -341,7 +341,7 @@ String SD_TestaCartao()
 	{
 		LogTerm(F("SD: Falha ao obter o tamanho do cartao SD"));
 
-		ret = "0|Falha ao obter o tamanho do cartao SD";
+		ret = F("0|Falha ao obter o tamanho do cartao SD");
 		return ret;	
 	}
 
@@ -354,26 +354,26 @@ String SD_TestaCartao()
 	switch (SD.card()->type())
 	{
 		case SD_CARD_TYPE_SD1:
-			ret += "SD1";
+			ret += String(F("SD1"));
 			break;
 
 		case SD_CARD_TYPE_SD2:
-			ret += "SD2";
+			ret += String(F("SD2"));
 			break;
 
 		case SD_CARD_TYPE_SDHC:
 			if (cardSize < 70000000) 
 			{
-				ret += "SDHC";
+				ret += String(F("SDHC"));
 			} 
 			else
 			{
-				ret += "SDXC";
+				ret += String(F("SDXC"));
 			}
 			break;
 
 		default:
-			ret += "Desconhecido";
+			ret += String(F("Desconhecido"));
 			break;
 	}
 

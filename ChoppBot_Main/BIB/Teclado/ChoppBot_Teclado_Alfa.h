@@ -9,38 +9,38 @@ String GetCharForTecAlfa(int Index)
 	ret = String(Index);
 
 	if (Index <= 9) {ret = String(Index);}
-	if (Index == 10) {ret = String("0");}
-	if (Index == 20) {ret = String("<<");}
-	if (Index == 30) {ret = String("ESP");}
-	if (Index == 40) {ret = String("OK");}
+	if (Index == 10) {ret = String(F("0"));}
+	if (Index == 20) {ret = String(F("<<"));}
+	if (Index == 30) {ret = String(F("ESP"));}
+	if (Index == 40) {ret = String(F("OK"));}
 
-	if (Index == 11) {ret = String("Q");}
-	if (Index == 12) {ret = String("W");}
-	if (Index == 13) {ret = String("E");}
-	if (Index == 14) {ret = String("R");}
-	if (Index == 15) {ret = String("T");}
-	if (Index == 16) {ret = String("Y");}
-	if (Index == 17) {ret = String("U");}
-	if (Index == 18) {ret = String("I");}
-	if (Index == 19) {ret = String("O");}
-	if (Index == 21) {ret = String("A");}
-	if (Index == 22) {ret = String("S");}
-	if (Index == 23) {ret = String("D");}
-	if (Index == 24) {ret = String("F");}
-	if (Index == 25) {ret = String("G");}
-	if (Index == 26) {ret = String("H");}
-	if (Index == 27) {ret = String("J");}
-	if (Index == 28) {ret = String("K");}
-	if (Index == 29) {ret = String("L");}
-	if (Index == 31) {ret = String("Z");}
-	if (Index == 32) {ret = String("X");}
-	if (Index == 33) {ret = String("C");}
-	if (Index == 34) {ret = String("V");}
-	if (Index == 35) {ret = String("B");}
-	if (Index == 36) {ret = String("N");}
-	if (Index == 37) {ret = String("M");}
-	if (Index == 38) {ret = String("P");}
-	if (Index == 39) {ret = String(",");}
+	if (Index == 11) {ret = String(F("Q"));}
+	if (Index == 12) {ret = String(F("W"));}
+	if (Index == 13) {ret = String(F("E"));}
+	if (Index == 14) {ret = String(F("R"));}
+	if (Index == 15) {ret = String(F("T"));}
+	if (Index == 16) {ret = String(F("Y"));}
+	if (Index == 17) {ret = String(F("U"));}
+	if (Index == 18) {ret = String(F("I"));}
+	if (Index == 19) {ret = String(F("O"));}
+	if (Index == 21) {ret = String(F("A"));}
+	if (Index == 22) {ret = String(F("S"));}
+	if (Index == 23) {ret = String(F("D"));}
+	if (Index == 24) {ret = String(F("F"));}
+	if (Index == 25) {ret = String(F("G"));}
+	if (Index == 26) {ret = String(F("H"));}
+	if (Index == 27) {ret = String(F("J"));}
+	if (Index == 28) {ret = String(F("K"));}
+	if (Index == 29) {ret = String(F("L"));}
+	if (Index == 31) {ret = String(F("Z"));}
+	if (Index == 32) {ret = String(F("X"));}
+	if (Index == 33) {ret = String(F("C"));}
+	if (Index == 34) {ret = String(F("V"));}
+	if (Index == 35) {ret = String(F("B"));}
+	if (Index == 36) {ret = String(F("N"));}
+	if (Index == 37) {ret = String(F("M"));}
+	if (Index == 38) {ret = String(F("P"));}
+	if (Index == 39) {ret = String(F(","));}
 
 	return ret;
 }
@@ -49,13 +49,13 @@ String GetCharForTecAlfa(int Index)
 void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 {
 
-	if (gTela_Hardware == "TERMINAL")
+	if (gTela_Hardware == F("TERMINAL"))
 	{ 
 		if (gTelaRenderizada_TecAlfa == false)
 		{
-			LogTerm("TECLADO ALFA");
-			LogTerm("Valor ATUAL da gTecladoAlfa_ValAtual: " + gTecladoAlfa_ValAtual);
-			LogTerm("Digite um texto no console e tecle enter. Digite VOLTAR para voltar a tela anterior.");
+			LogTerm(F("TECLADO ALFA"));
+			LogTerm(String(F("Valor ATUAL da gTecladoAlfa_ValAtual: ")) + gTecladoAlfa_ValAtual);
+			LogTerm(F("Digite um texto no console e tecle enter. Digite VOLTAR para voltar a tela anterior."));
 
 			gTelaRenderizada_TecAlfa = true;	
 		}		
@@ -65,7 +65,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 
 	}
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (gTelaRenderizada_TecAlfa == false)
@@ -132,10 +132,10 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 
 
 			// vars auxiliares para armazenar as posicoes dos botoes senhdo renderizados
-			String temp_pos_X= "";
-			String temp_pos_Y = "";
-			String temp_size_W = "";
-			String temp_size_H = "";
+			String temp_pos_X= F("");
+			String temp_pos_Y = F("");
+			String temp_size_W = F("");
+			String temp_size_H = F("");
 
 
 		    // calcula o tamanho do fundo baseando-se nos botes
@@ -206,7 +206,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 
 					// armazena as posicoes dos botoes para uso no touch
 					//aTecladoAlfa_PosBotoes[ContaTxtBotao - 1] = String("Pos: ") + ContaTxtBotao + String(" ") + temp_pos_X + String(",") + temp_size_W + String(",") + temp_pos_Y + String(",") + temp_size_H;
-					aTecladoAlfa_PosBotoes[ContaTxtBotao - 1] = temp_pos_X + String(",") + temp_size_W + String(",") + temp_pos_Y + String(",") + temp_size_H;
+					aTecladoAlfa_PosBotoes[ContaTxtBotao - 1] = temp_pos_X + String(F(",")) + temp_size_W + String(F(",")) + temp_pos_Y + String(F(",")) + temp_size_H;
 
 
 
@@ -277,7 +277,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 		    tft.setTextColor(RA8875_WHITE);
 		    tft.setFontScale(1); 
 		    tft.setCursor (Inicio_X, Inicio_Y - 190); 
-		    tft.print ("Digite o texto desejado:");			    
+		    tft.print (F("Digite o texto desejado:"));			    
 
 		 
 
@@ -317,7 +317,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 
 
 			// adiciona posicoes do labelnum para touch
-			aTecladoAlfa_PosBotoes[ContaTxtBotao] = LabelNum_PosAtual_X + String(",") + Size_LabelNum_W + String(",") + LabelNum_PosAtual_Y + String(",") + Size_LabelNum_H;
+			aTecladoAlfa_PosBotoes[ContaTxtBotao] = LabelNum_PosAtual_X + String(F(",")) + Size_LabelNum_W + String(F(",")) + LabelNum_PosAtual_Y + String(F(",")) + Size_LabelNum_H;
 			
 		
 
@@ -332,10 +332,10 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 		    tft.setTextColor(RA8875_WHITE);
 		    tft.setFontScale(1); 
 		    tft.setCursor (btnVoltar_PosAtual_X + 12, btnVoltar_PosAtual_Y + 11); 
-		    tft.print ("<< Voltar");
+		    tft.print (F("<< Voltar"));
 
 			// adiciona posicoes do voltar para touch
-			aTecladoAlfa_PosBotoes[ContaTxtBotao + 1] = btnVoltar_PosAtual_X + String(",170,") + btnVoltar_PosAtual_Y + String(",60");
+			aTecladoAlfa_PosBotoes[ContaTxtBotao + 1] = btnVoltar_PosAtual_X + String(F(",170,")) + btnVoltar_PosAtual_Y + String(F(",60"));
 			//aTecladoAlfa_PosBotoes[ContaTxtBotao + 1] = String("000,000,000,000");
 
 			
@@ -350,7 +350,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 
 void TELA_Render_ValorTec_TECLADO_ALFA()
 {
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 
@@ -369,7 +369,7 @@ void TELA_Render_ValorTec_TECLADO_ALFA()
 		if (gModoDebug == true)
 		{
 			tft.setCursor (480, 20); 
-			tft.print ("Tam ValAtual = " + String(gTecladoAlfa_ValAtual.length()));
+			tft.print (String(F("Tam ValAtual = ")) + String(gTecladoAlfa_ValAtual.length()));
 		}
 
 
@@ -447,40 +447,40 @@ void TELA_Render_ValorTec_TECLADO_ALFA()
 void TELA_VerificaTouch_TECLADO_ALFA()
 {
 
-	if (gTela_Hardware == "TERMINAL")
+	if (gTela_Hardware == F("TERMINAL"))
 	{  
 
 		String retConsole;
 
 		retConsole = ReadConsoleInput();
 
-		if (retConsole != "") 
+		if (retConsole != F(""))
 		{
 			
-			LogTerm("Valor digitado: " + retConsole);
+			LogTerm(String(F("Valor digitado: ")) + retConsole);
 				
 
 			gTecladoAlfa_ValAtual = retConsole;			
 				
-			LogTerm("Valor NOVO da gTecladoAlfa_ValAtual: " + gTecladoAlfa_ValAtual);	
+			LogTerm(String(F("Valor NOVO da gTecladoAlfa_ValAtual: ")) + gTecladoAlfa_ValAtual);	
 
 			gTelaRenderizada_TecAlfa = false;
 
 
-			gModoOperacao = "LOGIN";				
+			gModoOperacao = F("LOGIN");				
 
 		}
 
 
-		if ((retConsole == "VOLTAR") || (retConsole == "voltar"))
+		if ((retConsole == F("VOLTAR")) || (retConsole == F("voltar")))
 		{
-			LogTerm("VOLTAR");
+			LogTerm(F("VOLTAR"));
 
 			gTelaRenderizada_TecAlfa = false;
 			//gTecladoAlfa_ValAtual = "";
 
 
-			gModoOperacao = "LOGIN";			
+			gModoOperacao = F("LOGIN");			
 		}
 
 	}
@@ -490,7 +490,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 	//LogTerm("gTecladoAlfa_ValAtual.length() = " + String(gTecladoAlfa_ValAtual.length()));
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (tft.touchDetect())
@@ -515,7 +515,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 
 
-				if (temp_size_H != "TAM")
+				if (temp_size_H != F("TAM"))
 				{
 
 
@@ -580,15 +580,15 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 									 		ContaLinha = 1;
 									 		tft.setCursor (temp_pos_X_limpa.toInt() + 3, temp_pos_Y_limpa.toInt() + 3 + ((ContaLinha - 1) * 35)); 
-									 		tft.print ("                                  ");
+									 		tft.print (F("                                  "));
 
 									 		ContaLinha = 2;
 									 		tft.setCursor (temp_pos_X_limpa.toInt() + 3, temp_pos_Y_limpa.toInt() + 3 + ((ContaLinha - 1) * 35)); 
-									 		tft.print ("                                  ");
+									 		tft.print (F("                                  "));
 
 									 		ContaLinha = 3;
 									 		tft.setCursor (temp_pos_X_limpa.toInt() + 3, temp_pos_Y_limpa.toInt() + 3 + ((ContaLinha - 1) * 35)); 
-									 		tft.print ("                                  ");
+									 		tft.print (F("                                  "));
 
 										    tft.setCursor (temp_pos_X_limpa.toInt() + 3, temp_pos_Y_limpa.toInt() + 3); 
 					
@@ -602,7 +602,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 										if (gTecladoAlfa_ValAtual.length() <= 101)
 										{
-											gTecladoAlfa_ValAtual = gTecladoAlfa_ValAtual + String(" ");
+											gTecladoAlfa_ValAtual = gTecladoAlfa_ValAtual + String(F(" "));
 										}
 
 										break;
@@ -620,7 +620,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 										tft.setCursor (0,0); 
 										for(int k = 0 ; k <= ctTECLADO_ALFA_TOTAL_BOTOES - 1 ; k++)
 										{
-											TELA_Texto("aTecladoAlfa_PosBotoes[" + String(k) + "] = " + aTecladoAlfa_PosBotoes[k], "BRANCO");
+											TELA_Texto(String(F("aTecladoAlfa_PosBotoes[")) + String(k) + String(F("] = ")) + aTecladoAlfa_PosBotoes[k], F("BRANCO"));
 										}
 
 										delay(6000);
@@ -646,11 +646,11 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 										TELA_LimpaTela();
 
 										gTelaRenderizada_TecAlfa = false;
-										gTecladoAlfa_ValAtual = "";
+										gTecladoAlfa_ValAtual = F("");
 
 	
 
-										gModoOperacao = "LOGIN";
+										gModoOperacao = F("LOGIN");
 										//gModoOperacao = "INICIO";
 										//gModoOperacao = "LOGIN";
 										//gModoOperacao = "OPERACAO";
@@ -668,11 +668,11 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 										TELA_LimpaTela();
 
 										gTelaRenderizada_TecAlfa = false;
-										gTecladoAlfa_ValAtual = "";
+										gTecladoAlfa_ValAtual = F("");
 
 	
 
-										gModoOperacao = "LOGIN";
+										gModoOperacao = F("LOGIN");
 										//gModoOperacao = "INICIO";
 										//gModoOperacao = "LOGIN";
 										//gModoOperacao = "OPERACAO";

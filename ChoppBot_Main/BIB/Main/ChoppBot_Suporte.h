@@ -48,6 +48,16 @@ void LogTerm (double Texto)
 }
 
 
+String Right(String Alvo, int Qtde)
+{
+	return Alvo.substring(Alvo.length() - Qtde);
+}
+
+
+String Left(String Alvo, int Qtde)
+{
+	return Alvo.substring(0, Qtde);
+}
 
 
 String ReadConsoleInput()
@@ -124,17 +134,17 @@ String FormatComZerosAesq(int ValorInt)
 {
 	if ((ValorInt >= 0) && (ValorInt <= 9)) 
 	{
-		return String("00") + ValorInt;
+		return String(F("00")) + ValorInt;
 	}
 
 	if ((ValorInt >= 10) && (ValorInt <= 99)) 
 	{
-		return String("0") + ValorInt;
+		return String(F("0")) + ValorInt;
 	}
 
 	if ((ValorInt >= 100) && (ValorInt <= 999)) 
 	{
-		return String("") + ValorInt;
+		return String(F("")) + ValorInt;
 	}
 
 }

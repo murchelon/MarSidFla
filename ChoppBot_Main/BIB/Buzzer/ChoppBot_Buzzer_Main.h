@@ -7,7 +7,7 @@ void BUZZER_TocaSom(String TipoSom)
 	unsigned int sol = 200;
 	unsigned long tempo = 130;
 
-	if (TipoSom == "ERRO")
+	if (TipoSom == F("ERRO"))
 	{
 		tone(ctPINO_BUZZER, la);
 		delay(tempo);
@@ -18,7 +18,7 @@ void BUZZER_TocaSom(String TipoSom)
 	}
 
 
-	if (TipoSom == "SUCESSO")
+	if (TipoSom == F("SUCESSO"))
 	{
 		tone(ctPINO_BUZZER, la);
 		delay(tempo);
@@ -31,7 +31,7 @@ void BUZZER_TocaSom(String TipoSom)
 	}
 
 
-	if (TipoSom == "LIGAR")
+	if (TipoSom == F("LIGAR"))
 	{
 		tone(ctPINO_BUZZER, 1600);		
 		delay(100);

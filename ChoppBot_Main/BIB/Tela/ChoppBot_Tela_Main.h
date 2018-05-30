@@ -69,12 +69,12 @@ const int POSICAO_PADRAO_BTN_Y = 140;
 
 void TELA_LimpaTela()
 {
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{
 		tft.fillScreen(RA8875_BLACK);  
 	}
 
-	if (gTela_Hardware == "TERMINAL")
+	if (gTela_Hardware == F("TERMINAL"))
 	{
 		LogTerm(F("TELA -> LimpaTela()")); 
 	}
@@ -86,48 +86,48 @@ void TELA_LimpaTela()
 void TELA_Texto(String Texto, String Cor)
 {
 
-	if (gTela_Hardware == "TERMINAL")
+	if (gTela_Hardware == F("TERMINAL"))
 	{
 		LogTerm(Texto); 
 	}
 
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{
 
 
-		if (Cor == "")
+		if (Cor == F(""))
 		{
-			Cor = "AMARELO";
+			Cor = F("AMARELO");
 		}
 
 
-		if (Cor == "BRANCO")
+		if (Cor == F("BRANCO"))
 		{
 			tft.setTextColor(RA8875_WHITE);
 		}
 
-		if (Cor == "AMARELO")
+		if (Cor == F("AMARELO"))
 		{
 			tft.setTextColor(RA8875_YELLOW);
 		}
 
-		if (Cor == "VERMELHO")
+		if (Cor == F("VERMELHO"))
 		{
 			tft.setTextColor(RA8875_RED);
 		}
 
-		if (Cor == "VERDE")
+		if (Cor == F("VERDE"))
 		{
 			tft.setTextColor(RA8875_GREEN);
 		}
 
-		if (Cor == "AZUL")
+		if (Cor == F("AZUL"))
 		{
 			tft.setTextColor(RA8875_BLUE);
 		}
 
-		if (Cor == "MAGENTA")
+		if (Cor == F("MAGENTA"))
 		{
 			tft.setTextColor(RA8875_MAGENTA);
 		}
@@ -155,7 +155,7 @@ void TELA_Texto(String Texto, String Cor)
 			// nao renderizava de novo, devido ao jeito como a tela de teclado numerico eh feita. 
 			// por isto, definimos de novo o teclado como nao renderizado, para que ele seja renderizado logo em seguida
 			// pela rotina de desenho da tela
-			if (gModoOperacao == 'DEBUG')
+			if (gModoOperacao == F("DEBUG"))
 			{
 				//gTelaRenderizada_TecNum = false;
 				gTelaRenderizada_TecAlfa = false;
@@ -207,7 +207,7 @@ void TELA_LogTerm_XY()
 	*/
 
 
-	if (gModoOperacao == "OPERACAO")
+	if (gModoOperacao == F("OPERACAO"))
 	{
 
 		// botao1:
@@ -226,8 +226,8 @@ void TELA_LogTerm_XY()
 	else
 	{
 		// Apenas X Y:
-		sprintf(TheTexto,"XY: X = %d | Y = %d", gTouch_X, gTouch_Y);  
-		TELA_Texto(TheTexto, "");
+		sprintf(TheTexto, "XY: X = %d | Y = %d", gTouch_X, gTouch_Y);  
+		TELA_Texto(TheTexto, F(""));
 		//TELA_Texto(gModoOperacao, "VERMELHO");
 
 		LogTerm(TheTexto);
@@ -262,13 +262,13 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 	//int Inicio_Y = Size_Char_H;
 	int Inicio_Y = 150;
 
-	String Texto_Ajustado = "";
+	String Texto_Ajustado = F("");
 
 	int BarraTitulo_H;
 
 	BarraTitulo_H = 40;
 
-	if (Titulo == "")
+	if (Titulo == F(""))
 	{
 		BarraTitulo_H = 0;
 	}
@@ -341,7 +341,7 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 
 		
 		//titulo
-		if (Titulo != "")
+		if (Titulo != F(""))
 		{
 			tft.fillRoundRect(Fundo_X, Fundo_Y - BarraTitulo_H, Fundo_W, BarraTitulo_H, 0, RA8875_WHITE);
 
@@ -409,7 +409,7 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 			LinhaToPrint = Texto.substring(TextoString_Inicio, TextoString_Fim);
 
 			// remove o espaco se for a primeira linha
-			if (LinhaToPrint.substring(0, 1) == " ")
+			if (LinhaToPrint.substring(0, 1) == F(" "))
 			{
 				LinhaToPrint = LinhaToPrint.substring(1);
 			}
@@ -459,7 +459,7 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 void TELA_IniciaTela()
 {
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{
 
 		pinMode(RA8875_INT, INPUT);
@@ -486,7 +486,7 @@ void TELA_IniciaTela()
 void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 {
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{
 
 		int OffSet_TextoBotao_W = gTamBotao_W / 2 - 11;
@@ -516,22 +516,22 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 		gPosicaoAtual_X = gPosicaoAtual_X - gOffset_W - gTamBotao_W;
 
 		// Desenha o quadrado do botao
-		if (Cor == "BRANCO")
+		if (Cor == F("BRANCO"))
 		{
 			tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_WHITE);
 		}
 
-		if (Cor == "AZUL")
+		if (Cor == F("AZUL"))
 		{
 			tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_BLUE);
 		}
 
-		if (Cor == "MAGENTA")
+		if (Cor == F("MAGENTA"))
 		{
 			tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_MAGENTA);
 		}
 
-		if (Cor == "PRETO")
+		if (Cor == F("PRETO"))
 		{
 			tft.fillRect(gPosicaoAtual_X, gOffset_H, gTamBotao_W, gTamBotao_H, RA8875_BLACK);
 		}
@@ -550,14 +550,14 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 		tft.setTextColor(RA8875_WHITE);
 
 		// Render Titulo
-		if (Texto != "")
+		if (Texto != F(""))
 		{
 			tft.setCursor (gPosicaoAtual_X + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H);    
 			tft.print (Texto);
 		}
 
 		// Render Titulo2
-		if (Texto2 != "")
+		if (Texto2 != F(""))
 		{
 
 			tft.setCursor (gPosicaoAtual_X + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H + OffSet_TextoTitulo2_H); 
@@ -594,25 +594,25 @@ void TELA_Render_Interface_STANDBY()
         //LogTerm(F("== [Modo Atual: STANDBY] ==");
 
 
-		if (gTela_Hardware == "TERMINAL")
+		if (gTela_Hardware == F("TERMINAL"))
 		{  
-			LogTerm("ChoppBot " + String(VersaoAPP));
-			LogTerm("Tecle algo no console para iniciar...");
+			LogTerm(String(F("ChoppBot ")) + String(VersaoAPP));
+			LogTerm(F("Tecle algo no console para iniciar..."));
 		}
 
-		if (gTela_Hardware == "ER-TFTM070-5")
+		if (gTela_Hardware == F("ER-TFTM070-5"))
 		{  
 
 			tft.setTextColor(RA8875_YELLOW);
 			tft.setCursor (210, 150);
 			tft.setFontScale(3); 
-			tft.print ("ChoppBot " + String(VersaoAPP));    
+			tft.print (String(F("ChoppBot ")) + String(VersaoAPP));    
 			//tft.print ("ChoppBot 1.0");    
 
 			tft.setTextColor(RA8875_WHITE);
 			tft.setCursor (195, 310);
 			tft.setFontScale(1); 
-			tft.print ("Toque na tela para iniciar");    
+			tft.print (F("Toque na tela para iniciar"));    
 
 		}
 
@@ -633,7 +633,7 @@ void TELA_Render_Interface_LOGIN()
 
 		//LogTerm(F("== [Modo Atual: LOGIN] ==");
 
-		if (gTela_Hardware == "TERMINAL")
+		if (gTela_Hardware == F("TERMINAL"))
 		{  
 
 			LogTerm(F("Ola! Seja bem vindo!"));
@@ -649,25 +649,25 @@ void TELA_Render_Interface_LOGIN()
 		}
 
 
-		if (gTela_Hardware == "ER-TFTM070-5")
+		if (gTela_Hardware == F("ER-TFTM070-5"))
 		{  
 
 			tft.setTextColor(RA8875_YELLOW);
 			tft.setCursor (175, 30);
 			tft.setFontScale(2); 
-			tft.print ("Ola! Seja vem vindo!");   
+			tft.print (F("Ola! Seja vem vindo!"));   
 
 			tft.setTextColor(RA8875_WHITE);
 			tft.setCursor (100, 130);
 			tft.setFontScale(1); 
-			tft.print ("Escolha o seu metodo de identificacao:");   
+			tft.print (F("Escolha o seu metodo de identificacao:"));   
 
 			gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
 
-			TELA_Render_Botao(1, "LEITOR BIOMETRICO", "", "BRANCO");
-			TELA_Render_Botao(2, "LEITOR DE CARTAO", "", "AZUL");
-			//TELA_Render_Botao(3, "ABRE TECLADO NUMERICO", "", "MAGENTA");
-			TELA_Render_Botao(3, "ABRE TECLADO ALFA", "", "MAGENTA");
+			TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F("BRANCO"));
+			TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F("AZUL"));
+			//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F("MAGENTA"));
+			TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F("MAGENTA"));
 
 			// Area para chamar admin
 			//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
@@ -694,7 +694,7 @@ void TELA_Render_Interface_OPERACAO()
 
 		
 
-		if (gTela_Hardware == "TERMINAL")
+		if (gTela_Hardware == F("TERMINAL"))
 		{  
 			LogTerm(F("1 - Imperial IPA - R$ 25,00 / Litro"));
 			LogTerm(F("2 - Hoocus Pocus - R$ 19,00"));
@@ -702,20 +702,20 @@ void TELA_Render_Interface_OPERACAO()
 		}
 
 
-		if (gTela_Hardware == "ER-TFTM070-5")
+		if (gTela_Hardware == F("ER-TFTM070-5"))
 		{  		
 
 			tft.setTextColor(RA8875_WHITE);
 			tft.setCursor (125, 30);
 			tft.setFontScale(2); 
-			tft.print ("Escolha a sua torneira:");    
+			tft.print (F("Escolha a sua torneira:"));    
 
 
 			gOffset_H = POSICAO_PADRAO_BTN_Y;
 
-			TELA_Render_Botao(1, "Imperial IPA", "R$ 25,00 / Litro", "BRANCO");
-			TELA_Render_Botao(2, "Hoocus Pocus", "R$ 19,00 / Litro", "AZUL");
-			TELA_Render_Botao(3, "Duchese", "R$ 32,00 / Litro", "MAGENTA");
+			TELA_Render_Botao(1, F("Imperial IPA"), F("R$ 25,00 / Litro"), F("BRANCO"));
+			TELA_Render_Botao(2, F("Hoocus Pocus"), F("R$ 19,00 / Litro"), F("AZUL"));
+			TELA_Render_Botao(3, F("Duchese"), F("R$ 32,00 / Litro"), F("MAGENTA"));
 		}
 
 		gTelaRenderizada_OPERACAO = true;
@@ -733,7 +733,7 @@ void TELA_Render_Interface_OPERACAO()
 void TELA_VerificaTouch_STANDBY()
 {
 
-	if (gTela_Hardware == "TERMINAL")
+	if (gTela_Hardware == F("TERMINAL"))
 	{ 
 
 		String retConsole;
@@ -742,11 +742,11 @@ void TELA_VerificaTouch_STANDBY()
 
 		if (retConsole != "") 
 		{
-			LogTerm("Opcao selecionada: " + retConsole);
+			LogTerm(String(F("Opcao selecionada: ")) + retConsole);
 
 			gTelaRenderizada_STANDBY = false;
 
-			gModoOperacao = "LOGIN";
+			gModoOperacao = F("LOGIN");
 			//gModoOperacao = "OPERACAO";
 			//gModoOperacao = "DEBUG";
 
@@ -757,7 +757,7 @@ void TELA_VerificaTouch_STANDBY()
 
 	}
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (tft.touchDetect())
@@ -765,7 +765,7 @@ void TELA_VerificaTouch_STANDBY()
 
 			gTelaRenderizada_STANDBY = false;
 
-			gModoOperacao = "LOGIN";
+			gModoOperacao = F("LOGIN");
 			//gModoOperacao = "OPERACAO";
 			//gModoOperacao = "DEBUG";
 
@@ -788,16 +788,16 @@ void TELA_VerificaTouch_STANDBY()
 void TELA_VerificaTouch_LOGIN()
 {
 
-	if (gTela_Hardware == "TERMINAL")
+	if (gTela_Hardware == F("TERMINAL"))
 	{ 
 
 		String retConsole;
 
 		retConsole = ReadConsoleInput();
 
-		if (retConsole != "") 
+		if (retConsole != F(""))
 		{
-			LogTerm("Opcao selecionada: " + retConsole);	
+			LogTerm(String(F("Opcao selecionada: ")) + retConsole);	
 		}
 
 
@@ -811,7 +811,7 @@ void TELA_VerificaTouch_LOGIN()
 			//LogTerm(F("LEITOR RFID SELECIONADO VIA TERMINAL");
 
 
-			gModoOperacao_SubTela = "LER_RFID";
+			gModoOperacao_SubTela = F("LER_RFID");
 
 
 			gTelaRenderizada_LOGIN = false;
@@ -823,7 +823,7 @@ void TELA_VerificaTouch_LOGIN()
 
 		if (retConsole.toInt() == 3)
 		{
-			gModoOperacao = "DEBUG";
+			gModoOperacao = F("DEBUG");
 			gTelaRenderizada_LOGIN = false;
 
 			//LogTerm(F("TECLADO NUM SELECIONADO");
@@ -836,7 +836,7 @@ void TELA_VerificaTouch_LOGIN()
 
 		if (retConsole.toInt() == 4)
 		{
-			gModoOperacao = "ADMIN"; 
+			gModoOperacao = F("ADMIN"); 
 			gTelaRenderizada_LOGIN = false;
 
 			//LogTerm(F("ADMIN SELECIONADO");
@@ -851,7 +851,7 @@ void TELA_VerificaTouch_LOGIN()
 
 
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		//tft.changeMode(GRAPHIC);
@@ -876,7 +876,7 @@ void TELA_VerificaTouch_LOGIN()
 				{
 
 					LogTerm(F("LEITOR BIOMETRICO SELECIONADO"));
-					TELA_Texto("LEITOR BIOMETRICO SELECIONADO", "BRANCO");
+					TELA_Texto(F("LEITOR BIOMETRICO SELECIONADO"), F("BRANCO"));
 
 					//TELA_Render_Botao(1, "", "", "PRETO");
 
@@ -900,7 +900,7 @@ void TELA_VerificaTouch_LOGIN()
 
 					//LogTerm(F("Aproxime o cartao da leitora RFID ...");
 
-					gModoOperacao_SubTela = "LER_RFID";
+					gModoOperacao_SubTela = F("LER_RFID");
 
 
 					gTelaRenderizada_LOGIN = false;
@@ -926,10 +926,10 @@ void TELA_VerificaTouch_LOGIN()
 				{
 					
 					gTelaRenderizada_LOGIN = false;
-					gModoOperacao = "DEBUG"; 
+					gModoOperacao = F("DEBUG"); 
 
-					//TELA_Texto("TECLADO NUM SELECIONADO", "MAGENTA");
-					TELA_Texto("TECLADO ALFA SELECIONADO", "MAGENTA");
+					//TELA_Texto(F("TECLADO NUM SELECIONADO"), F("MAGENTA"));
+					TELA_Texto(F("TECLADO ALFA SELECIONADO"), F("MAGENTA"));
 
 					TELA_LimpaTela();
 
@@ -981,7 +981,7 @@ void TELA_VerificaTouch_LOGIN()
 void TELA_VerificaTouch_ADMIN()
 {
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (tft.touchDetect())
@@ -1030,7 +1030,7 @@ void TELA_VerificaTouch_ADMIN()
 void TELA_VerificaTouch_OPERACAO()
 {
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 
@@ -1055,7 +1055,7 @@ void TELA_VerificaTouch_OPERACAO()
 				{
 
 					LogTerm(F("BOTAO 1 APERTADO"));
-					TELA_Texto("BOTAO 1 APERTADO", "BRANCO");
+					TELA_Texto(F("BOTAO 1 APERTADO"), F("BRANCO"));
 
 				}
 
@@ -1070,7 +1070,7 @@ void TELA_VerificaTouch_OPERACAO()
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
 					LogTerm(F("BOTAO 2 APERTADO"));
-					TELA_Texto("BOTAO 2 APERTADO", "AZUL");
+					TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
 					//delay(500);
 					//TELA_LogTerm_XY();        
 				}
@@ -1086,7 +1086,7 @@ void TELA_VerificaTouch_OPERACAO()
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
 					LogTerm(F("BOTAO 3 APERTADO"));
-					TELA_Texto("BOTAO 3 APERTADO", "MAGENTA");  
+					TELA_Texto(F("BOTAO 3 APERTADO"), F("MAGENTA"));  
 					//delay(500); 
 
 				}

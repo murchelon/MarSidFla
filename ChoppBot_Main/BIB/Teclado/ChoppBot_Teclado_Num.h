@@ -7,12 +7,12 @@
 void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 {
 
-	if (gTela_Hardware == "TERMINAL")
+	if (gTela_Hardware == F("TERMINAL"))
 	{ 
 		if (gTelaRenderizada_TecNum == false)
 		{
 			LogTerm(F("TECLADO NUMERICO"));
-			LogTerm("Valor ATUAL da gTecladoNum_ValAtual: " + gTecladoNum_ValAtual);
+			LogTerm(String(F("Valor ATUAL da gTecladoNum_ValAtual: ")) + gTecladoNum_ValAtual);
 			LogTerm(F("Digite um valor numerico no console e tecle enter. Digite VOLTAR para voltar a tela anterior."));
 
 			gTelaRenderizada_TecNum = true;	
@@ -23,7 +23,7 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 
 	}
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (gTelaRenderizada_TecNum == false)
@@ -90,10 +90,10 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 
 
 			// vars auxiliares para armazenar as posicoes dos botoes senhdo renderizados
-			String temp_pos_X= "";
-			String temp_pos_Y = "";
-			String temp_size_W = "";
-			String temp_size_H = "";
+			String temp_pos_X= F("");
+			String temp_pos_Y = F("");
+			String temp_size_W = F("");
+			String temp_size_H = F("");
 
 
 		    // calcula o tamanho do fundo baseando-se nos botes
@@ -157,7 +157,7 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 
 					// armazena as posicoes dos botoes para uso no touch
 					//aTecladoNum_PosBotoes[ContaTxtBotao - 1] = String("Pos: ") + ContaTxtBotao + String(" ") + temp_pos_X + String(",") + temp_size_W + String(",") + temp_pos_Y + String(",") + temp_size_H;
-					aTecladoNum_PosBotoes[ContaTxtBotao - 1] = temp_pos_X + String(",") + temp_size_W + String(",") + temp_pos_Y + String(",") + temp_size_H;
+					aTecladoNum_PosBotoes[ContaTxtBotao - 1] = temp_pos_X + String(F(",")) + temp_size_W + String(F(",")) + temp_pos_Y + String(F(",")) + temp_size_H;
 
 
 
@@ -201,19 +201,19 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 						case 10:
 							tft.setCursor(Botao_PosAtual_X - 9, Botao_PosAtual_Y);
 							tft.setTextColor(RA8875_BLACK);
-							tft.print ("<<");
+							tft.print (F("<<"));
 							break;
 
 						case 11:
 							tft.setCursor(Botao_PosAtual_X, Botao_PosAtual_Y);
 							tft.setTextColor(RA8875_WHITE);
-							tft.print ("0");
+							tft.print (F("0"));
 							break;
 
 						case 12:
 							tft.setCursor(Botao_PosAtual_X - 6, Botao_PosAtual_Y);
 							tft.setTextColor(RA8875_BLACK);
-							tft.print ("OK");
+							tft.print (F("OK"));
 							break;
 
 						default:
@@ -228,7 +228,7 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 		    tft.setTextColor(RA8875_WHITE);
 		    tft.setFontScale(2); 
 		    tft.setCursor (Inicio_X - 430, Inicio_Y); 
-		    tft.print ("Digite o valor:");			    
+		    tft.print (F("Digite o valor:"));			    
 
 
 		    // LabelNum
@@ -241,7 +241,7 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 			tft.fillRoundRect(LabelNum_PosAtual_X, LabelNum_PosAtual_Y, Size_LabelNum_W, Size_LabelNum_H, 5, RA8875_YELLOW);
 
 			// adiciona posicoes do labelnum para touch
-			aTecladoNum_PosBotoes[12] = LabelNum_PosAtual_X + String(",") + Size_LabelNum_W + String(",") + LabelNum_PosAtual_Y + String(",") + Size_LabelNum_H;
+			aTecladoNum_PosBotoes[12] = LabelNum_PosAtual_X + String(F(",")) + Size_LabelNum_W + String(F(",")) + LabelNum_PosAtual_Y + String(F(",")) + Size_LabelNum_H;
 
 
 			// Botao Voltar
@@ -254,10 +254,10 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 		    tft.setTextColor(RA8875_WHITE);
 		    tft.setFontScale(1); 
 		    tft.setCursor (btnVoltar_PosAtual_X + (60 / 2) - 18, btnVoltar_PosAtual_Y + 11); 
-		    tft.print ("<< Voltar");
+		    tft.print (F("<< Voltar"));
 
 			// adiciona posicoes do voltar para touch
-			aTecladoNum_PosBotoes[13] = btnVoltar_PosAtual_X + String(",170,") + btnVoltar_PosAtual_Y + String(",60");
+			aTecladoNum_PosBotoes[13] = btnVoltar_PosAtual_X + String(F(",170,")) + btnVoltar_PosAtual_Y + String(F(",60"));
 
 		}
 
@@ -308,32 +308,32 @@ void TELA_Render_ValorTec_TECLADO_NUM()
 void TELA_VerificaTouch_TECLADO_NUM()
 {
 
-	if (gTela_Hardware == "TERMINAL")
+	if (gTela_Hardware == F("TERMINAL"))
 	{  
 
 		String retConsole;
 
 		retConsole = ReadConsoleInput();
 
-		if (retConsole != "") 
+		if (retConsole != F(""))
 		{
 			
-			LogTerm("Valor digitado: " + retConsole);
+			LogTerm(String(F("Valor digitado: ")) + retConsole);
 				
 
 			gTecladoNum_ValAtual = retConsole;			
 				
-			LogTerm("Valor NOVO da gTecladoNum_ValAtual: " + gTecladoNum_ValAtual);	
+			LogTerm(String(F("Valor NOVO da gTecladoNum_ValAtual: ")) + gTecladoNum_ValAtual);	
 
 			gTelaRenderizada_TecNum = false;
 
 
-			gModoOperacao = "LOGIN";				
+			gModoOperacao = F("LOGIN");				
 
 		}
 
 
-		if ((retConsole == "VOLTAR") || (retConsole == "voltar"))
+		if ((retConsole == F("VOLTAR")) || (retConsole == F("voltar")))
 		{
 			LogTerm(F("VOLTAR"));
 
@@ -341,7 +341,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 			//gTecladoNum_ValAtual = "";
 
 
-			gModoOperacao = "LOGIN";			
+			gModoOperacao = F("LOGIN");			
 		}
 
 	}
@@ -352,7 +352,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 
 
-	if (gTela_Hardware == "ER-TFTM070-5")
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (tft.touchDetect())
@@ -377,7 +377,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 
 
-				if (temp_size_H != "TAM")
+				if (temp_size_H != F("TAM"))
 				{
 
 
@@ -423,7 +423,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 										    tft.setFontScale(2); 
 										    tft.setCursor (temp_pos_X_limpa.toInt() + 3, temp_pos_Y_limpa.toInt() + 2); 
 
-										    tft.print ("               ");
+										    tft.print (F("               "));
 
 										    tft.setCursor (temp_pos_X_limpa.toInt() + 3, temp_pos_Y_limpa.toInt() + 2);
 											
@@ -437,7 +437,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 										if (gTecladoNum_ValAtual.length() <= 14)
 										{
-											gTecladoNum_ValAtual = gTecladoNum_ValAtual + String("0");
+											gTecladoNum_ValAtual = gTecladoNum_ValAtual + String(F("0"));
 										}
 
 										break;
@@ -448,7 +448,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 									    tft.setTextColor(RA8875_RED);
 									    tft.setFontScale(2); 
 									    tft.setCursor (70, 210); 
-									    tft.print ("Obrigado !");	
+									    tft.print (F("Obrigado !"));	
 
 
 										break;
@@ -464,11 +464,11 @@ void TELA_VerificaTouch_TECLADO_NUM()
 										TELA_LimpaTela();
 
 										gTelaRenderizada_TecNum = false;
-										gTecladoNum_ValAtual = "";
+										gTecladoNum_ValAtual = F("");
 
 	
 
-										gModoOperacao = "LOGIN";
+										gModoOperacao = F("LOGIN");
 										//gModoOperacao = "INICIO";
 										//gModoOperacao = "LOGIN";
 										//gModoOperacao = "OPERACAO";

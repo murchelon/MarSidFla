@@ -51,7 +51,8 @@ RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);
 uint16_t tx, ty;
 
 // int ajuste = 23; original por especificacao
-int ajuste = 38;
+//int ajuste = 38;
+int ajuste = 7.5;
 
 
 // botão ________________________________________

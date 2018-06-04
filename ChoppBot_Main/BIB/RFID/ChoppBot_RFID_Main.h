@@ -496,7 +496,7 @@ void TELA_Render_Interface_LER_RFID()
 
 
 
-						delay(7000);
+						delay(3000);
 
 						TELA_LimpaTela();
 

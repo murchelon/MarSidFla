@@ -29,7 +29,6 @@
 
 
 
-
 // LEITOR SD Adafruit - Engine
 #include <SdFat.h>
 #include "../SD/ChoppBot_SD_Engine_SDFat.h" 
@@ -70,6 +69,11 @@
 
 
 
+// RELE
+#include "../Rele/ChoppBot_Rele_Engine.h" 
+
+// RELE MAIN
+#include "../Rele/ChoppBot_Rele_Main.h" 
 
 
 

@@ -2,13 +2,10 @@
 
 
 
-#define MAX_TENTATIVA_READ 2
-#define DELAY_TENTATIVA_READ 3000
-
 
 
 // retorna formato: CodRetorno|descricao
-// Param byref: LetorSD - retora o objeto passado, leitor SD
+// Param byref: LetorSD - SD_CHIP_SELECT	SD_CHIP_SELECTretora o objeto passado, leitor SD
 // 1 para a funcao rodou certo 
 // -1 erros outros
 String SD_InicializaCartaoSD(SdFat &LeitorSD)
@@ -21,16 +18,16 @@ String SD_InicializaCartaoSD(SdFat &LeitorSD)
 
 
 	// not over 50 MHz. Try a lower speed if SPI errors occur.
-	if (!LeitorSD.begin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
+	if (!LeitorSD.begin(SD_PINO, SPI_SIXTEENTH_SPEED))
 	{
 		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
 
-		while ((ContaTentativa <= MAX_TENTATIVA_READ) && (SucessoTentativa == false))
+		while ((ContaTentativa <= SD_MAX_TENTATIVA_READ) && (SucessoTentativa == false))
 		{	
 			LogTerm(F("SD: Realizando nova tentativa..."));
-			delay(DELAY_TENTATIVA_READ);
+			delay(SD_DELAY_TENTATIVA_READ);
 
-			if (LeitorSD.begin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
+			if (LeitorSD.begin(SD_PINO, SPI_SIXTEENTH_SPEED))
 			{
 				SucessoTentativa = true;
 			}
@@ -52,10 +49,13 @@ String SD_InicializaCartaoSD(SdFat &LeitorSD)
 
 
 // retorna formato: CodRetorno|descricao
-// Param byref: LetorSD - retora o objeto passado, leitor SD
+// RetryOrCheckExists = RETRY ou CHECK . Se for RETRY, significa que esta sendo tentado abrir um arquivo conhecido e caso
+//	ocorra algum erro, o sistema deve tentar de novo. Se for CHECK, o sistema nao sabe se existe o arquivo e deseja justamente
+//  verificar se ele existe. Para tanto, tenta abri-lo e se ocorrer o erro, informa o caller que o arquivo nao existe
 // 1 para a funcao rodou certo 
 // -1 erros outros
-String SD_AbreArqTexto(String FullPathFile, SdFat &LeitorSD, File &objArquivo)
+// -2 para arquivo nao existe
+String SD_AbreArqTexto(String FullPathFile, SdFat &LeitorSD, File &objArquivo, String RetryOrCheck)
 {
 
 	String ret = F("1|Arquivo Aberto");
@@ -70,32 +70,49 @@ String SD_AbreArqTexto(String FullPathFile, SdFat &LeitorSD, File &objArquivo)
 
 	if (!objArquivo) 
 	{
-		LogTerm(String(F("SD: Falha na abertura do arquivo: ")) + FullPathFile);
 
-
-		while ((ContaTentativa <= MAX_TENTATIVA_READ) && (SucessoTentativa == false))
+		if (RetryOrCheck == "RETRY")
 		{
-			LogTerm(F("SD: Realizando nova tentativa..."));
-			delay(DELAY_TENTATIVA_READ);
+			LogTerm(String(F("SD: Falha na abertura do arquivo: ")) + FullPathFile);
 
-			objArquivo = LeitorSD.open(FullPathFile, FILE_READ);
 
-			if (objArquivo) 
+			while ((ContaTentativa <= SD_MAX_TENTATIVA_READ) && (SucessoTentativa == false))
 			{
-				SucessoTentativa = true;
+				LogTerm(F("SD: Realizando nova tentativa..."));
+				delay(SD_DELAY_TENTATIVA_READ);
 
-				return ret;	
+				objArquivo = LeitorSD.open(FullPathFile, FILE_READ);
+
+				if (objArquivo) 
+				{
+					SucessoTentativa = true;
+
+					return ret;	
+				}
+
+
+				ContaTentativa++;
+
 			}
 
 
-			ContaTentativa++;
+			ret = String(F("-1|Falha na abertura do arquivo: ")) + FullPathFile;
 
+			return ret;	
 		}
 
 
-		ret = String(F("-1|Falha na abertura do arquivo: ")) + FullPathFile;
 
-		return ret;	
+		if (RetryOrCheck == "CHECK")
+		{
+			LogTerm(String(F("SD: Arquivo nao localizado: ")) + FullPathFile);
+
+			ret = String(F("-2|Arquivo nao localizado: ")) + FullPathFile;
+
+			return ret;	
+		}
+
+
 
 	}
 
@@ -109,9 +126,6 @@ String SD_AbreArqTexto(String FullPathFile, SdFat &LeitorSD, File &objArquivo)
 String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSizeRetArray)
 {
 
-
-
-	
 
 	String ret = F("1|");
 
@@ -140,7 +154,7 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 	File file;
 	String retFile = F("");
 
-	retFile = SD_AbreArqTexto(FullPathFile, SD, file);
+	retFile = SD_AbreArqTexto(FullPathFile, SD, file, F("RETRY"));
 
 	if (retFile.substring(0, 1) != F("1"))
 	{
@@ -217,7 +231,7 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 
 
 
-String SD_GetFirstRegFromFile(String FullPathFile)
+String SD_GetFirstRegFromFile(String FullPathFile, String RetryOrCheck)
 {
 
 
@@ -250,7 +264,7 @@ String SD_GetFirstRegFromFile(String FullPathFile)
 	File file;
 	String retFile = F("");
 
-	retFile = SD_AbreArqTexto(FullPathFile, SD, file);
+	retFile = SD_AbreArqTexto(FullPathFile, SD, file, RetryOrCheck);
 
 	if (retFile.substring(0, 1) != F("1"))
 	{
@@ -323,7 +337,7 @@ String SD_TestaCartao()
 	uint32_t t = millis();
 
 	// not over 50 MHz. Try a lower speed if SPI errors occur.
-	if (!SD.cardBegin(SD_CHIP_SELECT, SPI_SIXTEENTH_SPEED))
+	if (!SD.cardBegin(SD_PINO, SPI_SIXTEENTH_SPEED))
 	{
 		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
 

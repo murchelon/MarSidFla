@@ -66,7 +66,7 @@ void InitApp()
     pinMode(ctPINO_LED_RFID, OUTPUT);
 
     // Inicia o BUZZER
-    pinMode(ctPINO_BUZZER, OUTPUT);
+    pinMode(BUZZER_PINO, OUTPUT);
 
     // inicia o led interno arduino, usado para mostrar que o programa esta rodando
     pinMode(LED_BUILTIN, OUTPUT);
@@ -109,6 +109,14 @@ void InitApp()
 
     TELA_IniciaTela();
 
+    TELA_Texto(String(F("Choppbot ")) + String(VersaoAPP), F("VERDE"));
+    TELA_Texto(F("============"), F("VERDE"));
+    TELA_Texto(F(""), F("BRANCO"));
+    TELA_Texto(F("Iniciando sistema..."), F("BRANCO"));
+    TELA_Texto(F(""), F("BRANCO"));
+
+
+
     BUZZER_TocaSom(F("LIGAR"));
 
 
@@ -125,23 +133,20 @@ void InitApp()
         LogTerm(String(F("MAIN: Erro: ")) + retEngatados.substring(3));
         LogTerm(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."));
 
-
-
-
         if (gTela_Hardware == F("ER-TFTM070-5"))
         {       
             TELA_Texto(F("MAIN: Falha ao carregar arquivo com os chopps engatados"), F("BRANCO"));
-            TELA_Texto(String(F("MAIN: Erro: ")) + retEngatados.substring(3), F("ÄMARELO"));
+            TELA_Texto(String(F("MAIN: Erro: ")) + retEngatados.substring(3), F("AMARELO"));
             TELA_Texto(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."), F("BRANCO"));
-
-
-
         }
 
 
         delay(10000);
         resetFunc();        
     }
+
+
+
 
     // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
     for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
@@ -150,21 +155,22 @@ void InitApp()
         if (gaEngatados[x] != "")
         {
 
-            String tmp_Nome;
-            String tmp_Volume;
-            //String tmp_DataCad;
-            //String tmp_DataExp;
-            String tmp_Ativa;
 
-            tmp_Nome = getValue(gaEngatados[x], ';', 2);
-            tmp_Volume = getValue(gaEngatados[x], ';', 3);
+            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
+            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
+            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
+            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
+            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
             //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
             //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
-            tmp_Ativa = getValue(gaEngatados[x], ';', 5);
+            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
 
             //LogTerm(gaEngatados[x]);
 
+            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- IDChopp: ")) + tmp_IDChopp);
             LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Nome: ")) + tmp_Nome);
+            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Tipo: ")) + tmp_Tipo);
+            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Valor: ")) + tmp_Valor);
             LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Volume Atual: ")) + tmp_Volume);
             //LogTerm(F("Torneira [" + String(x) + "] -- Data de Cadastro: " + tmp_DataCad);
             //LogTerm(F("Torneira [" + String(x) + "] -- Data de Expiracao: " + tmp_DataExp);
@@ -196,6 +202,7 @@ void InitApp()
 
     LogTerm(F("MAIN: Sistema Inicializado."));
 
+    TELA_LimpaTela();
 
 }
 
@@ -549,6 +556,19 @@ void Exec_LER_RFID()
 }
 
 
+void Exec_OPERACAO_SERVICO()
+{
+    if (gTelaRenderizada_OPERACAO_SERVICO == false)
+    {
+        LogTerm(F("== [Modo Atual: OPERACAO -- SubTela: OPERACAO_SERVICO] =="));
+        TELA_Render_Interface_OPERACAO_SERVICO();
+    }  
+
+    
+
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -595,7 +615,19 @@ void TestaInterrupts()
 
     if (gModoOperacao == F("OPERACAO"))
     {
-        TELA_VerificaTouch_OPERACAO();
+
+
+        if (gModoOperacao_SubTela == F(""))
+        {
+            TELA_VerificaTouch_OPERACAO();
+        }
+
+        if (gModoOperacao_SubTela == F("LER_RFID"))
+        {
+            TELA_VerificaTouch_OPERACAO_SERVICO();
+        }
+
+        
     }
 
     if (gModoOperacao == F("ADMIN"))
@@ -696,7 +728,17 @@ void loop()
 
     if (gModoOperacao == F("OPERACAO"))
     {
-        Exec_OPERACAO();
+
+        if (gModoOperacao_SubTela == F(""))
+        {
+            Exec_OPERACAO();  
+        }
+        
+       if (gModoOperacao_SubTela == F("OPERACAO_SERVICO"))
+        {
+            Exec_OPERACAO_SERVICO();  
+        }        
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

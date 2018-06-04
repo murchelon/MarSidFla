@@ -9,37 +9,37 @@ void BUZZER_TocaSom(String TipoSom)
 
 	if (TipoSom == F("ERRO"))
 	{
-		tone(ctPINO_BUZZER, la);
+		tone(BUZZER_PINO, la);
 		delay(tempo);
-		noTone(ctPINO_BUZZER);
-		tone(ctPINO_BUZZER, sol, tempo);
+		noTone(BUZZER_PINO);
+		tone(BUZZER_PINO, sol, tempo);
 		delay(tempo);
-		noTone(ctPINO_BUZZER);		
+		noTone(BUZZER_PINO);		
 	}
 
 
 	if (TipoSom == F("SUCESSO"))
 	{
-		tone(ctPINO_BUZZER, la);
+		tone(BUZZER_PINO, la);
 		delay(tempo);
-		noTone(ctPINO_BUZZER);
-		tone(ctPINO_BUZZER, 1300, tempo);
+		noTone(BUZZER_PINO);
+		tone(BUZZER_PINO, 1300, tempo);
 		delay(tempo);
-		tone(ctPINO_BUZZER, 1600, 70);
+		tone(BUZZER_PINO, 1600, 70);
 		delay(tempo);
-		noTone(ctPINO_BUZZER);		
+		noTone(BUZZER_PINO);		
 	}
 
 
 	if (TipoSom == F("LIGAR"))
 	{
-		tone(ctPINO_BUZZER, 1600);		
+		tone(BUZZER_PINO, 1600);		
 		delay(100);
-		noTone(ctPINO_BUZZER);
+		noTone(BUZZER_PINO);
 		delay(100);
-		tone(ctPINO_BUZZER, 1600);		
+		tone(BUZZER_PINO, 1600);		
 		delay(100);
-		noTone(ctPINO_BUZZER);
+		noTone(BUZZER_PINO);
 
 
 	}

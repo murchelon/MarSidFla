@@ -32,25 +32,45 @@
 #define VersaoAPP F("1.0")
 
 
-String gModoOperacao = ""; 
-String gModoOperacao_SubTela = "";
+String gModoOperacao; 
+String gModoOperacao_SubTela;
 
 // var que define se a aplicacao esta no modo debug. isto faz com que algumas msgs de debug
 // sejam exibidas na tela e/ou no terminal
 bool gModoDebug;
 
 // tempo em ms para timeout das opcoes a serem escolhidas
-const unsigned long gTimeoutOpcao = 7000;		
+#define gTimeoutOpcao 7000		
 
-// pino do buzzer
-#define ctPINO_BUZZER 32
 
 // Numero maximo de torneiras possiveis no sistema
 #define ctMAX_TORNEIRAS 4
-
 String gaEngatados[ctMAX_TORNEIRAS];	
 
 
+// BUZZER: Parametros
+#define BUZZER_PINO 32
+
+// SD: Parametros
+#define SD_MAX_TENTATIVA_READ 	2
+#define SD_DELAY_TENTATIVA_READ 3000
+#define SD_PINO 				24
+
+// TELA: Parametros
+#define TELA_PINO_INT 	4
+#define TELA_PINO_CS	10
+#define TELA_PINO_RESET 9
+
+// Banco de Dados: Parametros
+#define BANCO_MAX_CHOPPS 50
+
+// RFID: Parametros
+#define RFID_PINO_SCK 	52
+#define RFID_PINO_MOSI 	51
+#define RFID_PINO_SS 	53
+#define RFID_PINO_MISO 	50
+#define RFID_PINO_IRQ 	2
+#define RFID_PINO_RESET 3 
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,12 +85,11 @@ String gaEngatados[ctMAX_TORNEIRAS];
 
 
 
-String gTecladoNum_ValAtual = "";
-String gTecladoAlfa_ValAtual = "";
+String gTecladoNum_ValAtual;
+String gTecladoAlfa_ValAtual;
 
 
-//const int ctTECLADO_NUM_TOTAL_BOTOES = 14;
-#define ctTECLADO_NUM_TOTAL_BOTOES 14
+#define ctTECLADO_NUM_TOTAL_BOTOES 	14
 #define ctTECLADO_ALFA_TOTAL_BOTOES 42
 
 
@@ -227,6 +246,7 @@ bool gTelaRenderizada_DEBUG;
 bool gTelaRenderizada_TESTE;
 
 bool gTelaRenderizada_LER_RFID;
+bool gTelaRenderizada_OPERACAO_SERVICO;
 
 bool gTelaRenderizada_MSGBOX;
 
@@ -265,6 +285,24 @@ bool gSessao_Logado;
 int gSessao_IDUser;
 int gSessao_Nivel;
 String gSessao_Nome;
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// VARIAVEIS DE OPERACAO - SERVICO
+// -------------------
+//
+// variaveis que controlam o momento de retirada de chopp
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+String gServico_IDChopp;
+
+
 
 
 
@@ -339,6 +377,7 @@ void InicializaVars()
 	gTelaRenderizada_DEBUG = false;
 	gTelaRenderizada_TESTE = false;
 	gTelaRenderizada_LER_RFID = false;
+	gTelaRenderizada_OPERACAO_SERVICO = false;
 	gTelaRenderizada_MSGBOX = false;
 	//teclado
 	gTecladoNum_ValAtual = F("");
@@ -351,6 +390,8 @@ void InicializaVars()
 	gSessao_Nivel = -1;
 	gSessao_Nome = "";
 					
+	gServico_IDChopp = "";
+	
 	// inicializa var de engatados
 	for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
 	{

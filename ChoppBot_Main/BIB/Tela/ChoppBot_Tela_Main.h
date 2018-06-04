@@ -23,7 +23,7 @@
 
 //#define CinzaShadow     		rgb565_from_triplet(205, 205, 205)       /* 205, 205, 205 */
 #define CinzaShadow     		rgb565_from_triplet(99, 99, 99)       /* 205, 205, 205 */
-#define CinzaFundoTitMsgBox     	rgb565_from_triplet(201, 201, 201)       /* 205, 205, 205 */
+#define CinzaFundoTitMsgBox     rgb565_from_triplet(201, 201, 201)       /* 205, 205, 205 */
 
 
 
@@ -59,7 +59,7 @@ uint16_t gTouch_X, gTouch_Y;
 
 
 // var com a posicao Y padrao para desenhar botoes
-const int POSICAO_PADRAO_BTN_Y = 140;
+#define POSICAO_PADRAO_BTN_Y 140
 
 
 
@@ -539,7 +539,17 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 
 		// Render o numero dentro do botao
 		tft.setFontScale(2); 
-		tft.setTextColor(RA8875_BLACK);
+
+
+		if ((Cor == F("PRETO")) || (Cor == F("AZUL")) )
+		{
+			tft.setTextColor(RA8875_WHITE);
+		}		
+		else
+		{
+			tft.setTextColor(RA8875_BLACK);
+		}
+		
 		tft.setCursor (gPosicaoAtual_X + OffSet_TextoBotao_W, gOffset_H + OffSet_TextoBotao_H);
 
 		tft.print (IndexBotao);
@@ -547,7 +557,14 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 		// Render o titulo 
 		tft.setFontScale(0);
 		//tft.changeMode(TEXT);
+
+
+
 		tft.setTextColor(RA8875_WHITE);
+
+
+
+		
 
 		// Render Titulo
 		if (Texto != F(""))
@@ -713,9 +730,63 @@ void TELA_Render_Interface_OPERACAO()
 
 			gOffset_H = POSICAO_PADRAO_BTN_Y;
 
-			TELA_Render_Botao(1, F("Imperial IPA"), F("R$ 25,00 / Litro"), F("BRANCO"));
-			TELA_Render_Botao(2, F("Hoocus Pocus"), F("R$ 19,00 / Litro"), F("AZUL"));
-			TELA_Render_Botao(3, F("Duchese"), F("R$ 32,00 / Litro"), F("MAGENTA"));
+
+
+
+		    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
+		    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+		    {
+
+		        if (gaEngatados[x] != "")
+		        {
+
+
+		            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
+		            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
+		            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
+		            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
+		            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
+		            //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
+		            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
+		            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
+
+		            //LogTerm(gaEngatados[x]);
+
+		            /*
+		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- IDChopp: ")) + tmp_IDChopp);
+		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Nome: ")) + tmp_Nome);
+		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Tipo: ")) + tmp_Tipo);
+		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Valor: ")) + tmp_Valor);
+		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Volume Atual: ")) + tmp_Volume);
+		            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Cadastro: " + tmp_DataCad);
+		            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Expiracao: " + tmp_DataExp);
+
+		            if (tmp_Ativa == F("1"))
+		            {
+		                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: SIM")));
+		            }
+		            else
+		            {
+		                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: NAO"))); 
+		            }
+		            
+		            LogTerm(F("---------"));
+					*/
+
+		            TELA_Render_Botao(x + 1, tmp_Nome, String( String(F("R$ ")) + String(tmp_Valor) + String(F(" / Litro")) ), F("AZUL"));
+
+
+
+		        }
+
+
+		    }
+
+		    
+
+			//TELA_Render_Botao(1, F("Imperial IPA"), F("R$ 25,00 / Litro"), F("BRANCO"));
+			//TELA_Render_Botao(2, F("Hoocus Pocus"), F("R$ 19,00 / Litro"), F("AZUL"));
+			//TELA_Render_Botao(3, F("Duchese"), F("R$ 32,00 / Litro"), F("MAGENTA"));
 		}
 
 		gTelaRenderizada_OPERACAO = true;
@@ -1057,6 +1128,19 @@ void TELA_VerificaTouch_OPERACAO()
 					LogTerm(F("BOTAO 1 APERTADO"));
 					TELA_Texto(F("BOTAO 1 APERTADO"), F("BRANCO"));
 
+
+
+					gServico_IDChopp = F("1");
+
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+
+					gTelaRenderizada_OPERACAO = false;
+
+					TELA_LimpaTela();
+
+					delay(500);   
+
 				}
 
 			}
@@ -1072,7 +1156,9 @@ void TELA_VerificaTouch_OPERACAO()
 					LogTerm(F("BOTAO 2 APERTADO"));
 					TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
 					//delay(500);
-					//TELA_LogTerm_XY();        
+					//TELA_LogTerm_XY();    
+
+
 				}
 
 			}

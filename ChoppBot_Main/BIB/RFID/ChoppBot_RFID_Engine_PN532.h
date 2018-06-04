@@ -8,19 +8,21 @@ https://www.adafruit.com/products/364
  * For example, with the Ethernet shield, set DISABLE_CHIP_SELECT
  * to 10 to disable the Ethernet controller.
  */
-const int8_t DISABLE_CHIP_SELECT = 24;
+
+
+#define DISABLE_CHIP_SELECT SD_PINO
 
 
 // If using the breakout with SPI, define the pins for SPI communication.
-#define PN532_SCK  (52)
-#define PN532_MOSI (51)
-#define PN532_SS   (53)
-#define PN532_MISO (50)
+#define PN532_SCK  RFID_PINO_SCK
+#define PN532_MOSI RFID_PINO_MOSI
+#define PN532_SS   RFID_PINO_SS
+#define PN532_MISO RFID_PINO_MISO
 
 // If using the breakout or shield with I2C, define just the pins connected
 // to the IRQ and reset lines.  Use the values below (2, 3) for the shield!
-#define PN532_IRQ   (2)
-#define PN532_RESET (3)  // Not connected by default on the NFC Shield
+#define PN532_IRQ   RFID_PINO_IRQ
+#define PN532_RESET RFID_PINO_RESET  // Not connected by default on the NFC Shield
 
 // Uncomment just _one_ line below depending on how your breakout or shield
 // is connected to the Arduino:

@@ -13,10 +13,10 @@ Works with Arduino 1.6.0 IDE
 
 
 //Arduino DUE,Arduino mega2560,Arduino UNO
-#define RA8875_INT 4
-#define RA8875_CS 10 
+#define RA8875_INT TELA_PINO_INT
+#define RA8875_CS TELA_PINO_CS
 
-#define RA8875_RESET 9
+#define RA8875_RESET TELA_PINO_RESET
 
 
 

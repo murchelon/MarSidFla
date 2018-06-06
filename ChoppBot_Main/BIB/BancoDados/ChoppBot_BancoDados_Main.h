@@ -1,12 +1,12 @@
 
 
-#define RET_MAX_CHOPPS 50
 
 
 
 
 
-// recupera os dadoa (linha) de um ou mais IDs de uma vez. tenho de indicar quais os ids e qual a posicao que o ID solicitado se enconta e o arquivo a ser lido
+
+// recupera os dados (linha) de um ou mais IDs de uma vez. tenho de indicar quais os ids e qual a posicao que o ID solicitado se enconta e o arquivo a ser lido
 // retorna formato: CodRetorno|Descricao
 // 1 retorna a linha com dados do chopp
 // -2 para chopp nao existe. 
@@ -21,14 +21,25 @@ String BANCO_GetDataFromIDs(String TipoDado, String IDsDesejados, String aRetDat
 	int PosicaoID = -1;
 	int MaxRegs = -1;
 
+
+
 	if (TipoDado == F("CHOPP"))
 	{
 		FullPathFile = F("CB/BD/Chopp/Chopps.txt");
 		PosicaoID = 0;
-		MaxRegs = RET_MAX_CHOPPS;
+		MaxRegs = BANCO_MAX_CHOPPS;
 	}
 
-	retFunc = SD_GetAllRegsFromFile(FullPathFile, aRetData, MaxRegs);
+
+
+	String aTempRet[MaxRegs];
+
+	for (int x=0 ; x <= MaxRegs ; x++)
+	{
+		aTempRet[x] = F("");
+	}	
+
+	retFunc = SD_GetAllRegsFromFile(FullPathFile, aTempRet, MaxRegs);
 
 
 	if ((retFunc.substring(0, 2) == F("-1")) || (retFunc.substring(0, 2) == F("-2")))
@@ -38,9 +49,41 @@ String BANCO_GetDataFromIDs(String TipoDado, String IDsDesejados, String aRetDat
 		return ret;
 	}
 
+	int IndexArrayRet = 0;
+
 	if (retFunc.substring(0, 1) == F("1"))
 	{
 		// dados do arquivo lidos
+
+		for (int x=0 ; x <= MaxRegs - 1; x++)
+		{
+			String temp_ID = getValue(aTempRet[x], ';', PosicaoID);
+
+			//LogTerm("temp_ID = " + temp_ID);
+
+
+			for (int IndexSelItem = 0 ; IndexSelItem <= 30 ; IndexSelItem++)
+			{
+				String temp_SelItem = getValue(IDsDesejados, ',', IndexSelItem);
+
+				if (temp_SelItem != "")
+				{
+					if (temp_ID == temp_SelItem)
+					{
+
+						//LogTerm("estou dentro = " + temp_ID);
+
+						aRetData[IndexArrayRet] = aTempRet[x];
+
+						IndexArrayRet++;
+					}
+				}
+
+			}
+
+
+		}
+
 		ret = retFunc;
 		return ret;
 
@@ -114,21 +157,81 @@ String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
 			IDsChoppDesejados = Left(IDsChoppDesejados, IDsChoppDesejados.length() - 1);
 		}
 
-		LogTerm(String(F("IDsChoppDesejados = ")) + IDsChoppDesejados);
+		//LogTerm(String(F("IDsChoppDesejados = ")) + IDsChoppDesejados);
 
 
-		String aChopps[RET_MAX_CHOPPS];
+		String aChopps[BANCO_MAX_CHOPPS];
+
+		// inicializa var de chopps
+		for (int x = 0 ; x <= BANCO_MAX_CHOPPS ; x++)
+		{
+			aChopps[x] = F("");
+		}	 		
 
 		retFunc = BANCO_GetDataFromIDs(F("CHOPP"), IDsChoppDesejados, aChopps);
 
-		for (int x = 0 ; x <= RET_MAX_CHOPPS ; x++)
+		/*
+		for (int x = 0 ; x <= BANCO_MAX_CHOPPS - 1 ; x++)
 		{
 			if (aChopps[x] != F(""))
 			{
 				LogTerm(String(F("aChopps[")) + String(x) + String(F("] = ")) + aChopps[x]);
 			}
 		}
+		*/
 
+		// define o nome e valor no array de engatados
+		for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+		{
+			if (aRetChoppsEngat[x] != F(""))
+			{
+				String temp_IDChopp = F("");
+
+				temp_IDChopp = getValue(aRetChoppsEngat[x], ';', 2);
+				//LogTerm("x = "+ String(x) + " | temp_IDChopp = " + temp_IDChopp);
+
+
+				for (int k = 0 ; k <= BANCO_MAX_CHOPPS - 1 ; k++)
+				{
+					if (aChopps[k] != F(""))
+					{
+
+						String temp_IDChoppTabela = getValue(aChopps[k], ';', 0);
+
+						if (temp_IDChopp == temp_IDChoppTabela)
+						{
+							aRetChoppsEngat[x] = getValue(aRetChoppsEngat[x], ';', 0) + String(";") + 
+												 getValue(aRetChoppsEngat[x], ';', 1) + String(";") + 
+												 getValue(aRetChoppsEngat[x], ';', 2) + String(";") + 
+												 getValue(aRetChoppsEngat[x], ';', 3) + String(";") + 
+												 getValue(aRetChoppsEngat[x], ';', 4) + String(";") + 
+												 getValue(aRetChoppsEngat[x], ';', 5) + String(";") + 
+												 getValue(aRetChoppsEngat[x], ';', 5) + String(";") + 
+												 getValue(aChopps[k], ';', 1) + String(";") + 
+												 getValue(aChopps[k], ';', 2) + String(";") + 
+												 getValue(aChopps[k], ';', 3);
+						}
+
+
+
+					}
+				}
+
+
+
+			}
+		}	
+
+
+
+
+		for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+		{
+			if (aRetChoppsEngat[x] != F(""))
+			{
+				//LogTerm(String(F("aRetChoppsEngat[")) + String(x) + String(F("] = ")) + aRetChoppsEngat[x]);
+			}
+		}		
 		
 
 		ret = retFunc;
@@ -140,55 +243,10 @@ String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
 }
 
 
-// retorna formato: CodRetorno|Descricao
-// 1 retorna a linha com dados do chopp
-// -2 para chopp nao existe. 
-// -1 erros outros
-String BANCO_GetChoppDataFromIDChopp(String IDChopp)
-{
-
-	String ret = F("1|");
-
-	String FullPathFile_Chopps = F("");
-
-	#define MAX_CHOPPS 50
-
-	String aChopps[MAX_CHOPPS];
-
-	String retFunc = F("");
-
-	retFunc = SD_GetAllRegsFromFile(FullPathFile_Chopps, aChopps, MAX_CHOPPS);
-
-
-	if (retFunc.substring(0, 2) == F("-1"))
-	{
-		// erro de sd card
-		ret = retFunc;
-		return ret;
-	}
-
-	if (retFunc.substring(0, 2) == F("-2"))
-	{
-		// erro de chopp nao existe
-		ret = String(F("0|")) + retFunc.substring(3);
-		return ret;
-	}
-
-	if (retFunc.substring(0, 1) == F("1"))
-	{
-		// chopp encontrado. Retornando todos os dados do chopp (linha)
-		ret = retFunc;
-		return ret;
-
-	}
-
-	return ret;
-}
 
 
 
-
-
+// recupera os dados de um usuario, usando o IDUser como parametro
 // retorna formato: CodRetorno|Descricao
 // 1 retorna a linha com dados do usuario
 // -2 para usuario nao existe. 
@@ -207,7 +265,7 @@ String BANCO_GetUserDataFromIDUser(String IDUser)
 
 	String retFunc = F("");
 
-	retFunc = SD_GetFirstRegFromFile(FullPathFile_User);
+	retFunc = SD_GetFirstRegFromFile(FullPathFile_User, "CHECK");
 
 	if (retFunc.substring(0, 2) == F("-1"))
 	{
@@ -256,7 +314,7 @@ String BANCO_GetIDUserFromLogin(String Login, String TipoLogin)
 
 		String retFunc = F("");
 
-		retFunc = SD_GetFirstRegFromFile(FullPathFile_Login);
+		retFunc = SD_GetFirstRegFromFile(FullPathFile_Login, "CHECK");
 
 		if (retFunc.substring(0, 2) == F("-1"))
 		{
@@ -296,3 +354,51 @@ String BANCO_GetIDUserFromLogin(String Login, String TipoLogin)
 	return ret;
 }
 
+
+
+
+
+// retorna formato: CodRetorno|Descricao
+// 1 retorna a linha com dados do chopp
+// -2 para chopp nao existe. 
+// -1 erros outros
+String BANCO_GetChoppDataFromIDChopp(String IDChopp)
+{
+
+	String ret = F("1|");
+
+	String FullPathFile_Chopps = F("");
+
+	#define MAX_CHOPPS 50
+
+	String aChopps[MAX_CHOPPS];
+
+	String retFunc = F("");
+
+	retFunc = SD_GetAllRegsFromFile(FullPathFile_Chopps, aChopps, MAX_CHOPPS);
+
+
+	if (retFunc.substring(0, 2) == F("-1"))
+	{
+		// erro de sd card
+		ret = retFunc;
+		return ret;
+	}
+
+	if (retFunc.substring(0, 2) == F("-2"))
+	{
+		// erro de chopp nao existe
+		ret = String(F("0|")) + retFunc.substring(3);
+		return ret;
+	}
+
+	if (retFunc.substring(0, 1) == F("1"))
+	{
+		// chopp encontrado. Retornando todos os dados do chopp (linha)
+		ret = retFunc;
+		return ret;
+
+	}
+
+	return ret;
+}

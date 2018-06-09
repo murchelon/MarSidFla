@@ -25,7 +25,18 @@ String SD_InicializaCartaoSD(SdFat &LeitorSD)
 		while ((ContaTentativa <= SD_MAX_TENTATIVA_READ) && (SucessoTentativa == false))
 		{	
 			LogTerm(F("SD: Realizando nova tentativa..."));
+
+			// desliga sd
+			pinMode(SD_PINO, OUTPUT);
+			digitalWrite(SD_PINO, HIGH);	
 			delay(SD_DELAY_TENTATIVA_READ);
+
+			// religa sd
+			pinMode(SD_PINO, INPUT);
+			digitalWrite(SD_PINO, LOW);	
+			delay(SD_DELAY_TENTATIVA_READ);
+
+
 
 			if (LeitorSD.begin(SD_PINO, SPI_SIXTEENTH_SPEED))
 			{
@@ -79,6 +90,15 @@ String SD_AbreArqTexto(String FullPathFile, SdFat &LeitorSD, File &objArquivo, S
 			while ((ContaTentativa <= SD_MAX_TENTATIVA_READ) && (SucessoTentativa == false))
 			{
 				LogTerm(F("SD: Realizando nova tentativa..."));
+
+				// desliga sd
+				pinMode(SD_PINO, OUTPUT);
+				digitalWrite(SD_PINO, HIGH);	
+				delay(SD_DELAY_TENTATIVA_READ);
+
+				// religa sd
+				pinMode(SD_PINO, INPUT);
+				digitalWrite(SD_PINO, LOW);	
 				delay(SD_DELAY_TENTATIVA_READ);
 
 				objArquivo = LeitorSD.open(FullPathFile, FILE_READ);

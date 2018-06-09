@@ -42,6 +42,9 @@ bool gModoDebug;
 // tempo em ms para timeout das opcoes a serem escolhidas
 #define gTimeoutOpcao 7000		
 
+// tempo em ms para timeout de servico de torneira 
+#define ctTIMEOUT_TORNEIRA 9000		
+
 
 // Numero maximo de torneiras possiveis no sistema
 #define ctMAX_TORNEIRAS 4
@@ -53,7 +56,7 @@ String gaEngatados[ctMAX_TORNEIRAS];
 
 // SD: Parametros
 #define SD_MAX_TENTATIVA_READ 	2
-#define SD_DELAY_TENTATIVA_READ 3000
+#define SD_DELAY_TENTATIVA_READ 1000
 #define SD_PINO 				24
 
 // TELA: Parametros
@@ -71,6 +74,24 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define RFID_PINO_MISO 	50
 #define RFID_PINO_IRQ 	2
 #define RFID_PINO_RESET 3 
+
+// RELE
+
+#define RELE_PINO_TORNEIRA_1 45
+#define RELE_PINO_TORNEIRA_2 46
+#define RELE_PINO_TORNEIRA_3 47
+
+
+#define FLOW_PINO_SENSOR_1 36
+#define FLOW_PINO_SENSOR_2 37 
+#define FLOW_PINO_SENSOR_3 38 
+
+
+
+
+//int EstadoBotao_Rele1 = 0;
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,8 +191,8 @@ String aTecladoAlfa_PosBotoes[ctTECLADO_ALFA_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
 
 
 //  numero de clicks de sensibilidade dos botoes em uma determinada tela. Para evitar o double press
-//const int ctBOUNCE_SENSIB_BOTAO = 50;		
-#define ctBOUNCE_SENSIB_BOTAO 80
+//const int ctBOUNCE_SENSIB_BOTAO = 80;		
+#define ctBOUNCE_SENSIB_BOTAO 100
 
 	
 
@@ -182,16 +203,16 @@ String aTecladoAlfa_PosBotoes[ctTECLADO_ALFA_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
 // qualquer numero maior, sao os cliques extras disparados pelo botao, que o programa deve ignorar
 // Depois de passado X milissegundos (ctBOUNCE_SENSIB_BOTAO) depis do touch, o programa zera a var global de cliques 
 // permitindo que um novo clique ocorra
-unsigned long gBounce_time_inicio;
-unsigned long gBounce_time_atual;
-unsigned long gBounce_time_tempo_passado;
+volatile unsigned long gBounce_time_inicio;
+volatile unsigned long gBounce_time_atual;
+volatile unsigned long gBounce_time_tempo_passado;
 
-int gBounce_SegundosPassados;
-int gBounce_Last_SegundosPassados;
+volatile int gBounce_SegundosPassados;
+volatile int gBounce_Last_SegundosPassados;
 
 
 // var que conta o numero de cliques executaados no botao
-int gBounce_ContaClick = 0;
+volatile int gBounce_ContaClick = 0;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -285,6 +306,7 @@ bool gSessao_Logado;
 int gSessao_IDUser;
 int gSessao_Nivel;
 String gSessao_Nome;
+float gSessao_SaldoAtual;
 
 
 
@@ -312,29 +334,6 @@ String gServico_IDChopp;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// abaixo daqui sao variaveis que estao ai... mas nao sei bem onde estamos usando. TODO: limpar isto e usar ou nao (fora a funcao initvars abaixo que eh correta)
-
-//#define BOTAO1_PINO 40
-//#define BOTAO2_PINO 41
-//#define BOTAO3_PINO 42
-//#define BOTAO4_PINO 43
-
-
-
-
-// RELE ======================================================================
-
-#define gPinoRele_1 45
-#define gPinoRele_2 46
-#define gPinoRele_3 47
-
-
-
-
-
-int EstadoBotao_Rele1 = 0;
-
-volatile uint8_t lastflowpinstate;
 
 
 
@@ -389,7 +388,8 @@ void InicializaVars()
 	gSessao_IDUser = -1;
 	gSessao_Nivel = -1;
 	gSessao_Nome = "";
-					
+	gSessao_SaldoAtual = -1;				
+
 	gServico_IDChopp = "";
 	
 	// inicializa var de engatados

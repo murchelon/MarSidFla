@@ -10,6 +10,37 @@
 
 
 
+#define Black           0x0000      /*   0,   0,   0 */
+#define Navy            0x000F      /*   0,   0, 128 */
+#define DarkGreen       0x03E0      /*   0, 128,   0 */
+#define DarkCyan        0x03EF      /*   0, 128, 128 */
+#define Maroon          0x7800      /* 128,   0,   0 */
+#define Purple          0x780F      /* 128,   0, 128 */
+#define Olive           0x7BE0      /* 128, 128,   0 */
+#define LightGrey       0xC618      /* 192, 192, 192 */
+#define DarkGrey        0x7BEF      /* 128, 128, 128 */
+#define Blue            0x001F      /*   0,   0, 255 */
+#define Green           0x07E0      /*   0, 255,   0 */
+#define Cyan            0x07FF      /*   0, 255, 255 */
+#define Red             0xF800      /* 255,   0,   0 */
+#define Magenta         0xF81F      /* 255,   0, 255 */
+#define Yellow          0xFFE0      /* 255, 255,   0 */
+#define White           0xFFFF      /* 255, 255, 255 */
+#define Orange          0xFD20      /* 255, 165,   0 */
+#define GreenYellow     0xAFE5      /* 173, 255,  47 */
+#define Pink            0xF81F
+
+    
+#define CinzaShadow     		rgb565_from_triplet(99, 99, 99)       
+#define CinzaFundoTitMsgBox     rgb565_from_triplet(201, 201, 201)      
+#define CinzaLabels			    rgb565_from_triplet(220, 220, 220)     
+#define VerdeOK			    	rgb565_from_triplet(137, 255, 157)     
+#define LaranjaAlerta	    	rgb565_from_triplet(255, 216, 181)     
+
+
+
+
+
 void(*resetFunc) (void) = 0;  // funcao interna do arduino que reseta o arduino
 
 // Loga uma informacao no terminal
@@ -179,6 +210,9 @@ String getValue(String data, char separator, int index)
     //return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
+
+
+
 String CharFromAsc2(int Asc2Value)
 {
     char ret;
@@ -196,4 +230,25 @@ uint16_t rgb565_from_triplet(uint8_t red, uint8_t green, uint8_t blue)
   blue  >>= 3;
   return (red << 11) | (green << 5) | blue;
 }
+
+
+
+String FormatNumber(float Valor, String Tipo)
+{
+	String ret = "";
+	String temp = String(Valor);
+
+	temp.replace(".", ",");
+
+	if (Tipo == "MONEY")
+	{
+		ret = "R$ ";
+	}
+
+	ret += temp;
+
+	return ret;
+}
+
+
 

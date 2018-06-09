@@ -1,0 +1,2 @@
+IDUser;CPF;DataCad;Nome;Nivel;SaldoAtual
+7;25478569811;18/05/2018;Cliente 2;100;5000

@@ -47,7 +47,7 @@ volatile uint16_t gTouch_Y;
 
 void TELA_LimpaTela()
 {
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{
 		tft.fillScreen(RA8875_BLACK);  
 	}
@@ -70,7 +70,7 @@ void TELA_Texto(String Texto, String Cor)
 	}
 
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{
 
 
@@ -452,8 +452,10 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 // Funcao que inicializa a tela sendo usada no momento
 void TELA_IniciaTela()
 {
+	//LogTerm(ctTELA_HARDWARE);
+	
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{
 
 		pinMode(RA8875_INT, INPUT);
@@ -480,7 +482,7 @@ void TELA_IniciaTela()
 void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto3, String Cor)
 {
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{
 
 		int OffSet_TextoBotao_W = gTamBotao_W / 2 - 11;
@@ -628,7 +630,7 @@ void TELA_Render_Interface_STANDBY()
 			LogTerm(F("Tecle algo no console para iniciar..."));
 		}
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 		{  
 
 			tft.setTextColor(RA8875_YELLOW);
@@ -679,7 +681,7 @@ void TELA_Render_Interface_LOGIN()
 		}
 
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 		{  
 
 			tft.setTextColor(RA8875_YELLOW);
@@ -764,7 +766,7 @@ void TELA_Render_Interface_OPERACAO()
 		}
 
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 		{  		
 
 
@@ -892,7 +894,7 @@ void TELA_VerificaTouch_STANDBY()
 
 	}
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 		if (tft.touchDetect(false))
@@ -999,7 +1001,7 @@ void TELA_VerificaTouch_LOGIN()
 
 
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 		//tft.changeMode(GRAPHIC);
@@ -1133,7 +1135,7 @@ void TELA_VerificaTouch_LOGIN()
 void TELA_VerificaTouch_ADMIN()
 {
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 		if (tft.touchDetect())
@@ -1184,7 +1186,7 @@ void TELA_VerificaTouch_OPERACAO()
 {
 
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 		//LogTerm("gBounce_ContaClick = " + String(gBounce_ContaClick));

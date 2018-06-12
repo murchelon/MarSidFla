@@ -65,7 +65,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 
 	}
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 		if (gTelaRenderizada_TecAlfa == false)
@@ -350,7 +350,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 
 void TELA_Render_ValorTec_TECLADO_ALFA()
 {
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 
@@ -490,7 +490,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 	//LogTerm("gTecladoAlfa_ValAtual.length() = " + String(gTecladoAlfa_ValAtual.length()));
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 		if (tft.touchDetect())

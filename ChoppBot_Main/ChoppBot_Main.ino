@@ -133,7 +133,7 @@ void InitApp()
 
 
 
-    BUZZER_TocaSom(F("LIGAR"));
+    
 
 
 
@@ -145,11 +145,15 @@ void InitApp()
 
     if (retEngatados.substring(0, 1) != "1") 
     {
+
+        BUZZER_TocaSom(F("ERRO"));
+
+
         LogTerm(F("MAIN: Falha ao carregar arquivo com os chopps engatados"));
         LogTerm(String(F("MAIN: Erro: ")) + retEngatados.substring(3));
         LogTerm(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."));
 
-        if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+        if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
         {       
             TELA_Texto(F("MAIN: Falha ao carregar arquivo com os chopps engatados"), F("BRANCO"));
             TELA_Texto(String(F("MAIN: Erro: ")) + retEngatados.substring(3), F("AMARELO"));
@@ -161,7 +165,7 @@ void InitApp()
         resetFunc();        
     }
 
-
+    BUZZER_TocaSom(F("LIGAR"));
 
 
     // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco

@@ -225,7 +225,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 		}
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 		{  
 
 
@@ -759,7 +759,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 void TELA_VerificaTouch_OPERACAO_SERVICO()
 {
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 

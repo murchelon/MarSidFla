@@ -28,9 +28,9 @@ String RFID_Exec_Leitura()
 
 	String aux1 = F(""); 
 
+	
 
-
-	if (ctRFID_HARDWARE == F("PN532"))
+	if (String(ctRFID_HARDWARE) == String(F("PN532")))
 	{
 
 
@@ -196,7 +196,7 @@ void TELA_Render_Interface_LER_RFID()
 
 		}
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 		{  
 
 		
@@ -293,7 +293,7 @@ void TELA_Render_Interface_LER_RFID()
 					LogTerm(F("Ocorreu um erro ao efetuar a leitura do cartao SD: Login"));
 				}
 
-				if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+				if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 				{  
 
 					TELA_LimpaTela();
@@ -338,7 +338,7 @@ void TELA_Render_Interface_LER_RFID()
 
 				}
 
-				if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+				if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 				{  
 
 					TELA_LimpaTela();
@@ -402,7 +402,7 @@ void TELA_Render_Interface_LER_RFID()
 
 					}
 
-					if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+					if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 					{  
 
 						TELA_LimpaTela();
@@ -445,7 +445,7 @@ void TELA_Render_Interface_LER_RFID()
 
 					}
 
-					if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+					if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 					{  
 
 						TELA_LimpaTela();
@@ -500,7 +500,7 @@ void TELA_Render_Interface_LER_RFID()
 
 
 
-					if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+					if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 					{  
 
 						TELA_LimpaTela();
@@ -591,7 +591,7 @@ void TELA_Render_Interface_LER_RFID()
 void TELA_VerificaTouch_LER_RFID()
 {
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 

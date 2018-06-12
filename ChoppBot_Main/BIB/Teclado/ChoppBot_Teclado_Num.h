@@ -23,7 +23,7 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 
 	}
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 		if (gTelaRenderizada_TecNum == false)
@@ -352,7 +352,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
 		if (tft.touchDetect())

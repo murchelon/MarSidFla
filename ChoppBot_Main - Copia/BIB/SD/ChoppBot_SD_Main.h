@@ -183,7 +183,7 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 	else
 	{
 
-		if (ctMODO_DEBUG == true)
+		if (gModoDebug == true)
 		{
 			LogTerm(String(F("SD: Arquivo aberto com sucesso: ")) + FullPathFile);
 		}
@@ -293,7 +293,7 @@ String SD_GetFirstRegFromFile(String FullPathFile, String RetryOrCheck)
 	else
 	{
 
-		if (ctMODO_DEBUG == true)
+		if (gModoDebug == true)
 		{
 			LogTerm(String(F("SD: Arquivo aberto com sucesso: ")) + FullPathFile);
 		}

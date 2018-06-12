@@ -7,7 +7,7 @@
 void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 {
 
-	if (ctTELA_HARDWARE == F("TERMINAL"))
+	if (gTela_Hardware == F("TERMINAL"))
 	{ 
 		if (gTelaRenderizada_TecNum == false)
 		{
@@ -23,7 +23,7 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 
 	}
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (gTelaRenderizada_TecNum == false)
@@ -268,7 +268,7 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 
 void TELA_Render_ValorTec_TECLADO_NUM()
 {
-	if (ctTELA_HARDWARE == "ER-TFTM070-5")
+	if (gTela_Hardware == "ER-TFTM070-5")
 	{  
 
 		//gTecladoNum_ValAtual = "123456789012345";
@@ -308,7 +308,7 @@ void TELA_Render_ValorTec_TECLADO_NUM()
 void TELA_VerificaTouch_TECLADO_NUM()
 {
 
-	if (ctTELA_HARDWARE == F("TERMINAL"))
+	if (gTela_Hardware == F("TERMINAL"))
 	{  
 
 		String retConsole;
@@ -352,7 +352,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (tft.touchDetect())

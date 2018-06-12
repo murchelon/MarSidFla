@@ -1,6 +1,8 @@
 
 
 
+// led de indicacao de uso do rfid
+#define ctPINO_LED_RFID 26
 
 
 
@@ -30,7 +32,7 @@ String RFID_Exec_Leitura()
 
 
 
-	if (ctRFID_HARDWARE == F("PN532"))
+	if (gRFID_Hardware == F("PN532"))
 	{
 
 
@@ -51,7 +53,7 @@ String RFID_Exec_Leitura()
 
 		if (! versiondata)
 		{
-			if (ctMODO_DEBUG == true)
+			if (gModoDebug == true)
 			{
 				LogTerm(F("RFID: Placa PN53x nao localizada"));
 			} 
@@ -65,7 +67,7 @@ String RFID_Exec_Leitura()
 
 
 
-		if (ctMODO_DEBUG == true)
+		if (gModoDebug == true)
 		{
 			 
 
@@ -180,7 +182,7 @@ String RFID_Exec_Leitura()
 void TELA_Render_Interface_LER_RFID()
 {
 	
-	//LogTerm(ctTELA_HARDWARE);
+	//LogTerm(gTela_Hardware);
 
 
 	if (gTelaRenderizada_LER_RFID == false)
@@ -189,14 +191,14 @@ void TELA_Render_Interface_LER_RFID()
         //LogTerm(F("== [Modo Atual: STANDBY] ==");
 
 
-		if (ctTELA_HARDWARE == F("TERMINAL"))
+		if (gTela_Hardware == F("TERMINAL"))
 		{  
 			LogTerm(F("Encoste o cartao ou chaveiro de identificacao no leitor..."));
 			//LogTerm(F("Digite algo no teclado para voltar");
 
 		}
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (gTela_Hardware == F("ER-TFTM070-5"))
 		{  
 
 		
@@ -274,7 +276,7 @@ void TELA_Render_Interface_LER_RFID()
 			retIDUser = BANCO_GetIDUserFromLogin(Login_RFID, F("RFID"));
 
 
-			if (ctMODO_DEBUG == true)
+			if (gModoDebug == true)
 			{
 				//LogTerm(F("BANCO_GetIDUserFromLogin(" + Login_RFID + ") = " + retIDUser);
 			}
@@ -288,19 +290,19 @@ void TELA_Render_Interface_LER_RFID()
 				BUZZER_TocaSom(F("ERRO"));
 
 				// ocorreu um erro. imprime a msg de erro na tela
-				if (ctTELA_HARDWARE == F("TERMINAL"))
+				if (gTela_Hardware == F("TERMINAL"))
 				{  
 					LogTerm(F("Ocorreu um erro ao efetuar a leitura do cartao SD: Login"));
 				}
 
-				if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+				if (gTela_Hardware == F("ER-TFTM070-5"))
 				{  
 
 					TELA_LimpaTela();
 
 					
 
-					if (ctMODO_DEBUG == false)
+					if (gModoDebug == false)
 					{
 						TELA_Render_MsgBox(F("Erro no Leitor SD"), F("Ocorreu um erro ao efetuar a leitura do cartao SD: Login"));
 					}
@@ -331,21 +333,21 @@ void TELA_Render_Interface_LER_RFID()
 				BUZZER_TocaSom(F("ERRO"));
 
 				// ocorreu um erro. imprime a msg de erro na tela
-				if (ctTELA_HARDWARE == F("TERMINAL"))
+				if (gTela_Hardware == F("TERMINAL"))
 				{  
 					LogTerm(F("O cartao utilizado nao esta cadastrado. Por favor procure o caixa para maiores informacoes."));
 
 
 				}
 
-				if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+				if (gTela_Hardware == F("ER-TFTM070-5"))
 				{  
 
 					TELA_LimpaTela();
 
 					
 
-					if (ctMODO_DEBUG == false)
+					if (gModoDebug == false)
 					{
 						TELA_Render_MsgBox(F("Cartao nao cadastrado"), F("O cartao utilizado nao esta cadastrado. Por favor procure o caixa para maiores  informacoes."));
 					}
@@ -382,7 +384,7 @@ void TELA_Render_Interface_LER_RFID()
 
 				//LogTerm(String(F("retUserData: ")) + retUserData);
 
-				if (ctMODO_DEBUG == true)
+				if (gModoDebug == true)
 				{
 					//LogTerm(F("BANCO_GetUserDataFromIDUser(" + retIDUser.substring(2) + ") = " + retUserData);
 				}
@@ -396,20 +398,20 @@ void TELA_Render_Interface_LER_RFID()
 					BUZZER_TocaSom(F("ERRO"));
 
 					// ocorreu um erro. imprime a msg de erro na tela
-					if (ctTELA_HARDWARE == F("TERMINAL"))
+					if (gTela_Hardware == F("TERMINAL"))
 					{  
 						LogTerm(F("Ocorreu um erro ao efetuar a leitura do cartao SD: Usuario"));
 
 					}
 
-					if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+					if (gTela_Hardware == F("ER-TFTM070-5"))
 					{  
 
 						TELA_LimpaTela();
 
 						
 
-						if (ctMODO_DEBUG == false)
+						if (gModoDebug == false)
 						{
 							TELA_Render_MsgBox(F("Erro no Leitor SD"), F("Ocorreu um erro ao efetuar a leitura do cartao SD: Usuario"));
 						}
@@ -439,20 +441,20 @@ void TELA_Render_Interface_LER_RFID()
 					BUZZER_TocaSom(F("ERRO"));
 
 					// ocorreu um erro. imprime a msg de erro na tela
-					if (ctTELA_HARDWARE == F("TERMINAL"))
+					if (gTela_Hardware == F("TERMINAL"))
 					{  
 						LogTerm(F("Usuario nao localizado. Este cartao esta associado a um usuario que nao foi localizado no sistema. Por favor procure o caixa para maiores informacoes"));
 
 					}
 
-					if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+					if (gTela_Hardware == F("ER-TFTM070-5"))
 					{  
 
 						TELA_LimpaTela();
 
 						
 
-						if (ctMODO_DEBUG == false)
+						if (gModoDebug == false)
 						{
 							TELA_Render_MsgBox(F("Usuario nao localizado"), F("Este cartao esta associado a um usuario que nao foi localizado no sistema. Por  favor procure o caixa para maiores informacoes"));
 						}
@@ -500,12 +502,12 @@ void TELA_Render_Interface_LER_RFID()
 
 
 
-					if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+					if (gTela_Hardware == F("ER-TFTM070-5"))
 					{  
 
 						TELA_LimpaTela();
 						
-						if (ctMODO_DEBUG == true)
+						if (gModoDebug == true)
 						{
 							//TELA_Render_MsgBox(F("Usuario Identificado"), String(F("Ola ! Seja bem vindo ")) + gSessao_Nome + String(F(" ! -- gSessao_Logado = ")) + String(gSessao_Logado) + String(F(" | gSessao_IDUser = ")) + String(gSessao_IDUser) + String(F(" | gSessao_Nivel = ")) + String(gSessao_Nivel) + String(F(" | gSessao_SaldoAtual = ")) + String(gSessao_SaldoAtual)  );
 							//delay(5000);
@@ -537,7 +539,7 @@ void TELA_Render_Interface_LER_RFID()
 			BUZZER_TocaSom(F("ERRO"));
 
 			// ocorreu um erro. imprime a msg de erro na tela
-			if (ctTELA_HARDWARE == F("TERMINAL"))
+			if (gTela_Hardware == F("TERMINAL"))
 			{  
 				LogTerm(F("Ocorreu um erro ao realizar a leitura do cartao/chaveiro RFID:"));
 				LogTerm(Login_RFID.substring(2));
@@ -545,7 +547,7 @@ void TELA_Render_Interface_LER_RFID()
 
 			}
 
-			if (ctTELA_HARDWARE == "ER-TFTM070-5")
+			if (gTela_Hardware == "ER-TFTM070-5")
 			{  
 
 				TELA_LimpaTela();
@@ -591,7 +593,7 @@ void TELA_Render_Interface_LER_RFID()
 void TELA_VerificaTouch_LER_RFID()
 {
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 

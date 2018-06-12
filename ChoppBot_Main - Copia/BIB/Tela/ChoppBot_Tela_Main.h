@@ -47,12 +47,12 @@ volatile uint16_t gTouch_Y;
 
 void TELA_LimpaTela()
 {
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{
 		tft.fillScreen(RA8875_BLACK);  
 	}
 
-	if (ctTELA_HARDWARE == F("TERMINAL"))
+	if (gTela_Hardware == F("TERMINAL"))
 	{
 		LogTerm(F("TELA -> LimpaTela()")); 
 	}
@@ -64,13 +64,13 @@ void TELA_LimpaTela()
 void TELA_Texto(String Texto, String Cor)
 {
 
-	if (ctTELA_HARDWARE == F("TERMINAL"))
+	if (gTela_Hardware == F("TERMINAL"))
 	{
 		LogTerm(Texto); 
 	}
 
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{
 
 
@@ -158,7 +158,7 @@ void TELA_LogTerm_XY()
 
 
 	/*
-	if (ctTELA_HARDWARE == "ER-TFTM070-5")
+	if (gTela_Hardware == "ER-TFTM070-5")
 	{
 
 		
@@ -453,7 +453,7 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 void TELA_IniciaTela()
 {
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{
 
 		pinMode(RA8875_INT, INPUT);
@@ -480,7 +480,7 @@ void TELA_IniciaTela()
 void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto3, String Cor)
 {
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{
 
 		int OffSet_TextoBotao_W = gTamBotao_W / 2 - 11;
@@ -611,7 +611,7 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 void TELA_Render_Interface_STANDBY()
 {
 	
-	//LogTerm(ctTELA_HARDWARE);
+	//LogTerm(gTela_Hardware);
 
 
 	if (gTelaRenderizada_STANDBY == false)
@@ -622,13 +622,13 @@ void TELA_Render_Interface_STANDBY()
 
 
 
-		if (ctTELA_HARDWARE == F("TERMINAL"))
+		if (gTela_Hardware == F("TERMINAL"))
 		{  
 			LogTerm(String(F("ChoppBot ")) + String(VersaoAPP));
 			LogTerm(F("Tecle algo no console para iniciar..."));
 		}
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (gTela_Hardware == F("ER-TFTM070-5"))
 		{  
 
 			tft.setTextColor(RA8875_YELLOW);
@@ -663,7 +663,7 @@ void TELA_Render_Interface_LOGIN()
 		
 		//LogTerm(F("== [Modo Atual: LOGIN] ==");
 
-		if (ctTELA_HARDWARE == F("TERMINAL"))
+		if (gTela_Hardware == F("TERMINAL"))
 		{  
 
 			LogTerm(F("Ola! Seja bem vindo!"));
@@ -679,7 +679,7 @@ void TELA_Render_Interface_LOGIN()
 		}
 
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (gTela_Hardware == F("ER-TFTM070-5"))
 		{  
 
 			tft.setTextColor(RA8875_YELLOW);
@@ -724,7 +724,7 @@ void TELA_Render_Interface_OPERACAO()
 
 		
 
-		if (ctTELA_HARDWARE == F("TERMINAL"))
+		if (gTela_Hardware == F("TERMINAL"))
 		{  
 
 
@@ -764,7 +764,7 @@ void TELA_Render_Interface_OPERACAO()
 		}
 
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (gTela_Hardware == F("ER-TFTM070-5"))
 		{  		
 
 
@@ -868,7 +868,7 @@ void TELA_Render_Interface_OPERACAO()
 void TELA_VerificaTouch_STANDBY()
 {
 
-	if (ctTELA_HARDWARE == F("TERMINAL"))
+	if (gTela_Hardware == F("TERMINAL"))
 	{ 
 
 		String retConsole;
@@ -892,7 +892,7 @@ void TELA_VerificaTouch_STANDBY()
 
 	}
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (tft.touchDetect(false))
@@ -936,7 +936,7 @@ void TELA_VerificaTouch_STANDBY()
 void TELA_VerificaTouch_LOGIN()
 {
 
-	if (ctTELA_HARDWARE == F("TERMINAL"))
+	if (gTela_Hardware == F("TERMINAL"))
 	{ 
 
 		String retConsole;
@@ -999,7 +999,7 @@ void TELA_VerificaTouch_LOGIN()
 
 
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		//tft.changeMode(GRAPHIC);
@@ -1133,7 +1133,7 @@ void TELA_VerificaTouch_LOGIN()
 void TELA_VerificaTouch_ADMIN()
 {
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (tft.touchDetect())
@@ -1184,7 +1184,7 @@ void TELA_VerificaTouch_OPERACAO()
 {
 
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		//LogTerm("gBounce_ContaClick = " + String(gBounce_ContaClick));

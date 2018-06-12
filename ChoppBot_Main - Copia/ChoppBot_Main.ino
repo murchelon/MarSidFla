@@ -149,7 +149,7 @@ void InitApp()
         LogTerm(String(F("MAIN: Erro: ")) + retEngatados.substring(3));
         LogTerm(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."));
 
-        if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+        if (gTela_Hardware == F("ER-TFTM070-5"))
         {       
             TELA_Texto(F("MAIN: Falha ao carregar arquivo com os chopps engatados"), F("BRANCO"));
             TELA_Texto(String(F("MAIN: Erro: ")) + retEngatados.substring(3), F("AMARELO"));

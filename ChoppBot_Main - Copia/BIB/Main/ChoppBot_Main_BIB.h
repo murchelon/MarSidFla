@@ -52,19 +52,9 @@
 
 
 // TELA ER-TFTM070-5 - Engine
-
-
-#ifdef ctTELA_BIB_USADA_Adafruit_RA8875
-
-	#include "Adafruit_GFX.h"
-	#include "Adafruit_RA8875.h"	
-	
-#elif ctTELA_BIB_USADA_RA8875
-
-	#include <RA8875.h>
-
-#endif
-
+#include <RA8875.h>
+//#include "Adafruit_GFX.h"
+//#include "Adafruit_RA8875.h"
 
 #include "../Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
 
@@ -81,6 +71,9 @@
 #include "../Biometrico/ChoppBot_Bio_Main.h" 
 
 
+
+// RELE
+#include "../Rele/ChoppBot_Rele_Engine.h" 
 
 // RELE MAIN
 #include "../Rele/ChoppBot_Rele_Main.h" 

@@ -193,7 +193,7 @@ void useInterrupt_3(boolean b)
 void TELA_Render_Interface_OPERACAO_SERVICO()
 {
 	
-	//LogTerm(ctTELA_HARDWARE);
+	//LogTerm(gTela_Hardware);
 
 
 
@@ -218,14 +218,14 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		useInterrupt_3(true);
 
 
-		if (ctTELA_HARDWARE == F("TERMINAL"))
+		if (gTela_Hardware == F("TERMINAL"))
 		{  
 			LogTerm(F("Encoste o cartao ou chaveiro de identificacao no leitor..."));
 			//LogTerm(F("Digite algo no teclado para voltar");
 
 		}
 
-		if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+		if (gTela_Hardware == F("ER-TFTM070-5"))
 		{  
 
 
@@ -759,7 +759,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 void TELA_VerificaTouch_OPERACAO_SERVICO()
 {
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 

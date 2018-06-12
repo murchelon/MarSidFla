@@ -49,7 +49,7 @@ String GetCharForTecAlfa(int Index)
 void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 {
 
-	if (ctTELA_HARDWARE == F("TERMINAL"))
+	if (gTela_Hardware == F("TERMINAL"))
 	{ 
 		if (gTelaRenderizada_TecAlfa == false)
 		{
@@ -65,7 +65,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 
 	}
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (gTelaRenderizada_TecAlfa == false)
@@ -290,7 +290,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 			LabelNum_PosAtual_Y = Inicio_Y - 140;
 
 
-		 	if (ctMODO_DEBUG == true)
+		 	if (gModoDebug == true)
 		 	{
 		 		// frame
 		 		tft.fillRoundRect(LabelNum_PosAtual_X, LabelNum_PosAtual_Y, 550, 109, 0, RA8875_WHITE);
@@ -350,7 +350,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 
 void TELA_Render_ValorTec_TECLADO_ALFA()
 {
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 
@@ -366,7 +366,7 @@ void TELA_Render_ValorTec_TECLADO_ALFA()
 
 		//tft.fillRoundRect(temp_pos_X_box.toInt() , temp_pos_Y_box.toInt(), temp_size_W_box.toInt(), temp_size_H_box.toInt(), 5, RA8875_YELLOW);
 
-		if (ctMODO_DEBUG == true)
+		if (gModoDebug == true)
 		{
 			tft.setCursor (480, 20); 
 			tft.print (String(F("Tam ValAtual = ")) + String(gTecladoAlfa_ValAtual.length()));
@@ -383,7 +383,7 @@ void TELA_Render_ValorTec_TECLADO_ALFA()
 		tft.setFontScale(1); 
 
 
-	 	if (ctMODO_DEBUG == true)
+	 	if (gModoDebug == true)
 	 	{
 	 		tft.setTextColor(RA8875_BLACK, RA8875_YELLOW);
 	 	}
@@ -447,7 +447,7 @@ void TELA_Render_ValorTec_TECLADO_ALFA()
 void TELA_VerificaTouch_TECLADO_ALFA()
 {
 
-	if (ctTELA_HARDWARE == F("TERMINAL"))
+	if (gTela_Hardware == F("TERMINAL"))
 	{  
 
 		String retConsole;
@@ -490,7 +490,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 	//LogTerm("gTecladoAlfa_ValAtual.length() = " + String(gTecladoAlfa_ValAtual.length()));
 
-	if (ctTELA_HARDWARE == F("ER-TFTM070-5"))
+	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
 		if (tft.touchDetect())
@@ -565,7 +565,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 
 
-										 	if (ctMODO_DEBUG == true)
+										 	if (gModoDebug == true)
 										 	{
 										 		tft.setTextColor(RA8875_BLACK, RA8875_YELLOW);
 										 	}

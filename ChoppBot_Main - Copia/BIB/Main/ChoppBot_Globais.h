@@ -37,7 +37,7 @@ String gModoOperacao_SubTela;
 
 // var que define se a aplicacao esta no modo debug. isto faz com que algumas msgs de debug
 // sejam exibidas na tela e/ou no terminal
-#define ctMODO_DEBUG true
+bool gModoDebug;
 
 // tempo em ms para timeout das opcoes a serem escolhidas
 #define gTimeoutOpcao 7000		
@@ -87,8 +87,6 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define FLOW_PINO_SENSOR_3 38 
 
 
-// led de indicacao de uso do rfid
-#define ctPINO_LED_RFID 26
 
 
 //int EstadoBotao_Rele1 = 0;
@@ -255,18 +253,7 @@ bool gLedON_EstadoAtual;
 
 
 // var que define a tela sendo usada
-//String gTela_Hardware;		// ER-TFTM070-5 | TERMINAL definidos na rotina de iniciar vars
-#define ctTELA_HARDWARE F("ER-TFTM070-5")
-//#define ctTELA_HARDWARE F("TERMINAL")
-
-
-// var que define a biblioteca de tela usada
-//#define ctTELA_BIB_USADA_Adafruit_RA8875 1 		// Adafruit_RA8875 | RA8875 definidos na rotina de iniciar vars
-#define ctTELA_BIB_USADA_RA8875 1		// Adafruit_RA8875 | RA8875 definidos na rotina de iniciar vars
-
-
-// Adafruit_RA8875 | RA8875 definidos na rotina de iniciar vars
-
+String gTela_Hardware;		// ER-TFTM070-5 | TERMINAL definidos na rotina de iniciar vars
 
 // Vars de controle que verificam se uma determinada tela esta renderizada para nao render de novo
 bool gTelaRenderizada_TecNum;
@@ -299,8 +286,8 @@ bool gTelaRenderizada_MSGBOX;
 
 
 // var que define a tela sendo usada
-//#define ctRFID_HARDWARE F("MFRC522")
-#define ctRFID_HARDWARE F("PN532")
+String gRFID_Hardware;		// ER-TFTM070-5 | TERMINAL definidos na rotina de iniciar vars
+
 
 
 
@@ -360,13 +347,23 @@ void InicializaVars()
 	// variaveis princiais
 	gModoOperacao = F("INICIO");  
 	gModoOperacao_SubTela = F("");
-
+	
+	gModoDebug = true;
+	//gModoDebug = false;
 
 
 	// led de indicao de funcionamento
 	gLedON_time_inicio = millis();
 	gLedON_EstadoAtual = false;
 
+
+	// Modo de output a ser usado
+	gTela_Hardware = F("ER-TFTM070-5"); 		// tela LCD 7pol Touch Resistive
+	//gTela_Hardware = String("TERMINAL"); 		// saidas de texto para o terminal (console)	
+
+	// RFID - Hardware utilizado
+	//gRFID_Hardware = "MFRC522";
+	gRFID_Hardware = F("PN532");
 
 	// controle de render de tela
 	gTelaRenderizada_TecNum = false;

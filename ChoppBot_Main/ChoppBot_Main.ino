@@ -62,35 +62,6 @@ void InitApp()
     LogTerm(F("MAIN: Iniciando sistema..."));
 
 
-    // Inicia o LED do rfid
-    pinMode(ctPINO_LED_RFID, OUTPUT);
-
-    // Inicia o BUZZER
-    pinMode(BUZZER_PINO, OUTPUT);
-
-    // inicia o led interno arduino, usado para mostrar que o programa esta rodando
-    pinMode(LED_BUILTIN, OUTPUT);
-
-    //pinMode(BOTAO1_PINO, INPUT);
-
-    //pinMode(BOTAO2_PINO, INPUT);
-
-    //pinMode(BOTAO3_PINO, INPUT);
-
-    //pinMode(BOTAO4_PINO, INPUT);
-
-
-    //define reles como output
-    //pinMode(gPinoRele_1, OUTPUT);
-    //pinMode(gPinoRele_2, OUTPUT);
-    //pinMode(gPinoRele_3, OUTPUT);
-
-
-    //define reles como desligados
-    //Estado inicial dos reles - desligados
-    //digitalWrite(gPinoRele_1, HIGH);
-    //digitalWrite(gPinoRele_2, HIGH);
-    //digitalWrite(gPinoRele_3, HIGH);  
 
 
     Led_Light(false);
@@ -106,6 +77,51 @@ void InitApp()
     }
 
     Led_Light(false);
+
+
+
+
+
+    // Inicia o LED do rfid
+    pinMode(ctPINO_LED_RFID, OUTPUT);
+
+    // Inicia o BUZZER
+    pinMode(BUZZER_PINO, OUTPUT);
+
+    // inicia o led interno arduino, usado para mostrar que o programa esta rodando
+    pinMode(LED_BUILTIN, OUTPUT);
+
+
+
+
+    // Inicia os RELES
+    pinMode(RELE_PINO_TORNEIRA_1, OUTPUT);
+    pinMode(RELE_PINO_TORNEIRA_2, OUTPUT);
+    pinMode(RELE_PINO_TORNEIRA_3, OUTPUT);
+
+    // Define os RELES como DESLIGADOS
+    digitalWrite(RELE_PINO_TORNEIRA_1, HIGH);
+    digitalWrite(RELE_PINO_TORNEIRA_2, HIGH);
+    digitalWrite(RELE_PINO_TORNEIRA_3, HIGH);
+
+
+
+
+    // Inicia os FLOW METERS
+    pinMode(FLOW_PINO_SENSOR_1, INPUT);
+    digitalWrite(FLOW_PINO_SENSOR_1, HIGH);
+
+
+    pinMode(FLOW_PINO_SENSOR_2, INPUT);
+    digitalWrite(FLOW_PINO_SENSOR_2, HIGH);
+
+
+    pinMode(FLOW_PINO_SENSOR_3, INPUT);
+    digitalWrite(FLOW_PINO_SENSOR_3, HIGH);
+
+
+
+    
 
     TELA_IniciaTela();
 
@@ -413,6 +429,7 @@ void Exec_ADMIN()
         //delay(500);
     }
 
+
     TELA_LimpaTela();
 
     gTelaRenderizada_ADMIN = false;
@@ -594,7 +611,9 @@ void TestaInterrupts()
 
     if (gModoOperacao == F("STANDBY"))
     {
+                
         TELA_VerificaTouch_STANDBY();
+        
     }
 
     if (gModoOperacao == F("LOGIN"))
@@ -617,12 +636,13 @@ void TestaInterrupts()
     {
 
 
+
         if (gModoOperacao_SubTela == F(""))
         {
             TELA_VerificaTouch_OPERACAO();
         }
 
-        if (gModoOperacao_SubTela == F("LER_RFID"))
+        if (gModoOperacao_SubTela == F("OPERACAO_SERVICO"))
         {
             TELA_VerificaTouch_OPERACAO_SERVICO();
         }
@@ -689,7 +709,7 @@ void loop()
     //Led_Light(true);
     //LogTerm(F("estou no loop");
 
-    TestaInterrupts();
+
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -771,7 +791,7 @@ void loop()
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  
+    TestaInterrupts();
 
 }
 

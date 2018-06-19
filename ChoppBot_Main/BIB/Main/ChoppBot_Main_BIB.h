@@ -53,6 +53,9 @@
 
 // TELA ER-TFTM070-5 - Engine
 #include <RA8875.h>
+//#include "Adafruit_GFX.h"
+//#include "Adafruit_RA8875.h"
+
 #include "../Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
 
 // TELA MAIN

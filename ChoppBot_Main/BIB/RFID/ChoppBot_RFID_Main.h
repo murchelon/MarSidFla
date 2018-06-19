@@ -19,6 +19,8 @@ void RFID_SetStatusLed(bool Valor)
 	 
 }
 
+
+
 String RFID_Exec_Leitura()
 {
 
@@ -61,10 +63,13 @@ String RFID_Exec_Leitura()
 			return ret;
 		}
 
+		RFID_SetStatusLed(true);
+
+
 
 		if (gModoDebug == true)
 		{
-			RFID_SetStatusLed(true); 
+			 
 
 			LogTerm(F("RFID: Placa PN53x localizada com sucesso"));
 			//Serial.print("RFID: Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
@@ -142,7 +147,7 @@ String RFID_Exec_Leitura()
 
 
 			// Wait 1 second before continuing
-			delay(1000);
+			// delay(1000);
 		}
 		else
 		{
@@ -200,29 +205,37 @@ void TELA_Render_Interface_LER_RFID()
 			tft.setTextColor(RA8875_YELLOW);
 			tft.setFontScale(2); 
 
-			tft.setCursor (100, 100);
+			tft.setCursor (115, 100);
 			tft.print (F("Por favor, encoste o seu"));    
 
-			tft.setCursor (100, 145);
+			tft.setCursor (115, 145);
 			tft.print (F("cartao ou chaveiro de")); 
 
-			tft.setCursor (100, 190);
+			tft.setCursor (115, 190);
 			tft.print (F("identificacao no leitor")); 
 			
-			tft.setCursor (100, 235);
+			tft.setCursor (115, 235);
 			tft.print (F("a sua frente ...")); 
 			
 
+			tft.setTextColor(LaranjaAlerta);
+			tft.setFontScale(1); 
+			tft.setCursor (160, 350);
+			tft.print (F("[Aguardando leitura do cartao]")); 
 
+
+			/*
 		    int btnVoltar_PosAtual_X = 100;
 			int btnVoltar_PosAtual_Y = 360;
 
 			tft.fillRoundRect(btnVoltar_PosAtual_X, btnVoltar_PosAtual_Y, 170, 60, 5, RA8875_BLUE);
 
+		
 		    tft.setTextColor(RA8875_WHITE);
 		    tft.setFontScale(1); 
 		    tft.setCursor (btnVoltar_PosAtual_X + (60 / 2) - 18, btnVoltar_PosAtual_Y + 11); 
-		    tft.print (F("<< Voltar"));			
+		    tft.print (F("<< Voltar"));	
+		    */		
 
 		}
 
@@ -255,6 +268,7 @@ void TELA_Render_Interface_LER_RFID()
 			gSessao_IDUser = -1;
 			gSessao_Nome = F("");
 			gSessao_Nivel = -1;
+			gSessao_SaldoAtual = -1;
 
 
 			String retIDUser = "";
@@ -475,12 +489,15 @@ void TELA_Render_Interface_LER_RFID()
 					gSessao_IDUser = retIDUser.substring(2).toInt();
 					gSessao_Nome = getValue(retUserData.substring(2), ';', 3);
 					gSessao_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
+					gSessao_SaldoAtual = getValue(retUserData.substring(2), ';', 5).toFloat();
+
 
 
 					LogTerm(F("MAIN: Usuario LOGADO"));
 					//LogTerm("gSessao_IDUser: " + String(gSessao_IDUser));
 					LogTerm(String(F("MAIN: Nome: ")) + gSessao_Nome);	
 					LogTerm(String(F("MAIN: Nivel: ")) + String(gSessao_Nivel));
+					LogTerm(String(F("MAIN: Saldo: ")) + String(gSessao_SaldoAtual));
 						
 
 
@@ -490,29 +507,21 @@ void TELA_Render_Interface_LER_RFID()
 
 						TELA_LimpaTela();
 						
-
-						TELA_Render_MsgBox(F("Usuario Identificado"), String(F("Ola ! Seja bem vindo ")) + gSessao_Nome + String(F(" ! -- gSessao_Logado = ")) + String(gSessao_Logado) + String(F(" | gSessao_IDUser = ")) + String(gSessao_IDUser) + String(F(" | gSessao_Nivel = ")) + String(gSessao_Nivel));
-						//TELA_Render_MsgBox("Usuario Identificado", "Ola ! Seja bem vindo " + gSessao_Nome + " !");
-
-
-
-						delay(3000);
-
-						TELA_LimpaTela();
+						if (gModoDebug == true)
+						{
+							//TELA_Render_MsgBox(F("Usuario Identificado"), String(F("Ola ! Seja bem vindo ")) + gSessao_Nome + String(F(" ! -- gSessao_Logado = ")) + String(gSessao_Logado) + String(F(" | gSessao_IDUser = ")) + String(gSessao_IDUser) + String(F(" | gSessao_Nivel = ")) + String(gSessao_Nivel) + String(F(" | gSessao_SaldoAtual = ")) + String(gSessao_SaldoAtual)  );
+							//delay(5000);
+							//TELA_LimpaTela();
+						}
 
 						gTelaRenderizada_MSGBOX = false;
 						gTelaRenderizada_LER_RFID = false;
-						
-						
 
 					}
 
 					gModoOperacao = F("OPERACAO");
 
-
-
 				}
-
 
 
 			}
@@ -572,7 +581,7 @@ void TELA_Render_Interface_LER_RFID()
 
 		TELA_LimpaTela();
 
-		delay(500);   
+		//delay(500);   
 
 	}
 

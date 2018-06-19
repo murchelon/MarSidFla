@@ -1,30 +1,6 @@
 
 
 
-#define Black           0x0000      /*   0,   0,   0 */
-#define Navy            0x000F      /*   0,   0, 128 */
-#define DarkGreen       0x03E0      /*   0, 128,   0 */
-#define DarkCyan        0x03EF      /*   0, 128, 128 */
-#define Maroon          0x7800      /* 128,   0,   0 */
-#define Purple          0x780F      /* 128,   0, 128 */
-#define Olive           0x7BE0      /* 128, 128,   0 */
-#define LightGrey       0xC618      /* 192, 192, 192 */
-#define DarkGrey        0x7BEF      /* 128, 128, 128 */
-#define Blue            0x001F      /*   0,   0, 255 */
-#define Green           0x07E0      /*   0, 255,   0 */
-#define Cyan            0x07FF      /*   0, 255, 255 */
-#define Red             0xF800      /* 255,   0,   0 */
-#define Magenta         0xF81F      /* 255,   0, 255 */
-#define Yellow          0xFFE0      /* 255, 255,   0 */
-#define White           0xFFFF      /* 255, 255, 255 */
-#define Orange          0xFD20      /* 255, 165,   0 */
-#define GreenYellow     0xAFE5      /* 173, 255,  47 */
-#define Pink            0xF81F
-
-//#define CinzaShadow     		rgb565_from_triplet(205, 205, 205)       /* 205, 205, 205 */
-#define CinzaShadow     		rgb565_from_triplet(99, 99, 99)       /* 205, 205, 205 */
-#define CinzaFundoTitMsgBox     rgb565_from_triplet(201, 201, 201)       /* 205, 205, 205 */
-
 
 
 
@@ -50,7 +26,9 @@ int gPosicaoAtual_X = 0;
 int gTotalBotoes = 0;
 
 // vers que contem o x e y de um touch na tela
-uint16_t gTouch_X, gTouch_Y;
+volatile uint16_t gTouch_X;
+volatile uint16_t gTouch_Y;
+
 
 
 //bool gBotao1_Apertado = false;
@@ -210,6 +188,7 @@ void TELA_LogTerm_XY()
 	if (gModoOperacao == F("OPERACAO"))
 	{
 
+		/*
 		// botao1:
 		sprintf(TheTexto,"BOT1: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- posY = %d", gTouch_X, gTouch_Y, gOffset_W, gTamBotao_W + gOffset_W, gOffset_H, gTamBotao_H + gOffset_H, gPosTxt_Y);  
 		TELA_Texto(TheTexto, "");
@@ -221,7 +200,21 @@ void TELA_LogTerm_XY()
 		// botao3:
 		sprintf(TheTexto,"BOT3: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- posY = %d", gTouch_X, gTouch_Y, 3 * gOffset_W + 2 * gTamBotao_W, 3 * gOffset_W + 3 * gTamBotao_W , gOffset_H, gTamBotao_H + gOffset_H, gPosTxt_Y);  
 		TELA_Texto(TheTexto, "");
+		*/
 
+
+		// sair:
+	    int btnSair_PosAtual_X = 680;
+		int btnSair_PosAtual_Y = 20;
+
+		int btnSair_Size_W = 100;
+		int btnSair_Size_H = 60;	
+
+		sprintf(TheTexto,"SAIR: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- gBounce_ContaClick = %d", gTouch_X, gTouch_Y, btnSair_PosAtual_X, btnSair_PosAtual_X + btnSair_Size_W, btnSair_PosAtual_Y, btnSair_PosAtual_Y + btnSair_Size_H, gBounce_ContaClick);  
+		TELA_Texto(TheTexto, "");
+
+
+		
 	}
 	else
 	{
@@ -437,7 +430,7 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 
 	}
 
-		gTelaRenderizada_MSGBOX = true;
+	gTelaRenderizada_MSGBOX = true;
 				
 
 
@@ -483,7 +476,7 @@ void TELA_IniciaTela()
 
 
 
-void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
+void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto3, String Cor)
 {
 
 	if (gTela_Hardware == F("ER-TFTM070-5"))
@@ -496,6 +489,7 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 		int OffSet_TextoTitulo_H = 140;
 
 		int OffSet_TextoTitulo2_H = 25;
+		int OffSet_TextoTitulo3_H = 50;
 
 
 		/*
@@ -566,20 +560,34 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Cor)
 
 		
 
-		// Render Titulo
+		// Render Texto
 		if (Texto != F(""))
 		{
 			tft.setCursor (gPosicaoAtual_X + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H);    
 			tft.print (Texto);
 		}
 
-		// Render Titulo2
+		// Render Texto2
 		if (Texto2 != F(""))
 		{
 
 			tft.setCursor (gPosicaoAtual_X + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H + OffSet_TextoTitulo2_H); 
 
 			tft.print (Texto2);
+			//tft.print (gPosicaoAtual_X);
+			//tft.print (" a ");
+			//tft.print (gPosicaoAtual_X + gTamBotao_W);
+
+		}
+
+
+		// Render Texto3
+		if (Texto3 != F(""))
+		{
+
+			tft.setCursor (gPosicaoAtual_X + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H + OffSet_TextoTitulo3_H); 
+
+			tft.print (Texto3);
 			//tft.print (gPosicaoAtual_X);
 			//tft.print (" a ");
 			//tft.print (gPosicaoAtual_X + gTamBotao_W);
@@ -609,6 +617,8 @@ void TELA_Render_Interface_STANDBY()
 	{
 
         //LogTerm(F("== [Modo Atual: STANDBY] ==");
+
+
 
 
 		if (gTela_Hardware == F("TERMINAL"))
@@ -648,6 +658,8 @@ void TELA_Render_Interface_LOGIN()
 	if (gTelaRenderizada_LOGIN == false)
 	{
 
+		TELA_LimpaTela();
+		
 		//LogTerm(F("== [Modo Atual: LOGIN] ==");
 
 		if (gTela_Hardware == F("TERMINAL"))
@@ -681,10 +693,10 @@ void TELA_Render_Interface_LOGIN()
 
 			gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
 
-			TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F("BRANCO"));
-			TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F("AZUL"));
+			TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F("BRANCO"));
+			TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F("AZUL"));
 			//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F("MAGENTA"));
-			TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F("MAGENTA"));
+			TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F("MAGENTA"));
 
 			// Area para chamar admin
 			//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
@@ -713,27 +725,9 @@ void TELA_Render_Interface_OPERACAO()
 
 		if (gTela_Hardware == F("TERMINAL"))
 		{  
-			LogTerm(F("1 - Imperial IPA - R$ 25,00 / Litro"));
-			LogTerm(F("2 - Hoocus Pocus - R$ 19,00"));
-			LogTerm(F("3 - Duchese - R$ 32,00 / Litro"));
-		}
 
 
-		if (gTela_Hardware == F("ER-TFTM070-5"))
-		{  		
-
-			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (125, 30);
-			tft.setFontScale(2); 
-			tft.print (F("Escolha a sua torneira:"));    
-
-
-			gOffset_H = POSICAO_PADRAO_BTN_Y;
-
-
-
-
-		    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
+		    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco;Tipo;Valor
 		    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
 		    {
 
@@ -750,30 +744,104 @@ void TELA_Render_Interface_OPERACAO()
 		            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
 		            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
 
-		            //LogTerm(gaEngatados[x]);
 
-		            /*
-		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- IDChopp: ")) + tmp_IDChopp);
-		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Nome: ")) + tmp_Nome);
-		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Tipo: ")) + tmp_Tipo);
-		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Valor: ")) + tmp_Valor);
-		            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Volume Atual: ")) + tmp_Volume);
-		            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Cadastro: " + tmp_DataCad);
-		            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Expiracao: " + tmp_DataExp);
+		            LogTerm(  
+		            		String(x + 1) + 
+		            		String(F(" - ")) + 
+		            		tmp_Nome + 
+		            		String(F(" | R$ ")) + 
+							tmp_Valor + 
+							String(F(" / Litro ")) 
+		                   );
 
-		            if (tmp_Ativa == F("1"))
-		            {
-		                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: SIM")));
-		            }
-		            else
-		            {
-		                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: NAO"))); 
-		            }
-		            
-		            LogTerm(F("---------"));
-					*/
 
-		            TELA_Render_Botao(x + 1, tmp_Nome, String( String(F("R$ ")) + String(tmp_Valor) + String(F(" / Litro")) ), F("AZUL"));
+
+		        }
+
+
+		    }			
+		}
+
+
+		if (gTela_Hardware == F("ER-TFTM070-5"))
+		{  		
+
+
+			// Cabecalho logado ///////
+
+			tft.setFontScale(1); 
+
+			tft.setTextColor(CinzaLabels);
+			tft.setCursor (10, 10);			
+			tft.print (F("Nome: ")); 
+			tft.setCursor (10, 45);			
+			tft.print (F("Saldo: "));  
+
+			tft.setTextColor(RA8875_WHITE);
+			tft.setCursor (120, 10);			
+			tft.print (gSessao_Nome); 
+			tft.setCursor (120, 45);	
+			tft.print (FormatNumber(gSessao_SaldoAtual, "MONEY"));  
+
+
+
+			//////////////////////////////////////  
+
+			tft.setTextColor(VerdeOK);
+			tft.setCursor (220, 110);
+			tft.setFontScale(1); 
+			tft.print (F("Escolha a sua torneira:"));    
+
+
+
+		
+			// Botao SAIR ///////////////////////////////
+
+		    int btnSair_PosAtual_X = 10;
+			int btnSair_PosAtual_Y = 100;
+
+			int btnSair_Size_W = 100;
+			int btnSair_Size_H = 60;
+
+			tft.fillRoundRect(btnSair_PosAtual_X, btnSair_PosAtual_Y, btnSair_Size_W, btnSair_Size_H, 8, Red);
+		
+		    tft.setTextColor(RA8875_WHITE);
+		    tft.setFontScale(1); 
+		    tft.setCursor (btnSair_PosAtual_X + (btnSair_Size_W / 2) - 35, btnSair_PosAtual_Y + 12); 
+		    tft.print (F("SAIR"));	
+
+		    //////////////////////////////////////
+
+
+
+		    // Inicia desenho do restante da tela e botoes
+
+
+			gOffset_H = POSICAO_PADRAO_BTN_Y + 49;
+
+
+
+
+		    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco;Tipo;Valor
+		    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+		    {
+
+		        if (gaEngatados[x] != "")
+		        {
+
+
+		            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
+		            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
+		            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
+		            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
+		            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
+		            //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
+		            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
+		            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
+
+
+		            TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( String(F("R$ ")) + tmp_Valor + String(F(" / Litro")) ), F("AZUL"));
+
 
 
 
@@ -782,11 +850,6 @@ void TELA_Render_Interface_OPERACAO()
 
 		    }
 
-		    
-
-			//TELA_Render_Botao(1, F("Imperial IPA"), F("R$ 25,00 / Litro"), F("BRANCO"));
-			//TELA_Render_Botao(2, F("Hoocus Pocus"), F("R$ 19,00 / Litro"), F("AZUL"));
-			//TELA_Render_Botao(3, F("Duchese"), F("R$ 32,00 / Litro"), F("MAGENTA"));
 		}
 
 		gTelaRenderizada_OPERACAO = true;
@@ -934,8 +997,9 @@ void TELA_VerificaTouch_LOGIN()
 
 			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
-			gTouch_X = 800 - gTouch_X;
-			gTouch_Y = 480 - gTouch_Y;
+			// murch
+			//gTouch_X = 800 - gTouch_X;
+			//gTouch_Y = 480 - gTouch_Y;
 
 			//TELA_LogTerm_XY(); 
 
@@ -1064,8 +1128,9 @@ void TELA_VerificaTouch_ADMIN()
 
 			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
-			gTouch_X = 800 - gTouch_X;
-			gTouch_Y = 480 - gTouch_Y;
+			//murch
+			//gTouch_X = 800 - gTouch_X;
+			//gTouch_Y = 480 - gTouch_Y;
 
 
 
@@ -1101,10 +1166,11 @@ void TELA_VerificaTouch_ADMIN()
 void TELA_VerificaTouch_OPERACAO()
 {
 
+
 	if (gTela_Hardware == F("ER-TFTM070-5"))
 	{  
 
-
+		//LogTerm("gBounce_ContaClick = " + String(gBounce_ContaClick));
 
 		//tft.changeMode(GRAPHIC);
 
@@ -1113,10 +1179,68 @@ void TELA_VerificaTouch_OPERACAO()
 
 			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
-			gTouch_X = 800 - gTouch_X;
-			gTouch_Y = 480 - gTouch_Y;
+			
 
-			//TELA_LogTerm_XY(); 
+			//LogTerm(String(gTouch_X) + String(" -- ") + String(gTouch_Y));
+
+			//TELA_LogTerm_XY();	
+
+
+			// botao sair
+
+
+		    int btnSair_PosAtual_X = 10;
+			int btnSair_PosAtual_Y = 100;
+
+			int btnSair_Size_W = 100;
+			int btnSair_Size_H = 60;			
+
+
+
+			// BOTAO SAIR
+			if ((gTouch_X >= btnSair_PosAtual_X) && (gTouch_X <= btnSair_PosAtual_X + btnSair_Size_W)) 
+			{
+
+				if ((gTouch_Y >= btnSair_PosAtual_Y) && (gTouch_Y <= btnSair_PosAtual_Y + btnSair_Size_H)) 
+				{
+
+					//tft.touchEnable(false);
+					
+					
+
+					TELA_LimpaTela();
+
+					
+
+
+					// zera as vars para cada tentativa de login
+					// efetua logoff
+					gSessao_Logado = false;
+					gSessao_IDUser = -1;
+					gSessao_Nome = F("");
+					gSessao_Nivel = -1;
+					gSessao_SaldoAtual = -1;
+
+					gTelaRenderizada_OPERACAO = false;	
+
+					gModoOperacao = F("INICIO");  
+					gModoOperacao_SubTela = F("");						
+					
+				
+
+
+					LogTerm(F("MAIN: Usuario clicou em SAIR"));
+					//TELA_Texto(F("BOTAO SAIR APERTADO"), F("MAGENTA"));  
+					//delay(500); 								
+
+
+				}
+
+			}
+
+
+
+
 
 			//botao 1:
 			if (gTouch_X >= gOffset_W && gTouch_X <= gTamBotao_W + gOffset_W)  
@@ -1126,20 +1250,11 @@ void TELA_VerificaTouch_OPERACAO()
 				{
 
 					LogTerm(F("BOTAO 1 APERTADO"));
-					TELA_Texto(F("BOTAO 1 APERTADO"), F("BRANCO"));
+					//TELA_Texto(F("BOTAO 1 APERTADO"), F("BRANCO"));
 
 
 
-					gServico_IDChopp = F("1");
-
-					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-
-
-					gTelaRenderizada_OPERACAO = false;
-
-					TELA_LimpaTela();
-
-					delay(500);   
+ 
 
 				}
 
@@ -1154,9 +1269,20 @@ void TELA_VerificaTouch_OPERACAO()
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
 					LogTerm(F("BOTAO 2 APERTADO"));
-					TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
+					//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
 					//delay(500);
 					//TELA_LogTerm_XY();    
+
+					gServico_IDChopp = F("2");
+
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+
+					gTelaRenderizada_OPERACAO = false;
+
+					TELA_LimpaTela();
+
+					delay(500);  					
 
 
 				}
@@ -1172,12 +1298,18 @@ void TELA_VerificaTouch_OPERACAO()
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
 					LogTerm(F("BOTAO 3 APERTADO"));
-					TELA_Texto(F("BOTAO 3 APERTADO"), F("MAGENTA"));  
+					//TELA_Texto(F("BOTAO 3 APERTADO"), F("MAGENTA"));  
 					//delay(500); 
 
 				}
 
 			}
+
+
+			
+
+
+
 
 		}
 

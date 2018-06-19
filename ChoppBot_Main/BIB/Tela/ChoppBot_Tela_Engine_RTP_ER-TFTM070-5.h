@@ -37,6 +37,8 @@ SS:    PD_1
 //#endif
 
 
-// RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);
+
 RA8875 tft = RA8875(RA8875_CS,RA8875_RESET);
+
+//Adafruit_RA8875 tft = Adafruit_RA8875(RA8875_CS, RA8875_RESET);
 

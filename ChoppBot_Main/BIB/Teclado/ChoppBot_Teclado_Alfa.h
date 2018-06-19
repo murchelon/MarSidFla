@@ -498,8 +498,8 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
 
-			gTouch_X = 800 - gTouch_X;
-			gTouch_Y = 480 - gTouch_Y;
+			//gTouch_X = 800 - gTouch_X;
+			//gTouch_Y = 480 - gTouch_Y;
 			
 
 

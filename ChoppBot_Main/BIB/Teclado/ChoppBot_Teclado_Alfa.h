@@ -215,10 +215,8 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 		    
 
 
-
-
 			// Desenha os numeros nos botes		
-			tft.setFontScale(1); 
+			TELA_SetFontSize(1); 
 
 
 			ContaTxtBotao = 0;
@@ -275,7 +273,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 		    
 			// Texto da tela:
 		    tft.setTextColor(RA8875_WHITE);
-		    tft.setFontScale(1); 
+		    TELA_SetFontSize(1); 
 		    tft.setCursor (Inicio_X, Inicio_Y - 190); 
 		    tft.print (F("Digite o texto desejado:"));			    
 
@@ -330,7 +328,7 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 			tft.fillRoundRect(btnVoltar_PosAtual_X, btnVoltar_PosAtual_Y, 170, 60, 5, RA8875_BLUE);
 
 		    tft.setTextColor(RA8875_WHITE);
-		    tft.setFontScale(1); 
+		    TELA_SetFontSize(1); 
 		    tft.setCursor (btnVoltar_PosAtual_X + 12, btnVoltar_PosAtual_Y + 11); 
 		    tft.print (F("<< Voltar"));
 
@@ -380,7 +378,7 @@ void TELA_Render_ValorTec_TECLADO_ALFA()
 		String temp_size_H = getValue(aTecladoAlfa_PosBotoes[40], ',', 3);
 
 
-		tft.setFontScale(1); 
+		TELA_SetFontSize(1); 
 
 
 	 	if (ctMODO_DEBUG == true)
@@ -493,10 +491,10 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
-		if (tft.touchDetect())
+		if (TELA_touchDetect())
 		{
 
-			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 
 			//gTouch_X = 800 - gTouch_X;
 			//gTouch_Y = 480 - gTouch_Y;
@@ -611,7 +609,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 									case 39:		// tecla OK:
 
 									    //tft.setTextColor(RA8875_RED);
-									    //tft.setFontScale(2); 
+									    //TELA_SetFontSize(2); 
 									    //tft.setCursor (70, 210); 
 									    //tft.print ("Obrigado !");	
 

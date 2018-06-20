@@ -107,19 +107,6 @@ String ReadConsoleInput()
 
 
 
-// Ativa/desativa o led de debug (led imbutido no arduino)
-void Led_Light(boolean Valor) 
-{
-	if (Valor == true)
-	{
-		digitalWrite(LED_BUILTIN, HIGH);    
-	}
-	else
-	{
-		digitalWrite(LED_BUILTIN, LOW); 
-	}
-  
-}
 
 
 
@@ -146,7 +133,7 @@ void ExecLedON_Beat()
 
 		gLedON_time_inicio = millis();
 
-		Led_Light(!gLedON_EstadoAtual);
+		LED_SetLedState("BUILTIN", !gLedON_EstadoAtual, "");
 
 		gLedON_EstadoAtual = !gLedON_EstadoAtual;
 
@@ -249,6 +236,5 @@ String FormatNumber(float Valor, String Tipo)
 
 	return ret;
 }
-
 
 

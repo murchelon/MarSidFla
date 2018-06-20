@@ -87,8 +87,15 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define FLOW_PINO_SENSOR_3 38 
 
 
-// led de indicacao de uso do rfid
-#define ctPINO_LED_RFID 26
+
+// Pino do LED Cor Fixa
+#define ctPINO_LED_CORFIXA 26
+
+// led RGB
+#define ctPINO_LED_RGB_RED 35
+#define ctPINO_LED_RGB_GREEN 34
+#define ctPINO_LED_RGB_BLUE 33
+
 
 
 //int EstadoBotao_Rele1 = 0;

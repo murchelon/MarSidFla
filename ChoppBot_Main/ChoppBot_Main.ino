@@ -62,35 +62,36 @@ void InitApp()
     LogTerm(F("MAIN: Iniciando sistema..."));
 
 
+    
+    LED_SetLedState("BUILTIN", false, "");
 
 
-    Led_Light(false);
 
     // da uma piscada no led interno para demonstrar inicio
     for (int x = 0 ; x <= 10 ; x++)
     {
-        Led_Light(false);
+        LED_SetLedState("BUILTIN", false, "");
         delay(40);
-        Led_Light(true);
+        LED_SetLedState("BUILTIN", true, "");
         delay(40);
         //LogTerm(F("ok to aqui"));
     }
 
-    Led_Light(false);
+    LED_SetLedState("BUILTIN", false, "");
 
 
 
 
 
     // Inicia o LED do rfid
-    pinMode(ctPINO_LED_RFID, OUTPUT);
+    pinMode(ctPINO_LED_CORFIXA, OUTPUT);
 
-    // Inicia o BUZZER
-    pinMode(BUZZER_PINO, OUTPUT);
 
     // inicia o led interno arduino, usado para mostrar que o programa esta rodando
     pinMode(LED_BUILTIN, OUTPUT);
 
+    // Inicia o BUZZER
+    pinMode(BUZZER_PINO, OUTPUT);
 
 
 

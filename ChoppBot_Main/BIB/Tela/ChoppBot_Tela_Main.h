@@ -44,6 +44,50 @@ volatile uint16_t gTouch_Y;
 //tft.getCursor(&currentX,&currentY);
 
 
+void TELA_SetFontSize(int FontSize)
+{
+	#ifdef ctTELA_BIB_USADA_Adafruit_RA8875
+
+		tft.textEnlarge(FontSize);
+		
+	#elif ctTELA_BIB_USADA_RA8875
+
+		tft.setFontScale(FontSize);
+
+	#endif	
+}
+
+
+bool TELA_touchDetect()
+{
+	#ifdef ctTELA_BIB_USADA_Adafruit_RA8875
+
+		return tft.touched();
+		
+	#elif ctTELA_BIB_USADA_RA8875
+
+		return tft.touchDetect();
+
+	#endif	
+}
+
+
+bool TELA_touchReadPixel(uint16_t *x, uint16_t *y)
+{
+	#ifdef ctTELA_BIB_USADA_Adafruit_RA8875
+
+		return tft.touchRead(x, y);
+		
+	#elif ctTELA_BIB_USADA_RA8875
+
+		tft.touchReadPixel(x, y);
+		return true;		
+
+	#endif	
+}
+
+
+
 
 void TELA_LimpaTela()
 {
@@ -110,7 +154,10 @@ void TELA_Texto(String Texto, String Cor)
 			tft.setTextColor(RA8875_MAGENTA);
 		}
 
-		tft.setFontScale(0);
+
+		TELA_SetFontSize(0);
+
+		
 
 		tft.setCursor(gPosTxt_X, gPosTxt_Y);
 
@@ -341,7 +388,8 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 
 			tft.fillRoundRect(Fundo_X + 2, Fundo_Y - BarraTitulo_H + 2, Fundo_W - 4, BarraTitulo_H - 2, 0, CinzaFundoTitMsgBox);
 
-			tft.setFontScale(1); 
+			TELA_SetFontSize(1);
+
 			tft.setTextColor(RA8875_BLACK);
 			tft.setCursor (Fundo_X + 6, Fundo_Y - BarraTitulo_H + 4);
 			tft.print(Titulo);			
@@ -368,7 +416,7 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 	    //tft.fillRoundRect(Inicio_X, Inicio_Y, Size_Fundo_W, Size_Fundo_H, 20, RA8875_WHITE);
 		//tft.fillRoundRect(LabelNum_PosAtual_X + 2, LabelNum_PosAtual_Y + 2, Size_LabelNum_W - 4, Size_LabelNum_H, 0, RA8875_MAGENTA);
 					
-		tft.setFontScale(1); 
+		TELA_SetFontSize(1); 
 		tft.setTextColor(RA8875_WHITE);
 		//tft.setTextColor(RA8875_GREEN);
 
@@ -468,7 +516,28 @@ void TELA_IniciaTela()
 		//tft.changeMode(TEXT);
 		//tft.setCursor(0,0);
 
-		tft.touchBegin(RA8875_INT);//enable Touch support!
+			
+	
+
+		#ifdef ctTELA_BIB_USADA_Adafruit_RA8875
+
+
+			
+			tft.displayOn(true);
+			tft.GPIOX(true);      // Enable TFT - display enable tied to GPIOX
+			tft.PWM1config(true, RA8875_PWM_CLK_DIV1024); // PWM output for backlight
+			tft.PWM1out(255);
+			//tft.fillScreen(RA8875_BLACK);
+
+			/* Switch to text mode */  
+			tft.textMode();
+
+			
+		#elif ctTELA_BIB_USADA_RA8875
+
+			tft.touchBegin(RA8875_INT);//enable Touch support!
+
+		#endif		
 
 		tft.touchEnable(true);
 	}
@@ -535,7 +604,7 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 
 
 		// Render o numero dentro do botao
-		tft.setFontScale(2); 
+		TELA_SetFontSize(2);
 
 
 		if ((Cor == F("PRETO")) || (Cor == F("AZUL")) )
@@ -552,7 +621,7 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 		tft.print (IndexBotao);
 
 		// Render o titulo 
-		tft.setFontScale(0);
+		TELA_SetFontSize(0);
 		//tft.changeMode(TEXT);
 
 
@@ -635,13 +704,13 @@ void TELA_Render_Interface_STANDBY()
 
 			tft.setTextColor(RA8875_YELLOW);
 			tft.setCursor (210, 150);
-			tft.setFontScale(3); 
+			TELA_SetFontSize(3);
 			tft.print (String(F("ChoppBot ")) + String(VersaoAPP));    
 			//tft.print ("ChoppBot 1.0");    
 
 			tft.setTextColor(RA8875_WHITE);
 			tft.setCursor (195, 310);
-			tft.setFontScale(1); 
+			TELA_SetFontSize(1); 
 			tft.print (F("Toque na tela para iniciar"));    
 
 		}
@@ -684,25 +753,66 @@ void TELA_Render_Interface_LOGIN()
 		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 		{  
 
-			tft.setTextColor(RA8875_YELLOW);
-			tft.setCursor (175, 30);
-			tft.setFontScale(2); 
-			tft.print (F("Ola! Seja vem vindo!"));   
 
-			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (100, 130);
-			tft.setFontScale(1); 
-			tft.print (F("Escolha o seu metodo de identificacao:"));   
+			#ifdef ctTELA_BIB_USADA_Adafruit_RA8875
 
-			gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
 
-			TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F("BRANCO"));
-			TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F("AZUL"));
-			//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F("MAGENTA"));
-			TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F("MAGENTA"));
+				tft.textTransparent(RA8875_YELLOW);
+				tft.textSetCursor (175, 30);
+				TELA_SetFontSize(2);
 
-			// Area para chamar admin
-			//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
+				//char Texto1[50];
+				//String(F("Ola! Seja vem vindo!")).toCharArray(Texto1, 50) ;
+
+				char Texto1[50] = "grgrrgrrgrr";
+				tft.textWrite (Texto1);   
+
+				tft.textTransparent(RA8875_WHITE);
+				tft.textSetCursor (100, 130);
+				TELA_SetFontSize(1); 
+
+				//tft.textWrite (String(F("Escolha o seu metodo de identificacao:")));   
+
+				gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
+
+				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F("BRANCO"));
+				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F("AZUL"));
+				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F("MAGENTA"));
+				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F("MAGENTA"));
+
+				// Area para chamar admin
+				//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
+
+
+			#elif ctTELA_BIB_USADA_RA8875
+
+				tft.setTextColor(RA8875_YELLOW);
+				tft.setCursor (175, 30);
+				TELA_SetFontSize(2);
+				tft.print (F("Ola! Seja vem vindo!"));   
+
+				tft.setTextColor(RA8875_WHITE);
+				tft.setCursor (100, 130);
+				TELA_SetFontSize(1); 
+				tft.print (F("Escolha o seu metodo de identificacao:"));   
+
+				gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
+
+				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F("BRANCO"));
+				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F("AZUL"));
+				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F("MAGENTA"));
+				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F("MAGENTA"));
+
+				// Area para chamar admin
+				//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
+
+
+			#endif
+
+
+
+
+
 
 		}
 
@@ -772,7 +882,7 @@ void TELA_Render_Interface_OPERACAO()
 
 			// Cabecalho logado ///////
 
-			tft.setFontScale(1); 
+			TELA_SetFontSize(1);
 
 			tft.setTextColor(CinzaLabels);
 			tft.setCursor (10, 10);			
@@ -792,7 +902,6 @@ void TELA_Render_Interface_OPERACAO()
 
 			tft.setTextColor(VerdeOK);
 			tft.setCursor (220, 110);
-			tft.setFontScale(1); 
 			tft.print (F("Escolha a sua torneira:"));    
 
 
@@ -809,7 +918,6 @@ void TELA_Render_Interface_OPERACAO()
 			tft.fillRoundRect(btnSair_PosAtual_X, btnSair_PosAtual_Y, btnSair_Size_W, btnSair_Size_H, 8, Red);
 		
 		    tft.setTextColor(RA8875_WHITE);
-		    tft.setFontScale(1); 
 		    tft.setCursor (btnSair_PosAtual_X + (btnSair_Size_W / 2) - 35, btnSair_PosAtual_Y + 12); 
 		    tft.print (F("SAIR"));	
 
@@ -897,10 +1005,10 @@ void TELA_VerificaTouch_STANDBY()
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
-		if (tft.touchDetect(false))
+		if (TELA_touchDetect())
 		{
 
-			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 
 
 			//gTouch_X = 0;
@@ -1006,11 +1114,11 @@ void TELA_VerificaTouch_LOGIN()
 
 		//tft.changeMode(GRAPHIC);
 
-		if (tft.touchDetect())
+		if (TELA_touchDetect())
 		{
 
 
-			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 
 			LogTerm(F("TELA_VerificaTouch_LOGIN"));
 			TELA_LogTerm_XY();
@@ -1138,14 +1246,14 @@ void TELA_VerificaTouch_ADMIN()
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
-		if (tft.touchDetect())
+		if (TELA_touchDetect())
 		{
 
 
 			//TELA_LogTerm_XY();
 			//LogTerm(F("TELA_VerificaTouch_ADMIN");
 
-			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 
 			//murch
 			//gTouch_X = 800 - gTouch_X;
@@ -1193,10 +1301,10 @@ void TELA_VerificaTouch_OPERACAO()
 
 		//tft.changeMode(GRAPHIC);
 
-		if (tft.touchDetect())
+		if (TELA_touchDetect())
 		{
 
-			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 
 			
 

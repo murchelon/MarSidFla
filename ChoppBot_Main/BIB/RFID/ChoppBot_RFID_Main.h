@@ -8,11 +8,11 @@ void RFID_SetStatusLed(bool Valor)
 {
 	if (Valor == true)
 	{
-		digitalWrite(ctPINO_LED_RFID, HIGH);
+		LED_SetLedState("CORFIXA", true, "");
 	}
 	else
 	{
-		digitalWrite(ctPINO_LED_RFID, LOW);
+		LED_SetLedState("CORFIXA", false, "");
 	}
 	 
 }
@@ -201,7 +201,7 @@ void TELA_Render_Interface_LER_RFID()
 
 		
 			tft.setTextColor(RA8875_YELLOW);
-			tft.setFontScale(2); 
+			TELA_SetFontSize(2); 
 
 			tft.setCursor (115, 100);
 			tft.print (F("Por favor, encoste o seu"));    
@@ -217,7 +217,7 @@ void TELA_Render_Interface_LER_RFID()
 			
 
 			tft.setTextColor(LaranjaAlerta);
-			tft.setFontScale(1); 
+			TELA_SetFontSize(1); 
 			tft.setCursor (160, 350);
 			tft.print (F("[Aguardando leitura do cartao]")); 
 
@@ -230,7 +230,7 @@ void TELA_Render_Interface_LER_RFID()
 
 		
 		    tft.setTextColor(RA8875_WHITE);
-		    tft.setFontScale(1); 
+		    TELA_SetFontSize(1); 
 		    tft.setCursor (btnVoltar_PosAtual_X + (60 / 2) - 18, btnVoltar_PosAtual_Y + 11); 
 		    tft.print (F("<< Voltar"));	
 		    */		
@@ -287,6 +287,8 @@ void TELA_Render_Interface_LER_RFID()
 
 				BUZZER_TocaSom(F("ERRO"));
 
+				LED_SetLedState("RGB", true, "RED");
+
 				// ocorreu um erro. imprime a msg de erro na tela
 				if (ctTELA_HARDWARE == F("TERMINAL"))
 				{  
@@ -329,6 +331,8 @@ void TELA_Render_Interface_LER_RFID()
 				// erro nao existe o LOGIN CADASTRADO
 
 				BUZZER_TocaSom(F("ERRO"));
+
+				LED_SetLedState("RGB", true, "RED");
 
 				// ocorreu um erro. imprime a msg de erro na tela
 				if (ctTELA_HARDWARE == F("TERMINAL"))
@@ -395,6 +399,8 @@ void TELA_Render_Interface_LER_RFID()
 
 					BUZZER_TocaSom(F("ERRO"));
 
+					LED_SetLedState("RGB", true, "RED");
+
 					// ocorreu um erro. imprime a msg de erro na tela
 					if (ctTELA_HARDWARE == F("TERMINAL"))
 					{  
@@ -438,6 +444,8 @@ void TELA_Render_Interface_LER_RFID()
 
 					BUZZER_TocaSom(F("ERRO"));
 
+					LED_SetLedState("RGB", true, "RED");
+
 					// ocorreu um erro. imprime a msg de erro na tela
 					if (ctTELA_HARDWARE == F("TERMINAL"))
 					{  
@@ -479,7 +487,11 @@ void TELA_Render_Interface_LER_RFID()
 				{
 					// usuario existe
 
+					LED_SetLedState("RGB", true, "GREEN");
+
 					BUZZER_TocaSom(F("SUCESSO"));
+
+					
 
 
 					gSessao_Logado = true;
@@ -519,22 +531,23 @@ void TELA_Render_Interface_LER_RFID()
 
 					gModoOperacao = F("OPERACAO");
 
+					delay(100);
+
 				}
 
 
 			}
 
 
-			
-
-
-
+	
 
 		}
 		else
 		{
 
 			BUZZER_TocaSom(F("ERRO"));
+
+			LED_SetLedState("RGB", true, "RED");
 
 			// ocorreu um erro. imprime a msg de erro na tela
 			if (ctTELA_HARDWARE == F("TERMINAL"))
@@ -569,7 +582,7 @@ void TELA_Render_Interface_LER_RFID()
 
 
 
-
+		LED_SetLedState("RGB", false, "");
 
 
 
@@ -598,10 +611,10 @@ void TELA_VerificaTouch_LER_RFID()
 
 		//tft.changeMode(GRAPHIC);
 
-		if (tft.touchDetect())
+		if (TELA_touchDetect())
 		{
 
-			tft.touchReadPixel(&gTouch_X, &gTouch_Y);
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 
 			gTouch_X = 800 - gTouch_X;
 			gTouch_Y = 480 - gTouch_Y;

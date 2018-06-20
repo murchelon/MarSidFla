@@ -12,6 +12,12 @@
 #include "ChoppBot_Globais.h" 
 
 
+
+// LED MAIN
+#include "../LED/ChoppBot_LED_Main.h" 
+
+
+
 // Funcoes de suporte ChoppBot
 #include "ChoppBot_Suporte.h" 
 
@@ -31,7 +37,6 @@
 
 // LEITOR SD Adafruit - Engine
 #include <SdFat.h>
-#include "../SD/ChoppBot_SD_Engine_SDFat.h" 
 
 // LEITOR SD MAIN
 #include "../SD/ChoppBot_SD_Main.h" 

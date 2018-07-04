@@ -5,5 +5,5 @@ IDChopp;Titulo1;Titulo2;ValorPorLitro;Fabricante
 4;Ariranha;Soft Stout;49,00;CBB
 5;Tartatuga de Pente;Blond Ale;39,50;CBB
 6;Onca Pintada;Session IPA;10,00;CBB
-7;24/02/2018;Catarina Sour;Sour;55,69;Lohn
+7;Catarina Sour;Sour;55,69;Lohn
 8;London Cab;Porter;39,00;Fullers

@@ -91,15 +91,31 @@ bool TELA_touchReadPixel(uint16_t *x, uint16_t *y)
 
 void TELA_LimpaTela()
 {
+	delay(100);
+	tft.fillScreen(RA8875_BLACK);
+	tft.fillScreen(RA8875_BLACK);
+
+	//LogTerm(String("Teste1: ") + ctTELA_HARDWARE);
+	//LogTerm(String("Teste2: ") + String(F("ER-TFTM070-5")));
+	//LogTerm(ctTELA_HARDWARE == String("ER-TFTM070-5"));
+
+	//if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
+	//{
+	//	tft.fillScreen(RA8875_BLACK);  
+		//LogTerm("ESTOU NO LIMPA TELA");
+	//}
+
+	/*
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{
 		tft.fillScreen(RA8875_BLACK);  
 	}
+	*/
 
-	if (ctTELA_HARDWARE == F("TERMINAL"))
-	{
-		LogTerm(F("TELA -> LimpaTela()")); 
-	}
+	//if (ctTELA_HARDWARE == F("TERMINAL"))
+	//{
+	//	LogTerm(F("TELA -> LimpaTela()")); 
+	//}
 }
 
 
@@ -1014,8 +1030,8 @@ void TELA_VerificaTouch_STANDBY()
 			//gTouch_X = 0;
 			//gTouch_Y = 0;
 
-			LogTerm(F("TELA_VerificaTouch_STANDBY"));
-			TELA_LogTerm_XY();
+			//LogTerm(F("TELA_VerificaTouch_STANDBY"));
+			//TELA_LogTerm_XY();
 
 
 			gTelaRenderizada_STANDBY = false;
@@ -1120,8 +1136,8 @@ void TELA_VerificaTouch_LOGIN()
 
 			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 
-			LogTerm(F("TELA_VerificaTouch_LOGIN"));
-			TELA_LogTerm_XY();
+			//LogTerm(F("TELA_VerificaTouch_LOGIN"));
+			//TELA_LogTerm_XY();
 			
 
 			// murch
@@ -1360,8 +1376,8 @@ void TELA_VerificaTouch_OPERACAO()
 					//TELA_Texto(F("BOTAO SAIR APERTADO"), F("MAGENTA"));  
 					//delay(500); 								
 
-					LogTerm(F("TELA_VerificaTouch_OPERACAO"));
-					TELA_LogTerm_XY();
+					//LogTerm(F("TELA_VerificaTouch_OPERACAO"));
+					//TELA_LogTerm_XY();
 
 				}
 
@@ -1379,11 +1395,20 @@ void TELA_VerificaTouch_OPERACAO()
 				{
 
 					LogTerm(F("BOTAO 1 APERTADO"));
-					//TELA_Texto(F("BOTAO 1 APERTADO"), F("BRANCO"));
+					//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
+					//delay(500);
+					//TELA_LogTerm_XY();    
+
+					gServico_ID_TorneiraAtual = 1;
+
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
 
+					gTelaRenderizada_OPERACAO = false;
 
- 
+					TELA_LimpaTela();
+
+					delay(500);  	
 
 				}
 
@@ -1402,7 +1427,7 @@ void TELA_VerificaTouch_OPERACAO()
 					//delay(500);
 					//TELA_LogTerm_XY();    
 
-					gServico_IDChopp = F("2");
+					gServico_ID_TorneiraAtual = 2;
 
 					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
@@ -1426,9 +1451,22 @@ void TELA_VerificaTouch_OPERACAO()
 
 				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 				{
+
 					LogTerm(F("BOTAO 3 APERTADO"));
-					//TELA_Texto(F("BOTAO 3 APERTADO"), F("MAGENTA"));  
-					//delay(500); 
+					//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
+					//delay(500);
+					//TELA_LogTerm_XY();    
+
+					gServico_ID_TorneiraAtual = 3;
+
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+
+					gTelaRenderizada_OPERACAO = false;
+
+					TELA_LimpaTela();
+
+					delay(500);  	
 
 				}
 

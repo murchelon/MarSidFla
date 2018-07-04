@@ -43,7 +43,7 @@ String gModoOperacao_SubTela;
 #define gTimeoutOpcao 7000		
 
 // tempo em ms para timeout de servico de torneira 
-#define ctTIMEOUT_TORNEIRA 5000		
+#define ctTIMEOUT_TORNEIRA 10000		
 
 
 // Numero maximo de torneiras possiveis no sistema
@@ -263,7 +263,9 @@ bool gLedON_EstadoAtual;
 
 // var que define a tela sendo usada
 //String gTela_Hardware;		// ER-TFTM070-5 | TERMINAL definidos na rotina de iniciar vars
-#define ctTELA_HARDWARE F("ER-TFTM070-5")
+const String ctTELA_HARDWARE;
+
+//#define ctTELA_HARDWARE F("ER-TFTM070-5")
 //#define ctTELA_HARDWARE F("TERMINAL")
 
 
@@ -341,8 +343,8 @@ float gSessao_SaldoAtual;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-String gServico_IDChopp;
+// var que controla qual o ID da torneira sendo usada no momento
+int gServico_ID_TorneiraAtual;
 
 
 
@@ -368,6 +370,8 @@ void InicializaVars()
 	gModoOperacao = F("INICIO");  
 	gModoOperacao_SubTela = F("");
 
+
+	ctTELA_HARDWARE = F("ER-TFTM070-5");
 
 
 	// led de indicao de funcionamento
@@ -400,7 +404,7 @@ void InicializaVars()
 	gSessao_Nome = "";
 	gSessao_SaldoAtual = -1;				
 
-	gServico_IDChopp = "";
+	gServico_ID_TorneiraAtual = -1;
 	
 	// inicializa var de engatados
 	for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)

@@ -37,7 +37,7 @@
 #include <MFRC522.h>
 
 constexpr uint8_t RST_PIN = 30;          // Configurable, see typical pin layout above
-constexpr uint8_t SS_PIN = 53;         // Configurable, see typical pin layout above
+constexpr uint8_t SS_PIN = 24;         // Configurable, see typical pin layout above
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance
 

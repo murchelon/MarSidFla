@@ -32,6 +32,7 @@ void setup()
 
 digitalWrite (24, HIGH); //desabilita o SD
 digitalWrite (53, LOW); //habilita o RFID
+
 //}
 
 // void SD_ON (void)

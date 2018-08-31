@@ -27,9 +27,9 @@ void BUZZER_TocaSom(String TipoSom)
 		tone(ctPINO_BUZZER, la);
 		delay(tempo);
 		noTone(ctPINO_BUZZER);
-		tone(ctPINO_BUZZER, 1300, tempo);
+		tone(ctPINO_BUZZER, 1800, tempo);
 		delay(tempo);
-		tone(ctPINO_BUZZER, 1600, 70);
+		tone(ctPINO_BUZZER, 1500, 70);
 		delay(tempo);
 		noTone(ctPINO_BUZZER);		
 	}
@@ -37,11 +37,11 @@ void BUZZER_TocaSom(String TipoSom)
 
 	if (TipoSom == "LIGAR")
 	{
-		tone(ctPINO_BUZZER, 1600);		
+		tone(ctPINO_BUZZER, 1500);		
 		delay(100);
 		noTone(ctPINO_BUZZER);
 		delay(100);
-		tone(ctPINO_BUZZER, 1600);		
+		tone(ctPINO_BUZZER, 1500);		
 		delay(100);
 		noTone(ctPINO_BUZZER);
 

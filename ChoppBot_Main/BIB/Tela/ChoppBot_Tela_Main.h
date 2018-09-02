@@ -1011,6 +1011,8 @@ void TELA_VerificaTouch_STANDBY()
 			//gModoOperacao = "OPERACAO";
 			//gModoOperacao = "DEBUG";
 
+
+
 			TELA_LimpaTela();
 
 			delay(500);		
@@ -1025,6 +1027,9 @@ void TELA_VerificaTouch_STANDBY()
 		{
 
 			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
+
+			/*
+			
 
 
 			//gTouch_X = 0;
@@ -1043,6 +1048,19 @@ void TELA_VerificaTouch_STANDBY()
 			TELA_LimpaTela();
 
 			delay(500);  
+
+			*/
+
+			gTelaRenderizada_STANDBY = false;
+
+			gModoOperacao = F("LOGIN");
+
+			gModoOperacao_SubTela = F("LER_RFID");
+
+			TELA_LimpaTela();
+
+			delay(500);  			
+
 
 
 		

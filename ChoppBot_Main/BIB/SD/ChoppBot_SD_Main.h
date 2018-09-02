@@ -338,6 +338,101 @@ String SD_GetFirstRegFromFile(String FullPathFile, String RetryOrCheck)
 
 
 
+String SD_CreateNewUserFile(String FullPathFile_TEMP, int IDUser, String CPF, String DataCad, String Nome, int Nivel, float Saldo)
+{
+
+	String ret = F("1|");
+
+
+
+	File ArquivoUser_Temp;
+
+
+	SdFat SD;
+	String retSD = F("");
+
+	retSD = SD_InicializaCartaoSD(SD);
+
+	if (retSD.substring(0, 1) != F("1"))
+	{
+		return retSD;
+	}
+
+
+
+
+	ArquivoUser_Temp = SD.open(FullPathFile_TEMP, FILE_WRITE);
+
+	if (ArquivoUser_Temp)
+	{
+
+		String Linha = String(IDUser) + String(F(";")) + CPF + String(F(";")) + DataCad + String(F(";")) + Nome + String(F(";")) + String(Nivel) + String(F(";")) + String(Saldo);
+
+		ArquivoUser_Temp.print(Linha);
+
+	    ArquivoUser_Temp.close();
+
+	    delay(500);
+
+	}
+	else
+	{
+		ret = String(F("-2|Nao foi possivel criar o arquivo ")) + FullPathFile_TEMP;
+	}
+
+
+
+	return ret;
+
+}
+
+
+
+
+
+String SD_ApagaArquivo(String FullPathFile)
+{
+
+	String ret = F("1|");
+
+
+
+	File ArquivoUser_Temp;
+
+
+	SdFat SD;
+	String retSD = F("");
+
+	retSD = SD_InicializaCartaoSD(SD);
+
+	if (retSD.substring(0, 1) != F("1"))
+	{
+		return retSD;
+	}
+
+
+	bool ArqApagou;
+
+	//ArquivoUser_Temp = SD.remove(FullPathFile);
+	ArqApagou = SD.remove(FullPathFile);
+
+	if (ArqApagou)
+	{
+
+		ret += "Arquivo apagado com sucesso";
+
+	}
+	else
+	{
+		ret = String(F("-2|Nao foi possivel apagar o arquivo ")) + FullPathFile;
+	}
+
+
+
+	return ret;
+
+}
+
 
 
 
@@ -414,5 +509,9 @@ String SD_TestaCartao()
 
 	return ret;	
 }
+
+
+
+
 
 

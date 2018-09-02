@@ -267,7 +267,8 @@ void TELA_Render_Interface_LER_RFID()
 			gSessao_Nome = F("");
 			gSessao_Nivel = -1;
 			gSessao_SaldoAtual = -1;
-
+			gSessao_CPF = F("");
+			gSessao_DataCad = F("");
 
 			String retIDUser = "";
 
@@ -500,6 +501,8 @@ void TELA_Render_Interface_LER_RFID()
 					gSessao_Nome = getValue(retUserData.substring(2), ';', 3);
 					gSessao_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
 					gSessao_SaldoAtual = getValue(retUserData.substring(2), ';', 5).toFloat();
+					gSessao_CPF = getValue(retUserData.substring(2), ';', 1);
+					gSessao_DataCad = getValue(retUserData.substring(2), ';', 2);
 
 
 

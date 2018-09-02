@@ -402,3 +402,83 @@ String BANCO_GetChoppDataFromIDChopp(String IDChopp)
 
 	return ret;
 }
+
+
+
+
+// retorna formato: CodRetorno|Descricao
+// 1 para saldo atualizado com sucesso 
+// -1 erros outros
+String BANCO_AtualizaSaldoUserLogado()
+{
+
+	String ret = F("1|");
+
+
+
+	// cria novo arquivo de usuario no formato TUSU_IDUser.txt
+
+	// grava os dados no arquivo temporario
+
+	// apaga o arquivo antigo original
+
+	// renomeia o arquivo temporario para oficial
+	
+
+
+	String FullPathFile_TEMP;	
+	FullPathFile_TEMP = String(F("CB/BD/Usuarios/TUSU_")) + gSessao_IDUser + String(F(".txt"));
+
+	String FullPathFile_ORIGINAL;	
+	FullPathFile_ORIGINAL = String(F("CB/BD/Usuarios/USU_")) + gSessao_IDUser + String(F(".txt"));
+	
+
+	// apaga o arquivo antigo original
+	String retFunc = F("");
+	retFunc = SD_ApagaArquivo(FullPathFile_ORIGINAL);
+
+
+	if (retFunc.substring(0, 2) == F("-1"))
+	{
+		// erro de sd card
+		ret = retFunc;
+		return ret;
+	}
+
+
+	if (retFunc.substring(0, 1) == F("1"))
+	{
+
+
+		// cria novo arquivo de usuario no formato TUSU_IDUser.txt e grava os dados do logado no arquivo temporario
+		String retFunc2 = F("");
+		retFunc2 = SD_CreateNewUserFile(FullPathFile_TEMP, gSessao_IDUser, gSessao_CPF, gSessao_DataCad, gSessao_Nome, gSessao_Nivel, ValorSaldoAtual);
+
+
+		if (retFunc2.substring(0, 2) == F("-1"))
+		{
+			// erro de sd card
+			ret = retFunc2;
+			return ret;
+		}
+
+
+		if (retFunc2.substring(0, 1) == F("1"))
+		{
+			// sucesso
+			ret = retFunc2;
+			return ret;
+		}
+
+
+	}
+
+
+	return ret;
+
+
+
+}
+
+
+

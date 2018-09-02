@@ -880,10 +880,15 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 		}
 
-	    // FECHA TORNEIRA
+	    // FECHA TORNEIRA -- FINALIZA SESSAO
 	    digitalWrite(PinoReleTorneiraAtiva, HIGH);
 
-	    gTelaRenderizada_OPERACAO_SERVICO = false;
+
+		useInterrupt_2(false);
+		delay(100);
+
+
+	    
 
 
 	    LogTerm(String(F("---------------------------------------")));
@@ -894,6 +899,8 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 	    LogTerm(String(F("Preco Chopp (tmp_Valor) = ")) + tmp_Valor);
 	    LogTerm(String(F("IDUser = ")) + String(gSessao_IDUser));
 		LogTerm(String(F("gSessao_Nome = ")) + gSessao_Nome);
+		LogTerm(String(F("gSessao_CPF = ")) + gSessao_CPF);
+		LogTerm(String(F("gSessao_DataCad = ")) + gSessao_DataCad);
 		LogTerm(String(F("Saldo Original (gSessao_SaldoAtual) = ")) + String(gSessao_SaldoAtual));
 		LogTerm(String(F("Pulsos (Flow_Pulses_Corrigido_Atual) = ")) + String(Flow_Pulses_Corrigido_Atual));
 		LogTerm(String(F("Consumido (liters_Atual) = ")) + String(liters_Atual));
@@ -903,6 +910,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 		LogTerm(String(F("---------------------------------------")));
 
+		
 
 		volatile unsigned long gBounce_time_inicio = 0;
 		volatile unsigned long gBounce_time_atual = 0;
@@ -916,34 +924,24 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		volatile int gBounce_ContaClick = 0;	    
 
 
+		gServico_ID_TorneiraAtual = -1;	
 
-		//liters_2 = 0;
-		//ValorSessaoChopp = 0;
-		//ValorSaldoAtual = 0;
-		//VoltumeAtual = 0;
+		tmp_IDChopp = F("");
+		tmp_Nome = F("");
+		tmp_Valor = F("");
+		
+		Flow_Pulses_Corrigido_Atual = 0;
 		Flow_Pulses_Atual = 0;
 		liters_Atual = 0;
+
 
 		ValorSessaoChopp = 0;
 		ValorSaldoAtual = 0;
 		VoltumeAtual = 0;
 
-		useInterrupt_2(false);
-		delay(100);
-
-		gServico_ID_TorneiraAtual = -1;	
 		PinoSensorFluxoAtivo = -1;	
 		PinoReleTorneiraAtiva = -1;
 
-		//Flow_Pulses_Atual = 0;
-		//Flow_Pulses_Corrigido_Atual = 0;
-		//lastflowpinstate_Atual = 0;
-		//flowrate_Atual = 0;		
-		//lastflowratetimer_Atual = 0;	
-
-
-
-		
 
 
 		// zera as vars para cada tentativa de login
@@ -953,23 +951,16 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		gSessao_Nome = F("");
 		gSessao_Nivel = -1;
 		gSessao_SaldoAtual = -1;
-
-		//ValorSaldoAtual = -1;
-		//ValorSessaoChopp = -1;
-		//tmp_Valor = -1;
-		//liters_Atual = -1;
-		//VoltumeAtual = -1;
-
+		gSessao_CPF = F("");
+		gSessao_DataCad = F("");
+		
+		gTelaRenderizada_OPERACAO_SERVICO = false;
 		gTelaRenderizada_OPERACAO = false;	
 
 		gModoOperacao = F("STANDBY");  
 		gModoOperacao_SubTela = F("");	
 
 
-		
-		//TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
-		
-		//tft.fillScreen(RA8875_BLACK); 
 
 		delay(500); 
 
@@ -978,10 +969,6 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 		TELA_LimpaTela();
-
-		//tft.fillScreen(RA8875_BLACK);
-
-		  
 
 
 	}

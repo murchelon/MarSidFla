@@ -550,6 +550,8 @@ void Exec_STANDBY()
 
     TELA_Render_Interface_STANDBY();
 
+    
+
 }
 
 
@@ -744,8 +746,7 @@ void loop()
        if (gModoOperacao_SubTela == F("LER_RFID"))
         {
             Exec_LER_RFID();  
-        }
-        
+        }        
 
     }
 

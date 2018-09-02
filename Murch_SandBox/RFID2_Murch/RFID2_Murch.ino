@@ -22,7 +22,14 @@ Adafruit invests time and resources providing this open source code,
 please support Adafruit and open-source hardware by purchasing 
 products from Adafruit!
 
+
+ESTE FUNCIONA PARA DEBUG DO RFID -- USAR ESTE COMO TESTE !!!!!!!
+
+
 */
+
+
+
 /**************************************************************************/
 #include <Wire.h>
 #include <SPI.h>

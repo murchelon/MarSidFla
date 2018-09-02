@@ -329,6 +329,11 @@ int gSessao_IDUser;
 int gSessao_Nivel;
 String gSessao_Nome;
 float gSessao_SaldoAtual;
+String gSessao_CPF;
+String gSessao_DataCad;
+
+
+
 
 
 
@@ -401,9 +406,11 @@ void InicializaVars()
 	gSessao_Logado = false;
 	gSessao_IDUser = -1;
 	gSessao_Nivel = -1;
-	gSessao_Nome = "";
+	gSessao_Nome = F("");
 	gSessao_SaldoAtual = -1;				
-
+	gSessao_CPF = F("");
+	gSessao_DataCad = F("");
+	
 	gServico_ID_TorneiraAtual = -1;
 	
 	// inicializa var de engatados

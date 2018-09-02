@@ -280,7 +280,11 @@ void setup()
   digitalWrite(gPinoRele_1, HIGH);
   digitalWrite(gPinoRele_2, HIGH);
   digitalWrite(gPinoRele_3, HIGH);
-  
+
+  // murch
+ digitalWrite(gPinoRele_2, LOW);
+
+
 // setup // botao ________________________________________________
 
 // Declarando dos pinos 7,8,9 e 10 como saidas digitais

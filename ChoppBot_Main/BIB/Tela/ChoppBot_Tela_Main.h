@@ -94,28 +94,6 @@ void TELA_LimpaTela()
 	delay(100);
 	tft.fillScreen(RA8875_BLACK);
 	tft.fillScreen(RA8875_BLACK);
-
-	//LogTerm(String("Teste1: ") + ctTELA_HARDWARE);
-	//LogTerm(String("Teste2: ") + String(F("ER-TFTM070-5")));
-	//LogTerm(ctTELA_HARDWARE == String("ER-TFTM070-5"));
-
-	//if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
-	//{
-	//	tft.fillScreen(RA8875_BLACK);  
-		//LogTerm("ESTOU NO LIMPA TELA");
-	//}
-
-	/*
-	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
-	{
-		tft.fillScreen(RA8875_BLACK);  
-	}
-	*/
-
-	//if (ctTELA_HARDWARE == F("TERMINAL"))
-	//{
-	//	LogTerm(F("TELA -> LimpaTela()")); 
-	//}
 }
 
 
@@ -746,7 +724,15 @@ void TELA_Render_Interface_LOGIN()
 	if (gTelaRenderizada_LOGIN == false)
 	{
 
-		TELA_LimpaTela();
+	    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
+	    {
+	        TELA_LimpaTela();
+	    }
+
+	    if (ctTELA_HARDWARE == F("TERMINAL"))
+	    {
+	        LogTerm(F("TELA -> LimpaTela()")); 
+	    }
 		
 		//LogTerm(F("== [Modo Atual: LOGIN] ==");
 
@@ -1011,9 +997,8 @@ void TELA_VerificaTouch_STANDBY()
 			//gModoOperacao = "OPERACAO";
 			//gModoOperacao = "DEBUG";
 
+        	LogTerm(F("TELA -> LimpaTela()")); 
 
-
-			TELA_LimpaTela();
 
 			delay(500);		
 		}
@@ -1057,7 +1042,7 @@ void TELA_VerificaTouch_STANDBY()
 
 			gModoOperacao_SubTela = F("LER_RFID");
 
-			TELA_LimpaTela();
+		    TELA_LimpaTela();
 
 			delay(500);  			
 
@@ -1121,7 +1106,7 @@ void TELA_VerificaTouch_LOGIN()
 			//LogTerm(F("TECLADO NUM SELECIONADO");
 			//LogTerm(F("TECLADO ALFA SELECIONADO");
 
-			TELA_LimpaTela();
+			LogTerm(F("TELA -> LimpaTela()")); 
 
 			delay(500);   
 		}
@@ -1133,7 +1118,7 @@ void TELA_VerificaTouch_LOGIN()
 
 			//LogTerm(F("ADMIN SELECIONADO");
 
-			TELA_LimpaTela();
+			LogTerm(F("TELA -> LimpaTela()")); 
 
 			delay(500);    
 		}

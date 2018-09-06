@@ -414,7 +414,7 @@ String SD_ApagaArquivo(String FullPathFile)
 	bool ArqApagou;
 
 	//ArquivoUser_Temp = SD.remove(FullPathFile);
-	ArqApagou = SD.remove(FullPathFile);
+	//ArqApagou = SD.remove(FullPathFile);
 
 	if (ArqApagou)
 	{

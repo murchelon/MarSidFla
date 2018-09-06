@@ -452,7 +452,7 @@ String BANCO_AtualizaSaldoUserLogado()
 
 		// cria novo arquivo de usuario no formato TUSU_IDUser.txt e grava os dados do logado no arquivo temporario
 		String retFunc2 = F("");
-		retFunc2 = SD_CreateNewUserFile(FullPathFile_TEMP, gSessao_IDUser, gSessao_CPF, gSessao_DataCad, gSessao_Nome, gSessao_Nivel, ValorSaldoAtual);
+		//retFunc2 = SD_CreateNewUserFile(FullPathFile_TEMP, gSessao_IDUser, gSessao_CPF, gSessao_DataCad, gSessao_Nome, gSessao_Nivel, ValorSaldoAtual);
 
 
 		if (retFunc2.substring(0, 2) == F("-1"))

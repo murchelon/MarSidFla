@@ -593,7 +593,15 @@ void TELA_Render_Interface_LER_RFID()
 		gModoOperacao_SubTela = F("");	
 		gTelaRenderizada_LER_RFID = false;
 
-		TELA_LimpaTela();
+	    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
+	    {
+	        TELA_LimpaTela();
+	    }
+
+	    if (ctTELA_HARDWARE == F("TERMINAL"))
+	    {
+	        LogTerm(F("TELA -> LimpaTela()")); 
+	    }
 
 		//delay(500);   
 

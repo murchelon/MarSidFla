@@ -376,6 +376,7 @@ void InicializaVars()
 	gModoOperacao_SubTela = F("");
 
 
+	//ctTELA_HARDWARE = F("TERMINAL");
 	ctTELA_HARDWARE = F("ER-TFTM070-5");
 
 

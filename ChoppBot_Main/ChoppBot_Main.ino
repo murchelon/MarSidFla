@@ -66,7 +66,6 @@ void InitApp()
     LED_SetLedState("BUILTIN", false, "");
 
 
-
     // da uma piscada no led interno para demonstrar inicio
     for (int x = 0 ; x <= 10 ; x++)
     {
@@ -78,8 +77,6 @@ void InitApp()
     }
 
     LED_SetLedState("BUILTIN", false, "");
-
-
 
 
 
@@ -119,6 +116,7 @@ void InitApp()
 
     pinMode(FLOW_PINO_SENSOR_3, INPUT);
     digitalWrite(FLOW_PINO_SENSOR_3, HIGH);
+
 
 
 
@@ -223,7 +221,18 @@ void InitApp()
 
     LogTerm(F("MAIN: Sistema Inicializado."));
 
-    TELA_LimpaTela();
+
+
+    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
+    {
+        TELA_LimpaTela();
+    }
+
+    if (ctTELA_HARDWARE == F("TERMINAL"))
+    {
+        LogTerm(F("TELA -> LimpaTela()")); 
+    }
+    
 
 }
 

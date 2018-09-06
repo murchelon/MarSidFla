@@ -967,8 +967,16 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		LED_SetLedState("RGB", false, "");
 
 
+	    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
+	    {
+	        TELA_LimpaTela();
+	    }
 
-		TELA_LimpaTela();
+	    if (ctTELA_HARDWARE == F("TERMINAL"))
+	    {
+	        LogTerm(F("TELA -> LimpaTela()")); 
+	    }
+
 
 
 	}

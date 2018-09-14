@@ -8,11 +8,13 @@ void RFID_SetStatusLed(bool Valor)
 {
 	if (Valor == true)
 	{
-		LED_SetLedState("CORFIXA", true, "");
+		//LED_SetLedState("CORFIXA", true, "");
+		LED_SetLedState("RGB", true, "BLUE");
 	}
 	else
 	{
-		LED_SetLedState("CORFIXA", false, "");
+		//LED_SetLedState("CORFIXA", false, "");
+		LED_SetLedState("RGB", false, "BLUE");
 	}
 	 
 }
@@ -144,8 +146,28 @@ String RFID_Exec_Leitura()
 
 
 
-			// Wait 1 second before continuing
-			// delay(1000);
+
+			
+			//digitalWrite(RFID_PINO_SCK, HIGH);
+			//digitalWrite(RFID_PINO_MOSI, HIGH);
+			//digitalWrite(RFID_PINO_SS, HIGH);
+			//digitalWrite(RFID_PINO_MISO, HIGH);
+			//digitalWrite(RFID_PINO_IRQ, HIGH);
+			//digitalWrite(RFID_PINO_RESET, HIGH);
+
+			//delay(1000);
+
+			//digitalWrite(SD_MAX_TENTATIVA_READ, HIGH);
+			//digitalWrite(SD_DELAY_TENTATIVA_READ, HIGH);
+			//digitalWrite(SD_PINO, HIGH);
+
+			//delay(1000);
+
+
+			//digitalWrite(SD_PINO, LOW);
+
+			//delay(1000);
+
 		}
 		else
 		{
@@ -312,7 +334,7 @@ void TELA_Render_Interface_LER_RFID()
 						TELA_Render_MsgBox(F("Erro no Leitor SD"), String(F("Ocorreu um erro ao efetuar a leitura do cartao SD: Login:  ")) + retIDUser);
 					}
 
-					delay(7000);
+					delay(6000);
 
 					TELA_LimpaTela();
 
@@ -359,7 +381,7 @@ void TELA_Render_Interface_LER_RFID()
 						TELA_Render_MsgBox(F("Cartao nao cadastrado"), String(F("O cartao utilizado nao esta cadastrado. Por favor procure o caixa para maiores  informacoes: ")) + retIDUser);
 					}
 
-					delay(7000);
+					delay(6000);
 
 					TELA_LimpaTela();
 
@@ -425,7 +447,7 @@ void TELA_Render_Interface_LER_RFID()
 							TELA_Render_MsgBox(F("Erro no Leitor SD"), String(F("Ocorreu um erro ao efetuar a leitura do cartao SD: Usuario:  ")) + retUserData);
 						}
 
-						delay(7000);
+						delay(6000);
 
 						TELA_LimpaTela();
 
@@ -470,7 +492,7 @@ void TELA_Render_Interface_LER_RFID()
 							TELA_Render_MsgBox(F("Usuario nao localizado"), String(F("Este cartao esta associado a um usuario que nao foi localizado no sistema. Por  favor procure o caixa para maiores informacoes: ")) + retUserData);
 						}
 
-						delay(7000);
+						delay(6000);
 
 						TELA_LimpaTela();
 

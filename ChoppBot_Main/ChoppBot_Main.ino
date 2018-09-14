@@ -118,9 +118,19 @@ void InitApp()
     digitalWrite(FLOW_PINO_SENSOR_3, HIGH);
 
 
+    digitalWrite(SD_MAX_TENTATIVA_READ, HIGH);
+    digitalWrite(SD_DELAY_TENTATIVA_READ, HIGH);
+    digitalWrite(SD_PINO, HIGH);
 
 
-    
+    digitalWrite(RFID_PINO_SCK, HIGH);
+    digitalWrite(RFID_PINO_MOSI, HIGH);
+    digitalWrite(RFID_PINO_SS, HIGH);
+    digitalWrite(RFID_PINO_MISO, HIGH);
+    digitalWrite(RFID_PINO_IRQ, HIGH);
+    digitalWrite(RFID_PINO_RESET, HIGH);
+
+    delay(500);
 
     TELA_IniciaTela();
 

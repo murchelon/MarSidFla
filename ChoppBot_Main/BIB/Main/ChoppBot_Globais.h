@@ -51,23 +51,24 @@ String gModoOperacao_SubTela;
 String gaEngatados[ctMAX_TORNEIRAS];	
 
 
-// BUZZER: Parametros
+// BUZZER
 #define BUZZER_PINO 32
 
-// SD: Parametros
-#define SD_MAX_TENTATIVA_READ 	2
-#define SD_DELAY_TENTATIVA_READ 1000
-#define SD_PINO 				24
 
-// TELA: Parametros
+// TELA
 #define TELA_PINO_INT 	4
 #define TELA_PINO_CS	10
 #define TELA_PINO_RESET 9
 
-// Banco de Dados: Parametros
+// Banco de Dados
 #define BANCO_MAX_CHOPPS 50
 
-// RFID: Parametros
+// SD
+#define SD_MAX_TENTATIVA_READ 	2
+#define SD_DELAY_TENTATIVA_READ 1000
+#define SD_PINO 				24
+
+// RFID
 #define RFID_PINO_SCK 	52
 #define RFID_PINO_MOSI 	51
 #define RFID_PINO_SS 	53
@@ -76,17 +77,14 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define RFID_PINO_RESET 3 
 
 // RELE
-
 #define RELE_PINO_TORNEIRA_1 45
 #define RELE_PINO_TORNEIRA_2 46
 #define RELE_PINO_TORNEIRA_3 47
 
-
+// Flow Sensor
 #define FLOW_PINO_SENSOR_1 36
 #define FLOW_PINO_SENSOR_2 37 
 #define FLOW_PINO_SENSOR_3 38 
-
-
 
 // Pino do LED Cor Fixa
 #define ctPINO_LED_CORFIXA 26

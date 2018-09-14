@@ -238,10 +238,6 @@ void InitApp()
         TELA_LimpaTela();
     }
 
-    if (ctTELA_HARDWARE == F("TERMINAL"))
-    {
-        LogTerm(F("TELA -> LimpaTela()")); 
-    }
     
 
 }
@@ -454,8 +450,12 @@ void Exec_ADMIN()
     }
 
 
-    TELA_LimpaTela();
+    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
+    {
+        TELA_LimpaTela();
+    }
 
+    
     gTelaRenderizada_ADMIN = false;
     gModoOperacao = F("STANDBY");
 
@@ -601,6 +601,8 @@ void Exec_LER_RFID()
 
 void Exec_OPERACAO_SERVICO()
 {
+    
+
     if (gTelaRenderizada_OPERACAO_SERVICO == false)
     {
         LogTerm(F("== [Modo Atual: OPERACAO -- SubTela: OPERACAO_SERVICO] =="));

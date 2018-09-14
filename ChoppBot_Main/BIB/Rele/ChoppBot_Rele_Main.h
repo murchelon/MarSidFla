@@ -246,7 +246,6 @@ void useInterrupt_3(boolean b)
 void TELA_Render_Interface_OPERACAO_SERVICO()
 {
 	
-	//LogTerm(ctTELA_HARDWARE);
 
 	Flow_Pulses_Corrigido_Atual = 0;
 	Flow_Pulses_Atual = 0;
@@ -972,10 +971,6 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 	        TELA_LimpaTela();
 	    }
 
-	    if (ctTELA_HARDWARE == F("TERMINAL"))
-	    {
-	        LogTerm(F("TELA -> LimpaTela()")); 
-	    }
 
 
 

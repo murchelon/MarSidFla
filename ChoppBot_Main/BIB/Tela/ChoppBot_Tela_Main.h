@@ -729,10 +729,6 @@ void TELA_Render_Interface_LOGIN()
 	        TELA_LimpaTela();
 	    }
 
-	    if (ctTELA_HARDWARE == F("TERMINAL"))
-	    {
-	        LogTerm(F("TELA -> LimpaTela()")); 
-	    }
 		
 		//LogTerm(F("== [Modo Atual: LOGIN] ==");
 
@@ -842,6 +838,8 @@ void TELA_Render_Interface_OPERACAO()
 		{  
 
 
+			LogTerm(F("Selecione o chopp desejado e digite o numero correspondente no console:"));
+
 		    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco;Tipo;Valor
 		    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
 		    {
@@ -874,7 +872,9 @@ void TELA_Render_Interface_OPERACAO()
 		        }
 
 
-		    }			
+		    }	
+
+		    LogTerm(F("4 - Sair"));		
 		}
 
 
@@ -997,9 +997,7 @@ void TELA_VerificaTouch_STANDBY()
 			//gModoOperacao = "OPERACAO";
 			//gModoOperacao = "DEBUG";
 
-        	LogTerm(F("TELA -> LimpaTela()")); 
-
-
+     
 			delay(500);		
 		}
 
@@ -1106,7 +1104,6 @@ void TELA_VerificaTouch_LOGIN()
 			//LogTerm(F("TECLADO NUM SELECIONADO");
 			//LogTerm(F("TECLADO ALFA SELECIONADO");
 
-			LogTerm(F("TELA -> LimpaTela()")); 
 
 			delay(500);   
 		}
@@ -1117,8 +1114,6 @@ void TELA_VerificaTouch_LOGIN()
 			gTelaRenderizada_LOGIN = false;
 
 			//LogTerm(F("ADMIN SELECIONADO");
-
-			LogTerm(F("TELA -> LimpaTela()")); 
 
 			delay(500);    
 		}
@@ -1311,6 +1306,85 @@ void TELA_VerificaTouch_ADMIN()
 
 void TELA_VerificaTouch_OPERACAO()
 {
+
+
+	if (ctTELA_HARDWARE == F("TERMINAL"))
+	{ 
+
+		String retConsole;
+
+		retConsole = ReadConsoleInput();
+
+		if (retConsole != F(""))
+		{
+			LogTerm(String(F("Opcao selecionada: ")) + retConsole);	
+		}
+
+
+		if (retConsole.toInt() == 1)
+		{
+
+			LogTerm(F("TORNEIRA 1 SELECIONADA"));
+
+			gServico_ID_TorneiraAtual = 1;
+
+			gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+			gTelaRenderizada_OPERACAO = false;
+
+			delay(500);  
+		}
+
+		if (retConsole.toInt() == 2)
+		{
+			LogTerm(F("TORNEIRA 2 SELECIONADA"));
+
+			gServico_ID_TorneiraAtual = 2;
+
+			gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+			gTelaRenderizada_OPERACAO = false;
+
+			delay(500);  
+			
+		}
+
+		if (retConsole.toInt() == 3)
+		{
+			LogTerm(F("TORNEIRA 3 SELECIONADA"));
+
+			gServico_ID_TorneiraAtual = 3;
+
+			gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+			gTelaRenderizada_OPERACAO = false;
+
+			delay(500);   
+		}
+
+		if (retConsole.toInt() == 4)
+		{
+
+			// zera as vars para cada tentativa de login
+			// efetua logoff
+			gSessao_Logado = false;
+			gSessao_IDUser = -1;
+			gSessao_Nome = F("");
+			gSessao_Nivel = -1;
+			gSessao_SaldoAtual = -1;
+
+			gTelaRenderizada_OPERACAO = false;	
+
+			gModoOperacao = F("STANDBY");  
+			gModoOperacao_SubTela = F("");						
+			
+			LogTerm(F("MAIN: Usuario clicou em SAIR")); 
+		}
+
+
+
+	}
+
 
 
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))

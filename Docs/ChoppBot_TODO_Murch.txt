@@ -32,5 +32,5 @@ mega mais para frente
 - ipad ou similar opcional.. com o visual fodastico que mostra tudo do choppbot 
 
 PROBLEMAS CONHECIDOS:
-
+ 
 - tem um bug estrano no voltar do tec alfa

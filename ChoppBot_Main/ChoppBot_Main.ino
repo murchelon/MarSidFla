@@ -97,6 +97,8 @@ void InitApp()
     pinMode(RELE_PINO_TORNEIRA_2, OUTPUT);
     pinMode(RELE_PINO_TORNEIRA_3, OUTPUT);
 
+
+
     // Define os RELES como DESLIGADOS
     digitalWrite(RELE_PINO_TORNEIRA_1, HIGH);
     digitalWrite(RELE_PINO_TORNEIRA_2, HIGH);
@@ -104,31 +106,34 @@ void InitApp()
 
 
 
-
     // Inicia os FLOW METERS
     pinMode(FLOW_PINO_SENSOR_1, INPUT);
     digitalWrite(FLOW_PINO_SENSOR_1, HIGH);
 
-
     pinMode(FLOW_PINO_SENSOR_2, INPUT);
     digitalWrite(FLOW_PINO_SENSOR_2, HIGH);
-
 
     pinMode(FLOW_PINO_SENSOR_3, INPUT);
     digitalWrite(FLOW_PINO_SENSOR_3, HIGH);
 
 
+
+    // Inicia o SD
     digitalWrite(SD_MAX_TENTATIVA_READ, HIGH);
     digitalWrite(SD_DELAY_TENTATIVA_READ, HIGH);
     digitalWrite(SD_PINO, HIGH);
 
 
+
+    // Inicia RFID
     digitalWrite(RFID_PINO_SCK, HIGH);
     digitalWrite(RFID_PINO_MOSI, HIGH);
     digitalWrite(RFID_PINO_SS, HIGH);
     digitalWrite(RFID_PINO_MISO, HIGH);
     digitalWrite(RFID_PINO_IRQ, HIGH);
     digitalWrite(RFID_PINO_RESET, HIGH);
+
+
 
     delay(500);
 
@@ -238,7 +243,52 @@ void InitApp()
         TELA_LimpaTela();
     }
 
-    
+    /*
+
+    gServico_ID_TorneiraAtual = 9;
+    gSessao_IDUser = 99;
+    gSessao_Nome = F("murchelongo");
+    gSessao_CPF = F("xxx25632071855");
+    gSessao_DataCad = F("03/06/1977");
+    gSessao_SaldoAtual = 999;
+    gFlow_Pulses_Corrigido_Atual = 9999;
+
+
+
+    String tmp_IDChopp = F("9");
+    String tmp_Nome = F("xxxTartatuga de Pente");
+    String tmp_Valor = F("55,24");
+    float liters_Atual = 0.22;
+    float ValorSessaoChopp = 15.12;
+    float ValorSaldoAtual = 12.34;
+    float VolumeAtual = 56.78;
+
+    String retFunc = F("");
+    retFunc = BANCO_AtualizaSaldoUserLogado(tmp_IDChopp,
+                                            tmp_Nome,
+                                            tmp_Valor,
+                                            liters_Atual,
+                                            ValorSessaoChopp,
+                                            ValorSaldoAtual,
+                                            VolumeAtual
+                                            );
+
+    if (retFunc.substring(0, 1) == F("1"))
+    {
+        LogTerm(F("Saldo/Sessao de usuario atualizado com sucesso !"));
+    }
+    else
+    {
+        LogTerm(String(F("Falha na atualizacao do Saldo/Sessao: ")) + retFunc);
+    }
+
+
+    while (1)
+    {}
+
+    */
+
+
 
 }
 

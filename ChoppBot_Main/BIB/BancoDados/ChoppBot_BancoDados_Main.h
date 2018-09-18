@@ -406,25 +406,100 @@ String BANCO_GetChoppDataFromIDChopp(String IDChopp)
 
 
 
+
+
+
+
+// retorna formato: CodRetorno|Descricao
+// 1 para arquivo criado com sucesso 
+// 0 erros outros
+String BANCO_CriaArquivoUsuario(String FullPathFile,
+								int IDUser,
+								String CPF,
+								String DataCad,
+								String Nome,
+								int Nivel,
+								float SaldoAtual
+								)
+{
+
+	String ret = F("");
+
+	String Linha = F("");
+
+	SdFat SD;
+	String retSD = F("");
+
+	retSD = SD_InicializaCartaoSD(SD);
+
+	if (retSD.substring(0, 1) != F("1"))
+	{
+		return retSD;
+	}
+
+
+
+	char __FullPathFile[FullPathFile.length() + 1];
+	FullPathFile.toCharArray(__FullPathFile, sizeof(__FullPathFile));
+
+	SdFile Arquivo_Temp(__FullPathFile, O_WRITE | O_CREAT);
+
+	if (!Arquivo_Temp.isOpen()) 
+	{
+		ret = String(F("0|Nao foi possivel criar o arquivo: ")) + FullPathFile;
+	}
+	else
+	{
+
+		//IDUser;CPF;DataCad;Nome;Nivel;SaldoAtual
+
+		Linha = String(
+						String(IDUser) + F(";") +
+						CPF + F(";") +
+						DataCad + F(";") + 
+						Nome + F(";") +
+						String(Nivel) + F(";") +
+						String(SaldoAtual) 
+						);
+
+
+		Arquivo_Temp.println("IDUser;CPF;DataCad;Nome;Nivel;SaldoAtual");
+		Arquivo_Temp.println(Linha);
+
+		Arquivo_Temp.close();
+
+		ret = String(F("1|Arquivo criado com sucesso: ")) + FullPathFile;
+
+	}
+	
+	
+	return ret;
+
+}
+
+
 // retorna formato: CodRetorno|Descricao
 // 1 para saldo atualizado com sucesso 
 // -1 erros outros
-String BANCO_AtualizaSaldoUserLogado()
+String BANCO_AtualizaSaldoUserLogado(String IDChopp,
+									 String NomeChopp,
+									 String ValorChopp,
+									 float litersConsumido,
+									 float ValorSessaoChopp,
+									 float ValorSaldoAtual,
+									 float VolumeAtual
+									 )
 {
 
-	String ret = F("1|");
 
-
-
+	// Algoritmo:
 	// cria novo arquivo de usuario no formato TUSU_IDUser.txt
-
 	// grava os dados no arquivo temporario
-
 	// apaga o arquivo antigo original
-
 	// renomeia o arquivo temporario para oficial
-	
 
+
+	String ret = F("");
 
 	String FullPathFile_TEMP;	
 	FullPathFile_TEMP = String(F("CB/BD/Usuarios/TUSU_")) + gSessao_IDUser + String(F(".txt"));
@@ -433,52 +508,72 @@ String BANCO_AtualizaSaldoUserLogado()
 	FullPathFile_ORIGINAL = String(F("CB/BD/Usuarios/USU_")) + gSessao_IDUser + String(F(".txt"));
 	
 
-	// apaga o arquivo antigo original
-	String retFunc = F("");
-	retFunc = SD_ApagaArquivo(FullPathFile_ORIGINAL);
+	// apaga o arquivo temporario antigo se existir
+    String retFunc = F("");
 
-
-	if (retFunc.substring(0, 2) == F("-1"))
-	{
-		// erro de sd card
-		ret = retFunc;
-		return ret;
-	}
-
+	retFunc = SD_ApagaArquivo(FullPathFile_TEMP);
 
 	if (retFunc.substring(0, 1) == F("1"))
 	{
+		// arquivo temporario antigo localizado
+		LogTerm(String(F("Arquivo Temporario de Usuario antigo localizado e apagado: ")) + retFunc);
+	}
+	
+	// cria o novo arquivo temporario com os dados da sessao
+	retFunc = F("");
+	retFunc = BANCO_CriaArquivoUsuario(FullPathFile_TEMP,
+										gSessao_IDUser,
+										gSessao_CPF,
+										gSessao_DataCad,
+										gSessao_Nome,
+										gSessao_Nivel,
+										ValorSaldoAtual
+										);
 
 
-		// cria novo arquivo de usuario no formato TUSU_IDUser.txt e grava os dados do logado no arquivo temporario
-		String retFunc2 = F("");
-		//retFunc2 = SD_CreateNewUserFile(FullPathFile_TEMP, gSessao_IDUser, gSessao_CPF, gSessao_DataCad, gSessao_Nome, gSessao_Nivel, ValorSaldoAtual);
+	LogTerm(String(F("Retorno da criacao de arquivo temporario: ")) + retFunc);
 
+	retFunc = F("");
+	retFunc = SD_RenameArquivo(FullPathFile_TEMP, FullPathFile_ORIGINAL);
 
-		if (retFunc2.substring(0, 2) == F("-1"))
-		{
-			// erro de sd card
-			ret = retFunc2;
-			return ret;
-		}
+	if (retFunc.substring(0, 1) == F("0"))
+	{
+		// arquivo temporario antigo localizado
+		LogTerm(String(F("Falha em renomear arquivo temporario de usuario para o final: ")) + retFunc);
 
+		ret = F("0|Falha na atualizacao de saldo do usuario");
+	}
+	else
+	{
+		LogTerm(String(F("Arquivo temporario de usuario renomeado com sucesso para versao final: ")) + retFunc);
 
-		if (retFunc2.substring(0, 1) == F("1"))
-		{
-			// sucesso
-			ret = retFunc2;
-			return ret;
-		}
-
-
+		ret = F("1|Saldo atualizado com sucesso");
 	}
 
+	/*
+    LogTerm(String(F("banco dados ---------------------------------------")));
+    LogTerm(String(F("Torneira (gServico_ID_TorneiraAtual) = ")) + String(gServico_ID_TorneiraAtual));
+    LogTerm(String(F("IDChopp (IDChopp) = ")) + IDChopp);
+    LogTerm(String(F("Nome Chopp (NomeChopp) = ")) + NomeChopp);
+    LogTerm(String(F("Preco Chopp (ValorChopp) = ")) + ValorChopp);
+    LogTerm(String(F("IDUser = ")) + String(gSessao_IDUser));
+	LogTerm(String(F("gSessao_Nome = ")) + gSessao_Nome);
+	LogTerm(String(F("gSessao_CPF = ")) + gSessao_CPF);
+	LogTerm(String(F("gSessao_DataCad = ")) + gSessao_DataCad);
+	LogTerm(String(F("Saldo Original (gSessao_SaldoAtual) = ")) + String(gSessao_SaldoAtual));
+	LogTerm(String(F("Consumido (litersConsumido) = ")) + String(litersConsumido));
+	LogTerm(String(F("ValorSessaoChopp = ")) + String(ValorSessaoChopp));
+	LogTerm(String(F("Saldo Atual (ValorSaldoAtual) = ")) + String(ValorSaldoAtual));		
+	LogTerm(String(F("Chopp Restante (VolumeAtual) = ")) + String(VolumeAtual));
+	LogTerm(String(F("---------------------------------------")));
+	*/
 
 	return ret;
 
 
-
 }
+
+
 
 
 

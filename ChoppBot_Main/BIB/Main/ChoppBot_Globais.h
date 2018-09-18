@@ -351,6 +351,52 @@ int gServico_ID_TorneiraAtual;
 
 
 
+// int gAjusteFluxo = 23; original por especificacao
+//float gAjusteFluxo = 38;
+float gAjusteFluxo = 7.5;
+
+
+int gAjuste_fino_baixo = 10;
+int gPulse_ideal = 52;
+int gAjuste_fino_alto = 5;
+
+
+// Pino do sensor ativo no momento
+int gPinoSensorFluxoAtivo = -1;
+
+
+// Pino da torneira ativa no momento
+int gPinoReleTorneiraAtiva = -1;
+
+bool gFLOW_Reinicia_Contador = true;
+bool gFLOW_Fluxo_Iniciado = true;
+
+
+float gFLOW_time_inicio;
+float gFLOW_time_atual;
+float gFLOW_time_tempo_passado;
+
+
+int gFLOW_PulsosNosUltimosXseg = 0;
+int gFLOW_PulsosNoInicio = 0;
+
+
+float gFLOW_SegundosPassados;
+
+
+#define ctLIMITE_IGNORA_PULSOS 3
+
+
+volatile uint16_t gFlow_Pulses_Atual = 0;
+volatile float gFlow_Pulses_Corrigido_Atual = 0;
+volatile uint8_t gLastflowpinstate_Atual;
+volatile uint32_t gLastflowratetimer_Atual = 0;
+volatile float gFlowrate_Atual;
+volatile float gFaixaVelAtual = 99;
+
+
+
+
 
 
 

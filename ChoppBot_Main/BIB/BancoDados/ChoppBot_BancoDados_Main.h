@@ -502,10 +502,10 @@ String BANCO_AtualizaSaldoUserLogado(String IDChopp,
 	String ret = F("");
 
 	String FullPathFile_TEMP;	
-	FullPathFile_TEMP = String(F("CB/BD/Usuarios/TUSU_")) + gSessao_IDUser + String(F(".txt"));
+	FullPathFile_TEMP = String(F("CB/BD/Usuarios/TUSU_")) + String(gSessao_IDUser) + String(F(".txt"));
 
 	String FullPathFile_ORIGINAL;	
-	FullPathFile_ORIGINAL = String(F("CB/BD/Usuarios/USU_")) + gSessao_IDUser + String(F(".txt"));
+	FullPathFile_ORIGINAL = String(F("CB/BD/Usuarios/USU_")) + String(gSessao_IDUser) + String(F(".txt"));
 	
 
 	// apaga o arquivo temporario antigo se existir
@@ -513,11 +513,13 @@ String BANCO_AtualizaSaldoUserLogado(String IDChopp,
 
 	retFunc = SD_ApagaArquivo(FullPathFile_TEMP);
 
+
 	if (retFunc.substring(0, 1) == F("1"))
 	{
 		// arquivo temporario antigo localizado
 		LogTerm(String(F("Arquivo Temporario de Usuario antigo localizado e apagado: ")) + retFunc);
 	}
+
 	
 	// cria o novo arquivo temporario com os dados da sessao
 	retFunc = F("");
@@ -530,11 +532,30 @@ String BANCO_AtualizaSaldoUserLogado(String IDChopp,
 										ValorSaldoAtual
 										);
 
+	
 
 	LogTerm(String(F("Retorno da criacao de arquivo temporario: ")) + retFunc);
 
+
+	// apaga o arquivo OFICIAL do usuario
+    retFunc = F("");
+	retFunc = SD_ApagaArquivo(FullPathFile_ORIGINAL);
+
+
+	if (retFunc.substring(0, 1) == F("1"))
+	{
+		// arquivo temporario antigo localizado
+		LogTerm(String(F("Arquivo OFICIAL do Usuario apagado: ")) + retFunc);
+	}
+	else
+	{
+		LogTerm(String(F("Arquivo OFICIAL do Usuario nao existia: ")) + retFunc);
+	}
+	
+	// renomeia o arquivo temporario para o oficial
 	retFunc = F("");
 	retFunc = SD_RenameArquivo(FullPathFile_TEMP, FullPathFile_ORIGINAL);
+
 
 	if (retFunc.substring(0, 1) == F("0"))
 	{

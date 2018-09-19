@@ -243,10 +243,53 @@ void InitApp()
         TELA_LimpaTela();
     }
 
+
+
+
+   
+
+
     /*
 
+    String ret = F("");
+
+    String FullPathFile_TEMP;   
+    FullPathFile_TEMP = String(F("CB/BD/Usuarios/TUSU_1.txt"));
+
+    String FullPathFile_ORIGINAL; 
+    FullPathFile_ORIGINAL = String(F("CB/BD/Usuarios/USU_1.txt"));  
+
+
+    
+    String retFunc = F("");
+    retFunc = SD_RenameArquivo(FullPathFile_TEMP, FullPathFile_ORIGINAL);
+
+
+    if (retFunc.substring(0, 1) == F("0"))
+    {
+        // arquivo temporario antigo localizado
+        LogTerm(String(F("Falha em renomear arquivo temporario de usuario para o final: ")) + retFunc);
+
+        ret = F("0|Falha na atualizacao de saldo do usuario");
+    }
+    else
+    {
+        LogTerm(String(F("Arquivo temporario de usuario renomeado com sucesso para versao final: ")) + retFunc);
+
+        ret = F("1|Saldo atualizado com sucesso");
+    }
+
+
+
+
+    while (1)
+    {}
+    */
+
+     /*
+
     gServico_ID_TorneiraAtual = 9;
-    gSessao_IDUser = 99;
+    gSessao_IDUser = 1;
     gSessao_Nome = F("murchelongo");
     gSessao_CPF = F("xxx25632071855");
     gSessao_DataCad = F("03/06/1977");

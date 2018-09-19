@@ -180,7 +180,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
     float liters_Atual = 0;
 
 	float ValorSessaoChopp = 0;
-	float ValorSaldoAtual = 0;
+	float ValorSaldoAtual = gSessao_SaldoAtual;
 	float VolumeAtual = 0;
 
 

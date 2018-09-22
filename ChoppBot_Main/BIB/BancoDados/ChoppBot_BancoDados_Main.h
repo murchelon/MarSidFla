@@ -25,7 +25,7 @@ String BANCO_GetDataFromIDs(String TipoDado, String IDsDesejados, String aRetDat
 
 	if (TipoDado == F("CHOPP"))
 	{
-		FullPathFile = F("CB/BD/Chopp/Chopps.txt");
+		FullPathFile = F("CB/BD/Chopp/Chopps.csv");
 		PosicaoID = 0;
 		MaxRegs = BANCO_MAX_CHOPPS;
 	}
@@ -96,11 +96,12 @@ String BANCO_GetDataFromIDs(String TipoDado, String IDsDesejados, String aRetDat
 
 
 
-
+// define a variavel de choops engataddos.  a variavel passada sera a definnida. Passa-se a variavel global gaEngatados
 // retorna formato: CodRetorno|descricao
 // Param byref: aRetChoppsEngat contera a lista de chopps engatados, se exitirem
 // 1 para a funcao rodou certo 
 // -1 e -2 erros outros
+// D
 String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
 {
 
@@ -112,9 +113,9 @@ String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
 
 	String IDsChoppDesejados = F("");
 
-	FullPathFile_Engatados = F("CB/BD/Chopp/Engatados.txt");
+	FullPathFile_Engatados = F("CB/BD/Chopp/Engatados.csv");
 
-	// inicializa var de engatados
+	// zera a var de engatados
 	for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
 	{
 		aRetChoppsEngat[x] = F("");
@@ -259,8 +260,8 @@ String BANCO_GetUserDataFromIDUser(String IDUser)
 	String FullPathFile_User = F("");
 
 
-	FullPathFile_User = String(F("CB/BD/Usuarios/USU_")) + IDUser + String(F(".txt"));
-	//FullPathFile_User = "CB/BD/Usuarios/USU_" + IDUser + ".txt";
+	FullPathFile_User = String(F("CB/BD/Usuarios/USU_")) + IDUser + String(F(".csv"));
+	//FullPathFile_User = "CB/BD/Usuarios/USU_" + IDUser + ".csv";
 
 
 	String retFunc = F("");
@@ -293,6 +294,7 @@ String BANCO_GetUserDataFromIDUser(String IDUser)
 }
 
 
+// recupera um IDUser de um login passaddo, sehja ele rfid ou biometrico ou outros
 // retorna formato: CodRetorno|Descricao
 // 0 para arquivo nao existe
 // 1 para arquivo existe. retona os dados do usuario
@@ -309,7 +311,7 @@ String BANCO_GetIDUserFromLogin(String Login, String TipoLogin)
 	if (TipoLogin == F("RFID"))
 	{
 
-		FullPathFile_Login = String(F("CB/BD/Logins/RFID/")) + Login + String(F(".txt"));
+		FullPathFile_Login = String(F("CB/BD/Logins/RFID/")) + Login + String(F(".csv"));
 
 
 		String retFunc = F("");
@@ -357,7 +359,7 @@ String BANCO_GetIDUserFromLogin(String Login, String TipoLogin)
 
 
 
-
+// recupera os dados de um chopps existente no arquivo de cadastro de chopps
 // retorna formato: CodRetorno|Descricao
 // 1 retorna a linha com dados do chopp
 // -2 para chopp nao existe. 
@@ -409,7 +411,7 @@ String BANCO_GetChoppDataFromIDChopp(String IDChopp)
 
 
 
-
+// cria um arquivo de usuario padrao, com seu saldo e dados de usuario
 // retorna formato: CodRetorno|Descricao
 // 1 para arquivo criado com sucesso 
 // 0 erros outros
@@ -478,9 +480,131 @@ String BANCO_CriaArquivoUsuario(String FullPathFile,
 }
 
 
+
+
+
+// cria um arquivo padrao de engatados.csv . eh o arquivo que contem os chopps disponiveis no momento
+// retorna formato: CodRetorno|Descricao
+// 1 para arquivo criado com sucesso 
+// 0 erros outros
+String BANCO_AtualizaArquivoEngatados(String FullPathFile,
+								  int __ID_TorneiraAtual,
+								  float __VolumeAtual
+								  )
+{
+
+	String ret = F("");
+
+	String Linha = F("");
+
+	SdFat SD;
+	String retSD = F("");
+
+	retSD = SD_InicializaCartaoSD(SD);
+
+	if (retSD.substring(0, 1) != F("1"))
+	{
+		return retSD;
+	}
+
+
+
+	char __FullPathFile[FullPathFile.length() + 1];
+	FullPathFile.toCharArray(__FullPathFile, sizeof(__FullPathFile));
+
+	SdFile Arquivo_Temp(__FullPathFile, O_WRITE | O_CREAT);
+
+	if (!Arquivo_Temp.isOpen()) 
+	{
+		ret = String(F("0|Nao foi possivel criar o arquivo: ")) + FullPathFile;
+	}
+	else
+	{
+
+
+		Arquivo_Temp.println("NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa");
+
+
+
+	    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
+	    for (int x = 0 ; x <= 2 ; x++)
+	    {
+	    	LogTerm("gaEngatados[x]  = " + gaEngatados[x]);
+
+	        if (gaEngatados[x] != "")
+	        {
+
+
+	            String tmp_Torneira = getValue(gaEngatados[x], ';', 0);
+	            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
+	            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
+	            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
+	            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
+	            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
+	            String tmp_DataCad = getValue(gaEngatados[x], ';', 1);
+	            String tmp_DataExp = getValue(gaEngatados[x], ';', 4);
+	            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
+
+
+	            //IDUser;CPF;DataCad;Nome;Nivel;SaldoAtual
+
+
+
+			    if (tmp_Torneira == String(__ID_TorneiraAtual))
+			    {
+					Linha = String(
+									tmp_Torneira + F(";") +
+									tmp_DataCad + F(";") +
+									tmp_IDChopp + F(";") + 
+									FormatNumber(__VolumeAtual, "") + F(";") + 
+									tmp_DataExp + F(";") + 
+									tmp_Ativa
+									);
+			    }
+			    else
+			    {
+					Linha = String(
+									tmp_Torneira+ F(";") +
+									tmp_DataCad + F(";") +
+									tmp_IDChopp + F(";") + 
+									tmp_Volume + F(";") +
+									tmp_DataExp + F(";") + 
+									tmp_Ativa
+									);			    	
+			    }
+
+			    Arquivo_Temp.println(Linha);
+
+
+
+	        }
+
+
+	    }
+
+
+
+
+		Arquivo_Temp.close();
+
+		ret = String(F("1|Arquivo criado com sucesso: ")) + FullPathFile;
+
+	}
+	
+	
+	return ret;
+
+}
+
+
+// rotina de atualizacao do arquivo de usuario, com seu saldo atual
 // retorna formato: CodRetorno|Descricao
 // 1 para saldo atualizado com sucesso 
 // -1 erros outros
+String BANCO_AtualizaSaldoUserLogado(float ValorSaldoAtual)
+{
+
+/*
 String BANCO_AtualizaSaldoUserLogado(String IDChopp,
 									 String NomeChopp,
 									 String ValorChopp,
@@ -489,23 +613,29 @@ String BANCO_AtualizaSaldoUserLogado(String IDChopp,
 									 float ValorSaldoAtual,
 									 float VolumeAtual
 									 )
-{
-
+*/
 
 	// Algoritmo:
-	// cria novo arquivo de usuario no formato TUSU_IDUser.txt
+	// A) cria novo arquivo de usuario no formato TUSU_IDUser.csv
 	// grava os dados no arquivo temporario
 	// apaga o arquivo antigo original
 	// renomeia o arquivo temporario para oficial
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// ROTINA DE ATUALIZACAO DE SALDO DO USUARIO
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	String ret = F("");
 
 	String FullPathFile_TEMP;	
-	FullPathFile_TEMP = String(F("CB/BD/Usuarios/TUSU_")) + String(gSessao_IDUser) + String(F(".txt"));
+	FullPathFile_TEMP = String(F("CB/BD/Usuarios/TUSU_")) + String(gSessao_IDUser) + String(F(".csv"));
 
 	String FullPathFile_ORIGINAL;	
-	FullPathFile_ORIGINAL = String(F("CB/BD/Usuarios/USU_")) + String(gSessao_IDUser) + String(F(".txt"));
+	FullPathFile_ORIGINAL = String(F("CB/BD/Usuarios/USU_")) + String(gSessao_IDUser) + String(F(".csv"));
 	
 
 	// apaga o arquivo temporario antigo se existir
@@ -568,8 +698,9 @@ String BANCO_AtualizaSaldoUserLogado(String IDChopp,
 	{
 		LogTerm(String(F("Arquivo temporario de usuario renomeado com sucesso para versao final: ")) + retFunc);
 
-		ret = F("1|Saldo atualizado com sucesso");
+		ret = F("1|Saldo do usuario atualizado com sucesso");
 	}
+
 
 	/*
     LogTerm(String(F("banco dados ---------------------------------------")));
@@ -595,6 +726,119 @@ String BANCO_AtualizaSaldoUserLogado(String IDChopp,
 }
 
 
+// rotina de atualizacao do arquivo de Engatados.csv com o volume restante no barril depois de uma sessao
+// retorna formato: CodRetorno|Descricao
+// 1 para saldo do chopp atualizado com sucesso 
+// -1 erros outros
+String BANCO_AtualizaSaldoEngatadosSessao(float _VolumeAtual)
+{
 
 
+	// B) cria novo arquivo de chopps engatados no formato TEngatados.csv
+	// grava os dados no arquivo temporario
+	// apaga o arquivo antigo original
+	// renomeia o arquivo temporario para oficial engatados
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// ROTINA DE ATUALIZACAO DE SALDO DO USUARIO
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	String ret = F("");
+
+	String FullPathFile_TEMP;	
+	FullPathFile_TEMP = String(F("CB/BD/Chopp/TEngatados.csv"));
+
+	String FullPathFile_ORIGINAL;	
+	FullPathFile_ORIGINAL = String(F("CB/BD/Chopp/Engatados.csv"));
+	
+
+	// apaga o arquivo temporario antigo se existir
+    String retFunc = F("");
+
+	retFunc = SD_ApagaArquivo(FullPathFile_TEMP);
+
+
+	if (retFunc.substring(0, 1) == F("1"))
+	{
+		// arquivo temporario antigo localizado
+		LogTerm(String(F("Arquivo Temporario de Engatados antigo localizado e apagado: ")) + retFunc);
+	}
+
+
+
+
+	// cria o novo arquivo temporario com os dados da sessao
+	retFunc = F("");
+	retFunc = BANCO_AtualizaArquivoEngatados(FullPathFile_TEMP,
+										 	 gServico_ID_TorneiraAtual,
+										 	 _VolumeAtual
+											 );
+
+	
+
+	LogTerm(String(F("Retorno da criacao de arquivo temporario: ")) + retFunc);
+
+
+	// apaga o arquivo OFICIAL do usuario
+    retFunc = F("");
+	retFunc = SD_ApagaArquivo(FullPathFile_ORIGINAL);
+
+
+	if (retFunc.substring(0, 1) == F("1"))
+	{
+		// arquivo temporario antigo localizado
+		LogTerm(String(F("Arquivo ENGATADOS.csv apagado: ")) + retFunc);
+	}
+	else
+	{
+		LogTerm(String(F("Arquivo ENGATADOS.csv nao existia: ")) + retFunc);
+	}
+	
+	// renomeia o arquivo temporario para o oficial
+	retFunc = F("");
+	retFunc = SD_RenameArquivo(FullPathFile_TEMP, FullPathFile_ORIGINAL);
+
+
+	if (retFunc.substring(0, 1) == F("0"))
+	{
+		// arquivo temporario antigo localizado
+		LogTerm(String(F("Falha em renomear arquivo temporario TEngatados.csv para o final: ")) + retFunc);
+
+		ret = F("0|Falha na atualizacao de saldo do chopp");
+	}
+	else
+	{
+		LogTerm(String(F("Arquivo TEngatados.csv renomeado com sucesso para versao final: ")) + retFunc);
+
+		ret = F("1|Saldo de chopp atualizado com sucesso");
+	}
+
+
+
+
+	/*
+    LogTerm(String(F("banco dados ---------------------------------------")));
+    LogTerm(String(F("Torneira (gServico_ID_TorneiraAtual) = ")) + String(gServico_ID_TorneiraAtual));
+    LogTerm(String(F("IDChopp (IDChopp) = ")) + IDChopp);
+    LogTerm(String(F("Nome Chopp (NomeChopp) = ")) + NomeChopp);
+    LogTerm(String(F("Preco Chopp (ValorChopp) = ")) + ValorChopp);
+    LogTerm(String(F("IDUser = ")) + String(gSessao_IDUser));
+	LogTerm(String(F("gSessao_Nome = ")) + gSessao_Nome);
+	LogTerm(String(F("gSessao_CPF = ")) + gSessao_CPF);
+	LogTerm(String(F("gSessao_DataCad = ")) + gSessao_DataCad);
+	LogTerm(String(F("Saldo Original (gSessao_SaldoAtual) = ")) + String(gSessao_SaldoAtual));
+	LogTerm(String(F("Consumido (litersConsumido) = ")) + String(litersConsumido));
+	LogTerm(String(F("ValorSessaoChopp = ")) + String(ValorSessaoChopp));
+	LogTerm(String(F("Saldo Atual (ValorSaldoAtual) = ")) + String(ValorSaldoAtual));		
+	LogTerm(String(F("Chopp Restante (VolumeAtual) = ")) + String(VolumeAtual));
+	LogTerm(String(F("---------------------------------------")));
+	*/
+
+	return ret;
+
+
+}
 

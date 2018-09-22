@@ -176,12 +176,18 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
     String tmp_Valor = F("");
     String tmp_Volume = F("");
     String tmp_Ativa = F("");		
+	String tmp_DataCad= F("");		
+	String tmp_DataExp = F("");		
+
+	volatile float tmp_VolumeInicialBarril = 0;
+	volatile float VolumeAtual = 0;
+
 
     float liters_Atual = 0;
 
 	float ValorSessaoChopp = 0;
 	float ValorSaldoAtual = gSessao_SaldoAtual;
-	float VolumeAtual = 0;
+	
 
 
 	if (gTelaRenderizada_OPERACAO_SERVICO == false)
@@ -303,11 +309,15 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
         tmp_Tipo = getValue(gaEngatados[gServico_ID_TorneiraAtual - 1], ';', 8);
         tmp_Valor = getValue(gaEngatados[gServico_ID_TorneiraAtual - 1], ';', 9);
         tmp_Volume = getValue(gaEngatados[gServico_ID_TorneiraAtual - 1], ';', 3);
-        //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
-        //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
+        tmp_DataCad = getValue(gaEngatados[gServico_ID_TorneiraAtual - 1], ';', 1);
+        tmp_DataExp = getValue(gaEngatados[gServico_ID_TorneiraAtual - 1], ';', 4);
         tmp_Ativa = getValue(gaEngatados[gServico_ID_TorneiraAtual - 1], ';', 5);
 
+        tmp_Volume.replace(",", ".");
+        
+    	tmp_VolumeInicialBarril = tmp_Volume.toFloat();
 
+        VolumeAtual = tmp_VolumeInicialBarril;
 
 		//////////////////////////////////////  
 		// cebcalho logado
@@ -323,7 +333,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 			LogTerm(String(F("Chopp: ")) + tmp_Nome);
 			LogTerm(String(F("Tipo: ")) + tmp_Tipo);
 			LogTerm(String(F("Preco: ")) + FormatNumber(tmp_Valor.toFloat(), F("MONEY")) + String(F(" / Litro")));
-			LogTerm(String(F("Restante: ")) + tmp_Volume.toFloat() + String(F(" Litros")));
+			LogTerm(String(F("Restante: ")) + tmp_Volume + String(F(" Litros")));
 			LogTerm(F("Volume Retirado: 0,00 Litros"));
 			LogTerm(String(F("Valor do Chopp sendo retirado: ")) + FormatNumber(0.0, F("MONEY")));
 
@@ -424,8 +434,10 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 			tft.print (F("Restante: ")); 
 
 			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (340, 330);			
-			tft.print (tmp_Volume.toFloat() + String(F(" Litros")));
+			tft.setCursor (340, 330);	
+
+			//tmp_Volume.replace(".", ",");		
+			tft.print (tmp_Volume + String(F(" Litros")));
 
 
 
@@ -652,8 +664,8 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 			#define Range_Menos 10
 			#define Range_Mais 10
 
-			LogTerm(String(F("gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg));
-			LogTerm(String(F("gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual));
+			//LogTerm(String(F("gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg));
+			//LogTerm(String(F("gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual));
 
 
 
@@ -825,9 +837,13 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				//////////////////////////////////////
 				// RESTANTE
 
-				VolumeAtual = 0;
+				//VolumeAtual = 0;
 
-				VolumeAtual = tmp_Volume.toFloat() - liters_Atual;
+				//VolumeAtual = tmp_Volume.toFloat() - liters_Atual;
+				VolumeAtual = tmp_VolumeInicialBarril - liters_Atual;
+
+				tmp_Volume = String(VolumeAtual);
+
 
 				if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 				{  
@@ -860,13 +876,13 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 		useInterrupt_2(false);
-		delay(100);
+		delay(50);
 
 
 	    
 
 
-	    LogTerm(String(F("---------------------------------------")));
+	    LogTerm(String(F("-- Sessao ---------------------------------------")));
 
 	    LogTerm(String(F("Torneira (gServico_ID_TorneiraAtual) = ")) + String(gServico_ID_TorneiraAtual));
 	    LogTerm(String(F("IDChopp (tmp_IDChopp) = ")) + tmp_IDChopp);
@@ -878,24 +894,21 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		LogTerm(String(F("gSessao_DataCad = ")) + gSessao_DataCad);
 		LogTerm(String(F("Saldo Original (gSessao_SaldoAtual) = ")) + String(gSessao_SaldoAtual));
 		LogTerm(String(F("Pulsos (gFlow_Pulses_Corrigido_Atual) = ")) + String(gFlow_Pulses_Corrigido_Atual));
-		LogTerm(String(F("Consumido (liters_Atual) = ")) + String(liters_Atual));
+		
 		LogTerm(String(F("ValorSessaoChopp = ")) + String(ValorSessaoChopp));
 		LogTerm(String(F("Saldo Atual (ValorSaldoAtual) = ")) + String(ValorSaldoAtual));		
-		LogTerm(String(F("Chopp Restante (VolumeAtual) = ")) + String(VolumeAtual));
+		LogTerm(String(F("Chopp Barril Inicial (tmp_VolumeInicialBarril) = ")) + String(tmp_VolumeInicialBarril));
+		LogTerm(String(F("Consumido (liters_Atual) = ")) + String(liters_Atual));
+		LogTerm(String(F("Chopp Restante string (tmp_Volume) = ")) + tmp_Volume);
+		LogTerm(String(F("Chopp Restante float (VolumeAtual) = ")) + String(VolumeAtual));
 
-		LogTerm(String(F("---------------------------------------")));
+		LogTerm(String(F("-------------------------------------------------")));
 
 
 
 		String retFunc = F("");
-		retFunc = BANCO_AtualizaSaldoUserLogado(tmp_IDChopp,
-		                                        tmp_Nome,
-		                                        tmp_Valor,
-		                                        liters_Atual,
-		                                        ValorSessaoChopp,
-		                                        ValorSaldoAtual,
-		                                        VolumeAtual
-		                                        );
+		retFunc = BANCO_AtualizaSaldoUserLogado(ValorSaldoAtual);
+
 
 		if (retFunc.substring(0, 1) == F("1"))
 		{
@@ -906,7 +919,26 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		    LogTerm(String(F("Falha na atualizacao do Saldo/Sessao: ")) + retFunc);
 		}
 
+
 		
+		retFunc = F("");
+		retFunc = BANCO_AtualizaSaldoEngatadosSessao(VolumeAtual);
+
+
+
+		if (retFunc.substring(0, 1) == F("1"))
+		{
+		    LogTerm(F("Saldo do Chopp atualizado com sucesso !"));
+		}
+		else
+		{
+		    LogTerm(String(F("Falha na atualizacao do Saldo do Chopp: ")) + retFunc);
+		}
+
+	
+		// atualiza a variavel de chopps engatados
+		CORE_ExecRotinaDefineChoppEngatados();
+
 
 		volatile unsigned long gBounce_time_inicio = 0;
 		volatile unsigned long gBounce_time_atual = 0;
@@ -922,9 +954,16 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 		gServico_ID_TorneiraAtual = -1;	
 
-		tmp_IDChopp = F("");
-		tmp_Nome = F("");
-		tmp_Valor = F("");
+
+	    tmp_IDChopp = F("");
+	    tmp_Nome = F("");
+	    tmp_Tipo = F("");
+	    tmp_Valor = F("");
+	    tmp_Volume = F("");
+	    tmp_Ativa = F("");		
+		tmp_DataCad= F("");		
+		tmp_DataExp = F("");		
+		
 		
 		gFlow_Pulses_Corrigido_Atual = 0;
 		gFlow_Pulses_Atual = 0;
@@ -957,10 +996,11 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		gModoOperacao_SubTela = F("");	
 
 
-
-		delay(500); 
-
 		LED_SetLedState("RGB", false, "");
+
+		delay(50); 
+
+		
 
 
 	    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))

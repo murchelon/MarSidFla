@@ -77,8 +77,8 @@
 // TELA MAIN
 #include "../Tela/ChoppBot_Tela_Main.h" 
 
-
-
+// Funcoes Core do sistema
+#include "ChoppBot_FuncoesCore.h" 
 
 // RELE MAIN
 #include "../Rele/ChoppBot_Rele_Main.h" 
@@ -91,6 +91,7 @@
 
 // LEITOR BIOMETRICO MAIN
 #include "../Biometrico/ChoppBot_Bio_Main.h" 
+
 
 
 

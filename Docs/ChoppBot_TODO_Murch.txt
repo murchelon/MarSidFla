@@ -2,19 +2,35 @@
 TODO IMEDIATO -- DEPLOY LOJA CEBOLA:
 ====================================
 
+- revisar calculos. Aparentemente so o valor da sessao que esta sendo calculado errado
 OKOK! - Atualizar a variavel de engatados com o resultado da sessao
-- Mostrar o volume atual do chopp no botao de  abrir torneira
-- gravar no arqquivo engatados.txt todos os chopps da variavel. hoje so grava o escolhido
+OKOK! - gravar no arqquivo engatados.txt todos os chopps da variavel. hoje so grava o escolhido
+OKOK! - ajustar variaveis com decimal na conversao de float para string pois esta perdendo a parte decimal
+OKOK! - Atualizar saldo do usuario depois da sessao
+- se saldo chegar a zero tem de travar
+- se saldo chopp chegar a zero tem de travar
+OKOK! - Exibir tela de extrato da sessao
 - ajustar para 4 torneiras
+- Mostrar o volume atual do chopp no botao de abrir torneira
+- No desenho do botao, nao esta usando format number
 - mudar os botoes de modo que eles se ajustem de tamanho baseando se em 3 ou 4 torneiras
-- resolver bug debounce botoes/tela touch
+- testar se estao funcionando as 4 torneiras com o programa principal
 - mudar ordem das telas cebola
 - Gravar sessao real time na eprom
 - Criar rotina de recuperacao de saldo quadno desliga - chopp e usuario
-- testar uso das 4 torneiras
-- se saldo chegar a zero tem de travar
-- se saldo chopp chegar a zero tem de travar
-- ajustar variaveis com decimal na conversao de float para string pois esta perdendo a parte decimal
+
+- resolver bug debounce botoes/tela touch
+
+
+TODO HARDWARE:
+==============
+
+- Dar nome aos bois: Sugiro: Modulo de Fonte, Modulos de Sensor e Modulo Principal
+- Nos engates do modulo do sensor, deixar todos na mesma "posicao/orientacao fisica", para facilitar o engate
+- Criar "cabo intermediario" entre o modulo da fonte e modulo principal, que possa ter qualquer tamanho. Se possivel o mesmo entre os modulos de sensor e o modulo da fonte
+
+
+
 
 
 Itens ToDo, do murch, para muito em breve:

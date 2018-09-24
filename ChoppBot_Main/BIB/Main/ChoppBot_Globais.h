@@ -43,7 +43,7 @@ String gModoOperacao_SubTela;
 #define gTimeoutOpcao 7000		
 
 // tempo em ms para timeout de servico de torneira 
-#define ctTIMEOUT_TORNEIRA 10000		
+#define ctTIMEOUT_TORNEIRA 6000		
 
 
 // Numero maximo de torneiras possiveis no sistema

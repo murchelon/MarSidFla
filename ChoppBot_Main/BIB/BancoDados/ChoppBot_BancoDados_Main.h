@@ -529,7 +529,7 @@ String BANCO_AtualizaArquivoEngatados(String FullPathFile,
 	    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
 	    for (int x = 0 ; x <= 2 ; x++)
 	    {
-	    	LogTerm("gaEngatados[x]  = " + gaEngatados[x]);
+	    	//LogTerm("gaEngatados[x]  = " + gaEngatados[x]);
 
 	        if (gaEngatados[x] != "")
 	        {

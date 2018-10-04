@@ -274,6 +274,14 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 				break;
 
+			case 4:
+
+				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_4;
+
+				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_4;	
+
+				break;
+
 			case -1:
 				// nenhuma torneira atuva no momento
 			
@@ -407,7 +415,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 			tft.setCursor (340, 330);	
 
 			//tmp_Volume.replace(".", ",");		
-			tft.print (String(FormatNumber(tmp_Volume, "")) + String(F(" Litros")));
+			tft.print (String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
 
 
 
@@ -752,7 +760,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 						
 						tft.setTextColor(RA8875_YELLOW, RA8875_BLACK);
 						tft.setCursor (450, 390);			
-						tft.print (String(FormatNumber(liters_Atual, "")) + " Litros     ");
+						tft.print (String(FormatNumber(liters_Atual, "")) + F(" Litros     "));
 
 					}
 
@@ -770,7 +778,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 					
 						tft.setTextColor(RA8875_YELLOW, RA8875_BLACK);
 						tft.setCursor (450, 420);			
-						tft.print (FormatNumber(ValorSessaoChopp, F("MONEY")) + String("     ")); 
+						tft.print (FormatNumber(ValorSessaoChopp, F("MONEY")) + String(F("     "))); 
 
 					}
 
@@ -787,7 +795,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 						tft.setTextColor(RA8875_WHITE, RA8875_BLACK);
 						tft.setCursor (120, 45);	
-						tft.print (FormatNumber(ValorSaldoAtual, F("MONEY")) + String("     "));  
+						tft.print (FormatNumber(ValorSaldoAtual, F("MONEY")) + String(F("     ")));  
 
 					}
 
@@ -800,7 +808,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 						tft.setTextColor(RA8875_WHITE, RA8875_BLACK);
 						tft.setCursor (340, 330);			
-						tft.print (FormatNumber(VolumeAtual, "") + String(F(" Litros")) + String("     "));
+						tft.print (FormatNumber(VolumeAtual, "") + String(F(" Litros")) + String(F("     ")));
 
 					}
 
@@ -861,7 +869,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 // EXTRATO DA SESSAO - TELA
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+		/*
 		// Exibe tela te extrato, se em TELA
 	    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
 	    {
@@ -975,7 +983,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 	    }
 
-
+		*/
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SALVA DADOS DO USUARIO
@@ -1095,7 +1103,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 		
 
-		delay(6000); 
+		delay(2000); 
 
 		
 

@@ -4,9 +4,9 @@
 void CORE_ExecRotinaDefineChoppEngatados()
 {
 
+    /*
 
-
-    LogTerm(F("====  Engates  ===="));
+    LogTerm(F("====  Engates  ==== -- CORE_ExecRotinaDefineChoppEngatados"));
 
     String retEngatados = "";
 
@@ -37,11 +37,14 @@ void CORE_ExecRotinaDefineChoppEngatados()
     
 
 
-    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
+    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco;tipo;valor
     for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
     {
 
-        if (gaEngatados[x] != "")
+    	//murch
+    	//LogTerm(String(F("gaEngatados [")) + String(x) + String(F("] = ")) + gaEngatados[x]);
+
+        if (gaEngatados[x] != F(""))
         {
 
 
@@ -79,5 +82,8 @@ void CORE_ExecRotinaDefineChoppEngatados()
 
 
     }
+
+
+    */
 
 }

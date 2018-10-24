@@ -957,7 +957,6 @@ void TELA_Render_Interface_OPERACAO()
 
 			TELA_SetFontSize(1);
 
-			/*
 			tft.setTextColor(CinzaLabels);
 			tft.setCursor (10, 10);			
 			tft.print (F("Nome: ")); 
@@ -969,7 +968,8 @@ void TELA_Render_Interface_OPERACAO()
 			tft.print (gSessao_Nome); 
 			tft.setCursor (120, 45);	
 			tft.print (FormatNumber(gSessao_SaldoAtual, F("MONEY")));  
-			*/
+
+
 
 			//////////////////////////////////////  
 
@@ -1085,10 +1085,8 @@ void TELA_VerificaTouch_STANDBY()
 
 			gTelaRenderizada_STANDBY = false;
 
-			// murch cebola
-			//gModoOperacao = F("LOGIN");
-			gModoOperacao = F("OPERACAO");
-			gModoOperacao_SubTela = F("");
+			gModoOperacao = F("LOGIN");
+
 
             // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco;Tipo;Valor
             for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
@@ -1100,8 +1098,8 @@ void TELA_VerificaTouch_STANDBY()
 
             }
             
-            // murch cebola
-			//gModoOperacao_SubTela = F("LER_RFID");
+
+			gModoOperacao_SubTela = F("LER_RFID");
 
 		    TELA_LimpaTela();
 
@@ -1244,9 +1242,7 @@ void TELA_VerificaTouch_LOGIN()
 
 					//LogTerm(F("Aproxime o cartao da leitora RFID ...");
 
-
 					gModoOperacao_SubTela = F("LER_RFID");
-
 
 
 					gTelaRenderizada_LOGIN = false;
@@ -1563,10 +1559,7 @@ void TELA_VerificaTouch_OPERACAO()
 
 					gServico_ID_TorneiraAtual = 1;
 
-					//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-	
-					gModoOperacao = F("LOGIN");
-					gModoOperacao_SubTela = F("LER_RFID");
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
 
 					gTelaRenderizada_OPERACAO = false;
@@ -1594,9 +1587,7 @@ void TELA_VerificaTouch_OPERACAO()
 
 					gServico_ID_TorneiraAtual = 2;
 
-					//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-					gModoOperacao = F("LOGIN");
-					gModoOperacao_SubTela = F("LER_RFID");					
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
 
 					gTelaRenderizada_OPERACAO = false;
@@ -1626,9 +1617,8 @@ void TELA_VerificaTouch_OPERACAO()
 
 					gServico_ID_TorneiraAtual = 3;
 
-					//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-					gModoOperacao = F("LOGIN");
-					gModoOperacao_SubTela = F("LER_RFID");					
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
 
 					gTelaRenderizada_OPERACAO = false;
 
@@ -1657,9 +1647,7 @@ void TELA_VerificaTouch_OPERACAO()
 
 					gServico_ID_TorneiraAtual = 4;
 
-					gModoOperacao = F("LOGIN");
-					gModoOperacao_SubTela = F("LER_RFID");
-					//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
 
 					gTelaRenderizada_OPERACAO = false;

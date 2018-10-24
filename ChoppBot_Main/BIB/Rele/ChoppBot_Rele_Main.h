@@ -1100,10 +1100,10 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		gModoOperacao = F("STANDBY");  
 		gModoOperacao_SubTela = F("");	
 
-		LogTerm(String(F("To aqui porra: ")) + String(gModoOperacao));
+
 		
 
-		//delay(2000); 
+		delay(2000); 
 
 		
 

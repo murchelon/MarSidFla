@@ -612,12 +612,7 @@ void TELA_Render_Interface_LER_RFID()
 
 
 
-		//gModoOperacao_SubTela = F("");	
-		gModoOperacao_SubTela = F("OPERACAO_SERVICO");	
-
-
-		
-
+		gModoOperacao_SubTela = F("");	
 		gTelaRenderizada_LER_RFID = false;
 
 	    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))

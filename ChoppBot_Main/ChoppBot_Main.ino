@@ -57,8 +57,6 @@ void InitApp()
     LogTerm(F("///                                               ///"));
     LogTerm(F("///  by Murch & Cebola                            ///"));
     LogTerm(F("///                                               ///"));
-    LogTerm(F("///  Hardware: Margarida versao 0.3               ///"));
-    LogTerm(F("///                                               ///"));
     LogTerm(F("/////////////////////////////////////////////////////"));
     LogTerm(F(""));
     LogTerm(F("MAIN: Iniciando sistema..."));
@@ -149,111 +147,7 @@ void InitApp()
 
 
 
-
-    /*
-    String retFunc = F("");
-
-    String FullPathFile_TEMP;   
-    FullPathFile_TEMP = String(F("CB/BD/Chopp/EngatadosN.csv"));
-
-    String FullPathFile_ORIGINAL;   
-    FullPathFile_ORIGINAL = String(F("CB/BD/Chopp/Engatados.csv"));
-
-    LogTerm(F("Copiando arquivo Engatados.csv original ..."));
-    retFunc = SD_CopiaArquivo(FullPathFile_TEMP, FullPathFile_ORIGINAL);
-    LogTerm(String(F("SD_CopiaArquivo = ")) + retFunc);
-    */
-
-
-
     CORE_ExecRotinaDefineChoppEngatados();
-
-
-
-
-// efefef
-    LogTerm(F("====  Engates  ==== -- CORE_ExecRotinaDefineChoppEngatados"));
-
-    String retEngatados = "";
-
-    retEngatados = BANCO_DefineChoppEngatados(gaEngatados);  
-
-    if (retEngatados.substring(0, 1) != "1") 
-    {
-
-        BUZZER_TocaSom(F("ERRO"));
-
-
-        LogTerm(F("MAIN: Falha ao carregar arquivo com os chopps engatados"));
-        LogTerm(String(F("MAIN: Erro: ")) + retEngatados.substring(3));
-        LogTerm(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."));
-
-        if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
-        {       
-            TELA_Texto(F("MAIN: Falha ao carregar arquivo com os chopps engatados"), F("BRANCO"));
-            TELA_Texto(String(F("MAIN: Erro: ")) + retEngatados.substring(3), F("AMARELO"));
-            TELA_Texto(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."), F("BRANCO"));
-        }
-
-
-        delay(10000);
-        resetFunc();        
-    }
-
-    
-    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco;tipo;valor
-    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
-    {
-
-        //murch
-        //LogTerm(String(F("gaEngatados [")) + String(x) + String(F("] = ")) + gaEngatados[x]);
-
-        if (gaEngatados[x] != F(""))
-        {
-
-
-            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
-            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
-            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
-            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
-            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
-            //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
-            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
-            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
-
-            //LogTerm(gaEngatados[x]);
-
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- IDChopp: ")) + tmp_IDChopp);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Nome: ")) + tmp_Nome);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Tipo: ")) + tmp_Tipo);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Valor: ")) + tmp_Valor);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Volume Atual: ")) + tmp_Volume);
-            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Cadastro: " + tmp_DataCad);
-            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Expiracao: " + tmp_DataExp);
-
-            if (tmp_Ativa == F("1"))
-            {
-                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: SIM")));
-            }
-            else
-            {
-                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: NAO"))); 
-            }
-            
-            LogTerm(F("---------"));
-
-        }
-
-
-    }
-
-//e fefeef
-
-
-
-
-
-
     
     BUZZER_TocaSom(F("LIGAR"));
 
@@ -273,9 +167,6 @@ void InitApp()
     {
         TELA_LimpaTela();
     }
-
-
-
 
 
 

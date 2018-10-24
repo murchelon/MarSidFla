@@ -124,15 +124,6 @@ String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
 
 	retFunc = SD_GetAllRegsFromFile(FullPathFile_Engatados, aRetChoppsEngat, ctMAX_TORNEIRAS);
 
-
-
-	/*
-	for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
-	{
-		LogTerm(String(F("aRetChoppsEngat[")) + String(x) + String(F("] = ")) + aRetChoppsEngat[x]);
-	}	
-	*/
-
 	if ((retFunc.substring(0, 2) == F("-1")) || (retFunc.substring(0, 2) == F("-2")))
 	{
 		// erro de sd card
@@ -210,7 +201,6 @@ String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
 
 						if (temp_IDChopp == temp_IDChoppTabela)
 						{
-
 							aRetChoppsEngat[x] = getValue(aRetChoppsEngat[x], ';', 0) + String(";") + 
 												 getValue(aRetChoppsEngat[x], ';', 1) + String(";") + 
 												 getValue(aRetChoppsEngat[x], ';', 2) + String(";") + 
@@ -240,7 +230,7 @@ String BANCO_DefineChoppEngatados(String aRetChoppsEngat[])
 		{
 			if (aRetChoppsEngat[x] != F(""))
 			{
-				LogTerm(String(F("BANCO_DefineChoppEngatados - aRetChoppsEngat[")) + String(x) + String(F("] = ")) + aRetChoppsEngat[x]);
+				//LogTerm(String(F("aRetChoppsEngat[")) + String(x) + String(F("] = ")) + aRetChoppsEngat[x]);
 			}
 		}		
 		
@@ -537,10 +527,9 @@ String BANCO_AtualizaArquivoEngatados(String FullPathFile,
 
 
 	    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
-	    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+	    for (int x = 0 ; x <= 2 ; x++)
 	    {
-	    	// murch
-	    	LogTerm("Em BANCO_AtualizaArquivoEngatados - gaEngatados[" + String(x) + "]  = " + gaEngatados[x]);
+	    	//LogTerm("gaEngatados[x]  = " + gaEngatados[x]);
 
 	        if (gaEngatados[x] != "")
 	        {
@@ -584,11 +573,9 @@ String BANCO_AtualizaArquivoEngatados(String FullPathFile,
 									);			    	
 			    }
 
-						    
-		
 			    Arquivo_Temp.println(Linha);
 
-			    //Arquivo_Temp.println("NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa");
+
 
 	        }
 
@@ -602,11 +589,9 @@ String BANCO_AtualizaArquivoEngatados(String FullPathFile,
 
 		ret = String(F("1|Arquivo criado com sucesso: ")) + FullPathFile;
 
-	
 	}
 	
-
-
+	
 	return ret;
 
 }

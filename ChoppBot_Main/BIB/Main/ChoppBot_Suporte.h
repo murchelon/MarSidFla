@@ -219,8 +219,8 @@ uint16_t rgb565_from_triplet(uint8_t red, uint8_t green, uint8_t blue)
 }
 
 
-
-String FormatNumber(float Valor, String Tipo)
+template <class SomeType>
+String FormatNumber(SomeType Valor, String Tipo)
 {
 	String ret = F("");
 	String temp = String(Valor);
@@ -246,31 +246,4 @@ String FormatNumber(float Valor, String Tipo)
 	return ret;
 }
 
-
-
-String FormatNumber(String Valor, String Tipo)
-{
-	String ret = F("");
-	String temp = Valor;
-
-	temp.replace(F("."), F(","));
-
-
-	if (Tipo == F("MONEY"))
-	{
-		ret = F("R$ ");
-	}
-
-	if (temp.indexOf(F(",")) < 0)
-	{
-		ret += temp + ",00";
-	}
-	else
-	{
-		ret += temp;
-	}
-	
-
-	return ret;
-}
 

@@ -896,7 +896,9 @@ void TELA_Render_Interface_OPERACAO()
 			tft.setCursor (120, 10);			
 			tft.print (gSessao_Nome); 
 			tft.setCursor (120, 45);	
-			tft.print (FormatNumber(gSessao_SaldoAtual, "MONEY"));  
+
+			tft.print (FormatNumber(gSessao_SaldoAtual, F("MONEY")));  
+
 
 
 
@@ -1025,8 +1027,11 @@ void TELA_VerificaTouch_STANDBY()
 			gTelaRenderizada_STANDBY = false;
 
 			gModoOperacao = F("LOGIN");
+
 			//gModoOperacao = "OPERACAO";
 			//gModoOperacao = "DEBUG";
+
+
 
 			TELA_LimpaTela();
 
@@ -1038,15 +1043,16 @@ void TELA_VerificaTouch_STANDBY()
 
 			gModoOperacao = F("LOGIN");
 
+
+        
+            
+
 			gModoOperacao_SubTela = F("LER_RFID");
 
 		    TELA_LimpaTela();
 
 			delay(500);  			
 
-
-
-		
 
 		}
 
@@ -1537,6 +1543,37 @@ void TELA_VerificaTouch_OPERACAO()
 					gServico_ID_TorneiraAtual = 3;
 
 					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+
+					gTelaRenderizada_OPERACAO = false;
+
+					TELA_LimpaTela();
+
+					delay(500);  	
+
+				}
+
+			}
+
+
+	
+
+			//botao 4:
+			if (gTouch_X >= 4 * gOffset_W + 3 * gTamBotao_W && gTouch_X <= 4 * gOffset_W + 4 * gTamBotao_W )  
+			{
+
+				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
+				{
+
+					LogTerm(F("BOTAO 4 APERTADO"));
+					//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
+					//delay(500);
+					//TELA_LogTerm_XY();    
+
+					gServico_ID_TorneiraAtual = 4;
+
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
 
 
 					gTelaRenderizada_OPERACAO = false;

@@ -1093,9 +1093,8 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		gModoOperacao_SubTela = F("");	
 
 
-		
+		delay(2000); 
 
-		delay(6000); 
 
 		
 

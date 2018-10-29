@@ -11,7 +11,7 @@
 
 
 
-#include "BIB/Main/ChoppBot_Main_BIB.h" 
+#include "BIB/Main/ChoppBot_IncludeGeral.h" 
 
 
 
@@ -97,6 +97,8 @@ void InitApp()
     pinMode(RELE_PINO_TORNEIRA_2, OUTPUT);
     pinMode(RELE_PINO_TORNEIRA_3, OUTPUT);
 
+
+
     // Define os RELES como DESLIGADOS
     digitalWrite(RELE_PINO_TORNEIRA_1, HIGH);
     digitalWrite(RELE_PINO_TORNEIRA_2, HIGH);
@@ -104,31 +106,34 @@ void InitApp()
 
 
 
-
     // Inicia os FLOW METERS
     pinMode(FLOW_PINO_SENSOR_1, INPUT);
     digitalWrite(FLOW_PINO_SENSOR_1, HIGH);
 
-
     pinMode(FLOW_PINO_SENSOR_2, INPUT);
     digitalWrite(FLOW_PINO_SENSOR_2, HIGH);
-
 
     pinMode(FLOW_PINO_SENSOR_3, INPUT);
     digitalWrite(FLOW_PINO_SENSOR_3, HIGH);
 
 
+
+    // Inicia o SD
     digitalWrite(SD_MAX_TENTATIVA_READ, HIGH);
     digitalWrite(SD_DELAY_TENTATIVA_READ, HIGH);
     digitalWrite(SD_PINO, HIGH);
 
 
+
+    // Inicia RFID
     digitalWrite(RFID_PINO_SCK, HIGH);
     digitalWrite(RFID_PINO_MOSI, HIGH);
     digitalWrite(RFID_PINO_SS, HIGH);
     digitalWrite(RFID_PINO_MISO, HIGH);
     digitalWrite(RFID_PINO_IRQ, HIGH);
     digitalWrite(RFID_PINO_RESET, HIGH);
+
+
 
     delay(500);
 
@@ -142,85 +147,10 @@ void InitApp()
 
 
 
+    CORE_ExecRotinaDefineChoppEngatados();
     
-
-
-
-    LogTerm(F("====  Engates  ===="));
-
-    String retEngatados = "";
-
-    retEngatados = BANCO_DefineChoppEngatados(gaEngatados);  
-
-    if (retEngatados.substring(0, 1) != "1") 
-    {
-
-        BUZZER_TocaSom(F("ERRO"));
-
-
-        LogTerm(F("MAIN: Falha ao carregar arquivo com os chopps engatados"));
-        LogTerm(String(F("MAIN: Erro: ")) + retEngatados.substring(3));
-        LogTerm(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."));
-
-        if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
-        {       
-            TELA_Texto(F("MAIN: Falha ao carregar arquivo com os chopps engatados"), F("BRANCO"));
-            TELA_Texto(String(F("MAIN: Erro: ")) + retEngatados.substring(3), F("AMARELO"));
-            TELA_Texto(F("MAIN: Fallha critica. O sistema sera reiniciado em 10 segundos..."), F("BRANCO"));
-        }
-
-
-        delay(10000);
-        resetFunc();        
-    }
-
     BUZZER_TocaSom(F("LIGAR"));
 
-
-    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
-    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
-    {
-
-        if (gaEngatados[x] != "")
-        {
-
-
-            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
-            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
-            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
-            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
-            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
-            //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
-            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
-            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
-
-            //LogTerm(gaEngatados[x]);
-
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- IDChopp: ")) + tmp_IDChopp);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Nome: ")) + tmp_Nome);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Tipo: ")) + tmp_Tipo);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Valor: ")) + tmp_Valor);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Volume Atual: ")) + tmp_Volume);
-            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Cadastro: " + tmp_DataCad);
-            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Expiracao: " + tmp_DataExp);
-
-            if (tmp_Ativa == F("1"))
-            {
-                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: SIM")));
-            }
-            else
-            {
-                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: NAO"))); 
-            }
-            
-            LogTerm(F("---------"));
-
-        }
-
-
-    }
-
-    
 
     //BIOMETRICO_Inicia();
 
@@ -238,7 +168,93 @@ void InitApp()
         TELA_LimpaTela();
     }
 
+
+
+
+
+    /*
+
+    String ret = F("");
+
+    String FullPathFile_TEMP;   
+    FullPathFile_TEMP = String(F("CB/BD/Usuarios/TUSU_1.csv"));
+
+    String FullPathFile_ORIGINAL; 
+    FullPathFile_ORIGINAL = String(F("CB/BD/Usuarios/USU_1.csv"));  
+
+
     
+    String retFunc = F("");
+    retFunc = SD_RenameArquivo(FullPathFile_TEMP, FullPathFile_ORIGINAL);
+
+
+    if (retFunc.substring(0, 1) == F("0"))
+    {
+        // arquivo temporario antigo localizado
+        LogTerm(String(F("Falha em renomear arquivo temporario de usuario para o final: ")) + retFunc);
+
+        ret = F("0|Falha na atualizacao de saldo do usuario");
+    }
+    else
+    {
+        LogTerm(String(F("Arquivo temporario de usuario renomeado com sucesso para versao final: ")) + retFunc);
+
+        ret = F("1|Saldo atualizado com sucesso");
+    }
+
+
+
+
+    while (1)
+    {}
+    */
+
+     /*
+
+    gServico_ID_TorneiraAtual = 9;
+    gSessao_IDUser = 1;
+    gSessao_Nome = F("murchelongo");
+    gSessao_CPF = F("xxx25632071855");
+    gSessao_DataCad = F("03/06/1977");
+    gSessao_SaldoAtual = 999;
+    gFlow_Pulses_Corrigido_Atual = 9999;
+
+
+
+    String tmp_IDChopp = F("9");
+    String tmp_Nome = F("xxxTartatuga de Pente");
+    String tmp_Valor = F("55,24");
+    float liters_Atual = 0.22;
+    float ValorSessaoChopp = 15.12;
+    float ValorSaldoAtual = 12.34;
+    float VolumeAtual = 56.78;
+
+    String retFunc = F("");
+    retFunc = BANCO_AtualizaSaldoUserLogado(tmp_IDChopp,
+                                            tmp_Nome,
+                                            tmp_Valor,
+                                            liters_Atual,
+                                            ValorSessaoChopp,
+                                            ValorSaldoAtual,
+                                            VolumeAtual
+                                            );
+
+    if (retFunc.substring(0, 1) == F("1"))
+    {
+        LogTerm(F("Saldo/Sessao de usuario atualizado com sucesso !"));
+    }
+    else
+    {
+        LogTerm(String(F("Falha na atualizacao do Saldo/Sessao: ")) + retFunc);
+    }
+
+
+    while (1)
+    {}
+
+    */
+
+
 
 }
 

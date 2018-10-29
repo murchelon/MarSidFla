@@ -1,21 +1,62 @@
+
+TODO IMEDIATO -- DEPLOY LOJA CEBOLA:
+====================================
+
+- revisar calculos. Aparentemente so o valor da sessao que esta sendo calculado errado
+OKOK! - Atualizar a variavel de engatados com o resultado da sessao
+OKOK! - gravar no arqquivo engatados.txt todos os chopps da variavel. hoje so grava o escolhido
+OKOK! - ajustar variaveis com decimal na conversao de float para string pois esta perdendo a parte decimal
+OKOK! - Atualizar saldo do usuario depois da sessao
+- se saldo chegar a zero tem de travar
+- se saldo chopp chegar a zero tem de travar
+OKOK! - Exibir tela de extrato da sessao
+- ajustar para 4 torneiras
+- Mostrar o volume atual do chopp no botao de abrir torneira
+- No desenho do botao, nao esta usando format number
+- mudar os botoes de modo que eles se ajustem de tamanho baseando se em 3 ou 4 torneiras
+- testar se estao funcionando as 4 torneiras com o programa principal
+- mudar ordem das telas cebola
+- Gravar sessao real time na eprom
+- Criar rotina de recuperacao de saldo quadno desliga - chopp e usuario
+
+- resolver bug debounce botoes/tela touch
+
+
+TODO HARDWARE:
+==============
+
+- Dar nome aos bois: Sugiro: Modulo de Fonte, Modulos de Sensor e Modulo Principal
+- Nos engates do modulo do sensor, deixar todos na mesma "posicao/orientacao fisica", para facilitar o engate
+- Criar "cabo intermediario" entre o modulo da fonte e modulo principal, que possa ter qualquer tamanho. Se possivel o mesmo entre os modulos de sensor e o modulo da fonte
+
+
+
+
+
 Itens ToDo, do murch, para muito em breve:
 
+- introduzir DATAS no sistema. Vai ser foda
+- Fazer ler do pendrive
+- Fazer ler daquele chipp
+OKOK! - Gravar sessao no SD do usuario
+OKOK! - Gravar sessao no SD do chopp
 OKOK! - Ver programa exemplo kegbot que cebola colocou no meu lap (onde esta ? nao achei)
 OKOK! - portar choppbot para rodar em stripped arduino (sem tela, com terminal)
 OKOK! - portar choppbot para rodar no uno ardusim (portado para o Simulator)
 OKOK! - resolver if do cebola
 - criar breadboard de testes com botoes fisicos para usar o stripped arduino sem a margarida
 - criar botoes e sd e bio e rfid no uno ardusim
-- na breadboard dos botoes, colocar fisicamente SD e RFID para poder testar em casa sem a margarida
+OKOK! - na breadboard dos botoes, colocar fisicamente SD e RFID para poder testar em casa sem a margarida
 OKOK! - criar teclado alfanumerico
-- fazer o SD funcionar no programa principal
-- fazero RFID funcionar no programa principal
-- fazer o biometrico funcionar no programa principal
+OKOK! - fazer o SD funcionar no programa principal
+OKOK! - fazero RFID funcionar no programa principal
 OKOK! - Arrumar identacao para TAB (4 espacos)
-- fazer os 2 teclados (alpha e num) poderem ser chamados de qualquer tela, sem que tenhamos de alterar o gModoOperacao
+OKOK!- fazer os 2 teclados (alpha e num) poderem ser chamados de qualquer tela, sem que tenhamos de alterar o gModoOperacao
 
 mais para frente:
 
+- fazer o biometrico funcionar no programa principal
+- resolver acentuacao no arduino
 - avisar de algum modo, quando a quantidade chegar em determinado nivel. email, sms ou algo 
 - medir quanto tem de chopp ainda. Exibir em litros e/ou em pints
 - biometrico total

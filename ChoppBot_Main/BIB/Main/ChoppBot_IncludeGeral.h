@@ -44,8 +44,6 @@
 // BANCO DE DADOS - EDB - Engine
 //#include <EDB.h>
 
-// BANCO DE DADOS - MAIN
-#include "../BancoDados/ChoppBot_BancoDados_Main.h" 
 
 // LEITOR RFID PN532 (Com NFC) - Engine
 #include <Wire.h>
@@ -73,8 +71,17 @@
 
 #include "../Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
 
+// BANCO DE DADOS - MAIN
+#include "../BancoDados/ChoppBot_BancoDados_Main.h" 
+
 // TELA MAIN
 #include "../Tela/ChoppBot_Tela_Main.h" 
+
+// Funcoes Core do sistema
+#include "ChoppBot_FuncoesCore.h" 
+
+// RELE MAIN
+#include "../Rele/ChoppBot_Rele_Main.h" 
 
 
 // LEITOR BIOMETRICO ADAFRUIT - Engine
@@ -87,8 +94,8 @@
 
 
 
-// RELE MAIN
-#include "../Rele/ChoppBot_Rele_Main.h" 
+
+
 
 
 

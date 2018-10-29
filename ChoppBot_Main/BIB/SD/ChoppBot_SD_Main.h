@@ -3,6 +3,81 @@
 
 
 
+String SD_TestaCartao()
+{
+
+	uint32_t cardSize;
+
+	SdFat SD;
+
+	String ret = F("1|");
+
+
+
+	uint32_t t = millis();
+
+	// not over 50 MHz. Try a lower speed if SPI errors occur.
+	if (!SD.cardBegin(SD_PINO, SPI_SIXTEENTH_SPEED))
+	{
+		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
+
+		ret = F("0|Falha na inicializacao do cartao SD");
+		return ret;	
+	}
+
+	t = millis() - t;	
+
+	ret += String(t) + String(F("ms|"));
+
+	cardSize = SD.card()->cardSize();
+
+	if (cardSize == 0) 
+	{
+		LogTerm(F("SD: Falha ao obter o tamanho do cartao SD"));
+
+		ret = F("0|Falha ao obter o tamanho do cartao SD");
+		return ret;	
+	}
+
+
+	
+
+	//cout << F("\ninit time: ") << t << " ms" << endl;
+	//cout << F("\nCard type: ");
+
+	switch (SD.card()->type())
+	{
+		case SD_CARD_TYPE_SD1:
+			ret += String(F("SD1"));
+			break;
+
+		case SD_CARD_TYPE_SD2:
+			ret += String(F("SD2"));
+			break;
+
+		case SD_CARD_TYPE_SDHC:
+			if (cardSize < 70000000) 
+			{
+				ret += String(F("SDHC"));
+			} 
+			else
+			{
+				ret += String(F("SDXC"));
+			}
+			break;
+
+		default:
+			ret += String(F("Desconhecido"));
+			break;
+	}
+
+
+	return ret;	
+}
+
+
+
+
 
 // retorna formato: CodRetorno|descricao
 // Param byref: LetorSD - SD_CHIP_SELECT	SD_CHIP_SELECTretora o objeto passado, leitor SD
@@ -390,14 +465,13 @@ String SD_CreateNewUserFile(String FullPathFile_TEMP, int IDUser, String CPF, St
 
 
 
+
 String SD_ApagaArquivo(String FullPathFile)
 {
 
-	String ret = F("1|");
+	String ret = F("");
 
-
-
-	File ArquivoUser_Temp;
+	File Arquivo_Temp;
 
 
 	SdFat SD;
@@ -411,104 +485,70 @@ String SD_ApagaArquivo(String FullPathFile)
 	}
 
 
-	bool ArqApagou;
+	Arquivo_Temp = SD.open(FullPathFile, O_WRITE);
 
-	//ArquivoUser_Temp = SD.remove(FullPathFile);
-	//ArqApagou = SD.remove(FullPathFile);
-
-	if (ArqApagou)
+	if (Arquivo_Temp.remove())
 	{
-
-		ret += "Arquivo apagado com sucesso";
-
+		ret = String(F("1|Arquivo apagado com sucesso: ")) + FullPathFile;
 	}
 	else
 	{
-		ret = String(F("-2|Nao foi possivel apagar o arquivo ")) + FullPathFile;
+		ret = String(F("0|Nao foi possivel apagar o arquivo: ")) + FullPathFile;
 	}
-
-
 
 	return ret;
-
 }
 
 
 
 
 
-
-String SD_TestaCartao()
+String SD_RenameArquivo(String FullPathFile_Original, String FullPathFile_Destino)
 {
 
-	uint32_t cardSize;
+	String ret = F("");
 
 	SdFat SD;
+	String retSD = F("");
 
-	String ret = F("1|");
+	retSD = SD_InicializaCartaoSD(SD);
 
-
-
-	uint32_t t = millis();
-
-	// not over 50 MHz. Try a lower speed if SPI errors occur.
-	if (!SD.cardBegin(SD_PINO, SPI_SIXTEENTH_SPEED))
+	if (retSD.substring(0, 1) != F("1"))
 	{
-		LogTerm(F("SD: Falha na inicializacao do cartao SD"));
-
-		ret = F("0|Falha na inicializacao do cartao SD");
-		return ret;	
-	}
-
-	t = millis() - t;	
-
-	ret += String(t) + String(F("ms|"));
-
-	cardSize = SD.card()->cardSize();
-
-	if (cardSize == 0) 
-	{
-		LogTerm(F("SD: Falha ao obter o tamanho do cartao SD"));
-
-		ret = F("0|Falha ao obter o tamanho do cartao SD");
-		return ret;	
+		return retSD;
 	}
 
 
-	
+	char __FullPathFile_Original[FullPathFile_Original.length() + 1];
+	FullPathFile_Original.toCharArray(__FullPathFile_Original, sizeof(__FullPathFile_Original));
 
-	//cout << F("\ninit time: ") << t << " ms" << endl;
-	//cout << F("\nCard type: ");
+	char __FullPathFile_Destino[FullPathFile_Destino.length() + 1];
+	FullPathFile_Destino.toCharArray(__FullPathFile_Destino, sizeof(__FullPathFile_Destino));
 
-	switch (SD.card()->type())
+
+	SdFile Arquivo_Temp(__FullPathFile_Original, O_WRITE);
+
+	if (!Arquivo_Temp.isOpen()) 
 	{
-		case SD_CARD_TYPE_SD1:
-			ret += String(F("SD1"));
-			break;
-
-		case SD_CARD_TYPE_SD2:
-			ret += String(F("SD2"));
-			break;
-
-		case SD_CARD_TYPE_SDHC:
-			if (cardSize < 70000000) 
-			{
-				ret += String(F("SDHC"));
-			} 
-			else
-			{
-				ret += String(F("SDXC"));
-			}
-			break;
-
-		default:
-			ret += String(F("Desconhecido"));
-			break;
+		ret = String(F("0|Nao foi possivel localizar o arquivo: ")) + FullPathFile_Original;
+	}
+	else
+	{
+		if (Arquivo_Temp.rename(SD.vwd(), __FullPathFile_Destino)) 
+		{
+			ret = String(F("1|Arquivo renomeado com sucesso: ")) + FullPathFile_Original + String(F(" para ")) + FullPathFile_Destino;
+		}
+		else
+		{
+			ret = String(F("0|Nao foi possivel renomear o arquivo: ")) + FullPathFile_Original + String(F(" para ")) + FullPathFile_Destino;
+		}
 	}
 
-
-	return ret;	
+	return ret;
 }
+
+
+
 
 
 

@@ -29,7 +29,9 @@
 // TESTE
 
 // VERSAO DA APLICACAO
-#define VersaoAPP F("1.0")
+#define VersaoAPP F("0.2")
+#define NOME_LOJA_LINHA1 F("Experiencia")
+#define NOME_LOJA_LINHA2 F("Cervejeira")
 
 
 String gModoOperacao; 
@@ -47,7 +49,7 @@ String gModoOperacao_SubTela;
 
 
 // Numero maximo de torneiras possiveis no sistema
-#define ctMAX_TORNEIRAS 4
+#define ctMAX_TORNEIRAS 4 // inicia em zero, ou seja, 3 para 4 torneiras fisicas
 String gaEngatados[ctMAX_TORNEIRAS];	
 
 
@@ -61,7 +63,7 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define TELA_PINO_RESET 9
 
 // Banco de Dados
-#define BANCO_MAX_CHOPPS 50
+#define BANCO_MAX_CHOPPS 50  // numero maximo de chopps que podem ser cadastrados no banco de dados
 
 // SD
 #define SD_MAX_TENTATIVA_READ 	2
@@ -80,11 +82,13 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define RELE_PINO_TORNEIRA_1 45
 #define RELE_PINO_TORNEIRA_2 46
 #define RELE_PINO_TORNEIRA_3 47
+#define RELE_PINO_TORNEIRA_4 48
 
 // Flow Sensor
 #define FLOW_PINO_SENSOR_1 36
 #define FLOW_PINO_SENSOR_2 37 
 #define FLOW_PINO_SENSOR_3 38 
+#define FLOW_PINO_SENSOR_4 39
 
 // Pino do LED Cor Fixa
 #define ctPINO_LED_CORFIXA 26

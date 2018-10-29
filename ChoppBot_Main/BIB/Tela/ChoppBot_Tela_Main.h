@@ -12,11 +12,11 @@ uint16_t gTxtSize = 15;
 
 
 // valores padrao de tamanho e altura dos botoes
-int gTamBotao_W = 180;
-int gTamBotao_H = 180;
+int gTamBotao_W = 150;
+int gTamBotao_H = 150;
 
 // valores padrao de espacamento X e Y dos botoes. A altura é iniciada como -1 pois é definida posteriormente no codigo
-int gOffset_W = 65;
+int gOffset_W = 45;
 int gOffset_H = -1;
 
 // var que contem a posicao atual X para desenhar os botoes
@@ -37,7 +37,7 @@ volatile uint16_t gTouch_Y;
 
 
 // var com a posicao Y padrao para desenhar botoes
-#define POSICAO_PADRAO_BTN_Y 140
+#define POSICAO_PADRAO_BTN_Y 154
 
 
 
@@ -95,6 +95,80 @@ void TELA_LimpaTela()
 	tft.fillScreen(RA8875_BLACK);
 	tft.fillScreen(RA8875_BLACK);
 }
+
+
+
+
+ 
+void TELA_Texto_Centralizado(String Texto, String Cor, int Tamanho, uint16_t PosY)
+{
+
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{
+
+		
+
+
+		if (Cor == F(""))
+		{
+			Cor = F("AMARELO");
+		}
+
+
+		if (Cor == F("BRANCO"))
+		{
+			tft.setTextColor(RA8875_WHITE);
+		}
+
+		if (Cor == F("AMARELO"))
+		{
+			tft.setTextColor(RA8875_YELLOW);
+		}
+
+		if (Cor == F("VERMELHO"))
+		{
+			tft.setTextColor(RA8875_RED);
+		}
+
+		if (Cor == F("VERDE"))
+		{
+			tft.setTextColor(RA8875_GREEN);
+		}
+
+		if (Cor == F("AZUL"))
+		{
+			tft.setTextColor(RA8875_BLUE);
+		}
+
+		if (Cor == F("MAGENTA"))
+		{
+			tft.setTextColor(RA8875_MAGENTA);
+		}
+
+
+		TELA_SetFontSize(Tamanho);
+
+		uint16_t PosX = 0;
+		int TamanhoLetra_W = 0;
+		int Ajuste_W = 10;
+
+		if (Tamanho == 0){TamanhoLetra_W = 0;}
+		if (Tamanho == 1){TamanhoLetra_W = 15;}
+		if (Tamanho == 2){TamanhoLetra_W = 0;}
+		if (Tamanho == 3){TamanhoLetra_W = 33;}
+
+
+		PosX = (800 / 2) - ((Texto.length() / 2) * TamanhoLetra_W) - Ajuste_W;
+		tft.setCursor(PosX, PosY);
+
+
+		tft.print(Texto);
+
+
+	}
+}
+
+
 
 
 
@@ -252,7 +326,7 @@ void TELA_LogTerm_XY()
 		int btnSair_Size_H = 60;	
 
 		sprintf(TheTexto,"SAIR: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- gBounce_ContaClick = %d", gTouch_X, gTouch_Y, btnSair_PosAtual_X, btnSair_PosAtual_X + btnSair_Size_W, btnSair_PosAtual_Y, btnSair_PosAtual_Y + btnSair_Size_H, gBounce_ContaClick);  
-		TELA_Texto(TheTexto, "");
+		TELA_Texto(TheTexto, F(""));
 
 		LogTerm(TheTexto);
 
@@ -542,7 +616,7 @@ void TELA_IniciaTela()
 
 
 
-void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto3, String Cor)
+void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto3, String Texto4, String Cor)
 {
 
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
@@ -552,10 +626,11 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 		int OffSet_TextoBotao_H = gTamBotao_H / 2 - 27;
 
 		int OffSet_TextoTitulo_W = 0;
-		int OffSet_TextoTitulo_H = 140;
+		int OffSet_TextoTitulo_H = 126;
 
 		int OffSet_TextoTitulo2_H = 25;
 		int OffSet_TextoTitulo3_H = 50;
+		int OffSet_TextoTitulo4_H = 75;
 
 
 		/*
@@ -661,6 +736,12 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 		}
 
 
+		if (Texto4 != F(""))
+		{
+			tft.setCursor (gPosicaoAtual_X + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H + OffSet_TextoTitulo4_H); 
+			tft.print (Texto4);
+		}
+
 		gTotalBotoes++;
 
 	}
@@ -690,22 +771,55 @@ void TELA_Render_Interface_STANDBY()
 		if (ctTELA_HARDWARE == F("TERMINAL"))
 		{  
 			LogTerm(String(F("ChoppBot ")) + String(VersaoAPP));
+
+			if (NOME_LOJA_LINHA2 != F(""))
+			{
+				LogTerm(String(F("Licenciado para: ")) + String(NOME_LOJA_LINHA1) + String(F(" ")) + String(NOME_LOJA_LINHA2));
+			}
+			else
+			{
+				LogTerm(String(F("Licenciado para: ")) + String(NOME_LOJA_LINHA1));
+			}
+
 			LogTerm(F("Tecle algo no console para iniciar..."));
 		}
+
+
 
 		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 		{  
 
-			tft.setTextColor(RA8875_YELLOW);
-			tft.setCursor (210, 150);
-			TELA_SetFontSize(3);
-			tft.print (String(F("ChoppBot ")) + String(VersaoAPP));    
-			//tft.print ("ChoppBot 1.0");    
 
+
+			
+			// versao do choppbot
+			TELA_SetFontSize(0); 
+			tft.setTextColor(CinzaLabels);
+			tft.setCursor (685, 10);			
+			tft.print (String(F("ChoppBot ")) + String(VersaoAPP)); 
+
+
+
+			// Titulo
+			TELA_Texto_Centralizado(String(NOME_LOJA_LINHA1), F("AMARELO"), 3, 110);
+
+			if (NOME_LOJA_LINHA2 != F(""))
+			{
+				TELA_Texto_Centralizado(String(NOME_LOJA_LINHA2), F("AMARELO"), 3, 180);
+			}
+
+
+			// texto explicativo
 			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (195, 310);
-			TELA_SetFontSize(1); 
-			tft.print (F("Toque na tela para iniciar"));    
+
+  
+			//tft.setCursor (195, 310);
+			//TELA_SetFontSize(1); 
+			TELA_Texto_Centralizado(String(F("Toque na tela para iniciar")), F("BRANCO"), 1, 330);
+
+			//tft.print (F("Toque na tela para iniciar"));   
+
+
 
 		}
 
@@ -773,10 +887,10 @@ void TELA_Render_Interface_LOGIN()
 
 				gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
 
-				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F("BRANCO"));
-				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F("AZUL"));
-				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F("MAGENTA"));
-				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F("MAGENTA"));
+				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"));
+				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F(""), F("AZUL"));
+				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"));
+				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"));
 
 				// Area para chamar admin
 				//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
@@ -796,10 +910,10 @@ void TELA_Render_Interface_LOGIN()
 
 				gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
 
-				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F("BRANCO"));
-				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F("AZUL"));
-				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F("MAGENTA"));
-				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F("MAGENTA"));
+				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"));
+				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F(""), F("AZUL"));
+				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"));
+				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"));
 
 				// Area para chamar admin
 				//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
@@ -844,7 +958,7 @@ void TELA_Render_Interface_OPERACAO()
 		    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
 		    {
 
-		        if (gaEngatados[x] != "")
+		        if (gaEngatados[x] != F(""))
 		        {
 
 
@@ -955,7 +1069,9 @@ void TELA_Render_Interface_OPERACAO()
 		            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
 
 
-		            TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( String(F("R$ ")) + tmp_Valor + String(F(" / Litro")) ), F("AZUL"));
+		            //TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( String(F("R$ ")) + tmp_Valor + String(F(" / Litro")) ), F("AZUL"));
+
+		            TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")) ), String(FormatNumber(tmp_Volume, F("")) + String(F(" litros")) ), F("AZUL"));
 
 
 
@@ -989,7 +1105,7 @@ void TELA_VerificaTouch_STANDBY()
 
 		retConsole = ReadConsoleInput();
 
-		if (retConsole != "") 
+		if (retConsole != F(""))
 		{
 			LogTerm(String(F("Opcao selecionada: ")) + retConsole);
 
@@ -1610,9 +1726,6 @@ void TELA_VerificaTouch_DEBUG()
 	TELA_VerificaTouch_TECLADO_ALFA();
 
 }
-
-
-
 
 
 

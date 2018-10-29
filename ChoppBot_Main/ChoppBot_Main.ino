@@ -57,26 +57,28 @@ void InitApp()
     LogTerm(F("///                                               ///"));
     LogTerm(F("///  by Murch & Cebola                            ///"));
     LogTerm(F("///                                               ///"));
+    LogTerm(F("///  Hardware: Margarida versao 0.3               ///"));
+    LogTerm(F("///                                               ///"));
     LogTerm(F("/////////////////////////////////////////////////////"));
     LogTerm(F(""));
     LogTerm(F("MAIN: Iniciando sistema..."));
 
 
     
-    LED_SetLedState("BUILTIN", false, "");
+    LED_SetLedState(F("BUILTIN"), false, F(""));
 
 
     // da uma piscada no led interno para demonstrar inicio
     for (int x = 0 ; x <= 10 ; x++)
     {
-        LED_SetLedState("BUILTIN", false, "");
+        LED_SetLedState(F("BUILTIN"), false, F(""));
         delay(40);
-        LED_SetLedState("BUILTIN", true, "");
+        LED_SetLedState(F("BUILTIN"), true, F(""));
         delay(40);
         //LogTerm(F("ok to aqui"));
     }
 
-    LED_SetLedState("BUILTIN", false, "");
+    LED_SetLedState(F("BUILTIN"), false, F(""));
 
 
 
@@ -279,7 +281,7 @@ void Exec_INICIO()
 
 
 
-    //TELA_Render_MsgBox("", "X");
+    //TELA_Render_MsgBox(F(""), "X");
     //TELA_Render_MsgBox("Meu nome e MARCELO wef webfwef dd d dX");
     //TELA_Render_MsgBox("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456");
     //TELA_Render_MsgBox("12345678901234567890!@#$%^&*()abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");

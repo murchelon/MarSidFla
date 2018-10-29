@@ -20,7 +20,7 @@ void LED_RGB_ExecSetColor(int redValue, int greenValue, int blueValue)
 void LED_SetLedState(String LED, bool State, String Cor)
 {
 
-	if (LED == "BUILTIN")
+	if (LED == String(F("BUILTIN")))
 	{
 		if (State == true)
 		{
@@ -32,7 +32,7 @@ void LED_SetLedState(String LED, bool State, String Cor)
 		}		
 	}
 
-	if (LED == "CORFIXA")
+	if (LED == String(F("CORFIXA")))
 	{
 		if (State == true)
 		{
@@ -45,39 +45,39 @@ void LED_SetLedState(String LED, bool State, String Cor)
 	}
 
 
-	if (LED == "RGB")
+	if (LED == String(F("RGB")))
 	{
 
 
 		if (State == true)
 		{
 
-			if (Cor == "WHITE")
+			if (Cor == String(F("WHITE")))
 			{
 				LED_RGB_ExecSetColor(255, 255, 255);
 			}
 
-			if (Cor == "RED")
+			if (Cor == String(F("RED")))
 			{
 				LED_RGB_ExecSetColor(255, 0, 0);
 			}
 
-			if (Cor == "GREEN")
+			if (Cor == String(F("GREEN")))
 			{
 				LED_RGB_ExecSetColor(0, 255, 0);
 			}
 
-			if (Cor == "BLUE")
+			if (Cor == String(F("BLUE")))
 			{
 				LED_RGB_ExecSetColor(0, 0, 255);
 			}
 
-			if (Cor == "ORANGE")
+			if (Cor == String(F("ORANGE")))
 			{
 				LED_RGB_ExecSetColor(5, 215, 255);
 			}
 
-			if (Cor == "PURPLE")
+			if (Cor == String(F("PURPLE")))
 			{
 				LED_RGB_ExecSetColor(170, 0, 255);
 			}

@@ -227,7 +227,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
         volatile String Temp1 = F("");
         Temp1 = tmp_Valor;
-        Temp1.replace(",", ".");
+        Temp1.replace(F(","), F("."));
 
         tmp_Valor_float = Temp1.toFloat();
         // murch
@@ -274,6 +274,14 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 				break;
 
+			case 4:
+
+				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_4;
+
+				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_4;	
+
+				break;
+
 			case -1:
 				// nenhuma torneira atuva no momento
 			
@@ -304,7 +312,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 			LogTerm(String(F("Chopp: ")) + tmp_Nome);
 			LogTerm(String(F("Tipo: ")) + tmp_Tipo);
 			LogTerm(String(F("Preco: ")) + FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")));
-			LogTerm(String(F("Restante: ")) + String(FormatNumber(tmp_Volume, "")) + String(F(" Litros")));
+			LogTerm(String(F("Restante: ")) + String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
 			LogTerm(F("Volume Retirado: 0,00 Litros"));
 			LogTerm(String(F("Valor do Chopp sendo retirado: ")) + FormatNumber(0.0, F("MONEY")));
 
@@ -407,7 +415,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 			tft.setCursor (340, 330);	
 
 			//tmp_Volume.replace(".", ",");		
-			tft.print (String(FormatNumber(tmp_Volume, "")) + String(F(" Litros")));
+			tft.print (String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
 
 
 
@@ -447,7 +455,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 		// Liga Led Verde
-		LED_SetLedState("RGB", true, "GREEN");
+		LED_SetLedState(F("RGB"), true, F("GREEN"));
 		
 		// Inicia o FLOW METERS
 		digitalWrite(gPinoSensorFluxoAtivo, HIGH);
@@ -509,7 +517,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		        Exec_Loop_PodeSair = true;
 			    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
 				useInterrupt_2(false);		
-				LED_SetLedState("RGB", false, "");        
+				LED_SetLedState(F("RGB"), false, F(""));        
 		    }
 
 
@@ -519,18 +527,22 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		        Exec_Loop_PodeSair = true;
 			    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
 				useInterrupt_2(false);
-				LED_SetLedState("RGB", false, "");
+				LED_SetLedState(F("RGB"), false, F(""));
+
+				LogTerm(F("Estou no saldo atual e sai"));
 		    }
 
 
+		    /*
 		    // se o restante do chopp for zero, pode sair
 		    if (VolumeAtual <= 0)
 		    {
 		        Exec_Loop_PodeSair = true;
 			    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
 				useInterrupt_2(false);		
-				LED_SetLedState("RGB", false, "");        
+				LED_SetLedState(F("RGB"), false, F(""));        
 		    }
+			*/
 
 		    Last_SegundosPassados = SegundosPassados;
 
@@ -550,8 +562,17 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				}
 
 
+				if (tmp_VolumeInicialBarril - liters_Atual <= 0)
+				{
+					VolumeAtual = 0;
+				}
+				else
+				{
+					VolumeAtual = tmp_VolumeInicialBarril - liters_Atual;
+				}
 
-				VolumeAtual = tmp_VolumeInicialBarril - liters_Atual;
+
+				
 
 				tmp_Volume = String(VolumeAtual);
 
@@ -752,7 +773,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 						
 						tft.setTextColor(RA8875_YELLOW, RA8875_BLACK);
 						tft.setCursor (450, 390);			
-						tft.print (String(FormatNumber(liters_Atual, "")) + " Litros     ");
+						tft.print (String(FormatNumber(liters_Atual, F(""))) + String(F(" Litros     ")));
 
 					}
 
@@ -760,7 +781,17 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 					// VALOR DO CHOPP SENDO RETIRADO
 
 					
-					ValorSessaoChopp = tmp_Valor_float * liters_Atual;
+					if (tmp_Valor_float * liters_Atual >= gSessao_SaldoAtual)
+					{
+						ValorSessaoChopp = gSessao_SaldoAtual;
+					}
+					else
+					{
+						ValorSessaoChopp = tmp_Valor_float * liters_Atual;
+					}
+
+					
+					
 
 					//murch
 					LogTerm(String(F("Valor do Chopp = ")) + FormatNumber(ValorSessaoChopp, F("MONEY")));
@@ -770,7 +801,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 					
 						tft.setTextColor(RA8875_YELLOW, RA8875_BLACK);
 						tft.setCursor (450, 420);			
-						tft.print (FormatNumber(ValorSessaoChopp, F("MONEY")) + String("     ")); 
+						tft.print (FormatNumber(ValorSessaoChopp, F("MONEY")) + String(F("     "))); 
 
 					}
 
@@ -778,16 +809,23 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 					//////////////////////////////////////  
 					// cebcalho logado -- SALDO ATUAL
 
-					ValorSaldoAtual = 0;
-
-					ValorSaldoAtual = gSessao_SaldoAtual - ValorSessaoChopp;
+					
+					if (gSessao_SaldoAtual - ValorSessaoChopp <= 0)
+					{
+						ValorSaldoAtual = 0;
+					}
+					else
+					{
+						ValorSaldoAtual = gSessao_SaldoAtual - ValorSessaoChopp;
+					}
+					
 
 					if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 					{  
 
 						tft.setTextColor(RA8875_WHITE, RA8875_BLACK);
 						tft.setCursor (120, 45);	
-						tft.print (FormatNumber(ValorSaldoAtual, F("MONEY")) + String("     "));  
+						tft.print (FormatNumber(ValorSaldoAtual, F("MONEY")) + String(F("     ")));  
 
 					}
 
@@ -800,7 +838,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 						tft.setTextColor(RA8875_WHITE, RA8875_BLACK);
 						tft.setCursor (340, 330);			
-						tft.print (FormatNumber(VolumeAtual, "") + String(F(" Litros")) + String("     "));
+						tft.print (FormatNumber(VolumeAtual, F("")) + String(F(" Litros")) + String(F("     ")));
 
 					}
 
@@ -822,7 +860,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 	    // FECHA TORNEIRA -- FINALIZA SESSAO
 	    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
 		useInterrupt_2(false);
-		LED_SetLedState("RGB", false, "");
+		LED_SetLedState(F("RGB"), false, F(""));
 		delay(50);
 
 

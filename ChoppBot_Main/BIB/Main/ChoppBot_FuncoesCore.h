@@ -1,12 +1,72 @@
 
+
+
+
+void CORE_PrintChoppEngatados()
+{
+
+
+    LogTerm(F("====  Engates  ===================="));
+
+
+    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
+    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
+    {
+
+        if (gaEngatados[x] != F(""))
+        {
+
+
+            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
+            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
+            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
+            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
+            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
+            //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
+            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
+            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
+
+            //LogTerm(gaEngatados[x]);
+
+            if (tmp_IDChopp != F(""))
+            {
+                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- IDChopp: ")) + tmp_IDChopp);
+                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Nome: ")) + tmp_Nome);
+                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Tipo: ")) + tmp_Tipo);
+                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Valor: ")) + tmp_Valor);
+                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Volume Atual: ")) + tmp_Volume);
+                //LogTerm(F("Torneira [" + String(x) + "] -- Data de Cadastro: " + tmp_DataCad);
+                //LogTerm(F("Torneira [" + String(x) + "] -- Data de Expiracao: " + tmp_DataExp);
+
+                if (tmp_Ativa == F("1"))
+                {
+                    LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: SIM")));
+                }
+                else
+                {
+                    LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: NAO"))); 
+                }      
+                
+                LogTerm(F("---------------------------"));          
+            }
+
+
+            
+            
+
+        }
+
+
+    }    
+}
+
+
+
+
 // Rotina que define os chopps engatados na variavel global , a partir do arquivo engatados.txt e ainda exibe no terminal os chopps disponiveis
 // deve ser chamada sempre que for desejado atualizar a variavel global com os chopps engataods, logo depois de uma sessao, com o saldo atualizado do barril
 void CORE_ExecRotinaDefineChoppEngatados()
 {
-
-
-
-    LogTerm(F("====  Engates  ===="));
 
     String retEngatados = "";
 
@@ -36,48 +96,8 @@ void CORE_ExecRotinaDefineChoppEngatados()
 
     
 
-
-    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco
-    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
-    {
-
-        if (gaEngatados[x] != "")
-        {
+    CORE_PrintChoppEngatados();
 
 
-            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
-            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
-            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
-            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
-            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
-            //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
-            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
-            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
-
-            //LogTerm(gaEngatados[x]);
-
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- IDChopp: ")) + tmp_IDChopp);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Nome: ")) + tmp_Nome);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Tipo: ")) + tmp_Tipo);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Valor: ")) + tmp_Valor);
-            LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Volume Atual: ")) + tmp_Volume);
-            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Cadastro: " + tmp_DataCad);
-            //LogTerm(F("Torneira [" + String(x) + "] -- Data de Expiracao: " + tmp_DataExp);
-
-            if (tmp_Ativa == F("1"))
-            {
-                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: SIM")));
-            }
-            else
-            {
-                LogTerm(String(F("Torneira [")) + String(x) + String(F("] -- Ativa: NAO"))); 
-            }
-            
-            LogTerm(F("---------"));
-
-        }
-
-
-    }
 
 }

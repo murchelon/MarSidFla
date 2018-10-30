@@ -149,6 +149,31 @@ void InitApp()
 
 
 
+
+    /*
+    String retFunc = F("");
+
+    String FullPathFile_TEMP;   
+    FullPathFile_TEMP = String(F("CB/BD/Chopp/EngatadosN.csv"));
+
+    String FullPathFile_ORIGINAL;   
+    FullPathFile_ORIGINAL = String(F("CB/BD/Chopp/Engatados.csv"));
+
+    LogTerm(F("Apagando arquivo Engatados.csv ..."));
+    retFunc = SD_ApagaArquivo(FullPathFile_ORIGINAL);
+    delay(100);
+
+    LogTerm(F("Copiando arquivo Engatados.csv original ..."));
+    retFunc = SD_CopiaArquivo(FullPathFile_TEMP, FullPathFile_ORIGINAL);
+    LogTerm(String(F("SD_CopiaArquivo = ")) + retFunc);
+    delay(100);
+
+    */
+
+
+
+
+
     CORE_ExecRotinaDefineChoppEngatados();
     
     BUZZER_TocaSom(F("LIGAR"));
@@ -172,6 +197,8 @@ void InitApp()
 
 
 
+
+    
 
 
     /*

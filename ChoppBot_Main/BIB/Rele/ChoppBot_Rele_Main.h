@@ -282,6 +282,54 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 				break;
 
+			case 5:
+
+				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_5;
+
+				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_5;	
+
+				break;
+
+			case 6:
+
+				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_6;
+
+				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_6;	
+
+				break;
+
+			case 7:
+
+				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_7;
+
+				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_7;	
+
+				break;
+
+			case 8:
+
+				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_8;
+
+				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_8;	
+
+				break;
+
+			case 9:
+
+				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_9;
+
+				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_9;	
+
+				break;
+
+			case 10:
+
+				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_10;
+
+				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_10;	
+
+				break;
+
 			case -1:
 				// nenhuma torneira atuva no momento
 			
@@ -899,117 +947,128 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 // EXTRATO DA SESSAO - TELA
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		int ExibeExtratoEmTela = 0;
 
 		// Exibe tela te extrato, se em TELA
 	    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
 	    {
 
-
-            TELA_LimpaTela();
-
-            int PosInicial_X = 175;
-            int PosInicial_Y = 130;
-
-            int TamanhoLinha = 38;
-            int Pos_X_Coluna = 170;
-
-            int Fator_X = 0;
-            int Fator_Y = 0;
-
-            int ContaLinha = 0;
-
-
-            String outLabel = F("");
-            String outValor = F("");
+	    	if (ExibeExtratoEmTela == 1)
+	    	{
 
 
 
-            //////////////////////////////////////  
-            // Extrato da sessao
+	            TELA_LimpaTela();
 
-            TELA_SetFontSize(2); 
+	            int PosInicial_X = 175;
+	            int PosInicial_Y = 130;
 
-            tft.setTextColor(VerdeOK);
+	            int TamanhoLinha = 38;
+	            int Pos_X_Coluna = 170;
 
-            tft.setCursor (200, 30);           
-            tft.print (F("Extrato da Sessao"));    
+	            int Fator_X = 0;
+	            int Fator_Y = 0;
 
-            ////////////////////////////////////// 
-
-            TELA_SetFontSize(1); 
-
-            ////////////////////////////////////// 
-
-            for (ContaLinha = 1 ; ContaLinha <= 8 ; ContaLinha++)
-            {
+	            int ContaLinha = 0;
 
 
-                switch (ContaLinha) 
-                {
-                    case 1:
-                        outLabel = F("Nome:");
-                        outValor = gSessao_Nome;
-                        break;
-
-                    case 2:
-                        outLabel = F("Saldo:");
-                        outValor = FormatNumber(ValorSaldoAtual, F("MONEY"));
-                        break;
-
-                    case 4:
-                        outLabel = F("Torneira:");
-                        outValor = String(gServico_ID_TorneiraAtual);
-                        break;
-
-                    case 5:
-                        outLabel = F("Chopp:");
-                        outValor = tmp_Nome;
-                        break;
-
-                    case 6:
-                        outLabel = F("Tipo:");
-                        outValor = tmp_Tipo;
-                        break;
-
-                    case 8:
-                        outLabel = F("Total:");
-                        outValor = FormatNumber(ValorSessaoChopp, F("MONEY"));
-                        break;
-
-                    default:
-                        outLabel = F("");
-                        outValor = F("");
-                        break;
-                }
+	            String outLabel = F("");
+	            String outValor = F("");
 
 
 
-                // Label
-                Fator_X = PosInicial_X;
-                Fator_Y = PosInicial_Y + ((ContaLinha - 1) * TamanhoLinha);  
+	            //////////////////////////////////////  
+	            // Extrato da sessao
 
-                tft.setTextColor(CinzaLabels);
-                tft.setCursor (Fator_X, Fator_Y);         
-                tft.print (outLabel);
+	            TELA_SetFontSize(2); 
+
+	            tft.setTextColor(VerdeOK);
+
+	            tft.setCursor (200, 30);           
+	            tft.print (F("Extrato da Sessao"));    
+
+	            ////////////////////////////////////// 
+
+	            TELA_SetFontSize(1); 
+
+	            ////////////////////////////////////// 
+
+	            for (ContaLinha = 1 ; ContaLinha <= 8 ; ContaLinha++)
+	            {
 
 
-                // Valor 
-                Fator_X = PosInicial_X + Pos_X_Coluna;
-                Fator_Y = PosInicial_Y + ((ContaLinha - 1) * TamanhoLinha);
+	                switch (ContaLinha) 
+	                {
+	                    case 1:
+	                        outLabel = F("Nome:");
+	                        outValor = gSessao_Nome;
+	                        break;
 
-                if (ContaLinha == 8)
-                {
-                    tft.setTextColor(RA8875_YELLOW);
-                }
-                else
-                {
-                    tft.setTextColor(RA8875_WHITE);
-                }
-                
-                tft.setCursor (Fator_X, Fator_Y);         
-                tft.print (outValor);
+	                    case 2:
+	                        outLabel = F("Saldo:");
+	                        outValor = FormatNumber(ValorSaldoAtual, F("MONEY"));
+	                        break;
 
-            }
+	                    case 4:
+	                        outLabel = F("Torneira:");
+	                        outValor = String(gServico_ID_TorneiraAtual);
+	                        break;
+
+	                    case 5:
+	                        outLabel = F("Chopp:");
+	                        outValor = tmp_Nome;
+	                        break;
+
+	                    case 6:
+	                        outLabel = F("Tipo:");
+	                        outValor = tmp_Tipo;
+	                        break;
+
+	                    case 8:
+	                        outLabel = F("Total:");
+	                        outValor = FormatNumber(ValorSessaoChopp, F("MONEY"));
+	                        break;
+
+	                    default:
+	                        outLabel = F("");
+	                        outValor = F("");
+	                        break;
+	                }
+
+
+
+	                // Label
+	                Fator_X = PosInicial_X;
+	                Fator_Y = PosInicial_Y + ((ContaLinha - 1) * TamanhoLinha);  
+
+	                tft.setTextColor(CinzaLabels);
+	                tft.setCursor (Fator_X, Fator_Y);         
+	                tft.print (outLabel);
+
+
+	                // Valor 
+	                Fator_X = PosInicial_X + Pos_X_Coluna;
+	                Fator_Y = PosInicial_Y + ((ContaLinha - 1) * TamanhoLinha);
+
+	                if (ContaLinha == 8)
+	                {
+	                    tft.setTextColor(RA8875_YELLOW);
+	                }
+	                else
+	                {
+	                    tft.setTextColor(RA8875_WHITE);
+	                }
+	                
+	                tft.setCursor (Fator_X, Fator_Y);         
+	                tft.print (outValor);
+
+	            }
+
+
+
+	    	}
+
+
 
 	    }
 
@@ -1019,22 +1078,30 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 // SALVA DADOS DO USUARIO
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	    String retFunc = F("");
+
+	    // atualiza dados apenas se realmente foi retirado algum chopp
+ 		if (ValorSessaoChopp > 0)
+ 		{
+			retFunc = F("");
+			retFunc = BANCO_AtualizaSaldoUserLogado(ValorSaldoAtual);
 
 
+			if (retFunc.substring(0, 1) == F("1"))
+			{
+			    LogTerm(F("Saldo/Sessao de usuario atualizado com sucesso !"));
+			}
+			else
+			{
+			    LogTerm(String(F("Falha na atualizacao do Saldo/Sessao: ")) + retFunc);
+			} 			
+ 		}
+ 		else
+ 		{
+ 			LogTerm(F("Nao foi retirado chopp. Nenhuma atualizacao de Usuario sera feita"));
+ 		}
 
- 
-		String retFunc = F("");
-		retFunc = BANCO_AtualizaSaldoUserLogado(ValorSaldoAtual);
 
-
-		if (retFunc.substring(0, 1) == F("1"))
-		{
-		    LogTerm(F("Saldo/Sessao de usuario atualizado com sucesso !"));
-		}
-		else
-		{
-		    LogTerm(String(F("Falha na atualizacao do Saldo/Sessao: ")) + retFunc);
-		}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1043,24 +1110,27 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 
+	    // atualiza dados apenas se realmente foi retirado algum chopp
+ 		if (ValorSessaoChopp > 0)
+ 		{
+			retFunc = F("");
+			retFunc = BANCO_AtualizaSaldoEngatadosSessao(VolumeAtual);
 
-		
-		retFunc = F("");
-		retFunc = BANCO_AtualizaSaldoEngatadosSessao(VolumeAtual);
 
 
-
-		if (retFunc.substring(0, 1) == F("1"))
-		{
-		    LogTerm(F("Saldo do Chopp atualizado com sucesso !"));
-		}
-		else
-		{
-		    LogTerm(String(F("Falha na atualizacao do Saldo do Chopp: ")) + retFunc);
-		}
-
-		LogTerm(String(F("===================================================================")));
-
+			if (retFunc.substring(0, 1) == F("1"))
+			{
+			    LogTerm(F("Saldo do Chopp atualizado com sucesso !"));
+			}
+			else
+			{
+			    LogTerm(String(F("Falha na atualizacao do Saldo do Chopp: ")) + retFunc);
+			}			
+ 		}
+ 		else
+ 		{
+ 			LogTerm(F("Nao foi retirado chopp. Nenhuma atualizacao de Engatados sera feita"));
+ 		}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1068,11 +1138,23 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+	    // atualiza dados apenas se realmente foi retirado algum chopp
+ 		if (ValorSessaoChopp > 0)
+ 		{
+		
+			// atualiza a variavel de chopps engatados
+			CORE_ExecRotinaDefineChoppEngatados();	
+
+ 		}
+ 		else
+ 		{
+ 			// apenas exibe a lista de chopps atual
+ 			CORE_PrintChoppEngatados();
+ 		}
+
+		
 
 
-
-		// atualiza a variavel de chopps engatados
-		CORE_ExecRotinaDefineChoppEngatados();
 
 
 		volatile unsigned long gBounce_time_inicio = 0;

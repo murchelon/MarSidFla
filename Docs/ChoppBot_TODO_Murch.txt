@@ -32,7 +32,7 @@ TODO HARDWARE:
 - Criar "cabo intermediario" entre o modulo da fonte e modulo principal, que possa ter qualquer tamanho. Se possivel o mesmo entre os modulos de sensor e o modulo da fonte
 - Quando ligamos na tomada, o SD para de funcionar. Paus gerais
 - Depois da remontada da margarida, aparentemente as solenoides nao estao mais abrindo e fechando
-
+- aparentemente nao esta funcionando os reles. nao estou ouvindo eles armarem
 
 
 

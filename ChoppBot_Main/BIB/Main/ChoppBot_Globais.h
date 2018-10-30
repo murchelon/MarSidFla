@@ -48,8 +48,8 @@ String gModoOperacao_SubTela;
 #define ctTIMEOUT_TORNEIRA 6000		
 
 
-// Numero maximo de torneiras possiveis no sistema
-#define ctMAX_TORNEIRAS 4 // inicia em zero, ou seja, 3 para 4 torneiras fisicas
+// Numero maximo de torneiras possiveis no sistema. Torneiras engatadas
+#define ctMAX_TORNEIRAS 4 // numero real de torneiras. Ex: para 4 torneiras, colocar 4
 String gaEngatados[ctMAX_TORNEIRAS];	
 
 
@@ -83,12 +83,24 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define RELE_PINO_TORNEIRA_2 46
 #define RELE_PINO_TORNEIRA_3 47
 #define RELE_PINO_TORNEIRA_4 48
+#define RELE_PINO_TORNEIRA_5 0
+#define RELE_PINO_TORNEIRA_6 0
+#define RELE_PINO_TORNEIRA_7 0
+#define RELE_PINO_TORNEIRA_8 0
+#define RELE_PINO_TORNEIRA_9 0
+#define RELE_PINO_TORNEIRA_10 0
 
 // Flow Sensor
 #define FLOW_PINO_SENSOR_1 36
 #define FLOW_PINO_SENSOR_2 37 
 #define FLOW_PINO_SENSOR_3 38 
 #define FLOW_PINO_SENSOR_4 39
+#define FLOW_PINO_SENSOR_5 0
+#define FLOW_PINO_SENSOR_6 0
+#define FLOW_PINO_SENSOR_7 0
+#define FLOW_PINO_SENSOR_8 0
+#define FLOW_PINO_SENSOR_9 0
+#define FLOW_PINO_SENSOR_10 0
 
 // Pino do LED Cor Fixa
 #define ctPINO_LED_CORFIXA 26

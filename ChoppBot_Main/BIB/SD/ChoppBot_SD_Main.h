@@ -552,6 +552,54 @@ String SD_RenameArquivo(String FullPathFile_Original, String FullPathFile_Destin
 
 
 
+String SD_CopiaArquivo(String FullPathFile_Original, String FullPathFile_Destino)
+{
+
+	String ret = F("");
+
+	SdFat SD;
+	String retSD = F("");
+
+	retSD = SD_InicializaCartaoSD(SD);
+
+	if (retSD.substring(0, 1) != F("1"))
+	{
+		return retSD;
+	}
+
+
+	char __FullPathFile_Original[FullPathFile_Original.length() + 1];
+	FullPathFile_Original.toCharArray(__FullPathFile_Original, sizeof(__FullPathFile_Original));
+
+	char __FullPathFile_Destino[FullPathFile_Destino.length() + 1];
+	FullPathFile_Destino.toCharArray(__FullPathFile_Destino, sizeof(__FullPathFile_Destino));
+
+
+	SdFile Arquivo_Origem(__FullPathFile_Original, O_READ);
+	SdFile Arquivo_Destino(__FullPathFile_Destino, O_WRITE);
+
+	if (!Arquivo_Origem.isOpen()) 
+	{
+		ret = String(F("0|Nao foi possivel localizar o arquivo: ")) + FullPathFile_Original;
+	}
+	else
+	{
+
+		while (Arquivo_Origem.available()) 
+		{
+			Arquivo_Destino.write(Arquivo_Origem.read());			
+		}	
+
+		Arquivo_Origem.close();
+		Arquivo_Destino.close();
+
+		ret = String(F("1|Arquivo copiado com sucesso: ")) + FullPathFile_Original + String(F(" para ")) + FullPathFile_Destino;
+
+
+	}
+
+	return ret;
+}
 
 
 

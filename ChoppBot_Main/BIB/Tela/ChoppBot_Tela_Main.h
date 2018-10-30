@@ -16,7 +16,7 @@ int gTamBotao_W = 150;
 int gTamBotao_H = 150;
 
 // valores padrao de espacamento X e Y dos botoes. A altura é iniciada como -1 pois é definida posteriormente no codigo
-int gOffset_W = 45;
+int gOffset_W = 40;
 int gOffset_H = -1;
 
 // var que contem a posicao atual X para desenhar os botoes
@@ -622,6 +622,51 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{
 
+
+
+		switch (ctMAX_TORNEIRAS)
+		{
+
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+
+			case 5:
+				gTamBotao_W = 115;
+				gTamBotao_H = 140;
+				gOffset_W = 37;	
+				break;
+
+			case 6:
+				gTamBotao_W = 86;
+				gTamBotao_H = 140;
+				gOffset_W = 50;	
+				break;
+
+			case 10:
+				gTamBotao_W = 50;
+				gTamBotao_H = 80;	
+				gOffset_W = 25;
+				break;
+			
+			default:
+
+				gTamBotao_W = 80;
+				gTamBotao_H = 80;	
+				gOffset_W = 40;
+
+				break;				
+		}
+
+
+		
+		
+
 		int OffSet_TextoBotao_W = gTamBotao_W / 2 - 11;
 		int OffSet_TextoBotao_H = gTamBotao_H / 2 - 27;
 
@@ -988,7 +1033,7 @@ void TELA_Render_Interface_OPERACAO()
 
 		    }	
 
-		    LogTerm(F("4 - Sair"));		
+		    LogTerm(F("99 - Sair"));		
 		}
 
 
@@ -1443,48 +1488,10 @@ void TELA_VerificaTouch_OPERACAO()
 		}
 
 
-		if (retConsole.toInt() == 1)
-		{
+	
 
-			LogTerm(F("TORNEIRA 1 SELECIONADA"));
 
-			gServico_ID_TorneiraAtual = 1;
-
-			gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-
-			gTelaRenderizada_OPERACAO = false;
-
-			delay(500);  
-		}
-
-		if (retConsole.toInt() == 2)
-		{
-			LogTerm(F("TORNEIRA 2 SELECIONADA"));
-
-			gServico_ID_TorneiraAtual = 2;
-
-			gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-
-			gTelaRenderizada_OPERACAO = false;
-
-			delay(500);  
-			
-		}
-
-		if (retConsole.toInt() == 3)
-		{
-			LogTerm(F("TORNEIRA 3 SELECIONADA"));
-
-			gServico_ID_TorneiraAtual = 3;
-
-			gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-
-			gTelaRenderizada_OPERACAO = false;
-
-			delay(500);   
-		}
-
-		if (retConsole.toInt() == 4)
+		if (retConsole.toInt() == 99)
 		{
 
 			// zera as vars para cada tentativa de login
@@ -1501,6 +1508,18 @@ void TELA_VerificaTouch_OPERACAO()
 			gModoOperacao_SubTela = F("");						
 			
 			LogTerm(F("MAIN: Usuario clicou em SAIR")); 
+		}
+		else
+		{
+			LogTerm(String(F("TORNEIRA ")) + retConsole + String(F(" SELECIONADA")));
+
+			gServico_ID_TorneiraAtual = retConsole.toInt();
+
+			gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+			gTelaRenderizada_OPERACAO = false;
+
+			delay(500);  				
 		}
 
 
@@ -1581,129 +1600,83 @@ void TELA_VerificaTouch_OPERACAO()
 				}
 
 			}
-
-
-
-
-
-			//botao 1:
-			if (gTouch_X >= gOffset_W && gTouch_X <= gTamBotao_W + gOffset_W)  
+			else
 			{
 
-				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
+
+
+				//botao 1:
+				if (gTouch_X >= gOffset_W && gTouch_X <= gTamBotao_W + gOffset_W)  
 				{
 
-					LogTerm(F("BOTAO 1 APERTADO"));
-					//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
-					//delay(500);
-					//TELA_LogTerm_XY();    
+					if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
+					{
 
-					gServico_ID_TorneiraAtual = 1;
+						LogTerm(F("BOTAO 1 APERTADO"));
+						//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
+						//delay(500);
+						//TELA_LogTerm_XY();    
 
-					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+						gServico_ID_TorneiraAtual = 1;
+
+						gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
 
-					gTelaRenderizada_OPERACAO = false;
+						gTelaRenderizada_OPERACAO = false;
 
-					TELA_LimpaTela();
+						TELA_LimpaTela();
 
-					delay(500);  	
+						delay(500);  	
+
+					}
 
 				}
+				else
+				{
+					// outros botoes
+
+					for (int ContaBotao = 2 ; ContaBotao <= 10 ; ContaBotao++)
+					{
+
+
+						//botao 2:
+						if (gTouch_X >= ContaBotao * gOffset_W + (ContaBotao - 1) * gTamBotao_W && gTouch_X <= ContaBotao * gOffset_W + ContaBotao * gTamBotao_W )  
+						{
+
+							if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
+							{
+								LogTerm(String(F("TORNEIRA ")) + String(ContaBotao) + String(F(" SELECIONADA")));
+								//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
+								//delay(500);
+								//TELA_LogTerm_XY();    
+
+								gServico_ID_TorneiraAtual = ContaBotao;
+
+								gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+
+								gTelaRenderizada_OPERACAO = false;
+
+								TELA_LimpaTela();
+
+								delay(500);  					
+
+
+							}
+
+						}
+
+
+					}
+
+				}
+
+
+
 
 			}
 
 
-
-			//botao 2:
-			if (gTouch_X >= 2 * gOffset_W + gTamBotao_W && gTouch_X <= 2 * gOffset_W + 2 * gTamBotao_W )  
-			{
-
-				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
-				{
-					LogTerm(F("BOTAO 2 APERTADO"));
-					//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
-					//delay(500);
-					//TELA_LogTerm_XY();    
-
-					gServico_ID_TorneiraAtual = 2;
-
-					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-
-
-					gTelaRenderizada_OPERACAO = false;
-
-					TELA_LimpaTela();
-
-					delay(500);  					
-
-
-				}
-
-			}
-
-
-
-			//botao 3:
-			if (gTouch_X >= 3 * gOffset_W + 2 * gTamBotao_W && gTouch_X <= 3 * gOffset_W + 3 * gTamBotao_W )  
-			{
-
-				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
-				{
-
-					LogTerm(F("BOTAO 3 APERTADO"));
-					//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
-					//delay(500);
-					//TELA_LogTerm_XY();    
-
-					gServico_ID_TorneiraAtual = 3;
-
-					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-
-
-					gTelaRenderizada_OPERACAO = false;
-
-					TELA_LimpaTela();
-
-					delay(500);  	
-
-				}
-
-			}
-
-
-	
-
-			//botao 4:
-			if (gTouch_X >= 4 * gOffset_W + 3 * gTamBotao_W && gTouch_X <= 4 * gOffset_W + 4 * gTamBotao_W )  
-			{
-
-				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
-				{
-
-					LogTerm(F("BOTAO 4 APERTADO"));
-					//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
-					//delay(500);
-					//TELA_LogTerm_XY();    
-
-					gServico_ID_TorneiraAtual = 4;
-
-					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
-
-
-
-					gTelaRenderizada_OPERACAO = false;
-
-					TELA_LimpaTela();
-
-					delay(500);  	
-
-				}
-
-			}
-
-
-			
 
 
 

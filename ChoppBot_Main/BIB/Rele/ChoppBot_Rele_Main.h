@@ -565,7 +565,8 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		        Exec_Loop_PodeSair = true;
 			    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
 				useInterrupt_2(false);		
-				LED_SetLedState(F("RGB"), false, F(""));        
+				LED_SetLedState(F("RGB"), false, F(""));  
+				LogTerm(F("Timeout na torneira. Finalizando sessao..."));      
 		    }
 
 
@@ -577,7 +578,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				useInterrupt_2(false);
 				LED_SetLedState(F("RGB"), false, F(""));
 
-				LogTerm(F("Estou no saldo atual e sai"));
+				LogTerm(F("O saldo do usuario foi totalmente utilizado. Finalizando sessao..."));
 		    }
 
 

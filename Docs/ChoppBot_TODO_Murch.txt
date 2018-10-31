@@ -21,9 +21,7 @@ OKOK! - testar se estao funcionando as 4 torneiras com o programa principal
 - Gravar sessao real time na eprom
 - Criar rotina de recuperacao de saldo quadno desliga - chopp e usuario
 
-
-
-- resolver bug debounce botoes/tela touch
+PRINCIPAL PROBLEMA ATUAL !!! - resolver bug debounce botoes/tela touch
 
 
 TODO HARDWARE:

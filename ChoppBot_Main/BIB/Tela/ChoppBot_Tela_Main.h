@@ -106,9 +106,6 @@ void TELA_Texto_Centralizado(String Texto, String Cor, int Tamanho, uint16_t Pos
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{
 
-		
-
-
 		if (Cor == F(""))
 		{
 			Cor = F("AMARELO");
@@ -153,8 +150,8 @@ void TELA_Texto_Centralizado(String Texto, String Cor, int Tamanho, uint16_t Pos
 		int Ajuste_W = 10;
 
 		if (Tamanho == 0){TamanhoLetra_W = 0;}
-		if (Tamanho == 1){TamanhoLetra_W = 15;}
-		if (Tamanho == 2){TamanhoLetra_W = 0;}
+		if (Tamanho == 1){TamanhoLetra_W = 16;}
+		if (Tamanho == 2){TamanhoLetra_W = 24;}
 		if (Tamanho == 3){TamanhoLetra_W = 33;}
 
 
@@ -921,8 +918,6 @@ void TELA_Render_Interface_LOGIN()
 				//char Texto1[50];
 				//String(F("Ola! Seja vem vindo!")).toCharArray(Texto1, 50) ;
 
-				char Texto1[50] = "grgrrgrrgrr";
-				tft.textWrite (Texto1);   
 
 				tft.textTransparent(RA8875_WHITE);
 				tft.textSetCursor (100, 130);
@@ -1041,6 +1036,8 @@ void TELA_Render_Interface_OPERACAO()
 		{  		
 
 
+			/*
+
 			// Cabecalho logado ///////
 
 			TELA_SetFontSize(1);
@@ -1058,14 +1055,12 @@ void TELA_Render_Interface_OPERACAO()
 
 			tft.print (FormatNumber(gSessao_SaldoAtual, F("MONEY")));  
 
-
+			*/
 
 
 			//////////////////////////////////////  
 
-			tft.setTextColor(VerdeOK);
-			tft.setCursor (220, 110);
-			tft.print (F("Escolha a sua torneira:"));    
+			TELA_Texto_Centralizado(F("Escolha a sua torneira:"), F("VERDE"), 2, 90);
 
 
 
@@ -1073,13 +1068,14 @@ void TELA_Render_Interface_OPERACAO()
 			// Botao SAIR ///////////////////////////////
 
 		    int btnSair_PosAtual_X = 10;
-			int btnSair_PosAtual_Y = 100;
+			int btnSair_PosAtual_Y = 15;
 
 			int btnSair_Size_W = 100;
 			int btnSair_Size_H = 60;
 
 			tft.fillRoundRect(btnSair_PosAtual_X, btnSair_PosAtual_Y, btnSair_Size_W, btnSair_Size_H, 8, Red);
 		
+			TELA_SetFontSize(1);
 		    tft.setTextColor(RA8875_WHITE);
 		    tft.setCursor (btnSair_PosAtual_X + (btnSair_Size_W / 2) - 35, btnSair_PosAtual_Y + 12); 
 		    tft.print (F("SAIR"));	
@@ -1156,8 +1152,8 @@ void TELA_VerificaTouch_STANDBY()
 
 			gTelaRenderizada_STANDBY = false;
 
-			gModoOperacao = F("LOGIN");
-			//gModoOperacao = "OPERACAO";
+			//gModoOperacao = F("LOGIN");
+			gModoOperacao = "OPERACAO";
 			//gModoOperacao = "DEBUG";
 
      
@@ -1202,13 +1198,14 @@ void TELA_VerificaTouch_STANDBY()
 
 			gTelaRenderizada_STANDBY = false;
 
-			gModoOperacao = F("LOGIN");
+			//gModoOperacao = F("LOGIN");
+			gModoOperacao = F("OPERACAO");
 
 
         
             
-
-			gModoOperacao_SubTela = F("LER_RFID");
+			// murch
+			//gModoOperacao_SubTela = F("LER_RFID");
 
 		    TELA_LimpaTela();
 
@@ -1515,7 +1512,11 @@ void TELA_VerificaTouch_OPERACAO()
 
 			gServico_ID_TorneiraAtual = retConsole.toInt();
 
-			gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+			//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+
+			gModoOperacao = F("LOGIN");
+			gModoOperacao_SubTela = F("LER_RFID");			
 
 			gTelaRenderizada_OPERACAO = false;
 
@@ -1551,7 +1552,7 @@ void TELA_VerificaTouch_OPERACAO()
 
 
 		    int btnSair_PosAtual_X = 10;
-			int btnSair_PosAtual_Y = 100;
+			int btnSair_PosAtual_Y = 15;
 
 			int btnSair_Size_W = 100;
 			int btnSair_Size_H = 60;			
@@ -1619,8 +1620,11 @@ void TELA_VerificaTouch_OPERACAO()
 
 						gServico_ID_TorneiraAtual = 1;
 
-						gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+						//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
+
+						gModoOperacao = F("LOGIN");
+						gModoOperacao_SubTela = F("LER_RFID");
 
 						gTelaRenderizada_OPERACAO = false;
 
@@ -1652,8 +1656,10 @@ void TELA_VerificaTouch_OPERACAO()
 
 								gServico_ID_TorneiraAtual = ContaBotao;
 
-								gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+								//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
+								gModoOperacao = F("LOGIN");
+								gModoOperacao_SubTela = F("LER_RFID");
 
 								gTelaRenderizada_OPERACAO = false;
 

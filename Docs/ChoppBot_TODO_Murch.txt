@@ -20,6 +20,7 @@ OKOK! - testar se estao funcionando as 4 torneiras com o programa principal
 - mudar ordem das telas cebola
 - Gravar sessao real time na eprom
 - Criar rotina de recuperacao de saldo quadno desliga - chopp e usuario
+- colocar um timer para sair da operacao depois de X tempo sem escolher um chopp
 
 PRINCIPAL PROBLEMA ATUAL !!! - resolver bug debounce botoes/tela touch
 

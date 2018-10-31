@@ -343,8 +343,7 @@ void TELA_Render_Interface_LER_RFID()
 					
 				}
 
-
-
+				gModoOperacao = F("STANDBY");
 				
 
 			}
@@ -391,7 +390,7 @@ void TELA_Render_Interface_LER_RFID()
 				}
 
 
-
+				gModoOperacao = F("STANDBY");
 
 			}
 
@@ -457,6 +456,8 @@ void TELA_Render_Interface_LER_RFID()
 					}
 
 
+					gModoOperacao = F("STANDBY");
+
 				}
 
 				if (retUserData.substring(0, 1) == F("0"))
@@ -500,6 +501,8 @@ void TELA_Render_Interface_LER_RFID()
 						gTelaRenderizada_LER_RFID = false;
 						
 					}
+
+					gModoOperacao = F("STANDBY");
 
 				}
 

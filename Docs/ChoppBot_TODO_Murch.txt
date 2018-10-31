@@ -7,19 +7,21 @@ OKOK! - Atualizar a variavel de engatados com o resultado da sessao
 OKOK! - gravar no arqquivo engatados.txt todos os chopps da variavel. hoje so grava o escolhido
 OKOK! - ajustar variaveis com decimal na conversao de float para string pois esta perdendo a parte decimal
 OKOK! - Atualizar saldo do usuario depois da sessao
-- Quando acabar o chopp exibir sempre o volume restante como zero. Continuar servindo sem parar. Continuar atualizando a variavel de volume normalmente mas sempre exibe zero
+OKOK! - Quando acabar o chopp exibir sempre o volume restante como zero. Continuar servindo sem parar. Continuar atualizando a variavel de volume normalmente mas sempre exibe zero
 - Quando a pessoa nao tiver saldo nao deixar pegar chopp
-- Permitir pegar chopp mesmo quando o volume estiver zero.
-- se saldo chopp chegar a zero tem de travar
+OKOK! - Permitir pegar chopp mesmo quando o volume estiver zero.
+OKOK! - se saldo chopp chegar a zero tem de travar
 OKOK! - Exibir tela de extrato da sessao
-- ajustar para 4 torneiras
-- Mostrar o volume atual do chopp no botao de abrir torneira
-- No desenho do botao, nao esta usando format number
-- mudar os botoes de modo que eles se ajustem de tamanho baseando se em 3 ou 4 torneiras
-- testar se estao funcionando as 4 torneiras com o programa principal
+OKOK! - ajustar para 4 torneiras
+OKOK! - Mostrar o volume atual do chopp no botao de abrir torneira
+OKOK! - No desenho do botao, nao esta usando format number
+OKOK! - mudar os botoes de modo que eles se ajustem de tamanho baseando se em 3 ou 4 torneiras
+OKOK! - testar se estao funcionando as 4 torneiras com o programa principal
 - mudar ordem das telas cebola
 - Gravar sessao real time na eprom
 - Criar rotina de recuperacao de saldo quadno desliga - chopp e usuario
+
+
 
 - resolver bug debounce botoes/tela touch
 
@@ -27,20 +29,20 @@ OKOK! - Exibir tela de extrato da sessao
 TODO HARDWARE:
 ==============
 
+IMPORTANTE !!!! - Quando ligamos na tomada, o SD para de funcionar. Paus gerais
+IMPORTANTE !!!! - aparentemente nao esta funcionando os reles. nao estou ouvindo eles armarem
 - Dar nome aos bois: Sugiro: Modulo de Fonte, Modulos de Sensor e Modulo Principal
 - Nos engates do modulo do sensor, deixar todos na mesma "posicao/orientacao fisica", para facilitar o engate
 - Criar "cabo intermediario" entre o modulo da fonte e modulo principal, que possa ter qualquer tamanho. Se possivel o mesmo entre os modulos de sensor e o modulo da fonte
-- Quando ligamos na tomada, o SD para de funcionar. Paus gerais
-- Depois da remontada da margarida, aparentemente as solenoides nao estao mais abrindo e fechando
-- aparentemente nao esta funcionando os reles. nao estou ouvindo eles armarem
+
 
 
 
 Itens ToDo, do murch, para muito em breve:
 
-- introduzir DATAS no sistema. Vai ser foda
-- Fazer ler do pendrive
-- Fazer ler daquele chipp
+- introduzir DATAS no sistema. Vai ser foda. Nem vai: Comprei um hardware que resolve. Estou esperando chegar a bateria. Hardware ja chegou
+- Fazer ler do pendrive. Ja tenho hardware
+- Estudar melhor o chip interno da tela. Ver o que ele pode fazer. Provavelmente relacionado a imagens
 OKOK! - Gravar sessao no SD do usuario
 OKOK! - Gravar sessao no SD do chopp
 OKOK! - Ver programa exemplo kegbot que cebola colocou no meu lap (onde esta ? nao achei)
@@ -55,6 +57,9 @@ OKOK! - fazer o SD funcionar no programa principal
 OKOK! - fazero RFID funcionar no programa principal
 OKOK! - Arrumar identacao para TAB (4 espacos)
 OKOK!- fazer os 2 teclados (alpha e num) poderem ser chamados de qualquer tela, sem que tenhamos de alterar o gModoOperacao
+- criar programa para editar cartao sd
+- criar mecanismo de backup dos dados do sd
+
 
 mais para frente:
 

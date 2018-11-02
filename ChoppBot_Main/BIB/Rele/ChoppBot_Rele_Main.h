@@ -164,6 +164,20 @@ void useInterrupt_3(boolean b)
 } 
 */
 
+
+void TELA_Render_ExibeMsgSaldoZerado()
+{
+	TELA_LimpaTela();
+
+	TELA_Texto_Centralizado(F("Nao existe mais saldo para retirada de chopp"), F("AMARELO"), 1, 150);
+	TELA_Texto_Centralizado(F("Por favor, carregue seu cartao no caixa"), F("AMARELO"), 1, 250);
+
+	delay(4000);
+}
+
+
+
+
 void TELA_Render_Interface_OPERACAO_SERVICO()
 {
 	
@@ -245,284 +259,301 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		LogTerm(String(F("-------------------------------------------------------------------")));
 
 
+	    // se o saldo do usuario for zero, pode sair
+	    if (ValorSaldoAtual <= 0)
+	    {
+	        Exec_Loop_PodeSair = true;
+			LogTerm(F("O saldo do usuario foi totalmente utilizado. Finalizando sessao..."));
+
+			TELA_Render_ExibeMsgSaldoZerado();
 
 
-		switch (gServico_ID_TorneiraAtual)
+	    }
+
+	    if (Exec_Loop_PodeSair == false)
+	    {
+
+
+			switch (gServico_ID_TorneiraAtual)
+			{
+
+				case 1:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_1;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_1;	
+
+					break;
+
+				case 2:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_2;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_2;
+
+					break;
+
+				case 3:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_3;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_3;	
+
+					break;
+
+				case 4:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_4;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_4;	
+
+					break;
+
+				case 5:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_5;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_5;	
+
+					break;
+
+				case 6:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_6;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_6;	
+
+					break;
+
+				case 7:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_7;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_7;	
+
+					break;
+
+				case 8:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_8;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_8;	
+
+					break;
+
+				case 9:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_9;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_9;	
+
+					break;
+
+				case 10:
+
+					gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_10;
+
+					gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_10;	
+
+					break;
+
+				case -1:
+					// nenhuma torneira atuva no momento
+				
+				
+				default:
+					break;				
+			}
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// RENDERIZA TELA DE OPERACAO SERVICO
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+			//////////////////////////////////////  
+			// cebcalho logado
+
+			if (ctTELA_HARDWARE == F("TERMINAL"))
+			{  
+
+				LogTerm(String(F("Nome: ")) + gSessao_Nome);
+				LogTerm(String(F("Saldo: ")) + FormatNumber(gSessao_SaldoAtual, F("MONEY")));
+				LogTerm(String(F("Tempo: ")) + String(ctTIMEOUT_TORNEIRA / 1000) + String(F(" segundos")));
+				LogTerm(String(F("Torneira ")) + String(gServico_ID_TorneiraAtual) + String(F(" liberada!")));
+
+				LogTerm(String(F("Chopp: ")) + tmp_Nome);
+				LogTerm(String(F("Tipo: ")) + tmp_Tipo);
+				LogTerm(String(F("Preco: ")) + FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")));
+				LogTerm(String(F("Restante: ")) + String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
+				LogTerm(F("Volume Retirado: 0,00 Litros"));
+				LogTerm(String(F("Valor do Chopp sendo retirado: ")) + FormatNumber(0.0, F("MONEY")));
+
+				LogTerm(F("Pode se servir..."));
+
+			}
+
+
+
+			if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+			{  
+				TELA_SetFontSize(1); 
+
+				tft.setTextColor(CinzaLabels);
+				tft.setCursor (10, 10);			
+				tft.print (F("Nome: ")); 
+				tft.setCursor (10, 45);			
+				tft.print (F("Saldo: "));  
+
+				tft.setTextColor(RA8875_WHITE);
+				tft.setCursor (120, 10);			
+				tft.print (gSessao_Nome); 
+				tft.setCursor (120, 45);	
+				tft.print (FormatNumber(gSessao_SaldoAtual, F("MONEY")));  
+
+
+				//////////////////////////////////////  
+				// Tempo Restante
+
+				TELA_SetFontSize(0); 
+				tft.setTextColor(CinzaLabels);
+				tft.setCursor (620, 10);			
+				tft.print (F("Tempo: ")); 
+
+				tft.setCursor (680, 10);
+				tft.print (String(ctTIMEOUT_TORNEIRA / 1000) + String(F(" segundos   "))); 
+
+
+				//////////////////////////////////////  
+				// texto torneira liberada
+
+				TELA_SetFontSize(2); 
+				tft.setTextColor(VerdeOK);
+
+				tft.setCursor (170, 110);			
+				tft.print (String(F("Torneira ")) + String(gServico_ID_TorneiraAtual) + String(F(" liberada!")));    
+
+				tft.setCursor (220, 160);			
+				tft.print (F("Pode se servir..."));    
+
+				//////////////////////////////////////
+
+				TELA_SetFontSize(1); 
+
+				//////////////////////////////////////
+				// CHOPP
+
+				tft.setTextColor(CinzaLabels);
+				tft.setCursor (180, 240);			
+				tft.print (F("Chopp: ")); 
+
+				tft.setTextColor(RA8875_WHITE);
+				tft.setCursor (340, 240);			
+				tft.print (tmp_Nome);
+
+
+				//////////////////////////////////////
+				// TIPO
+
+				tft.setTextColor(CinzaLabels);
+				tft.setCursor (180, 270);			
+				tft.print (F("Tipo: ")); 
+
+				tft.setTextColor(RA8875_WHITE);
+				tft.setCursor (340, 270);			
+				tft.print (tmp_Tipo);
+
+
+				//////////////////////////////////////
+				// PRECO
+
+				tft.setTextColor(CinzaLabels);
+				tft.setCursor (180, 300);			
+				tft.print (F("Preco: ")); 
+
+				tft.setTextColor(RA8875_WHITE);
+				tft.setCursor (340, 300);			
+				tft.print (FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro"))); 
+
+
+
+				//////////////////////////////////////
+				// RESTANTE
+
+				tft.setTextColor(CinzaLabels);
+				tft.setCursor (180, 330);			
+				tft.print (F("Restante: ")); 
+
+				tft.setTextColor(RA8875_WHITE);
+				tft.setCursor (340, 330);	
+
+				//tmp_Volume.replace(".", ",");		
+				tft.print (String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
+
+
+
+
+				//////////////////////////////////////
+				// VOLUME RETIRADO
+
+				tft.setTextColor(CinzaLabels);
+				tft.setCursor (180, 390);			
+				tft.print (F("Volume Retirado: ")); 
+
+				tft.setTextColor(RA8875_YELLOW);
+				tft.setCursor (450, 390);			
+				tft.print ("0,00 Litros");
+
+				//////////////////////////////////////
+				// VALOR DO CHOPP SENDO RETIRADO
+
+				tft.setTextColor(CinzaLabels);
+				tft.setCursor (180, 420);			
+				tft.print (F("Valor do Chopp: ")); 
+
+				tft.setTextColor(RA8875_YELLOW);
+				tft.setCursor (450, 420);			
+				tft.print (FormatNumber(0.0, F("MONEY"))); 
+
+
+			}
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ROTINA DE LIBERACAO DO CHOPP
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		}
+
+		// libera apenas se existir saldo
+		if (ValorSaldoAtual > 0)
 		{
-
-			case 1:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_1;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_1;	
-
-				break;
-
-			case 2:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_2;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_2;
-
-				break;
-
-			case 3:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_3;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_3;	
-
-				break;
-
-			case 4:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_4;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_4;	
-
-				break;
-
-			case 5:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_5;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_5;	
-
-				break;
-
-			case 6:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_6;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_6;	
-
-				break;
-
-			case 7:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_7;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_7;	
-
-				break;
-
-			case 8:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_8;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_8;	
-
-				break;
-
-			case 9:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_9;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_9;	
-
-				break;
-
-			case 10:
-
-				gPinoSensorFluxoAtivo = FLOW_PINO_SENSOR_10;
-
-				gPinoReleTorneiraAtiva = RELE_PINO_TORNEIRA_10;	
-
-				break;
-
-			case -1:
-				// nenhuma torneira atuva no momento
+			// Liga Led Verde
+			LED_SetLedState(F("RGB"), true, F("GREEN"));
 			
+			// Inicia o FLOW METERS
+			digitalWrite(gPinoSensorFluxoAtivo, HIGH);
+			gLastflowpinstate_Atual = digitalRead(gPinoSensorFluxoAtivo);
+
+			useInterrupt_2(true);
+
+			delay(20);
+
 			
-			default:
-				break;				
+
+		    // LIBERA TORNEIRA
+			digitalWrite(gPinoReleTorneiraAtiva, LOW);
+
+			delay(20);
 		}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// RENDERIZA TELA DE OPERACAO SERVICO
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-		//////////////////////////////////////  
-		// cebcalho logado
-
-		if (ctTELA_HARDWARE == F("TERMINAL"))
-		{  
-
-			LogTerm(String(F("Nome: ")) + gSessao_Nome);
-			LogTerm(String(F("Saldo: ")) + FormatNumber(gSessao_SaldoAtual, F("MONEY")));
-			LogTerm(String(F("Tempo: ")) + String(ctTIMEOUT_TORNEIRA / 1000) + String(F(" segundos")));
-			LogTerm(String(F("Torneira ")) + String(gServico_ID_TorneiraAtual) + String(F(" liberada!")));
-
-			LogTerm(String(F("Chopp: ")) + tmp_Nome);
-			LogTerm(String(F("Tipo: ")) + tmp_Tipo);
-			LogTerm(String(F("Preco: ")) + FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")));
-			LogTerm(String(F("Restante: ")) + String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
-			LogTerm(F("Volume Retirado: 0,00 Litros"));
-			LogTerm(String(F("Valor do Chopp sendo retirado: ")) + FormatNumber(0.0, F("MONEY")));
-
-			LogTerm(F("Pode se servir..."));
-
-		}
-
-
-
-		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
-		{  
-			TELA_SetFontSize(1); 
-
-			tft.setTextColor(CinzaLabels);
-			tft.setCursor (10, 10);			
-			tft.print (F("Nome: ")); 
-			tft.setCursor (10, 45);			
-			tft.print (F("Saldo: "));  
-
-			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (120, 10);			
-			tft.print (gSessao_Nome); 
-			tft.setCursor (120, 45);	
-			tft.print (FormatNumber(gSessao_SaldoAtual, F("MONEY")));  
-
-
-			//////////////////////////////////////  
-			// Tempo Restante
-
-			TELA_SetFontSize(0); 
-			tft.setTextColor(CinzaLabels);
-			tft.setCursor (620, 10);			
-			tft.print (F("Tempo: ")); 
-
-			tft.setCursor (680, 10);
-			tft.print (String(ctTIMEOUT_TORNEIRA / 1000) + String(F(" segundos   "))); 
-
-
-			//////////////////////////////////////  
-			// texto torneira liberada
-
-			TELA_SetFontSize(2); 
-			tft.setTextColor(VerdeOK);
-
-			tft.setCursor (170, 110);			
-			tft.print (String(F("Torneira ")) + String(gServico_ID_TorneiraAtual) + String(F(" liberada!")));    
-
-			tft.setCursor (220, 160);			
-			tft.print (F("Pode se servir..."));    
-
-			//////////////////////////////////////
-
-			TELA_SetFontSize(1); 
-
-			//////////////////////////////////////
-			// CHOPP
-
-			tft.setTextColor(CinzaLabels);
-			tft.setCursor (180, 240);			
-			tft.print (F("Chopp: ")); 
-
-			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (340, 240);			
-			tft.print (tmp_Nome);
-
-
-			//////////////////////////////////////
-			// TIPO
-
-			tft.setTextColor(CinzaLabels);
-			tft.setCursor (180, 270);			
-			tft.print (F("Tipo: ")); 
-
-			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (340, 270);			
-			tft.print (tmp_Tipo);
-
-
-			//////////////////////////////////////
-			// PRECO
-
-			tft.setTextColor(CinzaLabels);
-			tft.setCursor (180, 300);			
-			tft.print (F("Preco: ")); 
-
-			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (340, 300);			
-			tft.print (FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro"))); 
-
-
-
-			//////////////////////////////////////
-			// RESTANTE
-
-			tft.setTextColor(CinzaLabels);
-			tft.setCursor (180, 330);			
-			tft.print (F("Restante: ")); 
-
-			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (340, 330);	
-
-			//tmp_Volume.replace(".", ",");		
-			tft.print (String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
-
-
-
-
-			//////////////////////////////////////
-			// VOLUME RETIRADO
-
-			tft.setTextColor(CinzaLabels);
-			tft.setCursor (180, 390);			
-			tft.print (F("Volume Retirado: ")); 
-
-			tft.setTextColor(RA8875_YELLOW);
-			tft.setCursor (450, 390);			
-			tft.print ("0,00 Litros");
-
-			//////////////////////////////////////
-			// VALOR DO CHOPP SENDO RETIRADO
-
-			tft.setTextColor(CinzaLabels);
-			tft.setCursor (180, 420);			
-			tft.print (F("Valor do Chopp: ")); 
-
-			tft.setTextColor(RA8875_YELLOW);
-			tft.setCursor (450, 420);			
-			tft.print (FormatNumber(0.0, F("MONEY"))); 
-
-
-		}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ROTINA DE LIBERACAO DO CHOPP
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-		// Liga Led Verde
-		LED_SetLedState(F("RGB"), true, F("GREEN"));
-		
-		// Inicia o FLOW METERS
-		digitalWrite(gPinoSensorFluxoAtivo, HIGH);
-		gLastflowpinstate_Atual = digitalRead(gPinoSensorFluxoAtivo);
-
-		useInterrupt_2(true);
-
-		delay(20);
-
-		
-
-	    // LIBERA TORNEIRA
-		digitalWrite(gPinoReleTorneiraAtiva, LOW);
-
-		delay(20);
-		
+			
 
 
 		time_inicio = millis();
+	
+
 
 
 		while (Exec_Loop_PodeSair == false)
@@ -565,7 +596,8 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		        Exec_Loop_PodeSair = true;
 			    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
 				useInterrupt_2(false);		
-				LED_SetLedState(F("RGB"), false, F(""));        
+				LED_SetLedState(F("RGB"), false, F(""));  
+				LogTerm(F("Timeout na torneira. Finalizando sessao..."));      
 		    }
 
 
@@ -577,7 +609,15 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				useInterrupt_2(false);
 				LED_SetLedState(F("RGB"), false, F(""));
 
-				LogTerm(F("Estou no saldo atual e sai"));
+				LogTerm(F("O saldo do usuario foi totalmente utilizado. Finalizando sessao..."));
+
+				delay(1500);
+
+				TELA_Render_ExibeMsgSaldoZerado();
+
+
+
+
 		    }
 
 
@@ -947,11 +987,14 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 // EXTRATO DA SESSAO - TELA
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		int ExibeExtratoEmTela = 0;
+		
 
 		// Exibe tela te extrato, se em TELA
 	    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
 	    {
+
+	    	int ExibeExtratoEmTela = 0;
+
 
 	    	if (ExibeExtratoEmTela == 1)
 	    	{

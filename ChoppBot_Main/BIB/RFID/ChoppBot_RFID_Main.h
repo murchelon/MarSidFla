@@ -9,12 +9,12 @@ void RFID_SetStatusLed(bool Valor)
 	if (Valor == true)
 	{
 		//LED_SetLedState("CORFIXA", true, "");
-		LED_SetLedState("RGB", true, "BLUE");
+		LED_SetLedState(F("RGB"), true, F("BLUE"));
 	}
 	else
 	{
 		//LED_SetLedState("CORFIXA", false, "");
-		LED_SetLedState("RGB", false, "BLUE");
+		LED_SetLedState(F("RGB"), false, F("BLUE"));
 	}
 	 
 }
@@ -310,7 +310,7 @@ void TELA_Render_Interface_LER_RFID()
 
 				BUZZER_TocaSom(F("ERRO"));
 
-				LED_SetLedState("RGB", true, "RED");
+				LED_SetLedState(F("RGB"), true, F("RED"));
 
 				// ocorreu um erro. imprime a msg de erro na tela
 				if (ctTELA_HARDWARE == F("TERMINAL"))
@@ -343,8 +343,8 @@ void TELA_Render_Interface_LER_RFID()
 					
 				}
 
-
-
+				gModoOperacao = F("STANDBY");
+				gModoOperacao_SubTela = F("");	
 				
 
 			}
@@ -355,7 +355,7 @@ void TELA_Render_Interface_LER_RFID()
 
 				BUZZER_TocaSom(F("ERRO"));
 
-				LED_SetLedState("RGB", true, "RED");
+				LED_SetLedState(F("RGB"), true, F("RED"));
 
 				// ocorreu um erro. imprime a msg de erro na tela
 				if (ctTELA_HARDWARE == F("TERMINAL"))
@@ -391,7 +391,8 @@ void TELA_Render_Interface_LER_RFID()
 				}
 
 
-
+				gModoOperacao = F("STANDBY");
+				gModoOperacao_SubTela = F("");	
 
 			}
 
@@ -422,7 +423,7 @@ void TELA_Render_Interface_LER_RFID()
 
 					BUZZER_TocaSom(F("ERRO"));
 
-					LED_SetLedState("RGB", true, "RED");
+					LED_SetLedState(F("RGB"), true, F("RED"));
 
 					// ocorreu um erro. imprime a msg de erro na tela
 					if (ctTELA_HARDWARE == F("TERMINAL"))
@@ -457,6 +458,9 @@ void TELA_Render_Interface_LER_RFID()
 					}
 
 
+					gModoOperacao = F("STANDBY");
+					gModoOperacao_SubTela = F("");	
+
 				}
 
 				if (retUserData.substring(0, 1) == F("0"))
@@ -467,7 +471,7 @@ void TELA_Render_Interface_LER_RFID()
 
 					BUZZER_TocaSom(F("ERRO"));
 
-					LED_SetLedState("RGB", true, "RED");
+					LED_SetLedState(F("RGB"), true, F("RED"));
 
 					// ocorreu um erro. imprime a msg de erro na tela
 					if (ctTELA_HARDWARE == F("TERMINAL"))
@@ -501,6 +505,9 @@ void TELA_Render_Interface_LER_RFID()
 						
 					}
 
+					gModoOperacao = F("STANDBY");
+					gModoOperacao_SubTela = F("");	
+
 				}
 
 
@@ -510,7 +517,7 @@ void TELA_Render_Interface_LER_RFID()
 				{
 					// usuario existe
 
-					LED_SetLedState("RGB", true, "GREEN");
+					LED_SetLedState(F("RGB"), true, F("GREEN"));
 
 					BUZZER_TocaSom(F("SUCESSO"));
 
@@ -554,7 +561,10 @@ void TELA_Render_Interface_LER_RFID()
 
 					}
 
+					// murch cebola
+					//gModoOperacao = F("OPERACAO");
 					gModoOperacao = F("OPERACAO");
+					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
 					delay(100);
 
@@ -572,7 +582,7 @@ void TELA_Render_Interface_LER_RFID()
 
 			BUZZER_TocaSom(F("ERRO"));
 
-			LED_SetLedState("RGB", true, "RED");
+			LED_SetLedState(F("RGB"), true, F("RED"));
 
 			// ocorreu um erro. imprime a msg de erro na tela
 			if (ctTELA_HARDWARE == F("TERMINAL"))
@@ -583,7 +593,7 @@ void TELA_Render_Interface_LER_RFID()
 
 			}
 
-			if (ctTELA_HARDWARE == "ER-TFTM070-5")
+			if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
 			{  
 
 				TELA_LimpaTela();
@@ -607,12 +617,12 @@ void TELA_Render_Interface_LER_RFID()
 
 
 
-		LED_SetLedState("RGB", false, "");
+		LED_SetLedState(F("RGB"), false, "");
 
 
 
 
-		gModoOperacao_SubTela = F("");	
+		
 		gTelaRenderizada_LER_RFID = false;
 
 	    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))

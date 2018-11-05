@@ -684,7 +684,7 @@ void TestaInterrupts()
 
     if (gModoOperacao == F("STANDBY"))
     {
-                
+        
         TELA_VerificaTouch_STANDBY();
         
     }

@@ -737,6 +737,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 
+
 				// FAIXA IDEAL = 0
 				if ((gFLOW_PulsosNosUltimosXseg >= gPulse_ideal - Range_Menos) && (gFLOW_PulsosNosUltimosXseg <= gPulse_ideal - Range_Mais))
 				{
@@ -1258,7 +1259,8 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 		delay(2000); 
 
-
+		//gBounce_time_inicio = millis();
+		//gBounce_ContaClick = 2;
 		
 
 
@@ -1287,6 +1289,8 @@ void TELA_VerificaTouch_OPERACAO_SERVICO()
 
 		//tft.changeMode(GRAPHIC);
 
+		/*
+
 		if (TELA_touchDetect())
 		{
 
@@ -1308,10 +1312,9 @@ void TELA_VerificaTouch_OPERACAO_SERVICO()
 
 			}
 
-
-
-
 		}
+
+		*/
 
 	}
 

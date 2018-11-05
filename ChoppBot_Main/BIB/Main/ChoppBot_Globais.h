@@ -44,8 +44,14 @@ String gModoOperacao_SubTela;
 // tempo em ms para timeout das opcoes a serem escolhidas
 #define gTimeoutOpcao 7000		
 
-// tempo em ms para timeout de servico de torneira 
+// tempo em ms para timeout de servico de torneira (operacao_servico)
 #define ctTIMEOUT_TORNEIRA 6000		
+
+// tempo em ms para timeout da tela de operacao (tela onde eh escolhido o chopp) (operacao)
+#define ctTIMEOUT_TELA_OPERACAO 5000		
+
+
+
 
 
 // Numero maximo de torneiras possiveis no sistema. Torneiras engatadas
@@ -215,7 +221,7 @@ String aTecladoAlfa_PosBotoes[ctTECLADO_ALFA_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
 
 //  numero de clicks de sensibilidade dos botoes em uma determinada tela. Para evitar o double press
 //const int ctBOUNCE_SENSIB_BOTAO = 80;		
-#define ctBOUNCE_SENSIB_BOTAO 100
+#define ctBOUNCE_SENSIB_BOTAO 350
 
 	
 

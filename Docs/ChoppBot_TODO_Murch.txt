@@ -27,8 +27,8 @@ OKOK! - mudar ordem das telas cebola
 - Criar rotina de recuperacao de saldo quadno desliga - chopp e usuario
 OKOK! - colocar um timer para sair da operacao depois de X tempo sem escolher um chopp
 - testar e corrigir curva do chopp
-OKOK!  - resolver bug debounce botoes/tela touch
-- [MARGA-2] Rele 4 nao liga. Ver sinal
+OKOK! - resolver bug debounce botoes/tela touch
+OKOK! - Rele 4 nao liga. Ver sinal
 
 
 TODO HARDWARE:

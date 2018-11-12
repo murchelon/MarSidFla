@@ -507,7 +507,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 							gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
 
-							LogTerm(gBounce_time_tempo_passado);
+							//LogTerm(gBounce_time_tempo_passado);
 
 							if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
 							{

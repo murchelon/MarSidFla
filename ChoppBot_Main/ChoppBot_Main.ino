@@ -57,7 +57,7 @@ void InitApp()
     LogTerm(F("///                                               ///"));
     LogTerm(F("///  by Murch & Cebola                            ///"));
     LogTerm(F("///                                               ///"));
-    LogTerm(F("///  Hardware: Margarida versao 0.3               ///"));
+    LogTerm(F("///  Hardware: Margarida 2                        ///"));
     LogTerm(F("///                                               ///"));
     LogTerm(F("/////////////////////////////////////////////////////"));
     LogTerm(F(""));
@@ -94,29 +94,98 @@ void InitApp()
 
 
 
-    // Inicia os RELES
-    pinMode(RELE_PINO_TORNEIRA_1, OUTPUT);
-    pinMode(RELE_PINO_TORNEIRA_2, OUTPUT);
-    pinMode(RELE_PINO_TORNEIRA_3, OUTPUT);
+    // Inicia os RELES e FLOWMETERS
+    if (RELE_PINO_TORNEIRA_1 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_1, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_1, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_1, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_1, INPUT);
+    }
+
+    if (RELE_PINO_TORNEIRA_2 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_2, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_2, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_2, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_2, INPUT);
+    }
+
+    if (RELE_PINO_TORNEIRA_3 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_3, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_3, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_3, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_3, INPUT);
+    }
+
+    if (RELE_PINO_TORNEIRA_4 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_4, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_4, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_4, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_4, INPUT);
+    }
+
+    if (RELE_PINO_TORNEIRA_5 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_5, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_5, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_5, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_5, INPUT);
+    }
+
+    if (RELE_PINO_TORNEIRA_6 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_6, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_6, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_6, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_6, INPUT);
+    }
+
+    if (RELE_PINO_TORNEIRA_7 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_7, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_7, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_7, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_7, INPUT);
+    }
+
+    if (RELE_PINO_TORNEIRA_8 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_8, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_8, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_8, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_8, INPUT);
+    }
+
+    if (RELE_PINO_TORNEIRA_9 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_9, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_9, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_9, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_9, INPUT);
+    }
+
+    if (RELE_PINO_TORNEIRA_10 != 0)
+    {
+        pinMode(RELE_PINO_TORNEIRA_10, OUTPUT);
+        digitalWrite(RELE_PINO_TORNEIRA_10, HIGH);
+
+        digitalWrite(FLOW_PINO_SENSOR_10, HIGH);         
+        pinMode(FLOW_PINO_SENSOR_10, INPUT);
+    }
 
 
-
-    // Define os RELES como DESLIGADOS
-    digitalWrite(RELE_PINO_TORNEIRA_1, HIGH);
-    digitalWrite(RELE_PINO_TORNEIRA_2, HIGH);
-    digitalWrite(RELE_PINO_TORNEIRA_3, HIGH);
-
-
-
-    // Inicia os FLOW METERS
-    pinMode(FLOW_PINO_SENSOR_1, INPUT);
-    digitalWrite(FLOW_PINO_SENSOR_1, HIGH);
-
-    pinMode(FLOW_PINO_SENSOR_2, INPUT);
-    digitalWrite(FLOW_PINO_SENSOR_2, HIGH);
-
-    pinMode(FLOW_PINO_SENSOR_3, INPUT);
-    digitalWrite(FLOW_PINO_SENSOR_3, HIGH);
 
 
 
@@ -684,7 +753,7 @@ void TestaInterrupts()
 
     if (gModoOperacao == F("STANDBY"))
     {
-                
+        
         TELA_VerificaTouch_STANDBY();
         
     }

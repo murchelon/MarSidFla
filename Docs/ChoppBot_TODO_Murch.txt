@@ -1,6 +1,11 @@
 
-TODO IMEDIATO -- DEPLOY LOJA CEBOLA:
-====================================
+================================================================================================================================================
+== TODO IMEDIATO -- DEPLOY LOJA CEBOLA: ==
+================================================================================================================================================
+
+
+TODO SOFTWARE:
+==============
 
 - revisar calculos. Aparentemente so o valor da sessao que esta sendo calculado errado
 OKOK! - Atualizar a variavel de engatados com o resultado da sessao
@@ -8,7 +13,7 @@ OKOK! - gravar no arqquivo engatados.txt todos os chopps da variavel. hoje so gr
 OKOK! - ajustar variaveis com decimal na conversao de float para string pois esta perdendo a parte decimal
 OKOK! - Atualizar saldo do usuario depois da sessao
 OKOK! - Quando acabar o chopp exibir sempre o volume restante como zero. Continuar servindo sem parar. Continuar atualizando a variavel de volume normalmente mas sempre exibe zero
-- Quando a pessoa nao tiver saldo nao deixar pegar chopp
+OKOK! - Quando a pessoa nao tiver saldo nao deixar pegar chopp
 OKOK! - Permitir pegar chopp mesmo quando o volume estiver zero.
 OKOK! - se saldo chopp chegar a zero tem de travar
 OKOK! - Exibir tela de extrato da sessao
@@ -17,23 +22,29 @@ OKOK! - Mostrar o volume atual do chopp no botao de abrir torneira
 OKOK! - No desenho do botao, nao esta usando format number
 OKOK! - mudar os botoes de modo que eles se ajustem de tamanho baseando se em 3 ou 4 torneiras
 OKOK! - testar se estao funcionando as 4 torneiras com o programa principal
-- mudar ordem das telas cebola
+OKOK! - mudar ordem das telas cebola
 - Gravar sessao real time na eprom
 - Criar rotina de recuperacao de saldo quadno desliga - chopp e usuario
-- colocar um timer para sair da operacao depois de X tempo sem escolher um chopp
-
-PRINCIPAL PROBLEMA ATUAL !!! - resolver bug debounce botoes/tela touch
+OKOK! - colocar um timer para sair da operacao depois de X tempo sem escolher um chopp
+- testar e corrigir curva do chopp
+OKOK! - resolver bug debounce botoes/tela touch
+OKOK! - Rele 4 nao liga. Ver sinal
 
 
 TODO HARDWARE:
 ==============
 
-IMPORTANTE !!!! - Quando ligamos na tomada, o SD para de funcionar. Paus gerais
-IMPORTANTE !!!! - aparentemente nao esta funcionando os reles. nao estou ouvindo eles armarem
-- Dar nome aos bois: Sugiro: Modulo de Fonte, Modulos de Sensor e Modulo Principal
-- Nos engates do modulo do sensor, deixar todos na mesma "posicao/orientacao fisica", para facilitar o engate
+- [MARGA-1] Quando ligamos na tomada, o SD para de funcionar. Paus gerais
+- [MARGA-1] aparentemente nao esta funcionando os reles. nao estou ouvindo eles armarem
+- Dar nome aos bois: Sugiro: Modulo Fonte (ou alimentacao), Modulos Sensor e Modulo Principal
+OKOK !!! - Nos engates do modulo do sensor, deixar todos na mesma "posicao/orientacao fisica", para facilitar o engate
 - Criar "cabo intermediario" entre o modulo da fonte e modulo principal, que possa ter qualquer tamanho. Se possivel o mesmo entre os modulos de sensor e o modulo da fonte
+- O engate do cabo de 12 vias eh muito dificil. Vamos pensar em algo
+- Modulo Alimentacao: Se possivel, fazer o fio da tomada E o cabo interface estarem do mesmo lado, em paralelo, na parte de tras da caixa
+- [MARGA-2] Solenoide 4 nao abre. Ver conector "osmar"
 
+ 
+================================================================================================================================================
 
 
 

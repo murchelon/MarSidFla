@@ -41,6 +41,9 @@ volatile uint16_t gTouch_Y;
 
 
 
+
+
+
 //tft.getCursor(&currentX,&currentY);
 
 
@@ -833,6 +836,8 @@ void TELA_Render_Interface_STANDBY()
 
 
 
+			TELA_LimpaTela();
+
 			
 			// versao do choppbot
 			TELA_SetFontSize(0); 
@@ -976,12 +981,96 @@ void TELA_Render_Interface_LOGIN()
 
 
 
+unsigned long Timeout_Operacao_time_inicio;
+unsigned long Timeout_Operacao_time_atual;
+unsigned long Timeout_Operacao_time_tempo_passado;
+
+int Timeout_Operacao_SegundosPassados;
+int Timeout_Operacao_Last_SegundosPassados;
 
 
 void TELA_Render_Interface_OPERACAO()
 {
 
 	//LogTerm(F("== [Modo Atual: OPERACAO] ==");
+
+
+
+	// Mostra tempo de timeout da tela de operacao -----------------------
+
+	if (gTelaRenderizada_OPERACAO == false)
+	{
+		// Inicia a contagem do tempo
+		Timeout_Operacao_time_inicio = millis();
+	}
+	else
+	{
+		if ((ctTIMEOUT_TELA_OPERACAO / 1000) - Timeout_Operacao_SegundosPassados <= 0)
+		{
+			Timeout_Operacao_time_inicio = millis();
+
+			gTelaRenderizada_OPERACAO = false;
+
+		}
+	}
+
+
+	// Renderiza os segundos
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{  		
+
+	    Timeout_Operacao_time_atual = millis();
+	    Timeout_Operacao_time_tempo_passado = Timeout_Operacao_time_atual - Timeout_Operacao_time_inicio;
+
+	    Timeout_Operacao_SegundosPassados = floor(Timeout_Operacao_time_tempo_passado / 1000);
+
+
+	    if (Timeout_Operacao_SegundosPassados != Timeout_Operacao_Last_SegundosPassados)
+	    {	
+
+				TELA_SetFontSize(0); 
+				tft.setTextColor(CinzaLabels, RA8875_BLACK);
+				tft.setCursor (620, 10);			
+				tft.print (F("Tempo: ")); 
+
+				tft.setCursor (680, 10);
+				tft.print (String((ctTIMEOUT_TELA_OPERACAO / 1000) - Timeout_Operacao_SegundosPassados) + String(F(" segundos   "))); 
+
+		} 
+	}
+
+	//LogTerm(String(F("(ctTIMEOUT_TELA_OPERACAO / 1000) - SegundosPassados = ")) + String((ctTIMEOUT_TELA_OPERACAO / 1000) - Timeout_Operacao_SegundosPassados));
+
+
+
+	// sai se o tempo limite ocorrer
+	if ((ctTIMEOUT_TELA_OPERACAO / 1000) - Timeout_Operacao_SegundosPassados <= 0)
+	{
+
+
+		// zera as vars para cada tentativa de login
+		// efetua logoff
+		gSessao_Logado = false;
+		gSessao_IDUser = -1;
+		gSessao_Nome = F("");
+		gSessao_Nivel = -1;
+		gSessao_SaldoAtual = -1;
+
+		gTelaRenderizada_OPERACAO = false;	
+
+		gModoOperacao = F("STANDBY");  
+		gModoOperacao_SubTela = F("");						
+
+
+
+		LogTerm(F("MAIN: Timeout de tela Operacao"));
+
+		delay(1000);
+		
+	}
+
+	// ====================================================================
+
 
 	if (gTelaRenderizada_OPERACAO == false)
 	{
@@ -1036,6 +1125,7 @@ void TELA_Render_Interface_OPERACAO()
 		{  		
 
 
+			
 			/*
 
 			// Cabecalho logado ///////
@@ -1128,6 +1218,15 @@ void TELA_Render_Interface_OPERACAO()
 
 	}
 
+
+
+
+
+    
+
+
+
+
 }
 
 
@@ -1156,6 +1255,7 @@ void TELA_VerificaTouch_STANDBY()
 			gModoOperacao = "OPERACAO";
 			//gModoOperacao = "DEBUG";
 
+
      
 			delay(500);		
 		}
@@ -1168,48 +1268,67 @@ void TELA_VerificaTouch_STANDBY()
 		if (TELA_touchDetect())
 		{
 
+
+			// Esquema de DEBounce ---- inicio
+
+			gBounce_ContaClick++;
+
 			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 
-			/*
-			
+			//LogTerm(String(F("TELA_VerificaTouch_STANDBY - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
 
 
-			//gTouch_X = 0;
-			//gTouch_Y = 0;
-
-			//LogTerm(F("TELA_VerificaTouch_STANDBY"));
-			//TELA_LogTerm_XY();
-
-
-			gTelaRenderizada_STANDBY = false;
-
-			gModoOperacao = F("LOGIN");
-
-			//gModoOperacao = "OPERACAO";
-			//gModoOperacao = "DEBUG";
+			//if ((gBounce_ContaClick == 1) && (gBounce_time_tempo_passado <= ctBOUNCE_SENSIB_BOTAO))
+			if (gBounce_ContaClick == 1)
+			{
+				// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
 
 
+				
 
-			TELA_LimpaTela();
+				gTelaRenderizada_STANDBY = false;
 
-			delay(500);  
+				//gModoOperacao = F("LOGIN");
+				gModoOperacao = F("OPERACAO");
 
-			*/
+			    TELA_LimpaTela();
 
-			gTelaRenderizada_STANDBY = false;
+				delay(500);  
 
-			//gModoOperacao = F("LOGIN");
-			gModoOperacao = F("OPERACAO");
+				// -----------------------------------
+
+				gBounce_time_inicio = millis();
+			}
 
 
-        
-            
-			// murch
-			//gModoOperacao_SubTela = F("LER_RFID");
+			gBounce_time_atual = millis();
+			gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
 
-		    TELA_LimpaTela();
+			gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
 
-			delay(500);  			
+			//LogTerm(gBounce_time_tempo_passado);
+
+			if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+			{
+				//LogTerm(time_tempo_passado);
+			}
+
+
+
+			if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+			{
+
+				gBounce_ContaClick = 0;		
+
+			}
+
+			gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+			// Esquema de DEBounce ---- FIM
+
+
+
+		
 
 
 		}
@@ -1558,7 +1677,6 @@ void TELA_VerificaTouch_OPERACAO()
 			int btnSair_Size_H = 60;			
 
 
-
 			// BOTAO SAIR
 			if ((gTouch_X >= btnSair_PosAtual_X) && (gTouch_X <= btnSair_PosAtual_X + btnSair_Size_W)) 
 			{
@@ -1566,37 +1684,78 @@ void TELA_VerificaTouch_OPERACAO()
 				if ((gTouch_Y >= btnSair_PosAtual_Y) && (gTouch_Y <= btnSair_PosAtual_Y + btnSair_Size_H)) 
 				{
 
-					//tft.touchEnable(false);
+
+					//LogTerm(String(F("a - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
+
+					// Esquema de DEBounce ---- inicio
+
+					gBounce_ContaClick++;
 					
+
+					if (gBounce_ContaClick == 1)
+					{
+						// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
+						
+						//LogTerm(String(F("1 - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
+
+
+						TELA_LimpaTela();
+
+						// zera as vars para cada tentativa de login
+						// efetua logoff
+						gSessao_Logado = false;
+						gSessao_IDUser = -1;
+						gSessao_Nome = F("");
+						gSessao_Nivel = -1;
+						gSessao_SaldoAtual = -1;
+
+						gTelaRenderizada_OPERACAO = false;	
+
+						gModoOperacao = F("STANDBY");  
+						gModoOperacao_SubTela = F("");						
+						
 					
 
-					TELA_LimpaTela();
 
-					
+						LogTerm(F("MAIN: Usuario clicou em SAIR"));
+						//TELA_Texto(F("BOTAO SAIR APERTADO"), F("MAGENTA"));  
+						//delay(500); 								
 
+						//LogTerm(F("TELA_VerificaTouch_OPERACAO"));
+						//TELA_LogTerm_XY();
+							
+						// -----------------------------------
 
-					// zera as vars para cada tentativa de login
-					// efetua logoff
-					gSessao_Logado = false;
-					gSessao_IDUser = -1;
-					gSessao_Nome = F("");
-					gSessao_Nivel = -1;
-					gSessao_SaldoAtual = -1;
-
-					gTelaRenderizada_OPERACAO = false;	
-
-					gModoOperacao = F("STANDBY");  
-					gModoOperacao_SubTela = F("");						
-					
-				
+						gBounce_time_inicio = millis();
+					}
 
 
-					LogTerm(F("MAIN: Usuario clicou em SAIR"));
-					//TELA_Texto(F("BOTAO SAIR APERTADO"), F("MAGENTA"));  
-					//delay(500); 								
+					gBounce_time_atual = millis();
+					gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
 
-					//LogTerm(F("TELA_VerificaTouch_OPERACAO"));
-					//TELA_LogTerm_XY();
+					gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+					//LogTerm(gBounce_time_tempo_passado);
+
+					if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+					{
+						//LogTerm(time_tempo_passado);
+					}
+
+
+
+					if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+					{
+
+						gBounce_ContaClick = 0;		
+
+					}
+
+					gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+					// Esquema de DEBounce ---- FIM
+					//LogTerm(String(F("B - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
+
 
 				}
 
@@ -1613,24 +1772,69 @@ void TELA_VerificaTouch_OPERACAO()
 					if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 					{
 
-						LogTerm(F("BOTAO 1 APERTADO"));
-						//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
-						//delay(500);
-						//TELA_LogTerm_XY();    
-
-						gServico_ID_TorneiraAtual = 1;
-
-						//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
 
 
-						gModoOperacao = F("LOGIN");
-						gModoOperacao_SubTela = F("LER_RFID");
 
-						gTelaRenderizada_OPERACAO = false;
+						// Esquema de DEBounce ---- inicio
 
-						TELA_LimpaTela();
+						gBounce_ContaClick++;
+						
 
-						delay(500);  	
+						if (gBounce_ContaClick == 1)
+						{
+							// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
+
+							LogTerm(F("BOTAO 1 APERTADO"));
+							//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
+							//delay(500);
+							//TELA_LogTerm_XY();    
+
+							gServico_ID_TorneiraAtual = 1;
+
+							//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+
+							gModoOperacao = F("LOGIN");
+							gModoOperacao_SubTela = F("LER_RFID");
+
+							gTelaRenderizada_OPERACAO = false;
+
+							TELA_LimpaTela();
+
+							delay(500);  	
+								
+							// -----------------------------------
+
+							gBounce_time_inicio = millis();
+						}
+
+
+						gBounce_time_atual = millis();
+						gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+
+						gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+						//LogTerm(gBounce_time_tempo_passado);
+
+						if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+						{
+							//LogTerm(time_tempo_passado);
+						}
+
+
+
+						if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+						{
+
+							gBounce_ContaClick = 0;		
+
+						}
+
+						gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+						// Esquema de DEBounce ---- FIM
+
+
 
 					}
 
@@ -1643,29 +1847,82 @@ void TELA_VerificaTouch_OPERACAO()
 					{
 
 
-						//botao 2:
+					
 						if (gTouch_X >= ContaBotao * gOffset_W + (ContaBotao - 1) * gTamBotao_W && gTouch_X <= ContaBotao * gOffset_W + ContaBotao * gTamBotao_W )  
 						{
 
 							if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
 							{
-								LogTerm(String(F("TORNEIRA ")) + String(ContaBotao) + String(F(" SELECIONADA")));
-								//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
-								//delay(500);
-								//TELA_LogTerm_XY();    
 
-								gServico_ID_TorneiraAtual = ContaBotao;
+								
 
-								//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+								// Esquema de DEBounce ---- inicio
 
-								gModoOperacao = F("LOGIN");
-								gModoOperacao_SubTela = F("LER_RFID");
+								gBounce_ContaClick++;
+								
 
-								gTelaRenderizada_OPERACAO = false;
+								if (gBounce_ContaClick == 1)
+								{
+									// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
 
-								TELA_LimpaTela();
+									LogTerm(String(F("TORNEIRA ")) + String(ContaBotao) + String(F(" SELECIONADA")));
+									//TELA_Texto(F("BOTAO 2 APERTADO"), F("AZUL"));
+									//delay(500);
+									//TELA_LogTerm_XY();    
 
-								delay(500);  					
+									gServico_ID_TorneiraAtual = ContaBotao;
+
+									//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+									gModoOperacao = F("LOGIN");
+									gModoOperacao_SubTela = F("LER_RFID");
+
+									gTelaRenderizada_OPERACAO = false;
+
+									TELA_LimpaTela();
+
+									delay(500);  	
+										
+									// -----------------------------------
+
+									gBounce_time_inicio = millis();
+								}
+
+
+								gBounce_time_atual = millis();
+								gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+
+								gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+								//LogTerm(gBounce_time_tempo_passado);
+
+								if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+								{
+									//LogTerm(time_tempo_passado);
+								}
+
+
+
+								if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+								{
+
+									gBounce_ContaClick = 0;		
+
+								}
+
+								gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+								// Esquema de DEBounce ---- FIM
+
+
+
+
+									
+
+									
+
+
+
 
 
 							}

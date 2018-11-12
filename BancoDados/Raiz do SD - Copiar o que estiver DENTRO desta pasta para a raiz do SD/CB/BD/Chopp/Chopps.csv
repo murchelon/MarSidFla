@@ -1,10 +1,10 @@
 IDChopp;Titulo1;Titulo2;ValorPorLitro;Fabricante
-1;Imperial IPA;Double IPA;52,00;Schorstein
-2;Stout;Imperial Stout;55,00;Schorstein
+1;Imperial IPA;Double IPA;20,00;Schorstein
+2;Stout;Imperial Stout;47,59;Schorstein
 3;Carvoeira;Imperial Stout;61,00;Lohn
 4;Ariranha;Soft Stout;49,00;CBB
-5;Tartatuga de Pente;Blond Ale;100;CBB
-6;Onca Pintada;Session IPA;69,78;CBB
+5;Tartatuga de Pente;Blond Ale;20;CBB
+6;Onca Pintada;Session IPA;10;CBB
 7;Catarina Sour;Sour;5000,50;Lohn
 8;London Cab;Porter;39,00;Fullers
 9;Cebola's Breja;Imperial Stout;39,00;ExpCerv

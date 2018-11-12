@@ -29,7 +29,7 @@
 // TESTE
 
 // VERSAO DA APLICACAO
-#define VersaoAPP F("0.2")
+#define VersaoAPP F("0.4")
 #define NOME_LOJA_LINHA1 F("Experiencia")
 #define NOME_LOJA_LINHA2 F("Cervejeira")
 
@@ -373,14 +373,17 @@ int gServico_ID_TorneiraAtual;
 
 
 
-// int gAjusteFluxo = 23; original por especificacao
-//float gAjusteFluxo = 38;
-float gAjusteFluxo = 7.5;
+//float gAjusteFluxo = 23; original por especificacao. numero original da especificacao que aparentemente nao funciona na torneira do cebola
+float gAjusteFluxo = 18; // teste x com 2 bar (oficiaL)
+//float gAjusteFluxo = 38; // numero obtido pelos testes do cebola na maquina anterior dele
+// float gAjusteFluxo = 7.5; // testes margarida murch com ar, na casa do murch
+//float gAjusteFluxo = 7.5; // teste de campo no deploy
 
 
-int gAjuste_fino_baixo = 10;
-int gPulse_ideal = 52;
-int gAjuste_fino_alto = 5;
+
+int gAjuste_fino_baixo = 1;
+int gPulse_ideal = 18;
+int gAjuste_fino_alto = 1;
 
 
 // Pino do sensor ativo no momento

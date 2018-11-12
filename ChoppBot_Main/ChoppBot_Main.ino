@@ -57,7 +57,7 @@ void InitApp()
     LogTerm(F("///                                               ///"));
     LogTerm(F("///  by Murch & Cebola                            ///"));
     LogTerm(F("///                                               ///"));
-    LogTerm(F("///  Hardware: Margarida versao 0.3               ///"));
+    LogTerm(F("///  Hardware: Margarida 2                        ///"));
     LogTerm(F("///                                               ///"));
     LogTerm(F("/////////////////////////////////////////////////////"));
     LogTerm(F(""));

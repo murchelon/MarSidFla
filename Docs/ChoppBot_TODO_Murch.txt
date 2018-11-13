@@ -29,6 +29,10 @@ OKOK! - colocar um timer para sair da operacao depois de X tempo sem escolher um
 - testar e corrigir curva do chopp
 OKOK! - resolver bug debounce botoes/tela touch
 OKOK! - Rele 4 nao liga. Ver sinal
+- Cortar chopp se os pulsos forem muito baixos 5 pulsos
+- trocar label de TIPO para ESTILO
+- admin todos
+- criar um modo sangria onde eu posso abrir e usar por um tempo maior
 
 
 TODO HARDWARE:

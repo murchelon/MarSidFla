@@ -4,6 +4,10 @@
 #define Range_Menos 10
 #define Range_Mais 10
 
+#define ctDEBUG_FLUXO_CURVA 1
+
+
+
 // Interrupt is called once a millisecond, looks for any Flow_Pulses_1 from the sensor!
 /*
 
@@ -64,23 +68,23 @@ SIGNAL(TIMER1_COMPA_vect)
 
 	if (gFaixaVelAtual == -5)
 	{
-		gFlow_Pulses_Corrigido_Atual = gFlow_Pulses_Corrigido_Atual + 0;		
+		gFlow_Pulses_Corrigido_Atual = gFlow_Pulses_Corrigido_Atual + 0.06;		
 	}
 
 	if (gFaixaVelAtual == -4)
 	{
 		//gFlow_Pulses_Corrigido_Atual = gFlow_Pulses_Corrigido_Atual + 1.5;		
-		gFlow_Pulses_Corrigido_Atual = gFlow_Pulses_Corrigido_Atual + 0;		
+		gFlow_Pulses_Corrigido_Atual = gFlow_Pulses_Corrigido_Atual + 0.05;		
 	}
 
 	if (gFaixaVelAtual == -3)
 	{
-		gFlow_Pulses_Corrigido_Atual = gFlow_Pulses_Corrigido_Atual + 0;		
+		gFlow_Pulses_Corrigido_Atual = gFlow_Pulses_Corrigido_Atual + 0.02;	
 	}
 
 	if (gFaixaVelAtual == -2)
 	{
-		gFlow_Pulses_Corrigido_Atual = gFlow_Pulses_Corrigido_Atual + 0;		
+		gFlow_Pulses_Corrigido_Atual = gFlow_Pulses_Corrigido_Atual + 0.01;		
 	}
 
 	if (gFaixaVelAtual == -1)
@@ -573,10 +577,10 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		}
 
 		//murch
-		LogTerm(String(F("Abrindo Rele:")));
-		LogTerm(String(F("gServico_ID_TorneiraAtual = ")) + String(gServico_ID_TorneiraAtual));
-		LogTerm(String(F("gPinoSensorFluxoAtivo = ")) + String(gPinoSensorFluxoAtivo));
-		LogTerm(String(F("gPinoReleTorneiraAtiva = ")) + String(gPinoReleTorneiraAtiva));
+		//LogTerm(String(F("Abrindo Rele:")));
+		//LogTerm(String(F("gServico_ID_TorneiraAtual = ")) + String(gServico_ID_TorneiraAtual));
+		//LogTerm(String(F("gPinoSensorFluxoAtivo = ")) + String(gPinoSensorFluxoAtivo));
+		//LogTerm(String(F("gPinoReleTorneiraAtiva = ")) + String(gPinoReleTorneiraAtiva));
 
 
 		// libera apenas se existir saldo
@@ -765,6 +769,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 
+
 					delay(400);
 
 				}
@@ -787,106 +792,242 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 
-				LogTerm( String(F("gFaixaVelAtual = ")) + String(gFaixaVelAtual) + String(F(" | gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" / gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+			    // Se esta tirando chopp devagar, ou gFLOW_PulsosNosUltimosXseg <= 5 entao fecha torneira
+			    if ((gFLOW_PulsosNosUltimosXseg <= 5) && (time_tempo_passado >= 3000))
+			    {
+			        Exec_Loop_PodeSair = true;
+				    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
+					useInterrupt_2(false);		
+					LED_SetLedState(F("RGB"), false, F(""));  
+					LogTerm(F("Chopp muito devagar. Finalizando sessao..."));      
+			    }			
 
-
-
-
-				// FAIXA IDEAL = 0
-				if ((gFLOW_PulsosNosUltimosXseg >= gPulse_ideal - Range_Menos) && (gFLOW_PulsosNosUltimosXseg <= gPulse_ideal - Range_Mais))
+				//if (gFLOW_PulsosNosUltimosXseg > gPulse_ideal)
+				if (gFLOW_PulsosNosUltimosXseg < 10)
 				{
-					gFaixaVelAtual = 0;
-					LogTerm(String(F("IDEAL DEFAULT -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 1))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 1)) + String(F(" = IDEAL | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+					gAjuste_fino_baixo = 2;
+				}
+				else
+				{
+					gAjuste_fino_baixo = 1;
 				}
 
 
-		
-				// velocidade ideal
-				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 1))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal + (gAjuste_fino_baixo * 1))))
+
+
+				if (ctDEBUG_FLUXO_CURVA == 1)
 				{
-					gFaixaVelAtual = 0;
-					LogTerm(String(F("IDEAL -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 1))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 1)) + String(F(" = IDEAL | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+					LogTerm( String(F("gFaixaVelAtual = ")) + String(gFaixaVelAtual) + String(F(" | gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" / gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
 				}
 
 
-				// velocidade -1
+				
+
+
+				// FAIX IDEAL
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - gAjuste_fino_baixo)) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal + gAjuste_fino_baixo)))
+				{
+					gFaixaVelAtual = 0;
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("IDEAL -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - gAjuste_fino_baixo)) + String(F(" ate ")) + (gPulse_ideal + gAjuste_fino_baixo) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}					
+					
+				}
+
+
+				// FAIXA -1
 				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 2))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 1))))
 				{
 					gFaixaVelAtual = -1;
-					LogTerm(String(F("VEL -1: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 2))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 1)) + String(F(" = -1 | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA -1 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 2))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 1)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}					
+					
 				}
 
-				// velocidade +1
+
+				// FAIXA +1
 				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal + (gAjuste_fino_baixo * 1))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal + (gAjuste_fino_baixo * 2))))
 				{
 					gFaixaVelAtual = 1;
-					LogTerm(String(F("VEL +1: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 1))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 2)) + String(F(" = +1 | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA +1 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 1))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 2)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}						
+					
 				}
 
-				// velocidade -2
+
+
+				// FAIXA -2
 				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 3))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 2))))
 				{
 					gFaixaVelAtual = -2;
-					LogTerm(String(F("VEL -2: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 3))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 2)) + String(F(" = -2 | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA -2 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 3))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 2)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}	
+
+					
 				}
 
-				// velocidade +2
+
+				// FAIX +2
 				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal + (gAjuste_fino_baixo * 2))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal + (gAjuste_fino_baixo * 3))))
 				{
 					gFaixaVelAtual = 2;
-					LogTerm(String(F("VEL +2: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 2))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 3)) + String(F(" = +2 | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA +2 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 2))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 3)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}						
+					
 				}
 
 
-				// velocidade -3
-				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 3))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 2))))
+				// FAIXA -3
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 4))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 3))))
 				{
 					gFaixaVelAtual = -3;
-					LogTerm(String(F("VEL -3: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 3))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 2)) + String(F(" = -3 | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA -3 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 4))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 3)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}	
+
+					
 				}
 
-				// velocidade +3
+				// FAIXA +3
 				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal + (gAjuste_fino_baixo * 3))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal + (gAjuste_fino_baixo * 4))))
 				{
 					gFaixaVelAtual = 3;
-					LogTerm(String(F("VEL +3: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 3))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 4)) + String(F(" = +3 | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA +3 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 3))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 4)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}						
+					
 				}
 
 
-				// velocidade -4
-				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 4))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 3))))
+				// FAIXA -4
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 5))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 4))))
 				{
 					gFaixaVelAtual = -4;
-					LogTerm(String(F("VEL -4: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 4))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 3)) + String(F(" = -4 | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA -4 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 5))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 4)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}	
+
+
 				}
 
-				// velocidade +4
-				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal + (gAjuste_fino_baixo * 4))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal + (gAjuste_fino_baixo * 4))))
+				// FAIXA +4
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal + (gAjuste_fino_baixo * 4))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal + (gAjuste_fino_baixo * 5))))
 				{
 					gFaixaVelAtual = 4;
-					LogTerm(String(F("VEL +4: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 4))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 4)) + String(F(" = +4 | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA +3 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 4))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 5)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}					
+					
 				}
 
 
-				// velocidade EXTREMA BAIXA
-				if (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - gAjuste_fino_baixo * 5))
+				// FAIXA -5
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 6))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 5))))
 				{
 					gFaixaVelAtual = -5;
-					LogTerm(String(F("VEL EXTREMA BAIXA: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | MENOR que ")) + String(gPulse_ideal - (gAjuste_fino_baixo * 5)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA -5 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 6))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 5)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}	
+
+					
 				}
 
-
-				// velocidade EXTREMA ALTA
-				if (gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal + gAjuste_fino_baixo * 5))
-				{   
+				// FAIXA +5
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal + (gAjuste_fino_baixo * 5))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal + (gAjuste_fino_baixo * 6))))
+				{
 					gFaixaVelAtual = 5;
-					LogTerm(String(F("VEL EXTREMA ALTA: gFLOW_PulsosNosUltimosXseg = ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | MAIOR que ")) + String(gPulse_ideal + (gAjuste_fino_baixo * 5)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) );
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA +5 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 5))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 6)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}						
+					
 				}
 
-		
+				// FAIXA -6
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 7))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 6))))
+				{
+					gFaixaVelAtual = -6;
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA -6 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 7))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 6)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}					
+					
+				}
 
 
+				// FAIXA +6
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal + (gAjuste_fino_baixo * 6))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal + (gAjuste_fino_baixo * 7))))
+				{
+					gFaixaVelAtual = 6;
 
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA +6 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 6))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 7)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}						
+					
+				}
+
+				// FAIXA -7
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 8))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 7))))
+				{
+					gFaixaVelAtual = -7;
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA -7 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 8))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 7)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_inicio = ")) + String(time_inicio) );
+					}						
+					
+				}
+
+				// FAIXA -8
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 9))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 8))))
+				{
+					gFaixaVelAtual = -8;
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA -8 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 9))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 8)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}						
+					
+				}
+
+				// FAIXA -9
+				if ((gFLOW_PulsosNosUltimosXseg >= (gPulse_ideal - (gAjuste_fino_baixo * 10))) && (gFLOW_PulsosNosUltimosXseg < (gPulse_ideal - (gAjuste_fino_baixo * 9))))
+				{
+					gFaixaVelAtual = -9;
+
+					if (ctDEBUG_FLUXO_CURVA == 1)
+					{
+						LogTerm(String(F("FAIXA -9 -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal - (gAjuste_fino_baixo * 10))) + String(F(" ate ")) + (gPulse_ideal - (gAjuste_fino_baixo * 9)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado = ")) + String(time_tempo_passado) );
+					}						
+					
+				}
 
 
 				//LogTerm("gFLOW_PulsosNosUltimosXseg = " + String(gFLOW_PulsosNosUltimosXseg));

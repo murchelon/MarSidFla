@@ -42,6 +42,13 @@ volatile uint16_t gTouch_Y;
 
 
 
+unsigned long Timeout_Operacao_time_inicio;
+unsigned long Timeout_Operacao_time_atual;
+unsigned long Timeout_Operacao_time_tempo_passado;
+
+int Timeout_Operacao_SegundosPassados;
+int Timeout_Operacao_Last_SegundosPassados;
+
 
 
 //tft.getCursor(&currentX,&currentY);
@@ -981,20 +988,11 @@ void TELA_Render_Interface_LOGIN()
 
 
 
-unsigned long Timeout_Operacao_time_inicio;
-unsigned long Timeout_Operacao_time_atual;
-unsigned long Timeout_Operacao_time_tempo_passado;
-
-int Timeout_Operacao_SegundosPassados;
-int Timeout_Operacao_Last_SegundosPassados;
-
 
 void TELA_Render_Interface_OPERACAO()
 {
 
 	//LogTerm(F("== [Modo Atual: OPERACAO] ==");
-
-
 
 	// Mostra tempo de timeout da tela de operacao -----------------------
 
@@ -1015,15 +1013,15 @@ void TELA_Render_Interface_OPERACAO()
 	}
 
 
+    Timeout_Operacao_time_atual = millis();
+    Timeout_Operacao_time_tempo_passado = Timeout_Operacao_time_atual - Timeout_Operacao_time_inicio;
+
+    Timeout_Operacao_SegundosPassados = floor(Timeout_Operacao_time_tempo_passado / 1000);
+
+
 	// Renderiza os segundos
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  		
-
-	    Timeout_Operacao_time_atual = millis();
-	    Timeout_Operacao_time_tempo_passado = Timeout_Operacao_time_atual - Timeout_Operacao_time_inicio;
-
-	    Timeout_Operacao_SegundosPassados = floor(Timeout_Operacao_time_tempo_passado / 1000);
-
 
 	    if (Timeout_Operacao_SegundosPassados != Timeout_Operacao_Last_SegundosPassados)
 	    {	
@@ -1070,6 +1068,7 @@ void TELA_Render_Interface_OPERACAO()
 	}
 
 	// ====================================================================
+
 
 
 	if (gTelaRenderizada_OPERACAO == false)
@@ -1590,9 +1589,13 @@ void TELA_VerificaTouch_ADMIN()
 void TELA_VerificaTouch_OPERACAO()
 {
 
+	//LogTerm(String(F("gTelaRenderizada_OPERACAO = ")) + String(gTelaRenderizada_OPERACAO));
+	//while (1){}
+
 
 	if (ctTELA_HARDWARE == F("TERMINAL"))
 	{ 
+
 
 		String retConsole;
 
@@ -1602,9 +1605,6 @@ void TELA_VerificaTouch_OPERACAO()
 		{
 			LogTerm(String(F("Opcao selecionada: ")) + retConsole);	
 		}
-
-
-	
 
 
 		if (retConsole.toInt() == 99)

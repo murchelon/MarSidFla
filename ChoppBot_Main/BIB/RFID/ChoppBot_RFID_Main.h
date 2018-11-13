@@ -630,10 +630,6 @@ void TELA_Render_Interface_LER_RFID()
 	        TELA_LimpaTela();
 	    }
 
-	    if (ctTELA_HARDWARE == F("TERMINAL"))
-	    {
-	        LogTerm(F("TELA -> LimpaTela()")); 
-	    }
 
 		//delay(500);   
 

@@ -29,7 +29,7 @@
 // TESTE
 
 // VERSAO DA APLICACAO
-#define VersaoAPP F("0.4")
+#define VersaoAPP F("0.5")
 #define NOME_LOJA_LINHA1 F("Experiencia")
 #define NOME_LOJA_LINHA2 F("Cervejeira")
 
@@ -45,10 +45,10 @@ String gModoOperacao_SubTela;
 #define gTimeoutOpcao 7000		
 
 // tempo em ms para timeout de servico de torneira (operacao_servico)
-#define ctTIMEOUT_TORNEIRA 6000		
+#define ctTIMEOUT_TORNEIRA 7000		
 
 // tempo em ms para timeout da tela de operacao (tela onde eh escolhido o chopp) (operacao)
-#define ctTIMEOUT_TELA_OPERACAO 5000		
+#define ctTIMEOUT_TELA_OPERACAO 20000		
 
 
 
@@ -115,10 +115,6 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define ctPINO_LED_RGB_RED 35
 #define ctPINO_LED_RGB_GREEN 34
 #define ctPINO_LED_RGB_BLUE 33
-
-
-
-//int EstadoBotao_Rele1 = 0;
 
 
 
@@ -373,11 +369,10 @@ int gServico_ID_TorneiraAtual;
 
 
 
-//float gAjusteFluxo = 23; original por especificacao. numero original da especificacao que aparentemente nao funciona na torneira do cebola
-float gAjusteFluxo = 18; // teste x com 2 bar (oficiaL)
-//float gAjusteFluxo = 38; // numero obtido pelos testes do cebola na maquina anterior dele
+//float gAjusteFluxo = 23; original do sensor
+float gAjusteFluxo = 19; // teste x com 2 bar (oficiaL) . numero ajustado para mangueira 3/8
 // float gAjusteFluxo = 7.5; // testes margarida murch com ar, na casa do murch
-//float gAjusteFluxo = 7.5; // teste de campo no deploy
+
 
 
 

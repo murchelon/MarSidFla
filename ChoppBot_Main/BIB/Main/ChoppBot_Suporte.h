@@ -247,3 +247,8 @@ String FormatNumber(SomeType Valor, String Tipo)
 }
 
 
+
+void ResetArduino()
+{
+	resetFunc();
+}

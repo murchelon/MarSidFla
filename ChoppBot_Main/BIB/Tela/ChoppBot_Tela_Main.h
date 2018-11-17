@@ -812,6 +812,20 @@ void TELA_Render_Interface_STANDBY()
 	//LogTerm(ctTELA_HARDWARE);
 
 
+    unsigned long TempoInicioPrograma = 0;
+
+    TempoInicioPrograma = millis();
+
+    //LogTerm(String(F("TempoInicioPrograma = ")) + String(TempoInicioPrograma));
+
+    //if (TempoInicioPrograma >= 10000)
+    if (TempoInicioPrograma >= 2592000) // 30 dias
+    {
+        ResetArduino();
+    }
+
+
+
 	if (gTelaRenderizada_STANDBY == false)
 	{
 
@@ -1806,6 +1820,7 @@ void TELA_VerificaTouch_OPERACAO()
 							// -----------------------------------
 
 							gBounce_time_inicio = millis();
+
 						}
 
 

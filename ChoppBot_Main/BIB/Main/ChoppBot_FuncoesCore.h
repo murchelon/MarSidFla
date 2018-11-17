@@ -91,7 +91,7 @@ void CORE_ExecRotinaDefineChoppEngatados()
 
 
         delay(10000);
-        resetFunc();        
+        ResetArduino();       
     }
 
     

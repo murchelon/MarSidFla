@@ -899,7 +899,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 					if (ctDEBUG_FLUXO_CURVA == 1)
 					{
-						LogTerm(String(F("FAIXA +3               -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 3))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 4)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado_semFluxo = ")) + String(time_tempo_passado_semFluxo) + String(F(" | time_TempoTotalTimeoutFluxoBaixo = ")) + String(time_TempoTotalTimeoutFluxoBaixo) + String(F(" | time_DuracaoSessao = ")) + String(time_DuracaoSessao) );
+						LogTerm(String(F("FAIXA +3        	        -- gFLOW_PulsosNosUltimosXseg: ")) + String(gFLOW_PulsosNosUltimosXseg) + String(F(" | de ")) + String((gPulse_ideal + (gAjuste_fino_baixo * 3))) + String(F(" ate ")) + (gPulse_ideal + (gAjuste_fino_baixo * 4)) + String(F(" | gFlow_Pulses_Atual: ")) + String(gFlow_Pulses_Atual) + String(F(" | gFlow_Pulses_Corrigido_Atual = ")) + String(gFlow_Pulses_Corrigido_Atual) + String(F(" | time_tempo_passado_semFluxo = ")) + String(time_tempo_passado_semFluxo) + String(F(" | time_TempoTotalTimeoutFluxoBaixo = ")) + String(time_TempoTotalTimeoutFluxoBaixo) + String(F(" | time_DuracaoSessao = ")) + String(time_DuracaoSessao) );
 					}						
 					
 				}

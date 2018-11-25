@@ -63,7 +63,6 @@ String RFID_Exec_Leitura()
 			return ret;
 		}
 
-		RFID_SetStatusLed(true);
 
 
 
@@ -82,7 +81,7 @@ String RFID_Exec_Leitura()
 		// This prevents us from waiting forever for a card, which is
 		// the default behaviour of the PN532.
 		//nfc.setPassiveActivationRetries(0xFF); // 255 forever
-		nfc.setPassiveActivationRetries(255);
+		nfc.setPassiveActivationRetries(0x1388); // 5000 // outro valor para zero tempo de timeout
 
 		// configure board to read RFID tags
 		nfc.SAMConfig();
@@ -100,8 +99,6 @@ String RFID_Exec_Leitura()
 		// 'uid' will be populated with the UID, and uidLength will indicate
 		// if the uid is 4 bytes (Mifare Classic) or 7 bytes (Mifare Ultralight)
 		success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, &uid[0], &uidLength);
-
-		RFID_SetStatusLed(false);  
 
 		if (success)
 		{
@@ -125,10 +122,6 @@ String RFID_Exec_Leitura()
 
 				idCartao += aux1;
 
-				//Serial.print(" 0x");Serial.print(uid[i], HEX); 
-
-				//TELA_Texto("LEITOR RFID SELECIONADO VIA TELA", "MAGENTA");
-
 
 			}
 			
@@ -142,40 +135,10 @@ String RFID_Exec_Leitura()
 
 			LogTerm(String(F("RFID: Cartao lido: ")) + idCartao);
 
-			//TELA_Texto("Cartao decodec: " + idCartao, "MAGENTA");
-
-
-
-
-			
-			//digitalWrite(RFID_PINO_SCK, HIGH);
-			//digitalWrite(RFID_PINO_MOSI, HIGH);
-			//digitalWrite(RFID_PINO_SS, HIGH);
-			//digitalWrite(RFID_PINO_MISO, HIGH);
-			//digitalWrite(RFID_PINO_IRQ, HIGH);
-			//digitalWrite(RFID_PINO_RESET, HIGH);
-
-			//delay(1000);
-
-			//digitalWrite(SD_MAX_TENTATIVA_READ, HIGH);
-			//digitalWrite(SD_DELAY_TENTATIVA_READ, HIGH);
-			//digitalWrite(SD_PINO, HIGH);
-
-			//delay(1000);
-
-
-			//digitalWrite(SD_PINO, LOW);
-
-			//delay(1000);
 
 		}
 		else
 		{
-			// PN532 probably timed out waiting for a card
-			//Serial.println("Ocorreum um timeout da leitura do cartao");
-
-
-			LogTerm(F("RFID: Timeout de leitura"));
 
 			ret =F("0|RFID: Timeout de leitura");
 				
@@ -266,7 +229,38 @@ void TELA_Render_Interface_LER_RFID()
 		// REcupera o Login (numero unico existente no cartao ou chaveiro)
 		String Login_RFID;
 
-		Login_RFID = RFID_Exec_Leitura();
+		long ContaLeitura = 0;
+
+
+
+		RFID_SetStatusLed(true);
+
+		
+
+
+		// fica lendo o cartao ate achar um cartao ou timeout
+		while (ContaLeitura <= ctTIMEOUT_TENTATIVA_RFID)
+		{
+
+			ContaLeitura++;
+
+			LogTerm(String(F("RFID: ContaLeitura = ")) + String(ContaLeitura));
+
+			Login_RFID = RFID_Exec_Leitura();
+
+			if (Login_RFID.substring(0,2) == F("1|"))
+			{
+
+				RFID_SetStatusLed(false);  
+
+				ContaLeitura = 1000;
+
+			}
+
+
+		}
+		
+		RFID_SetStatusLed(false);  
 
 		//LogTerm(Login_RFID);
 
@@ -584,6 +578,23 @@ void TELA_Render_Interface_LER_RFID()
 
 			LED_SetLedState(F("RGB"), true, F("RED"));
 
+
+
+			if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+			{  
+
+				TELA_LimpaTela();
+
+
+				gTelaRenderizada_MSGBOX = false;
+				gTelaRenderizada_LER_RFID = false;
+				
+			}
+
+			gModoOperacao = F("STANDBY");
+			gModoOperacao_SubTela = F("");	
+
+			/*
 			// ocorreu um erro. imprime a msg de erro na tela
 			if (ctTELA_HARDWARE == F("TERMINAL"))
 			{  
@@ -609,6 +620,9 @@ void TELA_Render_Interface_LER_RFID()
 				
 
 			}
+
+			*/
+
 			
 		}
 

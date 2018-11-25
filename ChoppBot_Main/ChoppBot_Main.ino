@@ -513,6 +513,26 @@ void Exec_OPERACAO()
 // ROTINA DE ADMIN
 void Exec_ADMIN()
 {
+
+    if (gTelaRenderizada_ADMIN == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN] =="));
+    }  
+
+    TELA_Render_Interface_ADMIN();
+
+}
+
+
+
+
+
+
+// ROTINA DE ADMIN
+void Exec_ADMIN_VERY_OLD()
+{
+
+    
     boolean Exec_Loop_PodeSair = false;
 
     unsigned long time_inicio;
@@ -794,7 +814,18 @@ void TestaInterrupts()
 
     if (gModoOperacao == F("ADMIN"))
     {
-        TELA_VerificaTouch_ADMIN();
+
+
+        if (gModoOperacao_SubTela == F(""))
+        {
+            TELA_VerificaTouch_ADMIN();
+        }
+
+        if (gModoOperacao_SubTela == F("ADMIN_1"))
+        {
+            TELA_VerificaTouch_ADMIN();
+        }
+
     }
 
     if (gModoOperacao == F("DEBUG"))
@@ -906,7 +937,17 @@ void loop()
 
     if (gModoOperacao == F("ADMIN"))
     {
-        Exec_ADMIN();
+
+        if (gModoOperacao_SubTela == F(""))
+        {
+            Exec_ADMIN();  
+        }
+        
+       if (gModoOperacao_SubTela == F("ADMIN_1"))
+        {
+            Exec_ADMIN();  
+        }   
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

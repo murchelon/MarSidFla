@@ -48,7 +48,14 @@ String gModoOperacao_SubTela;
 #define ctTIMEOUT_TORNEIRA 7000		
 
 // tempo em ms para timeout da tela de operacao (tela onde eh escolhido o chopp) (operacao)
-#define ctTIMEOUT_TELA_OPERACAO 20000		
+#define ctTIMEOUT_TELA_OPERACAO 30000		
+
+// tempo em ms para timeout da tela de ADMIN 
+#define ctTIMEOUT_TELA_ADMIN 30000		
+
+
+
+
 
 
 
@@ -328,6 +335,8 @@ bool gTelaRenderizada_MSGBOX;
 #define ctRFID_HARDWARE F("PN532")
 
 
+// Numero de tentativas de leitura do RFID para achar um cartao 
+#define ctTIMEOUT_TENTATIVA_RFID 5		
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

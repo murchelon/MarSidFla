@@ -305,7 +305,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
         LogTerm(String(F("===================================================================")));
         LogTerm(String(F("Torneira: ")) + String(gServico_ID_TorneiraAtual));
         LogTerm(String(F("Chopp Selecionado: (")) + tmp_IDChopp + F(") ") + tmp_Nome);
-		LogTerm(String(F("Tipo: ")) + tmp_Tipo);
+		LogTerm(String(F("Estilo: ")) + tmp_Tipo);
 		LogTerm(String(F("tmp_Valor: ")) + FormatNumber(tmp_Valor, F("MONEY")) + F(" / litro"));
 		LogTerm(String(F("Volume Atual: ")) + FormatNumber(VolumeAtual, F("")) + F(" litros"));
 		LogTerm(String(F("-------------------------------------------------------------------")));
@@ -442,7 +442,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				LogTerm(String(F("Torneira ")) + String(gServico_ID_TorneiraAtual) + String(F(" liberada!")));
 
 				LogTerm(String(F("Chopp: ")) + tmp_Nome);
-				LogTerm(String(F("Tipo: ")) + tmp_Tipo);
+				LogTerm(String(F("Estilo: ")) + tmp_Tipo);
 				LogTerm(String(F("Preco: ")) + FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")));
 				LogTerm(String(F("Restante: ")) + String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
 				LogTerm(F("Volume Retirado: 0,00 Litros"));
@@ -516,7 +516,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 				tft.setTextColor(CinzaLabels);
 				tft.setCursor (180, 270);			
-				tft.print (F("Tipo: ")); 
+				tft.print (F("Estilo: ")); 
 
 				tft.setTextColor(RA8875_WHITE);
 				tft.setCursor (340, 270);			
@@ -1347,7 +1347,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 	                        break;
 
 	                    case 6:
-	                        outLabel = F("Tipo:");
+	                        outLabel = F("Estilo:");
 	                        outValor = tmp_Tipo;
 	                        break;
 

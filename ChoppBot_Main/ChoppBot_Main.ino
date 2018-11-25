@@ -720,12 +720,12 @@ void Exec_STANDBY()
    
 
 
-void Exec_LER_RFID()
+void Exec_LER_RFID(String ModoRetorno)
 {
     if (gTelaRenderizada_LER_RFID == false)
     {
         LogTerm(F("== [Modo Atual: LOGIN -- SubTela: LER_RFID] =="));
-        TELA_Render_Interface_LER_RFID();
+        TELA_Render_Interface_LER_RFID(ModoRetorno);
     }  
 
     
@@ -911,7 +911,12 @@ void loop()
         
        if (gModoOperacao_SubTela == F("LER_RFID"))
         {
-            Exec_LER_RFID();  
+            Exec_LER_RFID(String(F("OPERACAO")));  
+        }        
+        
+        if (gModoOperacao_SubTela == F("LER_RFID_ADMIN"))
+        {
+            Exec_LER_RFID(String(F("ADMIN")));  
         }        
 
     }

@@ -162,7 +162,7 @@ String RFID_Exec_Leitura()
 
 
 
-void TELA_Render_Interface_LER_RFID()
+void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 {
 	
 	//LogTerm(ctTELA_HARDWARE);
@@ -555,10 +555,65 @@ void TELA_Render_Interface_LER_RFID()
 
 					}
 
-					// murch cebola
-					//gModoOperacao = F("OPERACAO");
-					gModoOperacao = F("OPERACAO");
-					gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+		
+					if (ModoRetorno == String(F("OPERACAO")))
+					{
+						gModoOperacao = F("OPERACAO");
+						gModoOperacao_SubTela = F("OPERACAO_SERVICO");						
+					}
+
+
+		
+					if (ModoRetorno == String(F("ADMIN")))
+					{
+						if (gSessao_Nivel < 500)
+						{
+							
+
+
+							if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+							{  
+
+								TELA_LimpaTela();
+
+								
+
+								TELA_Render_MsgBox(F("Acesso nao autorizado"), F("Este usuario nao tem acesso ao ambiente de administracao"));		
+
+
+								delay(6000);
+
+								TELA_LimpaTela();
+
+							}
+
+
+							if (ctTELA_HARDWARE == F("TERMINAL"))
+							{  
+								LogTerm(F("Acesso nao autorizado: Este usuario nao tem acesso ao ambiente de administracao"));
+
+							}							
+							gTelaRenderizada_MSGBOX = false;
+
+
+
+							gModoOperacao = F("STANDBY");
+							gModoOperacao_SubTela = F("");												
+						}
+						else
+						{
+							
+
+							gModoOperacao = F("ADMIN");
+							gModoOperacao_SubTela = F("");								
+						}
+						
+						gTelaRenderizada_LER_RFID = false;
+
+					
+					}
+
+
 
 					delay(100);
 

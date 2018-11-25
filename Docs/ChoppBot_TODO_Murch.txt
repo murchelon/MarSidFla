@@ -7,7 +7,7 @@
 TODO SOFTWARE:
 ==============
 
-- revisar calculos. Aparentemente so o valor da sessao que esta sendo calculado errado
+OKOK! - revisar calculos. Aparentemente so o valor da sessao que esta sendo calculado errado
 OKOK! - Atualizar a variavel de engatados com o resultado da sessao
 OKOK! - gravar no arqquivo engatados.txt todos os chopps da variavel. hoje so grava o escolhido
 OKOK! - ajustar variaveis com decimal na conversao de float para string pois esta perdendo a parte decimal
@@ -23,16 +23,43 @@ OKOK! - No desenho do botao, nao esta usando format number
 OKOK! - mudar os botoes de modo que eles se ajustem de tamanho baseando se em 3 ou 4 torneiras
 OKOK! - testar se estao funcionando as 4 torneiras com o programa principal
 OKOK! - mudar ordem das telas cebola
-- Gravar sessao real time na eprom
-- Criar rotina de recuperacao de saldo quadno desliga - chopp e usuario
 OKOK! - colocar um timer para sair da operacao depois de X tempo sem escolher um chopp
-- testar e corrigir curva do chopp
+OKOK! - testar e corrigir curva do chopp
 OKOK! - resolver bug debounce botoes/tela touch
 OKOK! - Rele 4 nao liga. Ver sinal
-- Cortar chopp se os pulsos forem muito baixos 5 pulsos
-- trocar label de TIPO para ESTILO
-- admin todos
+OKOK! - Cortar chopp se os pulsos forem muito baixos 5 pulsos
+OKOK! - Criar timeout para RFID
+OKOK! - trocar label de TIPO para ESTILO
+- admin completo
+- Gravar sessao real time na eprom
+- Criar rotina de recuperacao de saldo quadno desliga - chopp e usuario
+- adicionar placa de RTC 
+- Adicionar log de cada operacao do sistema
 - criar um modo sangria onde eu posso abrir e usar por um tempo maior
+
+
+PARTE ADMIN:
+
+- USUARIOS
+	- novo cartao
+	- adicionar valor
+	- subtrair valor
+	- definir saldo
+	- trocar/cancelar cartao
+
+- CHOPPS
+	- Adicionar chopp
+	- Editar Chopp
+	- Remover chopp
+	
+- ENGATADOS
+	- Editar Engatados
+	
+- OUTROS
+	- Data e Horario
+	- Reset
+	- Modo Debug
+
 
 
 TODO HARDWARE:

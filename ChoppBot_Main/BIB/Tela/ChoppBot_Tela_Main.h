@@ -626,7 +626,7 @@ void TELA_IniciaTela()
 
 
 
-void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto3, String Texto4, String Cor)
+void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto3, String Texto4, String Cor, String TipoBotao)
 {
 
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
@@ -727,7 +727,8 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 		}
 
 
-		// Render o numero dentro do botao
+
+		// Render o titulo dentro do botao
 		TELA_SetFontSize(2);
 
 
@@ -742,19 +743,17 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 		
 		tft.setCursor (gPosicaoAtual_X + OffSet_TextoBotao_W, gOffset_H + OffSet_TextoBotao_H);
 
-		tft.print (IndexBotao);
+		tft.print (IndexBotao);		
+
+
+
 
 		// Render o titulo 
 		TELA_SetFontSize(0);
 		//tft.changeMode(TEXT);
 
-
-
 		tft.setTextColor(RA8875_WHITE);
 
-
-
-		
 
 		// Render Texto
 		if (Texto != F(""))
@@ -762,6 +761,8 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 			tft.setCursor (gPosicaoAtual_X + OffSet_TextoTitulo_W, gOffset_H + OffSet_TextoBotao_H + OffSet_TextoTitulo_H);    
 			tft.print (Texto);
 		}
+
+
 
 		// Render Texto2
 		if (Texto2 != F(""))
@@ -956,10 +957,10 @@ void TELA_Render_Interface_LOGIN()
 
 				gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
 
-				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"));
-				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F(""), F("AZUL"));
-				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"));
-				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"));
+				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"), F("GERAL") );
+				TELA_Render_Botao(2, F("LEITOR DE CARTAO"),  F(""), F(""), F(""), F("AZUL"),   F("GERAL") );
+				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"), F("GERAL") );
+				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"), F("GERAL") );
 
 				// Area para chamar admin
 				//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
@@ -979,10 +980,10 @@ void TELA_Render_Interface_LOGIN()
 
 				gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
 
-				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"));
-				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F(""), F("AZUL"));
-				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"));
-				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"));
+				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"), F("GERAL") );
+				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F(""), F("AZUL"), F("GERAL") );
+				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"), F("GERAL") );
+				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"), F("GERAL") );
 
 				// Area para chamar admin
 				//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
@@ -1008,8 +1009,10 @@ void TELA_Render_Interface_LOGIN()
 void TELA_Render_Interface_ADMIN()
 {
 
+	
 
-
+	//LogTerm(String(F("gTelaRenderizada_ADMIN = ")) + String(gTelaRenderizada_ADMIN));
+	//LogTerm(String(F("gTelaRenderizada_OPERACAO = ")) + String(gTelaRenderizada_OPERACAO));
 
 	if (gTelaRenderizada_ADMIN == false)
 	{
@@ -1107,8 +1110,22 @@ void TELA_Render_Interface_ADMIN()
 		{  		
 
 
+			TELA_SetFontSize(1); 
+
+			tft.setTextColor(CinzaLabels);
+			tft.setCursor (200, 10);			
+			tft.print (F("Nome: ")); 
+
+
+			tft.setTextColor(RA8875_WHITE);
+			tft.setCursor (290, 10);			
+			tft.print (gSessao_Nome); 
+
+
 
 			TELA_Texto_Centralizado(F("ADMIN: Escolha a sua opcao:"), F("VERDE"), 2, 90);
+
+
 
 
 
@@ -1141,37 +1158,12 @@ void TELA_Render_Interface_ADMIN()
 			gOffset_H = POSICAO_PADRAO_BTN_Y + 49;
 
 
+			TELA_Render_Botao(1, F("USUARIOS"), 	F(""), F(""), F(""), F("AZUL"), F("ADMIN") );
+			TELA_Render_Botao(2, F("CHOPPS"), 		F(""), F(""), F(""), F("AZUL"), F("ADMIN") );
+			TELA_Render_Botao(3, F("ENGATADOS"), 	F(""), F(""), F(""), F("AZUL"), F("ADMIN") );
+			TELA_Render_Botao(4, F("OUTROS"), 		F(""), F(""), F(""), F("AZUL"), F("ADMIN") );
 
 
-		    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco;Tipo;Valor
-		    for (int x = 0 ; x <= ctMAX_TORNEIRAS ; x++)
-		    {
-
-		        if (gaEngatados[x] != "")
-		        {
-
-
-		            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
-		            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
-		            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
-		            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
-		            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
-		            //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
-		            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
-		            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
-
-
-		            //TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( String(F("R$ ")) + tmp_Valor + String(F(" / Litro")) ), F("AZUL"));
-
-		            TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")) ), String(FormatNumber(tmp_Volume, F("")) + String(F(" litros")) ), F("AZUL"));
-
-
-
-
-		        }
-
-
-		    }
 
 		}
 
@@ -1427,9 +1419,7 @@ void TELA_Render_Interface_OPERACAO()
 		            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
 
 
-		            //TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( String(F("R$ ")) + tmp_Valor + String(F(" / Litro")) ), F("AZUL"));
-
-		            TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")) ), String(FormatNumber(tmp_Volume, F("")) + String(F(" litros")) ), F("AZUL"));
+		            TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")) ), String(FormatNumber(tmp_Volume, F("")) + String(F(" litros")) ), F("AZUL"), F("TORNEIRA") );
 
 
 
@@ -1664,7 +1654,7 @@ void TELA_VerificaTouch_LOGIN()
 					LogTerm(F("LEITOR BIOMETRICO SELECIONADO"));
 					TELA_Texto(F("LEITOR BIOMETRICO SELECIONADO"), F("BRANCO"));
 
-					//TELA_Render_Botao(1, "", "", "PRETO");
+	
 
 				}
 
@@ -1779,9 +1769,102 @@ void TELA_VerificaTouch_ADMIN()
 
 			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 
-			//murch
-			//gTouch_X = 800 - gTouch_X;
-			//gTouch_Y = 480 - gTouch_Y;
+
+
+
+
+		    int btnSair_PosAtual_X = 10;
+			int btnSair_PosAtual_Y = 15;
+
+			int btnSair_Size_W = 100;
+			int btnSair_Size_H = 60;			
+
+
+
+			// BOTAO SAIR
+			if ((gTouch_X >= btnSair_PosAtual_X) && (gTouch_X <= btnSair_PosAtual_X + btnSair_Size_W)) 
+			{
+
+				if ((gTouch_Y >= btnSair_PosAtual_Y) && (gTouch_Y <= btnSair_PosAtual_Y + btnSair_Size_H)) 
+				{
+
+
+					//LogTerm(String(F("a - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
+
+					// Esquema de DEBounce ---- inicio
+
+					gBounce_ContaClick++;
+					
+
+					if (gBounce_ContaClick == 1)
+					{
+						// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
+						
+						//LogTerm(String(F("1 - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
+
+
+						TELA_LimpaTela();
+
+						// zera as vars para cada tentativa de login
+						// efetua logoff
+						gSessao_Logado = false;
+						gSessao_IDUser = -1;
+						gSessao_Nome = F("");
+						gSessao_Nivel = -1;
+						gSessao_SaldoAtual = -1;
+
+						gTelaRenderizada_ADMIN = false;	
+
+						gModoOperacao = F("STANDBY");  
+						gModoOperacao_SubTela = F("");						
+						
+					
+
+
+						LogTerm(F("MAIN: Usuario clicou em SAIR"));
+						//TELA_Texto(F("BOTAO SAIR APERTADO"), F("MAGENTA"));  
+						//delay(500); 								
+
+						//LogTerm(F("TELA_VerificaTouch_OPERACAO"));
+						//TELA_LogTerm_XY();
+							
+						// -----------------------------------
+
+						gBounce_time_inicio = millis();
+					}
+
+
+					gBounce_time_atual = millis();
+					gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+
+					gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+					//LogTerm(gBounce_time_tempo_passado);
+
+					if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+					{
+						//LogTerm(time_tempo_passado);
+					}
+
+
+
+					if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+					{
+
+						gBounce_ContaClick = 0;		
+
+					}
+
+					gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+					// Esquema de DEBounce ---- FIM
+					//LogTerm(String(F("B - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
+
+
+				}
+
+			}
+
 
 
 
@@ -2055,6 +2138,26 @@ void TELA_VerificaTouch_OPERACAO()
 						//LogTerm(String(F("1 - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
 
 
+						LogTerm(F("BOTAO ADMIN APERTADO"));
+
+						//gModoOperacao_SubTela = F("OPERACAO_SERVICO");
+
+
+						gModoOperacao = F("LOGIN");
+						gModoOperacao_SubTela = F("LER_RFID_ADMIN");
+
+						gTelaRenderizada_OPERACAO = false;
+						//murch
+						gTelaRenderizada_ADMIN = false;
+
+						TELA_LimpaTela();
+
+						delay(500);  	
+
+
+						/*
+						// procedimento para sair para tela inicial
+
 						TELA_LimpaTela();
 
 						// zera as vars para cada tentativa de login
@@ -2072,13 +2175,11 @@ void TELA_VerificaTouch_OPERACAO()
 						
 					
 
+						*/
 
 						LogTerm(F("MAIN: Usuario clicou em ADMIN"));
-						//TELA_Texto(F("BOTAO SAIR APERTADO"), F("MAGENTA"));  
-						//delay(500); 								
 
-						//LogTerm(F("TELA_VerificaTouch_OPERACAO"));
-						//TELA_LogTerm_XY();
+
 							
 						// -----------------------------------
 

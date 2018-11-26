@@ -527,76 +527,6 @@ void Exec_ADMIN()
 
 
 
-
-// ROTINA DE ADMIN
-void Exec_ADMIN_VERY_OLD()
-{
-
-    
-    boolean Exec_Loop_PodeSair = false;
-
-    unsigned long time_inicio;
-    unsigned long time_atual;
-    unsigned long time_tempo_passado;
-
-    int SegundosPassados;
-    int Last_SegundosPassados;
-
-    if (gTelaRenderizada_ADMIN == false)
-    {
-        LogTerm(F("== [Modo Atual: ADMIN] =="));
-    }  
-
-    gTelaRenderizada_ADMIN = true;
-
-
-    time_inicio = millis();
-
-    TELA_Texto(String(F("MODO ADMIN: Saindo em ")) + String(gTimeoutOpcao / 1000) + String(F(" segundos...")), F("BRANCO"));
-
-    while (Exec_Loop_PodeSair == false)
-    {
-
-
-        time_atual = millis();
-        time_tempo_passado = time_atual - time_inicio;
-
-        SegundosPassados = floor(time_tempo_passado / 1000);
-
-
-
-        if (SegundosPassados != Last_SegundosPassados)
-        {
-            //LogTerm(SegundosPassados);
-            TELA_Texto(String(SegundosPassados), F("AMARELO"));
-        }
-
-
-
-        if (time_tempo_passado >= gTimeoutOpcao)
-        {
-            Exec_Loop_PodeSair = true;
-        }
-
-        Last_SegundosPassados = SegundosPassados;
-
-        //delay(500);
-    }
-
-
-    if (ctTELA_HARDWARE == String(F("ER-TFTM070-5")))
-    {
-        TELA_LimpaTela();
-    }
-
-    
-    gTelaRenderizada_ADMIN = false;
-    gModoOperacao = F("STANDBY");
-
-
-}
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -748,6 +678,21 @@ void Exec_OPERACAO_SERVICO()
 }
 
 
+// ROTINA DE ADMIN
+void Exec_ADMIN_NOVO_CARD()
+{
+
+    if (gTelaRenderizada_ADMIN_NOVO_CARD == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_NOVO_CARD] =="));
+        TELA_Render_Interface_ADMIN_NOVO_CARD();
+    }  
+
+    
+
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -821,9 +766,9 @@ void TestaInterrupts()
             TELA_VerificaTouch_ADMIN();
         }
 
-        if (gModoOperacao_SubTela == F("ADMIN_1"))
+        if (gModoOperacao_SubTela == F("ADMIN_NOVO_CARD"))
         {
-            TELA_VerificaTouch_ADMIN();
+            TELA_VerificaTouch_ADMIN_NOVO_CARD();
         }
 
     }
@@ -948,9 +893,9 @@ void loop()
             Exec_ADMIN();  
         }
         
-       if (gModoOperacao_SubTela == F("ADMIN_1"))
+       if (gModoOperacao_SubTela == F("ADMIN_NOVO_CARD"))
         {
-            Exec_ADMIN();  
+            Exec_ADMIN_NOVO_CARD();  
         }   
 
     }

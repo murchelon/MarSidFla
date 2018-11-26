@@ -1604,3 +1604,45 @@ void TELA_VerificaTouch_OPERACAO_SERVICO()
 }
 
 
+
+
+
+
+void TELA_VerificaTouch_ADMIN_NOVO_CARD()
+{
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{  
+
+
+
+		//tft.changeMode(GRAPHIC);
+
+		/*
+
+		if (TELA_touchDetect())
+		{
+
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
+
+
+			//TELA_LogTerm_XY(); 
+
+			//botao 1:
+			if (gTouch_X >= 100 && gTouch_X <= 100 + 170)  
+			{
+
+				if (gTouch_Y >= 250 && gTouch_Y <= 250 + 60) 
+				{
+
+
+
+				}
+
+			}
+
+		}
+
+		*/
+
+	}
+}

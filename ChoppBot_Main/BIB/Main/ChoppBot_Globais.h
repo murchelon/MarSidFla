@@ -66,6 +66,7 @@ String gModoOperacao_SubTela;
 String gaEngatados[ctMAX_TORNEIRAS];	
 
 
+
 // BUZZER
 #define BUZZER_PINO 32
 
@@ -123,6 +124,12 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define ctPINO_LED_RGB_GREEN 34
 #define ctPINO_LED_RGB_BLUE 33
 
+
+
+
+
+#define ctMAX_BOTOES_GEN_TELA 10 // numero maximo de botoes genericos em tela
+String gaBotoesGenTela[ctMAX_BOTOES_GEN_TELA];	
 
 
 
@@ -316,6 +323,8 @@ bool gTelaRenderizada_OPERACAO_SERVICO;
 
 bool gTelaRenderizada_MSGBOX;
 
+bool gTelaRenderizada_ADMIN_NOVO_CARD;
+
 
 
 
@@ -471,6 +480,9 @@ void InicializaVars()
 	gTelaRenderizada_LER_RFID = false;
 	gTelaRenderizada_OPERACAO_SERVICO = false;
 	gTelaRenderizada_MSGBOX = false;
+
+	gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
 	//teclado
 	gTecladoNum_ValAtual = F("");
 	gTecladoAlfa_ValAtual = F("");

@@ -1179,6 +1179,139 @@ void TELA_Render_Interface_ADMIN()
 
 
 
+ 
+void TELA_Render_Label(String Texto, String Cor, int Tamanho, uint16_t PosX, uint16_t PosY)
+{
+
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{
+
+		if (Cor == F(""))
+		{
+			Cor = F("CinzaLabels");
+		}
+
+
+
+		if (Cor == F("BRANCO"))
+		{
+			tft.setTextColor(RA8875_WHITE);
+		}
+
+		if (Cor == F("AMARELO"))
+		{
+			tft.setTextColor(RA8875_YELLOW);
+		}
+
+		if (Cor == F("VERMELHO"))
+		{
+			tft.setTextColor(RA8875_RED);
+		}
+
+		if (Cor == F("VERDE"))
+		{
+			tft.setTextColor(RA8875_GREEN);
+		}
+
+		if (Cor == F("AZUL"))
+		{
+			tft.setTextColor(RA8875_BLUE);
+		}
+
+		if (Cor == F("MAGENTA"))
+		{
+			tft.setTextColor(RA8875_MAGENTA);
+		}
+		if (Cor == F("CinzaLabels"))
+		{
+			tft.setTextColor(CinzaLabels);
+		}
+
+
+
+
+		TELA_SetFontSize(Tamanho);
+
+		tft.setCursor(PosX, PosY);
+
+		tft.print(Texto);
+
+	}
+}
+
+
+
+
+
+
+
+void TELA_Render_BotaoGenerico(int Index, String Texto, int TamanhoTextoBotao, uint16_t CorTexto, uint16_t CorBotao, uint16_t PosX, uint16_t PosY, uint16_t W, uint16_t H )
+{
+
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{
+
+
+		tft.fillRoundRect(PosX, PosY, W, H, 8, CorBotao);	
+
+		TELA_SetFontSize(TamanhoTextoBotao);
+
+		if (CorTexto == 0)
+		{
+			CorTexto = White;
+		}
+
+		tft.setTextColor(CorTexto);
+
+	    tft.setCursor (PosX + (W / 2) - 35, PosY + 12); 
+	    tft.print (Texto);	
+
+	}
+
+
+}
+
+void TELA_Render_Interface_ADMIN_NOVO_CARD()
+{
+
+
+	if (gTelaRenderizada_ADMIN_NOVO_CARD == false)
+	{
+
+		TELA_Render_Label(F("Administracao"), F("VERDE"), 2, 460, 10);
+		TELA_Render_Label(F("Novo Cartao"), F("BRANCO"), 2, 506, 60);
+		
+
+		TELA_Render_Label(F("Cartao:"), F(""), 1, 180, 170);
+		TELA_Render_Label(F("7DFE22H2"), F("BRANCO"), 1, 300, 170);
+
+		TELA_Render_Label(F("Nome:"), F(""), 1, 180, 220);
+		TELA_Render_Label(F("Marcelo Amaral Rocha"), F("BRANCO"), 1, 300, 220);
+
+		TELA_Render_Label(F("CPF:"), F(""), 1, 180, 270);
+		TELA_Render_Label(F("25632071855"), F("BRANCO"), 1, 300, 270);
+		
+		TELA_Render_Label(F("Saldo:"), F(""), 1, 180, 320);
+		TELA_Render_Label(F("R$ 12544,25"), F(""), 1, 300, 320);
+
+
+		
+		TELA_Render_BotaoGenerico(1, String(F("Edit")), 0, White, Red, 300, 300, 100, 70);
+
+
+	}
+
+
+
+
+
+
+
+
+	gTelaRenderizada_ADMIN_NOVO_CARD = true;
+
+}
+
 void TELA_Render_Interface_OPERACAO()
 {
 
@@ -1868,6 +2001,7 @@ void TELA_VerificaTouch_ADMIN()
 
 
 
+
 			//botao 1:
 			if (gTouch_X >= gOffset_W && gTouch_X <= gTamBotao_W + gOffset_W)  
 			{
@@ -1878,9 +2012,154 @@ void TELA_VerificaTouch_ADMIN()
 
 
 
+					// Esquema de DEBounce ---- inicio
+
+					gBounce_ContaClick++;
+					
+
+					if (gBounce_ContaClick == 1)
+					{
+						// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
+
+						LogTerm(F("BOTAO 1 APERTADO"));
+		
+
+						gModoOperacao = F("STANDBY");
+						gModoOperacao_SubTela = F("");
+
+						gTelaRenderizada_ADMIN = false;
+
+						TELA_LimpaTela();
+
+						delay(500);  	
+							
+						// -----------------------------------
+
+						gBounce_time_inicio = millis();
+
+					}
+
+
+					gBounce_time_atual = millis();
+					gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+
+					gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+					//LogTerm(gBounce_time_tempo_passado);
+
+					if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+					{
+						//LogTerm(time_tempo_passado);
+					}
+
+
+
+					if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+					{
+
+						gBounce_ContaClick = 0;		
+
+					}
+
+					gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+					// Esquema de DEBounce ---- FIM
+
+
+
 				}
 
 			}
+			else
+			{
+				// outros botoes
+
+				for (int ContaBotao = 2 ; ContaBotao <= 4 ; ContaBotao++)
+				{
+
+
+				
+					if (gTouch_X >= ContaBotao * gOffset_W + (ContaBotao - 1) * gTamBotao_W && gTouch_X <= ContaBotao * gOffset_W + ContaBotao * gTamBotao_W )  
+					{
+
+						if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
+						{
+
+							
+
+							// Esquema de DEBounce ---- inicio
+
+							gBounce_ContaClick++;
+							
+
+							if (gBounce_ContaClick == 1)
+							{
+								// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
+
+								LogTerm(String(F("BOTAO ")) + String(ContaBotao) + String(F(" APERTADO")));
+
+								//gModoOperacao = F("STANDBY");
+								gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");
+
+								gTelaRenderizada_ADMIN = false;
+								gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+								TELA_LimpaTela();
+
+								delay(500);  	
+									
+								// -----------------------------------
+
+								gBounce_time_inicio = millis();
+							}
+
+
+							gBounce_time_atual = millis();
+							gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+
+							gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+							//LogTerm(gBounce_time_tempo_passado);
+
+							if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+							{
+								//LogTerm(time_tempo_passado);
+							}
+
+
+
+							if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+							{
+
+								gBounce_ContaClick = 0;		
+
+							}
+
+							gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+							// Esquema de DEBounce ---- FIM
+
+
+
+
+								
+
+								
+
+
+
+
+
+						}
+
+					}
+
+				}
+
+			}
+
+
+
 
 		}
 

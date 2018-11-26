@@ -42,6 +42,15 @@ PARTE ADMIN:
 
 - USUARIOS
 	- novo cartao
+		1 - Escaneia Cartao
+		2 - tela com: 
+			Label: ID do cartao
+			Campo: Nome
+			Campo: CPF
+			Campo: Saldo
+			Botao: Cancelar
+			Botao: Salvar		
+			
 	- adicionar valor
 	- subtrair valor
 	- definir saldo

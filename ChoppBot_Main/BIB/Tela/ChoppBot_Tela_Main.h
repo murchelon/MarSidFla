@@ -22,7 +22,7 @@ int gOffset_H = -1;
 // var que contem a posicao atual X para desenhar os botoes
 int gPosicaoAtual_X = 0;
 
-// total de botoes desenhados em uma determinada tela
+// total de botoes desenhados em uma determinada tela -- usado nos botoes de torneira
 int gTotalBotoes = 0;
 
 // vers que contem o x e y de um touch na tela
@@ -626,7 +626,7 @@ void TELA_IniciaTela()
 
 
 
-void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto3, String Texto4, String Cor, String TipoBotao)
+void TELA_Render_BotaoTorneira(int IndexBotao, String Texto, String Texto2, String Texto3, String Texto4, String Cor, String TipoBotao)
 {
 
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
@@ -806,6 +806,147 @@ void TELA_Render_Botao(int IndexBotao, String Texto, String Texto2, String Texto
 
 
 
+ 
+void TELA_Render_Label(String Texto, uint16_t CorTexto, int Tamanho, uint16_t PosX, uint16_t PosY, String Align)
+{
+
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{
+
+		int TamanhoLetra_W = 0;
+		if (Tamanho == 0){TamanhoLetra_W = 7.5;}
+		if (Tamanho == 1){TamanhoLetra_W = 16;}
+		if (Tamanho == 2){TamanhoLetra_W = 24;}
+		if (Tamanho == 3){TamanhoLetra_W = 33;}
+
+
+		if (CorTexto == 0)
+		{
+			CorTexto = CinzaLabels;
+		}
+
+		tft.setTextColor(CorTexto);
+
+
+		if (Align == F("RIGHT"))
+		{
+			PosX = 800 - (Texto.length() * TamanhoLetra_W) - 10;
+		}
+
+
+		TELA_SetFontSize(Tamanho);
+
+		tft.setCursor(PosX, PosY);
+
+		tft.print(Texto);
+
+	}
+}
+
+
+
+
+
+
+
+void TELA_Render_BotaoGenerico(int Index, String TAG, String Texto, int TamanhoTextoBotao, uint16_t CorTexto, uint16_t CorBotao, uint16_t PosX, uint16_t PosY, uint16_t W, uint16_t H )
+{
+
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{
+
+
+		int TamanhoLetra_W = 0;
+		if (TamanhoTextoBotao == 0){TamanhoLetra_W = 8;}
+
+		if (TamanhoTextoBotao == 1)
+		{
+			if (Texto.length() >= 9)
+			{
+				TamanhoLetra_W = 18;
+			}
+			else
+			{
+				TamanhoLetra_W = 16;
+			}
+			
+		}
+
+		if (TamanhoTextoBotao == 2){TamanhoLetra_W = 24;}
+		if (TamanhoTextoBotao == 3){TamanhoLetra_W = 33;}
+
+		int TamanhoLetra_H = 0;
+		if (TamanhoTextoBotao == 0){TamanhoLetra_H = 8;}
+		if (TamanhoTextoBotao == 1){TamanhoLetra_H = 18;}
+
+
+
+		uint16_t Local_PosX = PosX + (W / 2) - ((Texto.length() / 2) * TamanhoLetra_W);
+		uint16_t Local_PosY = PosY + (H / 2) - TamanhoLetra_H;
+
+
+		tft.fillRoundRect(PosX, PosY, W, H, 8, CorBotao);	
+
+		TELA_SetFontSize(TamanhoTextoBotao);
+
+		if (CorTexto == 0)
+		{
+			CorTexto = White;
+		}
+
+		tft.setTextColor(CorTexto);
+
+
+
+	    tft.setCursor (Local_PosX, Local_PosY); 
+	    tft.print (Texto);	
+
+
+	    gaBotoesGenTela[Index - 1] = String(Index) 	+ String(F(";")) + 
+	    							 TAG 			+ String(F(";")) + 
+	    							 Texto 			+ String(F(";")) + 
+	    							 String(PosX) 	+ String(F(";")) + 
+	    							 String(PosY) 	+ String(F(";")) + 
+	    							 String(W) 		+ String(F(";")) + 
+	    							 String(H);
+
+
+
+	}
+
+
+}
+
+
+void TELA_Zera_BotaoGenericoTela()
+{
+	for (int t = 0 ; t <= ctMAX_BOTOES_GEN_TELA - 1 ; t++)
+	{
+		gaBotoesGenTela[t] = F("");
+	}
+}
+
+
+void TELA_PrintNoTerm_BotaoGenericoTela()
+{
+	int EncontrouDados = 0;
+
+	for (int z = 0 ; z <= ctMAX_BOTOES_GEN_TELA - 1 ; z++)
+	{
+		if (gaBotoesGenTela[z] != F(""))
+		{
+			EncontrouDados = 1;
+			LogTerm( String(F("gaBotoesGenTela[")) + String(z) + String(F("] = ")) + gaBotoesGenTela[z] );
+		}
+	}
+
+	if (EncontrouDados == 0)
+	{
+		LogTerm(F("gaBotoesGenTela esta vazia"));
+	}
+}
+
+
 
 
 
@@ -957,10 +1098,10 @@ void TELA_Render_Interface_LOGIN()
 
 				gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
 
-				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"), F("GERAL") );
-				TELA_Render_Botao(2, F("LEITOR DE CARTAO"),  F(""), F(""), F(""), F("AZUL"),   F("GERAL") );
-				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"), F("GERAL") );
-				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"), F("GERAL") );
+				TELA_Render_BotaoTorneira(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"), F("GERAL") );
+				TELA_Render_BotaoTorneira(2, F("LEITOR DE CARTAO"),  F(""), F(""), F(""), F("AZUL"),   F("GERAL") );
+				//TELA_Render_BotaoTorneira(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"), F("GERAL") );
+				TELA_Render_BotaoTorneira(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"), F("GERAL") );
 
 				// Area para chamar admin
 				//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
@@ -980,10 +1121,10 @@ void TELA_Render_Interface_LOGIN()
 
 				gOffset_H = POSICAO_PADRAO_BTN_Y + 95;
 
-				TELA_Render_Botao(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"), F("GERAL") );
-				TELA_Render_Botao(2, F("LEITOR DE CARTAO"), F(""), F(""), F(""), F("AZUL"), F("GERAL") );
-				//TELA_Render_Botao(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"), F("GERAL") );
-				TELA_Render_Botao(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"), F("GERAL") );
+				TELA_Render_BotaoTorneira(1, F("LEITOR BIOMETRICO"), F(""), F(""), F(""), F("BRANCO"), F("GERAL") );
+				TELA_Render_BotaoTorneira(2, F("LEITOR DE CARTAO"), F(""), F(""), F(""), F("AZUL"), F("GERAL") );
+				//TELA_Render_BotaoTorneira(3, F("ABRE TECLADO NUMERICO"), F(""), F(""), F("MAGENTA"), F("GERAL") );
+				TELA_Render_BotaoTorneira(3, F("ABRE TECLADO ALFA"), F(""), F(""), F(""), F("MAGENTA"), F("GERAL") );
 
 				// Area para chamar admin
 				//tft.fillRect(700, 0, 100, 60, RA8875_WHITE);
@@ -1046,11 +1187,12 @@ void TELA_Render_Interface_ADMIN()
 
 				TELA_SetFontSize(0); 
 				tft.setTextColor(CinzaLabels, RA8875_BLACK);
-				tft.setCursor (620, 10);			
+				tft.setCursor (640, 450);			
 				tft.print (F("Tempo: ")); 
 
-				tft.setCursor (680, 10);
+				tft.setCursor (700, 450);
 				tft.print (String((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados) + String(F(" segundos   "))); 
+
 
 		} 
 	}
@@ -1109,59 +1251,77 @@ void TELA_Render_Interface_ADMIN()
 		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 		{  		
 
+			TELA_Zera_BotaoGenericoTela();
 
 			TELA_SetFontSize(1); 
 
 			tft.setTextColor(CinzaLabels);
-			tft.setCursor (200, 10);			
+			tft.setCursor (10, 440);			
 			tft.print (F("Nome: ")); 
 
 
 			tft.setTextColor(RA8875_WHITE);
-			tft.setCursor (290, 10);			
+			tft.setCursor (100, 440);			
 			tft.print (gSessao_Nome); 
 
 
 
-			TELA_Texto_Centralizado(F("ADMIN: Escolha a sua opcao:"), F("VERDE"), 2, 90);
+			TELA_Texto_Centralizado(F("Escolha a sua opcao:"), F("AMARELO"), 2, 120);
 
 
 
-
-
-		
-			// Botao SAIR ///////////////////////////////
-
-		    int btnSair_PosAtual_X = 10;
-			int btnSair_PosAtual_Y = 15;
-
-			int btnSair_Size_W = 100;
-			int btnSair_Size_H = 60;
-
-			tft.fillRoundRect(btnSair_PosAtual_X, btnSair_PosAtual_Y, btnSair_Size_W, btnSair_Size_H, 8, Red);
-		
-			TELA_SetFontSize(1);
-		    tft.setTextColor(RA8875_WHITE);
-		    tft.setCursor (btnSair_PosAtual_X + (btnSair_Size_W / 2) - 35, btnSair_PosAtual_Y + 12); 
-		    tft.print (F("SAIR"));	
+		    TELA_Render_BotaoGenerico(1, F("SAIR"), F("SAIR"), 1, White, Red, 10, 15, 100, 60);
 
 		    //////////////////////////////////////
 
 
+			// Cabecalho
+			TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
 
 
+			
+
+			//TELA_PrintNoTerm_BotaoGenericoTela();
 
 
-		    // Inicia desenho do restante da tela e botoes
+			int _Espacamento = 35;
+			int _Offset_X = 25;
+			int _TamW = 160;
+			int _TamH = 160;
+			int _PosX = 0;
+			int _PosY = 230;
+			int _ContaBtn = 0;
+			String _TxtBotao = F("");
 
 
-			gOffset_H = POSICAO_PADRAO_BTN_Y + 49;
+			_Offset_X = _Offset_X - _Espacamento;	// como o primeiro botao ja inclue um espacamento, eu subtraio ele para ter o offset real
+
+			for (_ContaBtn = 1 ; _ContaBtn <= 4 ; _ContaBtn++)
+			{
+				_PosX = (_Espacamento * _ContaBtn) + (_TamW * (_ContaBtn - 1));
+
+				switch (_ContaBtn)
+				{
+					case 1:
+						_TxtBotao = F("USUARIOS");
+						break;
+					case 2:
+						_TxtBotao = F("CHOPPS");
+						break;
+					case 3:
+						_TxtBotao = F("ENGATADOS");
+						break;
+					case 4:
+						_TxtBotao = F("OUTROS");
+						break;
+				}
 
 
-			TELA_Render_Botao(1, F("USUARIOS"), 	F(""), F(""), F(""), F("AZUL"), F("ADMIN") );
-			TELA_Render_Botao(2, F("CHOPPS"), 		F(""), F(""), F(""), F("AZUL"), F("ADMIN") );
-			TELA_Render_Botao(3, F("ENGATADOS"), 	F(""), F(""), F(""), F("AZUL"), F("ADMIN") );
-			TELA_Render_Botao(4, F("OUTROS"), 		F(""), F(""), F(""), F("AZUL"), F("ADMIN") );
+				TELA_Render_BotaoGenerico(_ContaBtn + 1, _TxtBotao, _TxtBotao, 1, White, Blue, _Offset_X + _PosX, _PosY, _TamW, _TamH);
+			}
+
+			
+			TELA_PrintNoTerm_BotaoGenericoTela();
 
 
 
@@ -1179,95 +1339,131 @@ void TELA_Render_Interface_ADMIN()
 
 
 
- 
-void TELA_Render_Label(String Texto, String Cor, int Tamanho, uint16_t PosX, uint16_t PosY)
+
+
+
+void TELA_Render_Interface_ADMIN_USUARIOS()
 {
 
-	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	if (gTelaRenderizada_ADMIN_USUARIOS == false)
 	{
 
-		if (Cor == F(""))
-		{
-			Cor = F("CinzaLabels");
+		if (ctTELA_HARDWARE == F("TERMINAL"))
+		{  
+			LogTerm(F("Selecione a opcao de administracao desejada:"));
+		
+		    LogTerm(F("99 - Sair"));		
 		}
 
 
+		if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+		{  		
 
-		if (Cor == F("BRANCO"))
-		{
-			tft.setTextColor(RA8875_WHITE);
-		}
+			TELA_Zera_BotaoGenericoTela();
 
-		if (Cor == F("AMARELO"))
-		{
-			tft.setTextColor(RA8875_YELLOW);
-		}
+			TELA_SetFontSize(1); 
 
-		if (Cor == F("VERMELHO"))
-		{
-			tft.setTextColor(RA8875_RED);
-		}
-
-		if (Cor == F("VERDE"))
-		{
-			tft.setTextColor(RA8875_GREEN);
-		}
-
-		if (Cor == F("AZUL"))
-		{
-			tft.setTextColor(RA8875_BLUE);
-		}
-
-		if (Cor == F("MAGENTA"))
-		{
-			tft.setTextColor(RA8875_MAGENTA);
-		}
-		if (Cor == F("CinzaLabels"))
-		{
+			// usuario logado
 			tft.setTextColor(CinzaLabels);
+			tft.setCursor (10, 440);			
+			tft.print (F("Nome: ")); 
+
+
+			tft.setTextColor(RA8875_WHITE);
+			tft.setCursor (100, 440);			
+			tft.print (gSessao_Nome); 
+
+
+
+			// Cabecalho
+			TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
+			TELA_Render_Label(F("Usuarios"),   	  CinzaClaro,   1, 0, 70, F("RIGHT"));
+
+			// botao sair
+		    TELA_Render_BotaoGenerico(1, F("SAIR"), F("SAIR"), 1, White, Red, 10, 15, 100, 60);
+
+		    // texto geral
+			TELA_Texto_Centralizado(F("Escolha a sua opcao:"), F("AMARELO"), 2, 120);
+
+
+
+			int _Espacamento = 30;
+			int _Offset_X = 20;
+			int _TamW = 140;
+			int _TamH = 140;
+			int _PosX = 0;
+			int _PosY = 230;
+			int _ContaBtn = 0;
+			String _TxtBotao = F("");
+			String _TAG_Botao = F("");
+
+
+			_Offset_X = _Offset_X - _Espacamento;	// como o primeiro botao ja inclue um espacamento, eu subtraio ele para ter o offset real
+
+			for (_ContaBtn = 1 ; _ContaBtn <= 5 ; _ContaBtn++)
+			{
+				_PosX = (_Espacamento * _ContaBtn) + (_TamW * (_ContaBtn - 1));
+
+				switch (_ContaBtn)
+				{
+					case 1:
+						_TxtBotao = F("Novo Cartao");
+						_TAG_Botao = F("NOVO_CARTAO");
+						break;
+					case 2:
+						_TxtBotao = F("Adicionar Valor");
+						_TAG_Botao = F("ADD_VALOR");
+						break;
+					case 3:
+						_TxtBotao = F("Subtrair Valor");
+						_TAG_Botao = F("SUB_VALOR");
+						break;
+					case 4:
+						_TxtBotao = F("Definir Saldo");
+						_TAG_Botao = F("DEF_SALDO");
+						break;
+					case 5:
+						_TxtBotao = F("Trocar Cartao");
+						_TAG_Botao = F("TROCA_CARTAO");
+						break;
+				}
+
+
+				TELA_Render_BotaoGenerico(_ContaBtn + 1, _TAG_Botao, _TxtBotao, 1, White, Blue, _Offset_X + _PosX, _PosY, _TamW, _TamH);
+			}
+
+			
+			TELA_PrintNoTerm_BotaoGenericoTela();
+
+
+
 		}
 
-
-
-
-		TELA_SetFontSize(Tamanho);
-
-		tft.setCursor(PosX, PosY);
-
-		tft.print(Texto);
+		gTelaRenderizada_ADMIN_USUARIOS = true;
 
 	}
+
+
+
+
 }
 
 
 
 
 
-
-
-void TELA_Render_BotaoGenerico(int Index, String Texto, int TamanhoTextoBotao, uint16_t CorTexto, uint16_t CorBotao, uint16_t PosX, uint16_t PosY, uint16_t W, uint16_t H )
+void TELA_Render_Interface_ADMIN_CHOPPS()
 {
 
-	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
-	{
+}
 
+void TELA_Render_Interface_ADMIN_ENGATADOS()
+{
 
-		tft.fillRoundRect(PosX, PosY, W, H, 8, CorBotao);	
+}
 
-		TELA_SetFontSize(TamanhoTextoBotao);
-
-		if (CorTexto == 0)
-		{
-			CorTexto = White;
-		}
-
-		tft.setTextColor(CorTexto);
-
-	    tft.setCursor (PosX + (W / 2) - 35, PosY + 12); 
-	    tft.print (Texto);	
-
-	}
-
+void TELA_Render_Interface_ADMIN_OUTROS()
+{
 
 }
 
@@ -1278,34 +1474,46 @@ void TELA_Render_Interface_ADMIN_NOVO_CARD()
 	if (gTelaRenderizada_ADMIN_NOVO_CARD == false)
 	{
 
-		TELA_Render_Label(F("Administracao"), F("VERDE"), 2, 460, 10);
-		TELA_Render_Label(F("Novo Cartao"), F("BRANCO"), 2, 506, 60);
+
+		TELA_Zera_BotaoGenericoTela();
+
+		//TELA_PrintNoTerm_BotaoGenericoTela();
+
+
+	
+		// Cabecalho
+		TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
+		TELA_Render_Label(F("Novo Cartao"),   CinzaClaro,   1, 0, 70, F("RIGHT"));
 		
 
-		TELA_Render_Label(F("Cartao:"), F(""), 1, 180, 170);
-		TELA_Render_Label(F("7DFE22H2"), F("BRANCO"), 1, 300, 170);
+		// Campos da tela
+		TELA_Render_Label(F("Cartao:"), CinzaLabels, 1, 210, 160, F(""));
+		TELA_Render_Label(F("7DFE22H2"), White, 1, 350, 160, F(""));
 
-		TELA_Render_Label(F("Nome:"), F(""), 1, 180, 220);
-		TELA_Render_Label(F("Marcelo Amaral Rocha"), F("BRANCO"), 1, 300, 220);
+		TELA_Render_Label(F("Nome:"), CinzaLabels, 1, 210, 210, F(""));
+		TELA_Render_Label(F("Marcelo Amaral Rocha"), White, 1, 350, 210, F(""));
 
-		TELA_Render_Label(F("CPF:"), F(""), 1, 180, 270);
-		TELA_Render_Label(F("25632071855"), F("BRANCO"), 1, 300, 270);
+		TELA_Render_Label(F("CPF:"), CinzaLabels, 1, 210, 260, F(""));
+		TELA_Render_Label(F("25632071855"), White, 1, 350, 260, F(""));
 		
-		TELA_Render_Label(F("Saldo:"), F(""), 1, 180, 320);
-		TELA_Render_Label(F("R$ 12544,25"), F(""), 1, 300, 320);
+		TELA_Render_Label(F("Saldo:"), CinzaLabels, 1, 210, 310, F(""));
+		TELA_Render_Label(F("R$ 12544,25"), White, 1, 350, 310, F(""));
 
 
 		
-		TELA_Render_BotaoGenerico(1, String(F("Edit")), 0, White, Red, 300, 300, 100, 70);
+		//TELA_Render_BotaoGenerico(1, F("EDITAR_CARTAO"), F("Editar"), 0, White, Red, 110, 162, 70, 30);
+		TELA_Render_BotaoGenerico(1, F("EDITAR_NOME"),   F("Editar"), 0, White, Red, 110, 212, 70, 30);
+		TELA_Render_BotaoGenerico(2, F("EDITAR_CPF"),    F("Editar"), 0, White, Red, 110, 262, 70, 30);
+		TELA_Render_BotaoGenerico(3, F("EDITAR_SALDO"),  F("Editar"), 0, White, Red, 110, 312, 70, 30);
+
+		TELA_Render_BotaoGenerico(4, F("CANCELAR"), F("CANCELAR"), 0, White, Blue, 210, 405, 150, 50);
+		TELA_Render_BotaoGenerico(5, F("SALVAR"),   F("SALVAR"),   0, White, Blue, 450, 405, 150, 50);
+	
+
+		TELA_PrintNoTerm_BotaoGenericoTela();
 
 
 	}
-
-
-
-
-
-
 
 
 	gTelaRenderizada_ADMIN_NOVO_CARD = true;
@@ -1475,7 +1683,7 @@ void TELA_Render_Interface_OPERACAO()
 
 			//////////////////////////////////////  
 
-			TELA_Texto_Centralizado(F("Escolha a sua torneira:"), F("VERDE"), 2, 90);
+			TELA_Texto_Centralizado(F("Escolha a sua torneira:"), F("VERDE"), 2, 105);
 
 
 
@@ -1552,7 +1760,7 @@ void TELA_Render_Interface_OPERACAO()
 		            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
 
 
-		            TELA_Render_Botao(x + 1, tmp_Nome, tmp_Tipo, String( FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")) ), String(FormatNumber(tmp_Volume, F("")) + String(F(" litros")) ), F("AZUL"), F("TORNEIRA") );
+		            TELA_Render_BotaoTorneira(x + 1, tmp_Nome, tmp_Tipo, String( FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")) ), String(FormatNumber(tmp_Volume, F("")) + String(F(" litros")) ), F("AZUL"), F("TORNEIRA") );
 
 
 
@@ -1883,12 +2091,9 @@ void TELA_VerificaTouch_LOGIN()
 
 
 
-
-
-
-
 void TELA_VerificaTouch_ADMIN()
 {
+
 
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
@@ -1898,194 +2103,61 @@ void TELA_VerificaTouch_ADMIN()
 
 
 			//TELA_LogTerm_XY();
-			//LogTerm(F("TELA_VerificaTouch_ADMIN");
+			//LogTerm(F("TELA_VerificaTouch_ADMIN_NOVO_CARD");
 
 			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
-
-
-
-
-
-		    int btnSair_PosAtual_X = 10;
-			int btnSair_PosAtual_Y = 15;
-
-			int btnSair_Size_W = 100;
-			int btnSair_Size_H = 60;			
-
-
-
-			// BOTAO SAIR
-			if ((gTouch_X >= btnSair_PosAtual_X) && (gTouch_X <= btnSair_PosAtual_X + btnSair_Size_W)) 
-			{
-
-				if ((gTouch_Y >= btnSair_PosAtual_Y) && (gTouch_Y <= btnSair_PosAtual_Y + btnSair_Size_H)) 
-				{
-
-
-					//LogTerm(String(F("a - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
-
-					// Esquema de DEBounce ---- inicio
-
-					gBounce_ContaClick++;
-					
-
-					if (gBounce_ContaClick == 1)
-					{
-						// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
-						
-						//LogTerm(String(F("1 - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
-
-
-						TELA_LimpaTela();
-
-						// zera as vars para cada tentativa de login
-						// efetua logoff
-						gSessao_Logado = false;
-						gSessao_IDUser = -1;
-						gSessao_Nome = F("");
-						gSessao_Nivel = -1;
-						gSessao_SaldoAtual = -1;
-
-						gTelaRenderizada_ADMIN = false;	
-
-						gModoOperacao = F("STANDBY");  
-						gModoOperacao_SubTela = F("");						
-						
-					
-
-
-						LogTerm(F("MAIN: Usuario clicou em SAIR"));
-						//TELA_Texto(F("BOTAO SAIR APERTADO"), F("MAGENTA"));  
-						//delay(500); 								
-
-						//LogTerm(F("TELA_VerificaTouch_OPERACAO"));
-						//TELA_LogTerm_XY();
-							
-						// -----------------------------------
-
-						gBounce_time_inicio = millis();
-					}
-
-
-					gBounce_time_atual = millis();
-					gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
-
-					gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
-
-					//LogTerm(gBounce_time_tempo_passado);
-
-					if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
-					{
-						//LogTerm(time_tempo_passado);
-					}
-
-
-
-					if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
-					{
-
-						gBounce_ContaClick = 0;		
-
-					}
-
-					gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
-
-					// Esquema de DEBounce ---- FIM
-					//LogTerm(String(F("B - gBounce_ContaClick = ")) + String(gBounce_ContaClick) + String(F(" / gBounce_time_tempo_passado = ")) + String(gBounce_time_tempo_passado) + String(F(" / gBounce_SegundosPassados = ")) + String(gBounce_SegundosPassados));
-
-
-				}
-
-			}
-
-
-
-
-
-			//botao 1:
-			if (gTouch_X >= gOffset_W && gTouch_X <= gTamBotao_W + gOffset_W)  
-			{
-
-				if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
-				{
-
-
-
-
-					// Esquema de DEBounce ---- inicio
-
-					gBounce_ContaClick++;
-					
-
-					if (gBounce_ContaClick == 1)
-					{
-						// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
-
-						LogTerm(F("BOTAO 1 APERTADO"));
 		
-
-						gModoOperacao = F("STANDBY");
-						gModoOperacao_SubTela = F("");
-
-						gTelaRenderizada_ADMIN = false;
-
-						TELA_LimpaTela();
-
-						delay(500);  	
-							
-						// -----------------------------------
-
-						gBounce_time_inicio = millis();
-
-					}
+			/*
 
 
-					gBounce_time_atual = millis();
-					gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+			/*
+		    gaBotoesGenTela[Index - 1] = String(Index) 	+ String(F(";")) + 
+		    							 TAG 			+ String(F(";")) + 
+		    							 Texto 			+ String(F(";")) + 
+		    							 String(PosX) 	+ String(F(";")) + 
+		    							 String(PosY) 	+ String(F(";")) + 
+		    							 String(W) 		+ String(F(";")) + 
+		    							 String(H);
 
-					gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
-
-					//LogTerm(gBounce_time_tempo_passado);
-
-					if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
-					{
-						//LogTerm(time_tempo_passado);
-					}
+			*/
 
 
 
-					if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
-					{
-
-						gBounce_ContaClick = 0;		
-
-					}
-
-					gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
-
-					// Esquema de DEBounce ---- FIM
-
-
-
-				}
-
-			}
-			else
+			for (int ContaBotaoGen = 1 ; ContaBotaoGen <= ctMAX_BOTOES_GEN_TELA; ContaBotaoGen++)
 			{
-				// outros botoes
-
-				for (int ContaBotao = 2 ; ContaBotao <= 4 ; ContaBotao++)
+				if (gaBotoesGenTela[ContaBotaoGen - 1] != F(""))
 				{
-
-
 				
-					if (gTouch_X >= ContaBotao * gOffset_W + (ContaBotao - 1) * gTamBotao_W && gTouch_X <= ContaBotao * gOffset_W + ContaBotao * gTamBotao_W )  
+
+					//LogTerm( String(F("gaBotoesGenTela[")) + String(ContaBotaoGen - 1) + String(F("] = ")) + gaBotoesGenTela[ContaBotaoGen - 1] );
+
+					String btnGen_TAG = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 1);
+					String btnGen_PosX = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 3);
+					String btnGen_PosY = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 4);
+					String btnGen_W = 		getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 5);
+					String btnGen_H = 		getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 6);
+
+					/*
+
+					LogTerm(String(F("btnGen_TAG = ")) + btnGen_TAG);
+					LogTerm(String(F("btnGen_PosX = ")) + btnGen_PosX);
+					LogTerm(String(F("btnGen_PosY = ")) + btnGen_PosY);
+					LogTerm(String(F("btnGen_W = ")) + btnGen_W);
+					LogTerm(String(F("btnGen_H = ")) + btnGen_H);
+					
+					LogTerm(String(F("===============================")));
+
+					*/
+
+
+
+					//botao 1:
+					if (gTouch_X >= btnGen_PosX.toInt() && gTouch_X <= btnGen_W.toInt() + btnGen_PosX.toInt())  
 					{
 
-						if (gTouch_Y >= gOffset_H && gTouch_Y <= gTamBotao_H + gOffset_H) 
+						if (gTouch_Y >= btnGen_PosY.toInt() && gTouch_Y <= btnGen_H.toInt() + btnGen_PosY.toInt()) 
 						{
 
-							
 
 							// Esquema de DEBounce ---- inicio
 
@@ -2096,21 +2168,430 @@ void TELA_VerificaTouch_ADMIN()
 							{
 								// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
 
-								LogTerm(String(F("BOTAO ")) + String(ContaBotao) + String(F(" APERTADO")));
+			
+								LogTerm(String(F("BOTAO GENERICO ")) + String(ContaBotaoGen) + String(F(" APERTADO")) + String(F(" (")) + btnGen_TAG + String(F(")"))  );
 
-								//gModoOperacao = F("STANDBY");
-								gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");
+
+
+								if (btnGen_TAG == F("SAIR"))
+								{
+
+									TELA_LimpaTela();
+
+									// zera as vars para cada tentativa de login
+									// efetua logoff
+									gSessao_Logado = false;
+									gSessao_IDUser = -1;
+									gSessao_Nome = F("");
+									gSessao_Nivel = -1;
+									gSessao_SaldoAtual = -1;
+
+									gTelaRenderizada_ADMIN = false;	
+
+									gModoOperacao = F("STANDBY");  
+									gModoOperacao_SubTela = F("");						
+								
+									LogTerm(F("MAIN: Usuario clicou em SAIR"));
+								}
+
+
+								if (btnGen_TAG == F("USUARIOS"))
+								{
+
+									TELA_LimpaTela();
+
+									gModoOperacao_SubTela = F("ADMIN_USUARIOS");
+
+									gTelaRenderizada_ADMIN = false;
+									gTelaRenderizada_ADMIN_USUARIOS = false;
+
+									delay(500);  
+								}
+
+
+								if (btnGen_TAG == F("ADD_VALOR"))
+								{
+
+								}
+
+								if (btnGen_TAG == F("SUB_VALOR"))
+								{
+
+								}
+
+								if (btnGen_TAG == F("DEF_SALDO"))
+								{
+
+								}
+
+								if (btnGen_TAG == F("TROCA_CARTAO"))
+								{
+
+								}								
+
+	
+								// -----------------------------------
+
+								gBounce_time_inicio = millis();
+
+							}
+
+
+							gBounce_time_atual = millis();
+							gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+
+							gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+							//LogTerm(gBounce_time_tempo_passado);
+
+							if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+							{
+								//LogTerm(time_tempo_passado);
+							}
+
+
+
+							if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+							{
+								gBounce_ContaClick = 0;	
+							}
+
+							gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+							// Esquema de DEBounce ---- FIM
+
+
+
+						}
+
+					}
+
+
+				}
+			}	    							 
+
+
+		}
+
+	}
+
+
+}
+
+
+
+
+void TELA_VerificaTouch_ADMIN_USUARIOS()
+{
+
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{  
+
+		if (TELA_touchDetect())
+		{
+
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
+
+
+			for (int ContaBotaoGen = 1 ; ContaBotaoGen <= ctMAX_BOTOES_GEN_TELA; ContaBotaoGen++)
+			{
+				if (gaBotoesGenTela[ContaBotaoGen - 1] != F(""))
+				{
+				
+					//LogTerm( String(F("gaBotoesGenTela[")) + String(ContaBotaoGen - 1) + String(F("] = ")) + gaBotoesGenTela[ContaBotaoGen - 1] );
+
+					String btnGen_TAG = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 1);
+					String btnGen_PosX = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 3);
+					String btnGen_PosY = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 4);
+					String btnGen_W = 		getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 5);
+					String btnGen_H = 		getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 6);
+
+
+
+					if (gTouch_X >= btnGen_PosX.toInt() && gTouch_X <= btnGen_W.toInt() + btnGen_PosX.toInt())  
+					{
+
+						if (gTouch_Y >= btnGen_PosY.toInt() && gTouch_Y <= btnGen_H.toInt() + btnGen_PosY.toInt()) 
+						{
+
+
+							// Esquema de DEBounce ---- inicio
+
+							gBounce_ContaClick++;
+							
+
+							if (gBounce_ContaClick == 1)
+							{
+								// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
+
+			
+								LogTerm(String(F("BOTAO GENERICO ")) + String(ContaBotaoGen) + String(F(" APERTADO")) + String(F(" (")) + btnGen_TAG + String(F(")"))  );
+
+
+								//BOTAO SAIR
+								if (btnGen_TAG == F("SAIR"))
+								{
+
+									TELA_LimpaTela();
+
+									// zera as vars para cada tentativa de login
+									// efetua logoff
+									gSessao_Logado = false;
+									gSessao_IDUser = -1;
+									gSessao_Nome = F("");
+									gSessao_Nivel = -1;
+									gSessao_SaldoAtual = -1;
+
+									gTelaRenderizada_ADMIN = false;	
+
+									gModoOperacao = F("STANDBY");  
+									gModoOperacao_SubTela = F("");						
+								
+									LogTerm(F("MAIN: Usuario clicou em SAIR"));
+								}
+
+
+								// BOTAO ADICIONAR CARTAO
+								if (btnGen_TAG == F("NOVO_CARTAO"))
+								{
+
+									gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");
+
+									gTelaRenderizada_ADMIN_USUARIOS = false;
+									gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+									TELA_LimpaTela();
+
+									delay(500);  
+								}
+
+
+								// BOTAO ADICIONAR VALOR
+								if (btnGen_TAG == F("ADD_VALOR"))
+								{
+
+								}
+
+								// BOTAO SUBTRAIR VALOR
+								if (btnGen_TAG == F("SUB_VALOR"))
+								{
+
+								}
+
+								// BOTAO DEFINIR SALDO
+								if (btnGen_TAG == F("DEF_SALDO"))
+								{
+
+								}
+
+								// BOTAO TROCAR / CANCELAR CARTAO
+								if (btnGen_TAG == F("TROCA_CARTAO"))
+								{
+
+								}								
+
+	
+								// -----------------------------------
+
+								gBounce_time_inicio = millis();
+
+							}
+
+
+							gBounce_time_atual = millis();
+							gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+
+							gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+							//LogTerm(gBounce_time_tempo_passado);
+
+							if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+							{
+								//LogTerm(time_tempo_passado);
+							}
+
+
+
+							if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+							{
+								gBounce_ContaClick = 0;	
+							}
+
+							gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+							// Esquema de DEBounce ---- FIM
+
+
+
+						}
+
+					}
+
+
+				}
+			}	    							 
+
+
+		}
+
+	}
+
+
+}
+
+
+
+
+void TELA_VerificaTouch_ADMIN_CHOPPS()
+{
+
+}
+
+void TELA_VerificaTouch_ADMIN_ENGATADOS()
+{
+
+}
+
+void TELA_VerificaTouch_ADMIN_OUTROS()
+{
+
+}
+
+
+void TELA_VerificaTouch_ADMIN_NOVO_CARD()
+{
+
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{  
+
+		if (TELA_touchDetect())
+		{
+
+
+			//TELA_LogTerm_XY();
+			//LogTerm(F("TELA_VerificaTouch_ADMIN_NOVO_CARD");
+
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
+		
+			/*
+
+
+			/*
+		    gaBotoesGenTela[Index - 1] = String(Index) 	+ String(F(";")) + 
+		    							 TAG 			+ String(F(";")) + 
+		    							 Texto 			+ String(F(";")) + 
+		    							 String(PosX) 	+ String(F(";")) + 
+		    							 String(PosY) 	+ String(F(";")) + 
+		    							 String(W) 		+ String(F(";")) + 
+		    							 String(H);
+
+			*/
+
+
+
+			for (int ContaBotaoGen = 1 ; ContaBotaoGen <= ctMAX_BOTOES_GEN_TELA; ContaBotaoGen++)
+			{
+				if (gaBotoesGenTela[ContaBotaoGen - 1] != F(""))
+				{
+				
+
+					//LogTerm( String(F("gaBotoesGenTela[")) + String(ContaBotaoGen - 1) + String(F("] = ")) + gaBotoesGenTela[ContaBotaoGen - 1] );
+
+					String btnGen_TAG = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 1);
+					String btnGen_PosX = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 3);
+					String btnGen_PosY = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 4);
+					String btnGen_W = 		getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 5);
+					String btnGen_H = 		getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 6);
+
+					/*
+
+					LogTerm(String(F("btnGen_TAG = ")) + btnGen_TAG);
+					LogTerm(String(F("btnGen_PosX = ")) + btnGen_PosX);
+					LogTerm(String(F("btnGen_PosY = ")) + btnGen_PosY);
+					LogTerm(String(F("btnGen_W = ")) + btnGen_W);
+					LogTerm(String(F("btnGen_H = ")) + btnGen_H);
+					
+					LogTerm(String(F("===============================")));
+
+					*/
+
+
+
+					//botao 1:
+					if (gTouch_X >= btnGen_PosX.toInt() && gTouch_X <= btnGen_W.toInt() + btnGen_PosX.toInt())  
+					{
+
+						if (gTouch_Y >= btnGen_PosY.toInt() && gTouch_Y <= btnGen_H.toInt() + btnGen_PosY.toInt()) 
+						{
+
+
+
+
+							// Esquema de DEBounce ---- inicio
+
+							gBounce_ContaClick++;
+							
+
+							if (gBounce_ContaClick == 1)
+							{
+								// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
+
+			
+								LogTerm(String(F("BOTAO GENERICO ")) + String(ContaBotaoGen) + String(F(" APERTADO")) + String(F(" (")) + btnGen_TAG + String(F(")"))  );
+
+
+
+								if (btnGen_TAG == F("EDITAR_NOME"))
+								{
+
+								}
+
+								if (btnGen_TAG == F("EDITAR_CPF"))
+								{
+
+								}
+
+								if (btnGen_TAG == F("EDITAR_SALDO"))
+								{
+
+								}
+
+								if (btnGen_TAG == F("CANCELAR"))
+								{
+ 
+									gModoOperacao_SubTela = F("");
+
+									gTelaRenderizada_ADMIN = false;
+									gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+									TELA_LimpaTela();
+
+									delay(500);  
+
+								}
+
+								if (btnGen_TAG == F("SALVAR"))
+								{
+
+								}
+
+						
+
+								/*
+								gModoOperacao = F("STANDBY");
+								gModoOperacao_SubTela = F("");
 
 								gTelaRenderizada_ADMIN = false;
-								gTelaRenderizada_ADMIN_NOVO_CARD = false;
 
 								TELA_LimpaTela();
 
 								delay(500);  	
-									
+								*/
+
 								// -----------------------------------
 
 								gBounce_time_inicio = millis();
+
 							}
 
 
@@ -2141,22 +2622,22 @@ void TELA_VerificaTouch_ADMIN()
 
 
 
-
-								
-
-								
-
-
-
-
-
 						}
 
 					}
 
-				}
 
-			}
+
+
+
+
+
+
+
+
+				}
+			}	    							 
+
 
 
 

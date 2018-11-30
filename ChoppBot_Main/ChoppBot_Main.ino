@@ -923,6 +923,11 @@ void loop()
             Exec_LER_RFID(String(F("ADMIN")));  
         }        
 
+        if (gModoOperacao_SubTela == F("LER_RFID_ADMIN_NOVO_CARD"))
+        {
+            Exec_LER_RFID(String(F("ADMIN_NOVO_CARD")));  
+        }        
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

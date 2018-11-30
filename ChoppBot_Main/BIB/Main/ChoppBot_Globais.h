@@ -368,7 +368,7 @@ String gSessao_Nome;
 float gSessao_SaldoAtual;
 String gSessao_CPF;
 String gSessao_DataCad;
-
+String gSessao_ID_Cartao;
 
 
 
@@ -507,6 +507,7 @@ void InicializaVars()
 	gSessao_SaldoAtual = -1;				
 	gSessao_CPF = F("");
 	gSessao_DataCad = F("");
+	gSessao_ID_Cartao = F("");
 	
 	gServico_ID_TorneiraAtual = -1;
 	

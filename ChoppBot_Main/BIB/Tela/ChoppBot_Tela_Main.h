@@ -168,7 +168,14 @@ void TELA_Texto_Centralizado(String Texto, String Cor, int Tamanho, uint16_t Pos
 		if (Tamanho == 3){TamanhoLetra_W = 33;}
 
 
+
 		PosX = (800 / 2) - ((Texto.length() / 2) * TamanhoLetra_W) - Ajuste_W;
+
+		if ((Texto.length() == 10) && (Tamanho == 3))
+		{
+			PosX = PosX + 16;
+		}
+
 		tft.setCursor(PosX, PosY);
 
 
@@ -332,7 +339,7 @@ void TELA_LogTerm_XY()
 	    int btnSair_PosAtual_X = 680;
 		int btnSair_PosAtual_Y = 20;
 
-		int btnSair_Size_W = 100;
+		int btnSair_Size_W = 130;
 		int btnSair_Size_H = 60;	
 
 		sprintf(TheTexto,"SAIR: X = %d | Y = %d   --   X > %d e X < %d  |  Y > %d e Y < %d  -- gBounce_ContaClick = %d", gTouch_X, gTouch_Y, btnSair_PosAtual_X, btnSair_PosAtual_X + btnSair_Size_W, btnSair_PosAtual_Y, btnSair_PosAtual_Y + btnSair_Size_H, gBounce_ContaClick);  
@@ -885,6 +892,7 @@ void TELA_Render_BotaoGenerico(int Index, String TAG, String Texto, int TamanhoT
 		uint16_t Local_PosY = PosY + (H / 2) - TamanhoLetra_H;
 
 
+
 		tft.fillRoundRect(PosX, PosY, W, H, 8, CorBotao);	
 
 		TELA_SetFontSize(TamanhoTextoBotao);
@@ -897,9 +905,89 @@ void TELA_Render_BotaoGenerico(int Index, String TAG, String Texto, int TamanhoT
 		tft.setTextColor(CorTexto);
 
 
+		// verifica se o texto tem 2 linhas. separador = |
+		bool _TextoDuasLinhas = false;
 
-	    tft.setCursor (Local_PosX, Local_PosY); 
-	    tft.print (Texto);	
+		for (int _ContaCarac = 0 ; _ContaCarac <= Texto.length() - 1 ; _ContaCarac++)
+		{
+			//LogTerm(String(F("Carac = ")) + String(Texto.substring(_ContaCarac, _ContaCarac + 1)));
+
+			if (String(Texto.substring(_ContaCarac, _ContaCarac + 1)) == String(F("|")))
+			{
+				_TextoDuasLinhas = true;
+			}
+		}
+
+		//_TextoDuasLinhas = true;
+
+		if (_TextoDuasLinhas == true)
+		{
+
+			String _Linha1 = getValue(Texto, '|', 0);
+			String _Linha2 = getValue(Texto, '|', 1);
+
+			
+
+			Local_PosX = PosX + (W / 2) - ((_Linha1.length() / 2) * TamanhoLetra_W);
+
+			if (_Linha1.length() == 4)
+			{
+				Local_PosX = Local_PosX + 2;
+			}
+
+			if (_Linha1.length() == 5)
+			{
+				Local_PosX = Local_PosX - 2;
+			}
+
+			if (_Linha1.length() == 6)
+			{
+				Local_PosX = Local_PosX + 5;
+			}
+
+			if (_Linha1.length() == 7)
+			{
+				Local_PosX = Local_PosX - 4;
+			}
+
+
+		    tft.setCursor (Local_PosX, Local_PosY - 16); 
+		    tft.print (_Linha1);	
+
+
+
+
+		    Local_PosX = PosX + (W / 2) - ((_Linha2.length() / 2) * TamanhoLetra_W);
+
+			if (_Linha2.length() == 4)
+			{
+				Local_PosX = Local_PosX + 2;
+			}
+
+			if (_Linha2.length() == 5)
+			{
+				Local_PosX = Local_PosX - 2;
+			}
+
+			if (_Linha2.length() == 6)
+			{
+				Local_PosX = Local_PosX + 5;
+			}
+
+			if (_Linha2.length() == 7)
+			{
+				Local_PosX = Local_PosX - 4;
+			}
+
+		    tft.setCursor (Local_PosX, Local_PosY + 16); 
+		    tft.print (_Linha2);	
+
+		}
+		else
+		{
+		    tft.setCursor (Local_PosX, Local_PosY); 
+		    tft.print (Texto);	
+		}
 
 
 	    gaBotoesGenTela[Index - 1] = String(Index) 	+ String(F(";")) + 
@@ -1028,7 +1116,7 @@ void TELA_Render_Interface_STANDBY()
   
 			//tft.setCursor (195, 310);
 			//TELA_SetFontSize(1); 
-			TELA_Texto_Centralizado(String(F("Toque na tela para iniciar")), F("BRANCO"), 1, 330);
+			TELA_Texto_Centralizado(String(F(" Toque na tela para iniciar")), F("BRANCO"), 1, 330);
 
 			//tft.print (F("Toque na tela para iniciar"));   
 
@@ -1270,7 +1358,7 @@ void TELA_Render_Interface_ADMIN()
 
 
 
-		    TELA_Render_BotaoGenerico(1, F("SAIR"), F("SAIR"), 1, White, Red, 10, 15, 100, 60);
+		    TELA_Render_BotaoGenerico(1, F("SAIR"), F("SAIR"), 1, White, Red, 10, 15, 130, 60);
 
 		    //////////////////////////////////////
 
@@ -1321,7 +1409,7 @@ void TELA_Render_Interface_ADMIN()
 			}
 
 			
-			TELA_PrintNoTerm_BotaoGenericoTela();
+			//TELA_PrintNoTerm_BotaoGenericoTela();
 
 
 
@@ -1377,19 +1465,19 @@ void TELA_Render_Interface_ADMIN_USUARIOS()
 
 			// Cabecalho
 			TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
-			TELA_Render_Label(F("Usuarios"),   	  CinzaClaro,   1, 0, 70, F("RIGHT"));
+			TELA_Render_Label(F("Usuarios"),   	  CinzaClaro,   1, 0, 60, F("RIGHT"));
 
-			// botao sair
-		    TELA_Render_BotaoGenerico(1, F("SAIR"), F("SAIR"), 1, White, Red, 10, 15, 100, 60);
+			// botao voltar
+		    TELA_Render_BotaoGenerico(1, F("VOLTAR"), F("VOLTAR"), 1, White, Red, 10, 15, 130, 60);
 
 		    // texto geral
 			TELA_Texto_Centralizado(F("Escolha a sua opcao:"), F("AMARELO"), 2, 120);
 
 
 
-			int _Espacamento = 30;
-			int _Offset_X = 20;
-			int _TamW = 140;
+			int _Espacamento = 25;
+			int _Offset_X = 15;
+			int _TamW = 134;
 			int _TamH = 140;
 			int _PosX = 0;
 			int _PosY = 230;
@@ -1407,23 +1495,23 @@ void TELA_Render_Interface_ADMIN_USUARIOS()
 				switch (_ContaBtn)
 				{
 					case 1:
-						_TxtBotao = F("Novo Cartao");
+						_TxtBotao = F("Novo|Cartao");
 						_TAG_Botao = F("NOVO_CARTAO");
 						break;
 					case 2:
-						_TxtBotao = F("Adicionar Valor");
+						_TxtBotao = F("Adic.|Valor");
 						_TAG_Botao = F("ADD_VALOR");
 						break;
 					case 3:
-						_TxtBotao = F("Subtrair Valor");
+						_TxtBotao = F(" Subtr.|Valor");
 						_TAG_Botao = F("SUB_VALOR");
 						break;
 					case 4:
-						_TxtBotao = F("Definir Saldo");
+						_TxtBotao = F("Definir|Saldo");
 						_TAG_Botao = F("DEF_SALDO");
 						break;
 					case 5:
-						_TxtBotao = F("Trocar Cartao");
+						_TxtBotao = F("Trocar|Cartao");
 						_TAG_Botao = F("TROCA_CARTAO");
 						break;
 				}
@@ -1433,7 +1521,7 @@ void TELA_Render_Interface_ADMIN_USUARIOS()
 			}
 
 			
-			TELA_PrintNoTerm_BotaoGenericoTela();
+			//TELA_PrintNoTerm_BotaoGenericoTela();
 
 
 
@@ -1482,22 +1570,22 @@ void TELA_Render_Interface_ADMIN_NOVO_CARD()
 
 	
 		// Cabecalho
-		TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
-		TELA_Render_Label(F("Novo Cartao"),   CinzaClaro,   1, 0, 70, F("RIGHT"));
+		TELA_Render_Label(F("Administracao"),			  Green, 		2, 0, 10, F("RIGHT"));
+		TELA_Render_Label(F("Usuarios >> Novo Cartao"),   CinzaClaro,   1, 0, 60, F("RIGHT"));
 		
 
 		// Campos da tela
 		TELA_Render_Label(F("Cartao:"), CinzaLabels, 1, 210, 160, F(""));
-		TELA_Render_Label(F("7DFE22H2"), White, 1, 350, 160, F(""));
+		TELA_Render_Label(gSessao_ID_Cartao, White, 1, 350, 160, F(""));
 
 		TELA_Render_Label(F("Nome:"), CinzaLabels, 1, 210, 210, F(""));
-		TELA_Render_Label(F("Marcelo Amaral Rocha"), White, 1, 350, 210, F(""));
+		TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 210, F(""));
 
 		TELA_Render_Label(F("CPF:"), CinzaLabels, 1, 210, 260, F(""));
-		TELA_Render_Label(F("25632071855"), White, 1, 350, 260, F(""));
+		TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 260, F(""));
 		
 		TELA_Render_Label(F("Saldo:"), CinzaLabels, 1, 210, 310, F(""));
-		TELA_Render_Label(F("R$ 12544,25"), White, 1, 350, 310, F(""));
+		TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 310, F(""));
 
 
 		
@@ -1510,7 +1598,7 @@ void TELA_Render_Interface_ADMIN_NOVO_CARD()
 		TELA_Render_BotaoGenerico(5, F("SALVAR"),   F("SALVAR"),   0, White, Blue, 450, 405, 150, 50);
 	
 
-		TELA_PrintNoTerm_BotaoGenericoTela();
+		//TELA_PrintNoTerm_BotaoGenericoTela();
 
 
 	}
@@ -1693,7 +1781,7 @@ void TELA_Render_Interface_OPERACAO()
 		    int btnSair_PosAtual_X = 10;
 			int btnSair_PosAtual_Y = 15;
 
-			int btnSair_Size_W = 100;
+			int btnSair_Size_W = 130;
 			int btnSair_Size_H = 60;
 
 			tft.fillRoundRect(btnSair_PosAtual_X, btnSair_PosAtual_Y, btnSair_Size_W, btnSair_Size_H, 8, Red);
@@ -1815,7 +1903,7 @@ void TELA_VerificaTouch_STANDBY()
 
 
      
-			delay(500);		
+			//delay(500);		
 		}
 
 	}
@@ -2329,11 +2417,18 @@ void TELA_VerificaTouch_ADMIN_USUARIOS()
 
 
 								//BOTAO SAIR
-								if (btnGen_TAG == F("SAIR"))
+								if (btnGen_TAG == F("VOLTAR"))
 								{
 
 									TELA_LimpaTela();
 
+									//gModoOperacao = F("ADMIN");
+									gModoOperacao_SubTela = F("");		
+
+									gTelaRenderizada_ADMIN = false;	
+									gTelaRenderizada_ADMIN_USUARIOS = false;	
+
+									/*
 									// zera as vars para cada tentativa de login
 									// efetua logoff
 									gSessao_Logado = false;
@@ -2348,6 +2443,9 @@ void TELA_VerificaTouch_ADMIN_USUARIOS()
 									gModoOperacao_SubTela = F("");						
 								
 									LogTerm(F("MAIN: Usuario clicou em SAIR"));
+
+									*/
+
 								}
 
 
@@ -2355,14 +2453,23 @@ void TELA_VerificaTouch_ADMIN_USUARIOS()
 								if (btnGen_TAG == F("NOVO_CARTAO"))
 								{
 
+									TELA_LimpaTela();
+
+									gModoOperacao = F("LOGIN");
+									gModoOperacao_SubTela = F("LER_RFID_ADMIN_NOVO_CARD");
+
+									gTelaRenderizada_ADMIN_USUARIOS = false;
+
+									/*
 									gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");
 
 									gTelaRenderizada_ADMIN_USUARIOS = false;
 									gTelaRenderizada_ADMIN_NOVO_CARD = false;
-
+								
 									TELA_LimpaTela();
+									*/
 
-									delay(500);  
+									//delay(500);  
 								}
 
 
@@ -2559,14 +2666,18 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 								if (btnGen_TAG == F("CANCELAR"))
 								{
  
-									gModoOperacao_SubTela = F("");
+									gModoOperacao_SubTela = F("ADMIN_USUARIOS");
 
-									gTelaRenderizada_ADMIN = false;
+									gTelaRenderizada_ADMIN_USUARIOS = false;
 									gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+
+	
+
 
 									TELA_LimpaTela();
 
-									delay(500);  
+									//delay(500);  
 
 								}
 
@@ -2740,7 +2851,7 @@ void TELA_VerificaTouch_OPERACAO()
 
 			gTelaRenderizada_OPERACAO = false;
 
-			delay(500);  				
+			//delay(500);  				
 		}
 
 
@@ -2774,7 +2885,7 @@ void TELA_VerificaTouch_OPERACAO()
 		    int btnSair_PosAtual_X = 10;
 			int btnSair_PosAtual_Y = 15;
 
-			int btnSair_Size_W = 100;
+			int btnSair_Size_W = 130;
 			int btnSair_Size_H = 60;			
 
 
@@ -2912,7 +3023,7 @@ void TELA_VerificaTouch_OPERACAO()
 
 						TELA_LimpaTela();
 
-						delay(500);  	
+						//delay(500);  	
 
 
 						/*

@@ -679,18 +679,57 @@ void Exec_OPERACAO_SERVICO()
 
 
 // ROTINA DE ADMIN
+
 void Exec_ADMIN_NOVO_CARD()
 {
-
     if (gTelaRenderizada_ADMIN_NOVO_CARD == false)
     {
         LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_NOVO_CARD] =="));
         TELA_Render_Interface_ADMIN_NOVO_CARD();
     }  
-
-    
-
 }
+
+
+
+void Exec_ADMIN_USUARIOS()
+{
+    if (gTelaRenderizada_ADMIN_USUARIOS == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_USUARIOS] =="));
+        TELA_Render_Interface_ADMIN_USUARIOS();
+    }  
+}
+
+
+void Exec_ADMIN_CHOPPS()
+{
+    if (gTelaRenderizada_ADMIN_CHOPPS == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_CHOPPS] =="));
+        TELA_Render_Interface_ADMIN_CHOPPS();
+    }  
+}
+
+
+void Exec_ADMIN_ENGATADOS()
+{
+    if (gTelaRenderizada_ADMIN_ENGATADOS == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_ENGATADOS] =="));
+        TELA_Render_Interface_ADMIN_ENGATADOS();
+    }  
+}
+
+
+void Exec_ADMIN_OUTROS()
+{
+    if (gTelaRenderizada_ADMIN_OUTROS == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_OUTROS] =="));
+        TELA_Render_Interface_ADMIN_OUTROS();
+    }  
+}
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -770,6 +809,26 @@ void TestaInterrupts()
         {
             TELA_VerificaTouch_ADMIN_NOVO_CARD();
         }
+
+        if (gModoOperacao_SubTela == F("ADMIN_USUARIOS"))
+        {
+            TELA_VerificaTouch_ADMIN_USUARIOS();
+        }
+
+        if (gModoOperacao_SubTela == F("ADMIN_CHOPPS"))
+        {
+            TELA_VerificaTouch_ADMIN_CHOPPS();
+        }
+
+        if (gModoOperacao_SubTela == F("ADMIN_ENGATADOS"))
+        {
+            TELA_VerificaTouch_ADMIN_ENGATADOS();
+        }
+        
+        if (gModoOperacao_SubTela == F("ADMIN_OUTROS"))
+        {
+            TELA_VerificaTouch_ADMIN_OUTROS();
+        }                        
 
     }
 
@@ -864,6 +923,11 @@ void loop()
             Exec_LER_RFID(String(F("ADMIN")));  
         }        
 
+        if (gModoOperacao_SubTela == F("LER_RFID_ADMIN_NOVO_CARD"))
+        {
+            Exec_LER_RFID(String(F("ADMIN_NOVO_CARD")));  
+        }        
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -896,6 +960,26 @@ void loop()
        if (gModoOperacao_SubTela == F("ADMIN_NOVO_CARD"))
         {
             Exec_ADMIN_NOVO_CARD();  
+        }   
+
+       if (gModoOperacao_SubTela == F("ADMIN_USUARIOS"))
+        {
+            Exec_ADMIN_USUARIOS();  
+        }   
+
+       if (gModoOperacao_SubTela == F("ADMIN_CHOPPS"))
+        {
+            Exec_ADMIN_CHOPPS();  
+        }   
+
+       if (gModoOperacao_SubTela == F("ADMIN_ENGATADOS"))
+        {
+            Exec_ADMIN_ENGATADOS();  
+        }   
+
+       if (gModoOperacao_SubTela == F("ADMIN_OUTROS"))
+        {
+            Exec_ADMIN_OUTROS();  
         }   
 
     }

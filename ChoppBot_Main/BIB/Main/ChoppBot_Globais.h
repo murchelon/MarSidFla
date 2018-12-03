@@ -231,7 +231,7 @@ String aTecladoAlfa_PosBotoes[ctTECLADO_ALFA_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
 
 //  numero de clicks de sensibilidade dos botoes em uma determinada tela. Para evitar o double press
 //const int ctBOUNCE_SENSIB_BOTAO = 80 //	350 foi bom	
-#define ctBOUNCE_SENSIB_BOTAO 280
+#define ctBOUNCE_SENSIB_BOTAO 260
 
 	
 
@@ -324,7 +324,10 @@ bool gTelaRenderizada_OPERACAO_SERVICO;
 bool gTelaRenderizada_MSGBOX;
 
 bool gTelaRenderizada_ADMIN_NOVO_CARD;
-
+bool gTelaRenderizada_ADMIN_USUARIOS;
+bool gTelaRenderizada_ADMIN_CHOPPS;
+bool gTelaRenderizada_ADMIN_ENGATADOS;
+bool gTelaRenderizada_ADMIN_OUTROS;
 
 
 
@@ -365,7 +368,7 @@ String gSessao_Nome;
 float gSessao_SaldoAtual;
 String gSessao_CPF;
 String gSessao_DataCad;
-
+String gSessao_ID_Cartao;
 
 
 
@@ -482,6 +485,14 @@ void InicializaVars()
 	gTelaRenderizada_MSGBOX = false;
 
 	gTelaRenderizada_ADMIN_NOVO_CARD = false;
+	gTelaRenderizada_ADMIN_USUARIOS = false;
+	gTelaRenderizada_ADMIN_CHOPPS = false;
+	gTelaRenderizada_ADMIN_ENGATADOS = false;
+	gTelaRenderizada_ADMIN_OUTROS = false;
+
+
+
+
 
 	//teclado
 	gTecladoNum_ValAtual = F("");
@@ -496,6 +507,7 @@ void InicializaVars()
 	gSessao_SaldoAtual = -1;				
 	gSessao_CPF = F("");
 	gSessao_DataCad = F("");
+	gSessao_ID_Cartao = F("");
 	
 	gServico_ID_TorneiraAtual = -1;
 	
@@ -504,5 +516,11 @@ void InicializaVars()
 	{
 		gaEngatados[x] = F("");
 	}	 	
+
+	// incia a var dos botoes genericos de tela
+	for (int x = 0 ; x <= ctMAX_BOTOES_GEN_TELA ; x++)
+	{
+		gaBotoesGenTela[x] = F("");
+	}
 
 }

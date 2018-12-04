@@ -48,12 +48,39 @@ void InitApp()
 
     InicializaVars();
 
+    String _TamVersao = String(SKETCH_VERSION);
+    String _outVersao = F("");
+
+    if (_TamVersao.length() == 5)
+    {
+        _outVersao = String(F("///  ChoppBot ")) + String(SKETCH_VERSION) + String(F("                               ///"));
+    }
+
+    if (_TamVersao.length() == 6)
+    {
+        _outVersao = String(F("///  ChoppBot ")) + String(SKETCH_VERSION) + String(F("                              ///"));
+    }
+
+    if (_TamVersao.length() == 7)
+    {
+        _outVersao = String(F("///  ChoppBot ")) + String(SKETCH_VERSION) + String(F("                             ///"));
+    }
+
+    if (_TamVersao.length() == 8)
+    {
+        _outVersao = String(F("///  ChoppBot ")) + String(SKETCH_VERSION) + String(F("                            ///"));
+    }
+
+    if (_TamVersao.length() == 9)
+    {
+        _outVersao = String(F("///  ChoppBot ")) + String(SKETCH_VERSION) + String(F("                           ///"));
+    }
+
 
 
     LogTerm(F("/////////////////////////////////////////////////////"));
     LogTerm(F("///                                               ///"));
-    LogTerm(String(F("///  ChoppBot ")) + String(VersaoAPP) + String(F("                                 ///")));
-    LogTerm(F("///  ============                                 ///"));
+    LogTerm(_outVersao);
     LogTerm(F("///                                               ///"));
     LogTerm(F("///  by Murch & Cebola                            ///"));
     LogTerm(F("///                                               ///"));
@@ -206,12 +233,11 @@ void InitApp()
 
 
 
-    delay(500);
+    delay(100);
 
     TELA_IniciaTela();
 
-    TELA_Texto(String(F("Choppbot ")) + String(VersaoAPP), F("VERDE"));
-    TELA_Texto(F("============"), F("VERDE"));
+    TELA_Texto(String(F("Choppbot ")) + String(SKETCH_VERSION), F("VERDE"));
     TELA_Texto(F(""), F("BRANCO"));
     TELA_Texto(F("Iniciando sistema..."), F("BRANCO"));
     TELA_Texto(F(""), F("BRANCO"));
@@ -550,7 +576,7 @@ void Exec_DEBUG()
     gTelaRenderizada_DEBUG = true;
 
     //TELA_RenderTecUnificado_NUM();
-    TELA_RenderTecUnificado_ALFA();
+    //TELA_RenderTecUnificado_ALFA();
 
 }
 
@@ -731,6 +757,17 @@ void Exec_ADMIN_OUTROS()
 }
 
 
+void Exec_TECLADO()
+{
+    if (gTelaRenderizada_TECLADO == false)
+    {
+       
+
+
+    }  
+
+    
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -832,6 +869,32 @@ void TestaInterrupts()
 
     }
 
+    if (gModoOperacao == F("TECLADO"))
+    {
+        if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_NOME"))
+        {
+            TELA_VerificaTouch_TECLADO_ALFA(F("ADMIN_USER_NOME"));
+        } 
+
+        if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_CPF"))
+        {
+            TELA_VerificaTouch_TECLADO_NUM(F("ADMIN_USER_CPF"));
+        } 
+
+        if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_SALDO"))
+        {
+            TELA_VerificaTouch_TECLADO_NUM(F("ADMIN_USER_SALDO"));
+        } 
+
+        if (gModoOperacao_SubTela == F("TECLADO_TESTE_STANDBY"))
+        {
+            TELA_VerificaTouch_TECLADO_ALFA(F("TESTE_STANDBY"));
+        } 
+
+       
+    }
+
+
     if (gModoOperacao == F("DEBUG"))
     {
         TELA_VerificaTouch_DEBUG();
@@ -845,7 +908,6 @@ void TestaInterrupts()
 
 
 }
-
 
 
 
@@ -986,6 +1048,54 @@ void loop()
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // TECLADOS
+    if (gModoOperacao == F("TECLADO"))
+    {
+
+        if (gTelaRenderizada_TECLADO == false)
+        {
+
+            //LogTerm(gTelaRenderizada_TecAlfa);
+
+            LogTerm(F("== [Modo Atual: TECLADO] =="));
+
+            if (gModoOperacao_SubTela == F(""))
+            {
+                
+            }
+
+            if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_NOME"))
+            {
+                LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_ADMIN_USER_NOME] =="));
+                TELA_RenderTecUnificado_ALFA();
+            }
+
+            if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_CPF"))
+            {
+                LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_ADMIN_USER_CPF] =="));
+                TELA_RenderTecUnificado_NUM();
+            }
+
+            if (gModoOperacao_SubTela == F("TECLADO_TESTE_STANDBY"))
+            {
+                LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_TESTE_STANDBY] =="));
+                TELA_RenderTecUnificado_ALFA();
+            }
+
+        }
+
+
+
+
+  
+    }
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     if (gModoOperacao == F("DEBUG"))
     {
         Exec_DEBUG();
@@ -1004,6 +1114,9 @@ void loop()
         gModoOperacao = F("STANDBY");
 
     }
+
+
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

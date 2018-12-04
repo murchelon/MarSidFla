@@ -27,9 +27,9 @@
 // ADMIN
 // DEBUG
 // TESTE
+// TECLADO
 
 // VERSAO DA APLICACAO
-#define VersaoAPP F("0.5")
 #define NOME_LOJA_LINHA1 F("Experiencia")
 #define NOME_LOJA_LINHA2 F("Cervejeira")
 
@@ -39,7 +39,7 @@ String gModoOperacao_SubTela;
 
 // var que define se a aplicacao esta no modo debug. isto faz com que algumas msgs de debug
 // sejam exibidas na tela e/ou no terminal
-#define ctMODO_DEBUG true
+#define ctMODO_DEBUG false
 
 // tempo em ms para timeout das opcoes a serem escolhidas
 #define gTimeoutOpcao 7000		
@@ -310,6 +310,8 @@ const String ctTELA_HARDWARE;
 // Vars de controle que verificam se uma determinada tela esta renderizada para nao render de novo
 bool gTelaRenderizada_TecNum;
 bool gTelaRenderizada_TecAlfa;
+bool gTelaRenderizada_TECLADO;
+
 bool gTelaRenderizada_STANDBY;
 bool gTelaRenderizada_LOGIN;
 bool gTelaRenderizada_OPERACAO;
@@ -368,10 +370,6 @@ String gSessao_Nome;
 float gSessao_SaldoAtual;
 String gSessao_CPF;
 String gSessao_DataCad;
-String gSessao_ID_Cartao;
-
-
-
 
 
 
@@ -437,7 +435,21 @@ volatile float gFaixaVelAtual = 99;
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// VARIAVEIS DE ADMIN
+// ------------------
+//
+// variaveis qye controlam e armazenam valores para as telas de admin
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+String gAdmin_ID_Cartao_Scan;
+
+String gAdmin_User_Nome;
+String gAdmin_User_CPF;
+String gAdmin_User_Saldo;
+String gAdmin_User_IDUser;
 
 
 
@@ -473,6 +485,9 @@ void InicializaVars()
 	// controle de render de tela
 	gTelaRenderizada_TecNum = false;
 	gTelaRenderizada_TecAlfa = false;
+	gTelaRenderizada_TECLADO = false;
+	
+
 	gTelaRenderizada_STANDBY = false;	
 	gTelaRenderizada_LOGIN = false;
 	gTelaRenderizada_OPERACAO = false;	
@@ -507,8 +522,17 @@ void InicializaVars()
 	gSessao_SaldoAtual = -1;				
 	gSessao_CPF = F("");
 	gSessao_DataCad = F("");
-	gSessao_ID_Cartao = F("");
+
+	// vars de admin
+	gAdmin_ID_Cartao_Scan = F("");
+	gAdmin_User_Nome = F("");
+	gAdmin_User_CPF = F("");
+	gAdmin_User_Saldo = F("");
+	gAdmin_User_IDUser = F("");
 	
+
+
+	// vars de operacao
 	gServico_ID_TorneiraAtual = -1;
 	
 	// inicializa var de engatados

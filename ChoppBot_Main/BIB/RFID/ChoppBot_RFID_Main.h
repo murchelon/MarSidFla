@@ -173,7 +173,7 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 	{
 
         //LogTerm(F("== [Modo Atual: STANDBY] ==");
-		gSessao_ID_Cartao = F("");
+		gAdmin_ID_Cartao_Scan = F("");
 
 		if (ctTELA_HARDWARE == F("TERMINAL"))
 		{  
@@ -270,7 +270,7 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 		{
 			Login_RFID = Login_RFID.substring(2);
 
-			gSessao_ID_Cartao = Login_RFID;
+			gAdmin_ID_Cartao_Scan = Login_RFID;
 
 			String ret;
 
@@ -288,7 +288,7 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 				gSessao_SaldoAtual = -1;
 				gSessao_CPF = F("");
 				gSessao_DataCad = F("");	
-				gSessao_ID_Cartao = F("");		
+				gAdmin_ID_Cartao_Scan = F("");		
 			}
 
 

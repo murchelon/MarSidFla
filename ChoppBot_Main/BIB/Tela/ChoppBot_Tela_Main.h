@@ -1,10 +1,5 @@
 
 
-
-
-
-
-
 // vars usadas para posicionamento de texto generico na tela
 uint16_t gPosTxt_X = 0;
 uint16_t gPosTxt_Y = 0;
@@ -1069,7 +1064,7 @@ void TELA_Render_Interface_STANDBY()
 
 		if (ctTELA_HARDWARE == F("TERMINAL"))
 		{  
-			LogTerm(String(F("ChoppBot ")) + String(VersaoAPP));
+			LogTerm(String(F("ChoppBot ")) + String(SKETCH_VERSION));
 
 			if (NOME_LOJA_LINHA2 != F(""))
 			{
@@ -1096,8 +1091,9 @@ void TELA_Render_Interface_STANDBY()
 			// versao do choppbot
 			TELA_SetFontSize(0); 
 			tft.setTextColor(CinzaLabels);
-			tft.setCursor (685, 10);			
-			tft.print (String(F("ChoppBot ")) + String(VersaoAPP)); 
+			tft.setCursor (650, 10);			
+			tft.print (String(F("ChoppBot ")) + String(SKETCH_VERSION)); 
+
 
 
 
@@ -1568,6 +1564,8 @@ void TELA_Render_Interface_ADMIN_NOVO_CARD()
 		//TELA_PrintNoTerm_BotaoGenericoTela();
 
 
+
+
 	
 		// Cabecalho
 		TELA_Render_Label(F("Administracao"),			  Green, 		2, 0, 10, F("RIGHT"));
@@ -1576,16 +1574,45 @@ void TELA_Render_Interface_ADMIN_NOVO_CARD()
 
 		// Campos da tela
 		TELA_Render_Label(F("Cartao:"), CinzaLabels, 1, 210, 160, F(""));
-		TELA_Render_Label(gSessao_ID_Cartao, White, 1, 350, 160, F(""));
+		TELA_Render_Label(gAdmin_ID_Cartao_Scan, White, 1, 350, 160, F(""));
 
 		TELA_Render_Label(F("Nome:"), CinzaLabels, 1, 210, 210, F(""));
-		TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 210, F(""));
+
+		if (gAdmin_User_Nome == F(""))
+		{
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 210, F(""));
+		}
+		else
+		{
+			TELA_Render_Label(gAdmin_User_Nome, White, 1, 350, 210, F(""));
+		}
 
 		TELA_Render_Label(F("CPF:"), CinzaLabels, 1, 210, 260, F(""));
-		TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 260, F(""));
+		
+
+		if (gAdmin_User_CPF == F(""))
+		{
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 260, F(""));
+		}
+		else
+		{
+			TELA_Render_Label(gAdmin_User_CPF, White, 1, 350, 260, F(""));
+		}
+
+
 		
 		TELA_Render_Label(F("Saldo:"), CinzaLabels, 1, 210, 310, F(""));
-		TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 310, F(""));
+
+		if (gAdmin_User_Saldo == F(""))
+		{
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 310, F(""));
+		}
+		else
+		{
+			TELA_Render_Label(gAdmin_User_Saldo, White, 1, 350, 310, F(""));
+		}
+
+		
 
 
 		
@@ -1930,16 +1957,34 @@ void TELA_VerificaTouch_STANDBY()
 				// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
 
 
-				
+
+				/*
+				gTelaRenderizada_STANDBY = false;
+
+				//gModoOperacao = F("LOGIN");
+				gModoOperacao = F("TECLADO");
+				gModoOperacao_SubTela = F("TEC_ALPHA_TESTE_STANDBY");
+
+			    TELA_LimpaTela();
+
+				delay(200);  
+				*/
+
+
+			
+				// original para ir para operacao
 
 				gTelaRenderizada_STANDBY = false;
 
 				//gModoOperacao = F("LOGIN");
 				gModoOperacao = F("OPERACAO");
 
+
 			    TELA_LimpaTela();
 
 				delay(500);  
+			
+
 
 				// -----------------------------------
 
@@ -2650,30 +2695,71 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 
 								if (btnGen_TAG == F("EDITAR_NOME"))
 								{
+									
+									gTelaRenderizada_ADMIN_NOVO_CARD = false;
+									gTelaRenderizada_TecAlfa = false;
+									gTelaRenderizada_TECLADO = false;
+
+									//TELA_RenderTecUnificado_ALFA();
+
+									gTecladoAlfa_ValAtual = gAdmin_User_Nome;
+
+									gModoOperacao = F("TECLADO");
+									gModoOperacao_SubTela = F("TECLADO_ADMIN_USER_NOME");	
+
+									TELA_LimpaTela();								
 
 								}
 
 								if (btnGen_TAG == F("EDITAR_CPF"))
 								{
 
+									gTelaRenderizada_ADMIN_NOVO_CARD = false;
+									gTelaRenderizada_TecNum = false;
+									gTelaRenderizada_TECLADO = false;
+
+									gTecladoNum_ValAtual = gAdmin_User_CPF;
+
+									gModoOperacao = F("TECLADO");
+									gModoOperacao_SubTela = F("TECLADO_ADMIN_USER_CPF");	
+									
+									TELA_LimpaTela();
+
 								}
 
 								if (btnGen_TAG == F("EDITAR_SALDO"))
 								{
 
+									gTelaRenderizada_ADMIN_NOVO_CARD = false;
+									gTelaRenderizada_TecNum = false;
+									gTelaRenderizada_TECLADO = false;
+
+									gTecladoNum_ValAtual = gAdmin_User_Saldo;
+
+									gModoOperacao = F("TECLADO");
+									gModoOperacao_SubTela = F("TECLADO_ADMIN_USER_SALDO");	
+
+									TELA_LimpaTela();
+
 								}
 
 								if (btnGen_TAG == F("CANCELAR"))
 								{
+
+									gAdmin_ID_Cartao_Scan = F("");
+									gAdmin_User_Nome = F("");
+									gAdmin_User_CPF = F("");
+									gAdmin_User_Saldo = F("");
+									gAdmin_User_IDUser = F("");									
  
 									gModoOperacao_SubTela = F("ADMIN_USUARIOS");
 
 									gTelaRenderizada_ADMIN_USUARIOS = false;
 									gTelaRenderizada_ADMIN_NOVO_CARD = false;
 
-
-	
-
+									gTelaRenderizada_TecAlfa = false;
+									gTelaRenderizada_TecNum = false;
+									gTelaRenderizada_TECLADO = false;
 
 									TELA_LimpaTela();
 
@@ -2683,6 +2769,68 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 
 								if (btnGen_TAG == F("SALVAR"))
 								{
+
+									bool _Envia = true;
+									String _txtErro = F("Os seguintes campos nao podem estar em  branco: ");
+
+									if (gAdmin_ID_Cartao_Scan == F(""))
+									{
+										_Envia = false;
+										_txtErro += String(F("ID do Cartao, "));
+									}
+
+									if (gAdmin_User_Nome == F(""))
+									{
+										_Envia = false;
+										_txtErro += String(F("Nome, "));
+									}
+
+
+									if (gAdmin_User_CPF == F(""))
+									{
+										_Envia = false;
+										_txtErro += String(F("CPF, "));
+									}
+
+
+									if (gAdmin_User_Saldo == F(""))
+									{
+										_Envia = false;
+										_txtErro += String(F("Saldo Inicial, "));
+									}
+
+									if (_Envia == true)
+									{
+
+									}
+									else
+									{
+
+
+										if (Right(_txtErro, 2) == F(", "))
+										{
+											_txtErro = Left(_txtErro, _txtErro.length() - 2);
+										}
+
+
+										TELA_LimpaTela();
+
+										TELA_Render_MsgBox(F("Campos em branco"), _txtErro);
+
+										delay(6000);
+
+										TELA_LimpaTela();
+
+										gTelaRenderizada_MSGBOX = false;
+										gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+										gTelaRenderizada_TecAlfa = false;
+										gTelaRenderizada_TecNum = false;	
+										gTelaRenderizada_TECLADO = false;									
+
+									}
+
+		
 
 								}
 
@@ -3278,7 +3426,7 @@ void TELA_VerificaTouch_DEBUG()
 {
 
 	//TELA_VerificaTouch_TECLADO_NUM();
-	TELA_VerificaTouch_TECLADO_ALFA();
+	//TELA_VerificaTouch_TECLADO_ALFA();
 
 }
 

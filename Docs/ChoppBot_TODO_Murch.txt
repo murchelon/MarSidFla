@@ -68,6 +68,7 @@ PARTE ADMIN:
 	- Data e Horario
 	- Reset
 	- Modo Debug
+	- Sangria
 
 
 

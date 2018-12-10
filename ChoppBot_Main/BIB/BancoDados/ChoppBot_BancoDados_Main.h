@@ -842,3 +842,208 @@ String BANCO_AtualizaSaldoEngatadosSessao(float _VolumeAtual)
 
 }
 
+
+
+
+
+// Recupera o IDUser MAX atual, para criacao de um novo usuario
+// retorna formato: CodRetorno|Dado ou Descricao
+// 1 retorna o IDUserMax , na posicao de dado
+// -2 para arquivo nao existe 
+// -1 erros outros
+String BANCO_GetIDUserMax()
+{
+
+	String ret = F("1|");
+
+	String FullPathFile_IDuserMax = F("");
+	FullPathFile_IDuserMax = String(F("CB/BD/Max/M_IDUser.csv"));
+
+	String retFunc = F("");
+	retFunc = SD_GetFirstRegFromFile(FullPathFile_IDuserMax, "CHECK");
+
+	//LogTerm(String(F("retFunc em SD_GetFirstRegFromFile em BANCO_GetIDUserMax = ")) + retFunc);
+
+	if (retFunc.substring(0, 2) == F("-1"))
+	{
+		// erro de sd card
+		ret = retFunc;
+		return ret;
+	}
+
+	if (retFunc.substring(0, 2) == F("-2"))
+	{
+		// erro de arquivo nao existe
+		ret = String(F("-2|")) + retFunc.substring(3);
+		return ret;
+	}
+
+	if (retFunc.substring(0, 1) == F("1"))
+	{
+		// arquivo e idusermax encontrado. 
+		ret = String(F("1|")) + retFunc.substring(2);
+		return ret;
+
+	}
+
+	return ret;
+}
+
+
+
+
+
+// cria um arquivo de usuario padrao, com seu saldo e dados de usuario
+// retorna formato: CodRetorno|Descricao
+// 1 para arquivo criado com sucesso 
+// 0 erros outros
+String BANCO_CriaArquivoMax(String FullPathFile, String ValorMax)
+{
+
+	String ret = F("");
+
+	String Linha = F("");
+
+	SdFat SD;
+	String retSD = F("");
+
+	retSD = SD_InicializaCartaoSD(SD);
+
+	if (retSD.substring(0, 1) != F("1"))
+	{
+		return retSD;
+	}
+
+
+
+	char __FullPathFile[FullPathFile.length() + 1];
+	FullPathFile.toCharArray(__FullPathFile, sizeof(__FullPathFile));
+
+	SdFile Arquivo_Temp(__FullPathFile, O_WRITE | O_CREAT);
+
+	if (!Arquivo_Temp.isOpen()) 
+	{
+		ret = String(F("0|Nao foi possivel criar o arquivo: ")) + FullPathFile;
+	}
+	else
+	{
+
+
+		Linha = ValorMax;
+
+		Arquivo_Temp.println("IDUserMax");
+		Arquivo_Temp.print(Linha);
+
+		Arquivo_Temp.close();
+
+		ret = String(F("1|Arquivo Max criado com sucesso: ")) + FullPathFile;
+
+	}
+	
+	
+	return ret;
+
+}
+
+
+
+
+// atualiza um dos valores maximos do sistema como IDUser, IDChopp 
+// retorna formato: CodRetorno|Descricao / Dado
+// 1 para valor atualizado com sucesso 
+// 0 para falha na ciracao 
+String BANCO_AtualizaMaxValue(String NovoMax, String TipoMax)
+{
+
+	String ret = F("");
+
+	String FullPathFile_TEMP;	
+	String FullPathFile_ORIGINAL;
+
+	if (TipoMax == F("IDUSER"))
+	{
+		FullPathFile_TEMP = String(F("CB/BD/Max/T_IDUser.csv"));
+		FullPathFile_ORIGINAL = String(F("CB/BD/Max/M_IDUser.csv"));
+	}
+	
+	if (TipoMax == F("IDCHOPP"))
+	{
+		FullPathFile_TEMP = String(F("CB/BD/Max/T_Chopp.csv"));
+		FullPathFile_ORIGINAL = String(F("CB/BD/Max/M_Chopp.csv"));
+	}
+	
+
+	// apaga o arquivo temporario antigo se existir
+    String retFunc = F("");
+	retFunc = SD_ApagaArquivo(FullPathFile_TEMP);
+
+
+	if (retFunc.substring(0, 1) == F("1"))
+	{
+
+		// arquivo temporario antigo localizado
+
+		if (TipoMax == F("IDUSER"))
+		{
+			LogTerm(String(F("Arquivo Temporario de IDMaxUser antigo localizado e apagado: ")) + retFunc);
+		}
+		
+		if (TipoMax == F("IDCHOPP"))
+		{
+			LogTerm(String(F("Arquivo Temporario de IDChoppMax antigo localizado e apagado: ")) + retFunc);
+		}		
+		
+		
+	}
+
+	
+	// cria o novo arquivo temporario com o novo max
+	retFunc = F("");
+	retFunc = BANCO_CriaArquivoMax(FullPathFile_TEMP, NovoMax);
+
+	
+
+	LogTerm(String(F("Retorno da criacao de arquivo temporario: ")) + retFunc);
+
+
+	// apaga o arquivo OFICIAL do max
+    retFunc = F("");
+	retFunc = SD_ApagaArquivo(FullPathFile_ORIGINAL);
+
+
+	if (retFunc.substring(0, 1) == F("1"))
+	{
+		// arquivo temporario antigo localizado
+		LogTerm(String(F("Arquivo OFICIAL Max apagado: ")) + retFunc);
+	}
+	else
+	{
+		LogTerm(String(F("Arquivo OFICIAL Max nao existia: ")) + retFunc);
+	}
+	
+	// renomeia o arquivo temporario para o oficial
+	retFunc = F("");
+	retFunc = SD_RenameArquivo(FullPathFile_TEMP, FullPathFile_ORIGINAL);
+
+
+	if (retFunc.substring(0, 1) == F("0"))
+	{
+		// arquivo temporario antigo localizado
+		LogTerm(String(F("Falha em renomear arquivo temporario Max para o final: ")) + retFunc);
+
+		ret = F("0|Falha na atualizacao do arquivo Max");
+	}
+	else
+	{
+		LogTerm(String(F("Arquivo temporario Max foi renomeado com sucesso para versao final: ")) + retFunc);
+
+		ret = F("1|Arquivo Macx atualizado com sucesso");
+	}
+
+
+	return ret;
+
+
+}
+
+

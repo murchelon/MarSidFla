@@ -1573,43 +1573,64 @@ void TELA_Render_Interface_ADMIN_NOVO_CARD()
 		
 
 		// Campos da tela
-		TELA_Render_Label(F("Cartao:"), CinzaLabels, 1, 210, 160, F(""));
-		TELA_Render_Label(gAdmin_ID_Cartao_Scan, White, 1, 350, 160, F(""));
+		
+		TELA_Render_Label(F("Cartao:"), CinzaLabels, 1, 210, 130, F(""));
+		
+		//TELA_Render_Label(gAdmin_ID_Cartao_Scan, White, 1, 350, 130, F(""));
+		TELA_Render_Label(F("Identificado"), White, 1, 350, 130, F(""));
 
-		TELA_Render_Label(F("Nome:"), CinzaLabels, 1, 210, 210, F(""));
+
+
+
+		TELA_Render_Label(F("Nome:"), CinzaLabels, 1, 210, 180, F(""));
 
 		if (gAdmin_User_Nome == F(""))
 		{
-			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 210, F(""));
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 180, F(""));
 		}
 		else
 		{
-			TELA_Render_Label(gAdmin_User_Nome, White, 1, 350, 210, F(""));
+			TELA_Render_Label(gAdmin_User_Nome, White, 1, 350, 180, F(""));
 		}
 
-		TELA_Render_Label(F("CPF:"), CinzaLabels, 1, 210, 260, F(""));
-		
 
+
+		TELA_Render_Label(F("Nivel:"), CinzaLabels, 1, 210, 230, F(""));
+		
+		if (gAdmin_User_Nivel == F(""))
+		{
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 230, F(""));
+		}
+		else
+		{
+			TELA_Render_Label(gAdmin_User_Nivel, White, 1, 350, 230, F(""));
+		}
+
+
+
+
+		TELA_Render_Label(F("CPF:"), CinzaLabels, 1, 210, 280, F(""));
+		
 		if (gAdmin_User_CPF == F(""))
 		{
-			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 260, F(""));
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 280, F(""));
 		}
 		else
 		{
-			TELA_Render_Label(gAdmin_User_CPF, White, 1, 350, 260, F(""));
+			TELA_Render_Label(gAdmin_User_CPF, White, 1, 350, 280, F(""));
 		}
 
 
 		
-		TELA_Render_Label(F("Saldo:"), CinzaLabels, 1, 210, 310, F(""));
+		TELA_Render_Label(F("Saldo:"), CinzaLabels, 1, 210, 330, F(""));
 
 		if (gAdmin_User_Saldo == F(""))
 		{
-			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 310, F(""));
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 330, F(""));
 		}
 		else
 		{
-			TELA_Render_Label(gAdmin_User_Saldo, White, 1, 350, 310, F(""));
+			TELA_Render_Label(FormatNumber(gAdmin_User_Saldo, F("MONEY")), White, 1, 350, 330, F(""));
 		}
 
 		
@@ -1617,12 +1638,13 @@ void TELA_Render_Interface_ADMIN_NOVO_CARD()
 
 		
 		//TELA_Render_BotaoGenerico(1, F("EDITAR_CARTAO"), F("Editar"), 0, White, Red, 110, 162, 70, 30);
-		TELA_Render_BotaoGenerico(1, F("EDITAR_NOME"),   F("Editar"), 0, White, Red, 110, 212, 70, 30);
-		TELA_Render_BotaoGenerico(2, F("EDITAR_CPF"),    F("Editar"), 0, White, Red, 110, 262, 70, 30);
-		TELA_Render_BotaoGenerico(3, F("EDITAR_SALDO"),  F("Editar"), 0, White, Red, 110, 312, 70, 30);
+		TELA_Render_BotaoGenerico(1, F("EDITAR_NOME"),   F("Editar"), 0, White, Red, 110, 182, 70, 30);
+		TELA_Render_BotaoGenerico(2, F("EDITAR_NIVEL"),    F("Editar"), 0, White, Red, 110, 232, 70, 30);
+		TELA_Render_BotaoGenerico(3, F("EDITAR_CPF"),    F("Editar"), 0, White, Red, 110, 282, 70, 30);
+		TELA_Render_BotaoGenerico(4, F("EDITAR_SALDO"),  F("Editar"), 0, White, Red, 110, 332, 70, 30);
 
-		TELA_Render_BotaoGenerico(4, F("CANCELAR"), F("CANCELAR"), 0, White, Blue, 210, 405, 150, 50);
-		TELA_Render_BotaoGenerico(5, F("SALVAR"),   F("SALVAR"),   0, White, Blue, 450, 405, 150, 50);
+		TELA_Render_BotaoGenerico(5, F("CANCELAR"), F("CANCELAR"), 0, White, Blue, 210, 405, 150, 50);
+		TELA_Render_BotaoGenerico(6, F("SALVAR"),   F("SALVAR"),   0, White, Blue, 450, 405, 150, 50);
 	
 
 		//TELA_PrintNoTerm_BotaoGenericoTela();
@@ -2235,8 +2257,6 @@ void TELA_VerificaTouch_ADMIN()
 		{
 
 
-			//TELA_LogTerm_XY();
-			//LogTerm(F("TELA_VerificaTouch_ADMIN_NOVO_CARD");
 
 			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
 		
@@ -2711,6 +2731,22 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 
 								}
 
+								if (btnGen_TAG == F("EDITAR_NIVEL"))
+								{
+
+									gTelaRenderizada_ADMIN_NOVO_CARD = false;
+									gTelaRenderizada_TecNum = false;
+									gTelaRenderizada_TECLADO = false;
+
+									gTecladoNum_ValAtual = gAdmin_User_Nivel;
+
+									gModoOperacao = F("TECLADO");
+									gModoOperacao_SubTela = F("TECLADO_ADMIN_USER_NIVEL");	
+									
+									TELA_LimpaTela();
+
+								}
+
 								if (btnGen_TAG == F("EDITAR_CPF"))
 								{
 
@@ -2749,6 +2785,7 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 									gAdmin_ID_Cartao_Scan = F("");
 									gAdmin_User_Nome = F("");
 									gAdmin_User_CPF = F("");
+									gAdmin_User_Nivel = F("");									
 									gAdmin_User_Saldo = F("");
 									gAdmin_User_IDUser = F("");									
  
@@ -2785,6 +2822,12 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 										_txtErro += String(F("Nome, "));
 									}
 
+									if (gAdmin_User_Nivel == F(""))
+									{
+										_Envia = false;
+										_txtErro += String(F("Nivel, "));
+									}
+
 
 									if (gAdmin_User_CPF == F(""))
 									{
@@ -2799,8 +2842,225 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 										_txtErro += String(F("Saldo Inicial, "));
 									}
 
+		
 									if (_Envia == true)
 									{
+
+										// rotina de criacao de novo usuario e login
+
+										String IDUserMax = F("");
+										String IDUserMax_Novo = F("");
+										String retFunc = F("");
+
+										bool _ContinuaCriacao = false;
+
+										// cria usuario
+
+										// pega iduser max atual
+
+										retFunc = BANCO_GetIDUserMax();
+
+										// testa erro e avisa e sai se ocorrer
+
+										// erro de sd
+										if (retFunc.substring(0, 2) == F("-1"))
+										{
+											TELA_LimpaTela();
+
+											TELA_Render_MsgBox(F("Erro Cartao SD"), F("Ocorreu um erro ao acessar o cartao SD. O usuario nao foi cadastrado"));
+
+											delay(6000);
+
+											TELA_LimpaTela();
+
+											gTelaRenderizada_MSGBOX = false;
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gTelaRenderizada_TecAlfa = false;
+											gTelaRenderizada_TecNum = false;	
+											gTelaRenderizada_TECLADO = false;												
+										}												
+
+										// arquivo nao existe
+										if (retFunc.substring(0, 2) == F("-2"))
+										{
+											TELA_Render_MsgBox(F("Arquivo nao localizado"), F("O arquivo de IDUserMax nao foi localizado"));
+
+											delay(6000);
+
+											TELA_LimpaTela();
+
+											gTelaRenderizada_MSGBOX = false;
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gTelaRenderizada_TecAlfa = false;
+											gTelaRenderizada_TecNum = false;	
+											gTelaRenderizada_TECLADO = false;	
+
+										}												
+
+										// sucesso
+										if (retFunc.substring(0, 1) == F("1"))
+										{
+											IDUserMax = retFunc.substring(2);
+											IDUserMax_Novo = String(IDUserMax.toInt() + 1);
+
+											_ContinuaCriacao = true;
+
+											LogTerm(String(F("IDUserMax localizado: ")) + IDUserMax);
+											//LogTerm(String(F("IDUserMax_Novo: ")) + IDUserMax_Novo);
+
+										}												
+
+										if (_ContinuaCriacao == true)
+										{
+
+
+											// atualiza iduser max atual
+											retFunc = BANCO_AtualizaMaxValue(IDUserMax_Novo, F("IDUSER"));
+
+											// testa erro e avisa e sai se ocorrer										
+
+											// sucesso
+											if (retFunc.substring(0, 1) != F("1"))
+											{
+												TELA_Render_MsgBox(F("Erro ao atualizar Max"), F("Ocorreu um erro ao atualizar o valor Max"));
+
+												delay(6000);
+
+												TELA_LimpaTela();
+
+												gTelaRenderizada_MSGBOX = false;
+												gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+												gTelaRenderizada_TecAlfa = false;
+												gTelaRenderizada_TecNum = false;	
+												gTelaRenderizada_TECLADO = false;	
+
+												_ContinuaCriacao = false;
+
+											}	
+											
+										}
+
+
+
+
+										if (_ContinuaCriacao == true)
+										{
+
+											// efetivamente cria o usuario
+
+
+
+											retFunc = SD_CreateNewUserFile(IDUserMax_Novo, 
+																			gAdmin_User_Nome, 
+																			gAdmin_User_Nivel, 
+																			gAdmin_User_CPF, 
+																			gAdmin_User_Saldo);
+										
+
+
+											// testa erro e avisa e sai se ocorrer
+											if (retFunc.substring(0, 1) != F("1"))
+											{
+												TELA_Render_MsgBox(F("Erro ao cadastrar usuario"), F("Ocorreu um erro ao cadastrar o novo usuario"));
+
+												delay(6000);
+
+												TELA_LimpaTela();
+
+												gTelaRenderizada_MSGBOX = false;
+												gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+												gTelaRenderizada_TecAlfa = false;
+												gTelaRenderizada_TecNum = false;	
+												gTelaRenderizada_TECLADO = false;	
+
+												_ContinuaCriacao = false;
+											}	
+										
+
+										}	
+
+
+
+
+										if (_ContinuaCriacao == true)
+										{
+
+											// cria login
+
+											// testa erro e avisa e sai se ocorrer	
+
+
+
+											retFunc = SD_CreateNewLoginFile(IDUserMax_Novo, 
+																			gAdmin_User_CPF, 
+																			gAdmin_ID_Cartao_Scan);
+										
+
+
+											// testa erro e avisa e sai se ocorrer
+											if (retFunc.substring(0, 1) != F("1"))
+											{
+												TELA_Render_MsgBox(F("Erro ao cadastrar Login"), F("Ocorreu um erro ao cadastrar o novo login"));
+
+												delay(6000);
+
+												TELA_LimpaTela();
+
+												gTelaRenderizada_MSGBOX = false;
+												gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+												gTelaRenderizada_TecAlfa = false;
+												gTelaRenderizada_TecNum = false;	
+												gTelaRenderizada_TECLADO = false;	
+
+												_ContinuaCriacao = false;
+											}	
+										
+
+										}	
+
+
+										if (_ContinuaCriacao == true)
+										{
+				
+											// exibe msg de ok e retorna para novo admin principal
+											// se chegou aqui eh por que deu tudo certo
+
+											TELA_Render_MsgBox(F("Usuario cadastrado com sucesso !"), String(F("O usuario foi cadastrado com sucesso ! Usuario: ")) + gAdmin_User_Nome + String(F(" - Saldo: ")) + FormatNumber(gAdmin_User_Saldo, F("MONEY")) ) ;
+
+											delay(6000);
+
+											TELA_LimpaTela();
+
+											gTelaRenderizada_MSGBOX = false;
+
+											// finaliza os dados e zzera tudo
+											gAdmin_ID_Cartao_Scan = F("");
+											gAdmin_User_Nome = F("");
+											gAdmin_User_Nivel = F("");
+											gAdmin_User_CPF = F("");
+											gAdmin_User_Saldo = F("");
+											gAdmin_User_IDUser = F("");									
+		 
+											gModoOperacao_SubTela = F("ADMIN_USUARIOS");
+
+											gTelaRenderizada_ADMIN_USUARIOS = false;
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gTelaRenderizada_TecAlfa = false;
+											gTelaRenderizada_TecNum = false;
+											gTelaRenderizada_TECLADO = false;
+
+											TELA_LimpaTela();
+
+
+
+										}
+
 
 									}
 									else

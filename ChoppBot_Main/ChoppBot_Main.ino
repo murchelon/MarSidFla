@@ -876,6 +876,11 @@ void TestaInterrupts()
             TELA_VerificaTouch_TECLADO_ALFA(F("ADMIN_USER_NOME"));
         } 
 
+        if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_NIVEL"))
+        {
+            TELA_VerificaTouch_TECLADO_NUM(F("ADMIN_USER_NIVEL"));
+        } 
+
         if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_CPF"))
         {
             TELA_VerificaTouch_TECLADO_NUM(F("ADMIN_USER_CPF"));
@@ -1070,9 +1075,21 @@ void loop()
                 TELA_RenderTecUnificado_ALFA();
             }
 
+            if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_NIVEL"))
+            {
+                LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_ADMIN_USER_NIVEL] =="));
+                TELA_RenderTecUnificado_NUM();
+            }
+
             if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_CPF"))
             {
                 LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_ADMIN_USER_CPF] =="));
+                TELA_RenderTecUnificado_NUM();
+            }
+
+            if (gModoOperacao_SubTela == F("TECLADO_ADMIN_USER_SALDO"))
+            {
+                LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_ADMIN_USER_SALDO] =="));
                 TELA_RenderTecUnificado_NUM();
             }
 

@@ -248,10 +248,19 @@ String FormatNumber(SomeType Valor, String Tipo)
 }
 
 
-
+// reseta o arduino. Ok, descricao totalmente redundante.
 void ResetArduino()
 {
 	resetFunc();
+}
+
+String Now()
+{
+	String retNow;
+
+	retNow = F("03/06/2018 04:20:00");
+
+	return retNow;
 }
 
 

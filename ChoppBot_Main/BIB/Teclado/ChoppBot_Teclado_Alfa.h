@@ -619,7 +619,7 @@ void TELA_VerificaTouch_TECLADO_ALFA(String ModoRetorno)
 
 										if (ModoRetorno == F("ADMIN_USER_NOME"))
 										{
-											gAdmin_User_Nome = Left(gTecladoAlfa_ValAtual, 26);
+											gAdmin_User_Nome = Left(gTecladoAlfa_ValAtual, 23);
 
 											gTecladoAlfa_ValAtual = F("");
 

@@ -413,14 +413,16 @@ String SD_GetFirstRegFromFile(String FullPathFile, String RetryOrCheck)
 
 
 
-String SD_CreateNewUserFile(String FullPathFile_TEMP, int IDUser, String CPF, String DataCad, String Nome, int Nivel, float Saldo)
+String SD_CreateNewUserFile(String IDUser, String Nome, String Nivel, String CPF, String Saldo)
 {
 
 	String ret = F("1|");
 
-
+	String FullPathFile_TEMP = String(F("CB/BD/Usuarios/USU_")) + IDUser + String(F(".csv"));
 
 	File ArquivoUser_Temp;
+
+	String DataCad = Now();
 
 
 	SdFat SD;
@@ -441,17 +443,86 @@ String SD_CreateNewUserFile(String FullPathFile_TEMP, int IDUser, String CPF, St
 	if (ArquivoUser_Temp)
 	{
 
-		String Linha = String(IDUser) + String(F(";")) + CPF + String(F(";")) + DataCad + String(F(";")) + Nome + String(F(";")) + String(Nivel) + String(F(";")) + String(Saldo);
+		String Linha = F("");
 
+		Linha = F("IDUser;CPF;DataCad;Nome;Nivel;SaldoAtual");
+		ArquivoUser_Temp.println(Linha);
+
+		Linha = String(IDUser) + String(F(";")) + CPF + String(F(";")) + DataCad + String(F(";")) + Nome + String(F(";")) + String(Nivel) + String(F(";")) + String(Saldo);
 		ArquivoUser_Temp.print(Linha);
 
 	    ArquivoUser_Temp.close();
+
+	    LogTerm(String(F("Novo arquivo de usuario criado: ")) + FullPathFile_TEMP);
 
 	    delay(500);
 
 	}
 	else
 	{
+		LogTerm(String(F("Nao foi possivel criar o arquivo:: ")) + FullPathFile_TEMP);
+
+		ret = String(F("-2|Nao foi possivel criar o arquivo: ")) + FullPathFile_TEMP;
+	}
+
+
+
+	return ret;
+
+}
+
+
+
+
+String SD_CreateNewLoginFile(String IDUser, String CPF, String IDCartao)
+{
+
+	String ret = F("1|");
+
+	String FullPathFile_TEMP = String(F("CB/BD/Logins/RFID/")) + IDCartao + String(F(".csv"));
+
+	File ArquivoUser_Temp;
+
+	String DataCad = Now();
+
+
+	SdFat SD;
+	String retSD = F("");
+
+	retSD = SD_InicializaCartaoSD(SD);
+
+	if (retSD.substring(0, 1) != F("1"))
+	{
+		return retSD;
+	}
+
+
+
+
+	ArquivoUser_Temp = SD.open(FullPathFile_TEMP, FILE_WRITE);
+
+	if (ArquivoUser_Temp)
+	{
+
+		String Linha = F("");
+
+		Linha = F("IDUser;CPF;ID_RFID");
+		ArquivoUser_Temp.println(Linha);
+
+		Linha = String(IDUser) + String(F(";")) + CPF + String(F(";")) + String(IDCartao);
+		ArquivoUser_Temp.print(Linha);
+
+	    ArquivoUser_Temp.close();
+
+	    LogTerm(String(F("Novo arquivo de login criado: ")) + FullPathFile_TEMP);
+
+	    delay(500);
+
+	}
+	else
+	{
+		LogTerm(String(F("Nao foi possivel criar o arquivo:: ")) + FullPathFile_TEMP);
+
 		ret = String(F("-2|Nao foi possivel criar o arquivo ")) + FullPathFile_TEMP;
 	}
 

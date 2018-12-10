@@ -447,6 +447,7 @@ volatile float gFaixaVelAtual = 99;
 String gAdmin_ID_Cartao_Scan;
 
 String gAdmin_User_Nome;
+String gAdmin_User_Nivel;
 String gAdmin_User_CPF;
 String gAdmin_User_Saldo;
 String gAdmin_User_IDUser;
@@ -527,6 +528,7 @@ void InicializaVars()
 	gAdmin_ID_Cartao_Scan = F("");
 	gAdmin_User_Nome = F("");
 	gAdmin_User_CPF = F("");
+	gAdmin_User_Nivel = F("");
 	gAdmin_User_Saldo = F("");
 	gAdmin_User_IDUser = F("");
 	

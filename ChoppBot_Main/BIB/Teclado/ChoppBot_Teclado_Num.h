@@ -446,6 +446,10 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 
 									case 11:		// tecla OK:
 
+
+										TELA_LimpaTela();
+
+
 										gTelaRenderizada_TecNum = false;
 										gTelaRenderizada_TECLADO = false;
 																				
@@ -453,6 +457,19 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 										if (ModoRetorno == F("ADMIN_USER_CPF"))
 										{
 											gAdmin_User_CPF = Left(gTecladoNum_ValAtual, 12);
+
+											gTecladoNum_ValAtual = F("");
+
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+										}
+
+
+										if (ModoRetorno == F("ADMIN_USER_NIVEL"))
+										{
+											gAdmin_User_Nivel = Left(gTecladoNum_ValAtual, 3);
 
 											gTecladoNum_ValAtual = F("");
 

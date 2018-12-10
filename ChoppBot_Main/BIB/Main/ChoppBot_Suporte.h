@@ -33,7 +33,8 @@
     
 #define CinzaShadow     		rgb565_from_triplet(99, 99, 99)       
 #define CinzaFundoTitMsgBox     rgb565_from_triplet(201, 201, 201)      
-#define CinzaLabels			    rgb565_from_triplet(220, 220, 220)     
+#define CinzaLabels			    rgb565_from_triplet(150, 150, 150)     
+#define CinzaClaro			    rgb565_from_triplet(190, 190, 190)     
 #define VerdeOK			    	rgb565_from_triplet(137, 255, 157)     
 #define LaranjaAlerta	    	rgb565_from_triplet(255, 216, 181)     
 
@@ -244,6 +245,22 @@ String FormatNumber(SomeType Valor, String Tipo)
 	
 
 	return ret;
+}
+
+
+// reseta o arduino. Ok, descricao totalmente redundante.
+void ResetArduino()
+{
+	resetFunc();
+}
+
+String Now()
+{
+	String retNow;
+
+	retNow = F("03/06/2018 04:20:00");
+
+	return retNow;
 }
 
 

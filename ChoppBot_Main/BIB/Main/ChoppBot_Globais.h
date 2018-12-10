@@ -27,9 +27,9 @@
 // ADMIN
 // DEBUG
 // TESTE
+// TECLADO
 
 // VERSAO DA APLICACAO
-#define VersaoAPP F("0.5")
 #define NOME_LOJA_LINHA1 F("Experiencia")
 #define NOME_LOJA_LINHA2 F("Cervejeira")
 
@@ -39,7 +39,7 @@ String gModoOperacao_SubTela;
 
 // var que define se a aplicacao esta no modo debug. isto faz com que algumas msgs de debug
 // sejam exibidas na tela e/ou no terminal
-#define ctMODO_DEBUG true
+#define ctMODO_DEBUG false
 
 // tempo em ms para timeout das opcoes a serem escolhidas
 #define gTimeoutOpcao 7000		
@@ -48,7 +48,14 @@ String gModoOperacao_SubTela;
 #define ctTIMEOUT_TORNEIRA 7000		
 
 // tempo em ms para timeout da tela de operacao (tela onde eh escolhido o chopp) (operacao)
-#define ctTIMEOUT_TELA_OPERACAO 20000		
+#define ctTIMEOUT_TELA_OPERACAO 30000		
+
+// tempo em ms para timeout da tela de ADMIN 
+#define ctTIMEOUT_TELA_ADMIN 30000		
+
+
+
+
 
 
 
@@ -57,6 +64,7 @@ String gModoOperacao_SubTela;
 // Numero maximo de torneiras possiveis no sistema. Torneiras engatadas
 #define ctMAX_TORNEIRAS 4 // numero real de torneiras. Ex: para 4 torneiras, colocar 4
 String gaEngatados[ctMAX_TORNEIRAS];	
+
 
 
 // BUZZER
@@ -116,6 +124,12 @@ String gaEngatados[ctMAX_TORNEIRAS];
 #define ctPINO_LED_RGB_GREEN 34
 #define ctPINO_LED_RGB_BLUE 33
 
+
+
+
+
+#define ctMAX_BOTOES_GEN_TELA 10 // numero maximo de botoes genericos em tela
+String gaBotoesGenTela[ctMAX_BOTOES_GEN_TELA];	
 
 
 
@@ -217,7 +231,7 @@ String aTecladoAlfa_PosBotoes[ctTECLADO_ALFA_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
 
 //  numero de clicks de sensibilidade dos botoes em uma determinada tela. Para evitar o double press
 //const int ctBOUNCE_SENSIB_BOTAO = 80 //	350 foi bom	
-#define ctBOUNCE_SENSIB_BOTAO 280
+#define ctBOUNCE_SENSIB_BOTAO 260
 
 	
 
@@ -296,6 +310,8 @@ const String ctTELA_HARDWARE;
 // Vars de controle que verificam se uma determinada tela esta renderizada para nao render de novo
 bool gTelaRenderizada_TecNum;
 bool gTelaRenderizada_TecAlfa;
+bool gTelaRenderizada_TECLADO;
+
 bool gTelaRenderizada_STANDBY;
 bool gTelaRenderizada_LOGIN;
 bool gTelaRenderizada_OPERACAO;
@@ -309,6 +325,11 @@ bool gTelaRenderizada_OPERACAO_SERVICO;
 
 bool gTelaRenderizada_MSGBOX;
 
+bool gTelaRenderizada_ADMIN_NOVO_CARD;
+bool gTelaRenderizada_ADMIN_USUARIOS;
+bool gTelaRenderizada_ADMIN_CHOPPS;
+bool gTelaRenderizada_ADMIN_ENGATADOS;
+bool gTelaRenderizada_ADMIN_OUTROS;
 
 
 
@@ -328,6 +349,8 @@ bool gTelaRenderizada_MSGBOX;
 #define ctRFID_HARDWARE F("PN532")
 
 
+// Numero de tentativas de leitura do RFID para achar um cartao 
+#define ctTIMEOUT_TENTATIVA_RFID 5		
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -347,10 +370,6 @@ String gSessao_Nome;
 float gSessao_SaldoAtual;
 String gSessao_CPF;
 String gSessao_DataCad;
-
-
-
-
 
 
 
@@ -416,7 +435,22 @@ volatile float gFaixaVelAtual = 99;
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// VARIAVEIS DE ADMIN
+// ------------------
+//
+// variaveis qye controlam e armazenam valores para as telas de admin
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+String gAdmin_ID_Cartao_Scan;
+
+String gAdmin_User_Nome;
+String gAdmin_User_Nivel;
+String gAdmin_User_CPF;
+String gAdmin_User_Saldo;
+String gAdmin_User_IDUser;
 
 
 
@@ -452,6 +486,9 @@ void InicializaVars()
 	// controle de render de tela
 	gTelaRenderizada_TecNum = false;
 	gTelaRenderizada_TecAlfa = false;
+	gTelaRenderizada_TECLADO = false;
+	
+
 	gTelaRenderizada_STANDBY = false;	
 	gTelaRenderizada_LOGIN = false;
 	gTelaRenderizada_OPERACAO = false;	
@@ -462,6 +499,17 @@ void InicializaVars()
 	gTelaRenderizada_LER_RFID = false;
 	gTelaRenderizada_OPERACAO_SERVICO = false;
 	gTelaRenderizada_MSGBOX = false;
+
+	gTelaRenderizada_ADMIN_NOVO_CARD = false;
+	gTelaRenderizada_ADMIN_USUARIOS = false;
+	gTelaRenderizada_ADMIN_CHOPPS = false;
+	gTelaRenderizada_ADMIN_ENGATADOS = false;
+	gTelaRenderizada_ADMIN_OUTROS = false;
+
+
+
+
+
 	//teclado
 	gTecladoNum_ValAtual = F("");
 	gTecladoAlfa_ValAtual = F("");
@@ -475,7 +523,18 @@ void InicializaVars()
 	gSessao_SaldoAtual = -1;				
 	gSessao_CPF = F("");
 	gSessao_DataCad = F("");
+
+	// vars de admin
+	gAdmin_ID_Cartao_Scan = F("");
+	gAdmin_User_Nome = F("");
+	gAdmin_User_CPF = F("");
+	gAdmin_User_Nivel = F("");
+	gAdmin_User_Saldo = F("");
+	gAdmin_User_IDUser = F("");
 	
+
+
+	// vars de operacao
 	gServico_ID_TorneiraAtual = -1;
 	
 	// inicializa var de engatados
@@ -483,5 +542,11 @@ void InicializaVars()
 	{
 		gaEngatados[x] = F("");
 	}	 	
+
+	// incia a var dos botoes genericos de tela
+	for (int x = 0 ; x <= ctMAX_BOTOES_GEN_TELA ; x++)
+	{
+		gaBotoesGenTela[x] = F("");
+	}
 
 }

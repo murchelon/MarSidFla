@@ -68,6 +68,8 @@ void TELA_Render_Interface_TECLADO_ALFA(int Param_Inicio_X, int Param_Inicio_Y)
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  
 
+		//LogTerm(String(F("gTelaRenderizada_TecAlfa = ")) + String(gTelaRenderizada_TecAlfa));
+
 		if (gTelaRenderizada_TecAlfa == false)
 		{
 		  	
@@ -442,7 +444,7 @@ void TELA_Render_ValorTec_TECLADO_ALFA()
 
 
 
-void TELA_VerificaTouch_TECLADO_ALFA()
+void TELA_VerificaTouch_TECLADO_ALFA(String ModoRetorno)
 {
 
 	if (ctTELA_HARDWARE == F("TERMINAL"))
@@ -608,20 +610,36 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 									case 39:		// tecla OK:
 
-									    //tft.setTextColor(RA8875_RED);
-									    //TELA_SetFontSize(2); 
-									    //tft.setCursor (70, 210); 
-									    //tft.print ("Obrigado !");	
 
 										TELA_LimpaTela();
 
-										tft.setCursor (0,0); 
-										for(int k = 0 ; k <= ctTECLADO_ALFA_TOTAL_BOTOES - 1 ; k++)
+										gTelaRenderizada_TecAlfa = false;
+										gTelaRenderizada_TECLADO = false;
+																				
+
+										if (ModoRetorno == F("ADMIN_USER_NOME"))
 										{
-											TELA_Texto(String(F("aTecladoAlfa_PosBotoes[")) + String(k) + String(F("] = ")) + aTecladoAlfa_PosBotoes[k], F("BRANCO"));
+											gAdmin_User_Nome = Left(gTecladoAlfa_ValAtual, 23);
+
+											gTecladoAlfa_ValAtual = F("");
+
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
 										}
 
-										delay(6000);
+
+
+
+										if (ModoRetorno == F("TESTE_STANDBY"))
+										{
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");												
+										}
+
 										break;
 
 
@@ -641,47 +659,43 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 										//LogTerm(TesteBug);
 										//TELA_Texto(TesteBug, "VERDE");
 
+
 										TELA_LimpaTela();
 
 										gTelaRenderizada_TecAlfa = false;
+										gTelaRenderizada_TECLADO = false;
 										gTecladoAlfa_ValAtual = F("");
 
-	
 
-										gModoOperacao = F("LOGIN");
-										//gModoOperacao = "INICIO";
-										//gModoOperacao = "LOGIN";
-										//gModoOperacao = "OPERACAO";
-										//gModoOperacao = "DEBUG";
+										if (ModoRetorno == F("ADMIN_USER_NOME"))
+										{
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
 
-										
-										delay(700);
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+										}
+
+
+										if (ModoRetorno == F("TESTE_STANDBY"))
+										{
+				
+											//gTecladoAlfa_ValAtual = F("");
+
+											//gModoOperacao = F("STANDBY");
+											//gModoOperacao_SubTela = F("");	
+
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");												
+										}
+
+
+
 
 										break;
 
-
-									case 90:		// botao voltar:  41
-
-										
-										TELA_LimpaTela();
-
-										gTelaRenderizada_TecAlfa = false;
-										gTecladoAlfa_ValAtual = F("");
-
-	
-
-										gModoOperacao = F("LOGIN");
-										//gModoOperacao = "INICIO";
-										//gModoOperacao = "LOGIN";
-										//gModoOperacao = "OPERACAO";
-										//gModoOperacao = "DEBUG";
-
-										
-										delay(700);
-
-										break;
-
-										
+									
 									default:
 
 										if (gTecladoAlfa_ValAtual.length() <= 101)
@@ -719,7 +733,7 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 
 
-							if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+							if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO - 100)
 							{
 
 								gBounce_ContaClick = 0;		
@@ -755,8 +769,10 @@ void TELA_VerificaTouch_TECLADO_ALFA()
 
 void TELA_RenderTecUnificado_ALFA()
 {
+	gTelaRenderizada_TECLADO = true;
+	
 	TELA_Render_Interface_TECLADO_ALFA(13, 198);   // posicao x e y
-	TELA_Render_ValorTec_TECLADO_ALFA();	
+	TELA_Render_ValorTec_TECLADO_ALFA();
 }
 
 

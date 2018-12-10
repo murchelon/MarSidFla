@@ -305,7 +305,7 @@ void TELA_Render_ValorTec_TECLADO_NUM()
 
 
 
-void TELA_VerificaTouch_TECLADO_NUM()
+void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 {
 
 	if (ctTELA_HARDWARE == F("TERMINAL"))
@@ -446,10 +446,52 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 									case 11:		// tecla OK:
 
-									    tft.setTextColor(RA8875_RED);
-									    TELA_SetFontSize(2); 
-									    tft.setCursor (70, 210); 
-									    tft.print (F("Obrigado !"));	
+
+										TELA_LimpaTela();
+
+
+										gTelaRenderizada_TecNum = false;
+										gTelaRenderizada_TECLADO = false;
+																				
+
+										if (ModoRetorno == F("ADMIN_USER_CPF"))
+										{
+											gAdmin_User_CPF = Left(gTecladoNum_ValAtual, 12);
+
+											gTecladoNum_ValAtual = F("");
+
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+										}
+
+
+										if (ModoRetorno == F("ADMIN_USER_NIVEL"))
+										{
+											gAdmin_User_Nivel = Left(gTecladoNum_ValAtual, 3);
+
+											gTecladoNum_ValAtual = F("");
+
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+										}
+
+
+										if (ModoRetorno == F("ADMIN_USER_SALDO"))
+										{
+											gAdmin_User_Saldo = Left(gTecladoNum_ValAtual, 12);
+
+											gTecladoNum_ValAtual = F("");
+
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+										}
+
 
 
 										break;
@@ -462,21 +504,36 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 									case 13:		// botao voltar:
 
+
+
 										TELA_LimpaTela();
 
 										gTelaRenderizada_TecNum = false;
+										gTelaRenderizada_TECLADO = false;
 										gTecladoNum_ValAtual = F("");
 
-	
 
-										gModoOperacao = F("LOGIN");
-										//gModoOperacao = "INICIO";
-										//gModoOperacao = "LOGIN";
-										//gModoOperacao = "OPERACAO";
-										//gModoOperacao = "DEBUG";
 
-										
-										delay(700);
+
+										if (ModoRetorno == F("ADMIN_USER_SALDO"))
+										{
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");		
+										}
+
+
+
+										if (ModoRetorno == F("ADMIN_USER_CPF"))
+										{
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+										}
+
+
 
 										break;
 
@@ -516,7 +573,7 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 
 
-							if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+							if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO - 100)
 							{
 
 								gBounce_ContaClick = 0;		
@@ -552,7 +609,8 @@ void TELA_VerificaTouch_TECLADO_NUM()
 
 void TELA_RenderTecUnificado_NUM()
 {
-
+	gTelaRenderizada_TECLADO = true;
+	
 	TELA_Render_Interface_TECLADO_NUM(500, 56);   // posicao x e y
 	TELA_Render_ValorTec_TECLADO_NUM();	
 }

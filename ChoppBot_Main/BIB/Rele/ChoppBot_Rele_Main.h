@@ -229,7 +229,6 @@ void TELA_Render_ExibeMsgSaldoZerado()
 void TELA_VerificaTouch_OPERACAO_SERVICO()
 {
 
-	LogTerm(F("Esdtiu aqui"));
 
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 	{  

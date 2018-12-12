@@ -299,9 +299,17 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
         tmp_Valor_float = Temp1.toFloat();
 
-
         LogTerm(String(F("===================================================================")));
-        LogTerm(String(F("SESSAO INICIADA")));
+
+        if (gModoOperacao == F("ADMIN"))
+        {
+        	LogTerm(String(F("SANGRIA INICIADA")));
+        }
+        else
+        {
+        	LogTerm(String(F("SESSAO INICIADA")));
+        }
+                
         LogTerm(String(F("===================================================================")));
         LogTerm(String(F("Torneira: ")) + String(gServico_ID_TorneiraAtual));
         LogTerm(String(F("Chopp Selecionado: (")) + tmp_IDChopp + F(") ") + tmp_Nome);
@@ -315,17 +323,18 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 		time_TempoInicioSessao = millis();
 
+        if (gModoOperacao != F("ADMIN"))
+        {
+		    // se o saldo do usuario for zero, pode sair
+		    if (ValorSaldoAtual <= 0)
+		    {
+		        Exec_Loop_PodeSair = true;
+				LogTerm(F("O saldo do usuario foi totalmente utilizado. Finalizando sessao..."));
 
-	    // se o saldo do usuario for zero, pode sair
-	    if (ValorSaldoAtual <= 0)
-	    {
-	        Exec_Loop_PodeSair = true;
-			LogTerm(F("O saldo do usuario foi totalmente utilizado. Finalizando sessao..."));
+				TELA_Render_ExibeMsgSaldoZerado();
+		    }
+        }
 
-			TELA_Render_ExibeMsgSaldoZerado();
-
-
-	    }
 
 	    if (Exec_Loop_PodeSair == false)
 	    {
@@ -456,31 +465,68 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 			if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 			{  
-				TELA_SetFontSize(1); 
 
-				tft.setTextColor(CinzaLabels);
-				tft.setCursor (10, 10);			
-				tft.print (F("Nome: ")); 
-				tft.setCursor (10, 45);			
-				tft.print (F("Saldo: "));  
+				if (gModoOperacao == F("ADMIN"))
+				{
 
-				tft.setTextColor(RA8875_WHITE);
-				tft.setCursor (120, 10);			
-				tft.print (gSessao_Nome); 
-				tft.setCursor (120, 45);	
-				tft.print (FormatNumber(gSessao_SaldoAtual, F("MONEY")));  
+					TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
+					TELA_Render_Label(F("Outros >> Sangria"),   CinzaClaro,   1, 0, 60, F("RIGHT"));
+
+
+				}
+				else
+				{
+
+					TELA_SetFontSize(1); 
+
+					tft.setTextColor(CinzaLabels);
+					tft.setCursor (10, 10);			
+					tft.print (F("Nome: ")); 
+					tft.setCursor (10, 45);			
+					tft.print (F("Saldo: "));  
+
+					tft.setTextColor(RA8875_WHITE);
+					tft.setCursor (120, 10);			
+					tft.print (gSessao_Nome); 
+					tft.setCursor (120, 45);	
+					tft.print (FormatNumber(gSessao_SaldoAtual, F("MONEY")));  
+
+					
+
+
+				}
+
+
 
 
 				//////////////////////////////////////  
 				// Tempo Restante
 
+
+							
+
 				TELA_SetFontSize(0); 
 				tft.setTextColor(CinzaLabels);
-				tft.setCursor (620, 10);			
-				tft.print (F("Tempo: ")); 
 
-				tft.setCursor (680, 10);
-				tft.print (String(ctTIMEOUT_TORNEIRA / 1000) + String(F(" segundos   "))); 
+				if (gModoOperacao == F("ADMIN"))
+				{
+					tft.setCursor (240, 20);
+					tft.print (F("Tempo: "));
+					tft.setCursor (300, 20);
+					tft.print (String(ctTIMEOUT_TORNEIRA / 1000) + String(F(" segundos   "))); 						
+				}
+				else
+				{
+					tft.setCursor (620, 10);
+					tft.print (F("Tempo: ")); 
+					tft.setCursor (680, 10);
+					tft.print (String(ctTIMEOUT_TORNEIRA / 1000) + String(F(" segundos   "))); 									
+				}	
+
+				
+
+
+
 
 
 				//////////////////////////////////////  
@@ -492,8 +538,12 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				tft.setCursor (170, 110);			
 				tft.print (String(F("Torneira ")) + String(gServico_ID_TorneiraAtual) + String(F(" liberada!")));    
 
-				tft.setCursor (220, 160);			
-				tft.print (F("Pode se servir..."));    
+				if (gModoOperacao != F("ADMIN"))
+				{
+					tft.setCursor (220, 160);			
+					tft.print (F("Pode se servir..."));  					
+				}
+  
 
 				//////////////////////////////////////
 
@@ -546,8 +596,16 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				tft.setTextColor(RA8875_WHITE);
 				tft.setCursor (340, 330);	
 
-				//tmp_Volume.replace(".", ",");		
-				tft.print (String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
+
+				if (gModoOperacao == F("ADMIN"))
+				{
+					tft.print (String(F("Sangria")));
+				}
+				else
+				{
+					tft.print (String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
+				}
+				
 
 
 

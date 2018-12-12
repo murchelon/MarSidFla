@@ -30,8 +30,8 @@
 // TECLADO
 
 // VERSAO DA APLICACAO
-#define NOME_LOJA_LINHA1 F("Experiencia")
-#define NOME_LOJA_LINHA2 F("Cervejeira")
+#define NOME_LOJA_LINHA1 F("Tap Hour")
+#define NOME_LOJA_LINHA2 F("")
 
 
 String gModoOperacao; 
@@ -330,6 +330,7 @@ bool gTelaRenderizada_ADMIN_USUARIOS;
 bool gTelaRenderizada_ADMIN_CHOPPS;
 bool gTelaRenderizada_ADMIN_ENGATADOS;
 bool gTelaRenderizada_ADMIN_OUTROS;
+bool gTelaRenderizada_ADMIN_SANGRIA;
 
 
 
@@ -506,7 +507,7 @@ void InicializaVars()
 	gTelaRenderizada_ADMIN_ENGATADOS = false;
 	gTelaRenderizada_ADMIN_OUTROS = false;
 
-
+	gTelaRenderizada_ADMIN_SANGRIA = false;
 
 
 

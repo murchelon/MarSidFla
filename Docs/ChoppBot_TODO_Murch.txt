@@ -36,6 +36,7 @@ OKOK! - trocar label de TIPO para ESTILO
 - adicionar placa de RTC 
 - Adicionar log de cada operacao do sistema
 - criar um modo sangria onde eu posso abrir e usar por um tempo maior
+- Nivel 300 nao cadastra outro nivel 500
 
 
 PARTE ADMIN:
@@ -52,8 +53,8 @@ PARTE ADMIN:
 			Botao: Salvar		
 			
 	- adicionar valor
-	- subtrair valor
-	- definir saldo
+	- NAO -- subtrair valor
+	- NAO -- definir saldo
 	- trocar/cancelar cartao
 
 - CHOPPS

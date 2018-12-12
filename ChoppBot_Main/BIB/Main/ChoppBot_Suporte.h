@@ -254,6 +254,8 @@ void ResetArduino()
 	resetFunc();
 }
 
+
+
 String Now()
 {
 	String retNow;

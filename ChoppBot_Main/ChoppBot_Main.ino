@@ -897,6 +897,12 @@ void TestaInterrupts()
         }
 
 
+        if (gModoOperacao_SubTela == F("OPERACAO_SERVICO"))
+        {
+            TELA_VerificaTouch_OPERACAO_SERVICO();
+        }
+
+
     }
 
     if (gModoOperacao == F("TECLADO"))

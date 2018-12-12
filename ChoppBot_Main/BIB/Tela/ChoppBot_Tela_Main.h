@@ -1727,7 +1727,7 @@ void TELA_Render_Interface_ADMIN_OUTROS()
 						_TAG_Botao = F("RESET");
 						break;
 					case 3:
-						_TxtBotao = F(" Modo|Debug");
+						_TxtBotao = F(" Modo |Debug");
 						_TAG_Botao = F("MODO_DEBUG");
 						break;
 					case 4:
@@ -1856,7 +1856,7 @@ void TELA_Render_Interface_ADMIN_SANGRIA()
 	}
 	else
 	{
-		if ((ctTIMEOUT_TELA_OPERACAO / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
+		if ((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
 		{
 			Timeout_TelaAtiva_time_inicio = millis();
 
@@ -1885,17 +1885,17 @@ void TELA_Render_Interface_ADMIN_SANGRIA()
 				tft.print (F("Tempo: ")); 
 
 				tft.setCursor (300, 20);
-				tft.print (String((ctTIMEOUT_TELA_OPERACAO / 1000) - Timeout_TelaAtiva_SegundosPassados) + String(F(" segundos   "))); 
+				tft.print (String((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados) + String(F(" segundos   "))); 
 
 		} 
 	}
 
-	//LogTerm(String(F("(ctTIMEOUT_TELA_OPERACAO / 1000) - SegundosPassados = ")) + String((ctTIMEOUT_TELA_OPERACAO / 1000) - Timeout_TelaAtiva_SegundosPassados));
+	//LogTerm(String(F("(ctTIMEOUT_TELA_ADMIN / 1000) - SegundosPassados = ")) + String((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados));
 
 
 
 	// sai se o tempo limite ocorrer
-	if ((ctTIMEOUT_TELA_OPERACAO / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
+	if ((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
 	{
 
 
@@ -1907,15 +1907,23 @@ void TELA_Render_Interface_ADMIN_SANGRIA()
 		gSessao_Nivel = -1;
 		gSessao_SaldoAtual = -1;
 
+		
+		TELA_LimpaTela();
+
+
 		gTelaRenderizada_ADMIN_SANGRIA = false;	
+	
+
 
 		gModoOperacao = F("STANDBY");  
 		gModoOperacao_SubTela = F("");	
 
+		TELA_LimpaTela();
+
 
 		LogTerm(F("MAIN: Timeout de tela Sangria"));
 
-		delay(500);
+		delay(1000);
 		
 	}
 
@@ -3128,7 +3136,7 @@ void TELA_VerificaTouch_ADMIN_OUTROS()
 								// BOTAO RESET
 								if (btnGen_TAG == F("RESET"))
 								{
-
+									ResetArduino();
 								}
 
 								// BOTAO MODO_DEBUG
@@ -3902,11 +3910,11 @@ void TELA_VerificaTouch_ADMIN_SANGRIA()
 
 						// zera as vars para cada tentativa de login
 						// efetua logoff
-						gSessao_Logado = false;
-						gSessao_IDUser = -1;
-						gSessao_Nome = F("");
-						gSessao_Nivel = -1;
-						gSessao_SaldoAtual = -1;
+						//gSessao_Logado = false;
+						//gSessao_IDUser = -1;
+						//gSessao_Nome = F("");
+						//gSessao_Nivel = -1;
+						//gSessao_SaldoAtual = -1;
 
 						gTelaRenderizada_ADMIN_SANGRIA = false;	
 						 

@@ -150,6 +150,11 @@ void TELA_Texto_Centralizado(String Texto, String Cor, int Tamanho, uint16_t Pos
 			tft.setTextColor(RA8875_MAGENTA);
 		}
 
+		if (Cor == F("CINZA"))
+		{
+			tft.setTextColor(CinzaClaro);
+		}
+
 
 		TELA_SetFontSize(Tamanho);
 
@@ -1098,11 +1103,16 @@ void TELA_Render_Interface_STANDBY()
 
 
 			// Titulo
-			TELA_Texto_Centralizado(String(NOME_LOJA_LINHA1), F("AMARELO"), 3, 110);
+			TELA_Texto_Centralizado(String(NOME_LOJA_LINHA1), F("AMARELO"), 3, 105);
 
 			if (NOME_LOJA_LINHA2 != F(""))
 			{
-				TELA_Texto_Centralizado(String(NOME_LOJA_LINHA2), F("AMARELO"), 3, 180);
+				TELA_Texto_Centralizado(String(NOME_LOJA_LINHA2), F("AMARELO"), 3, 175);
+			}
+
+			if (NOME_LOJA_LINHA3 != F(""))
+			{
+				TELA_Texto_Centralizado(String(NOME_LOJA_LINHA3), F("CINZA"), 2, 210);
 			}
 
 
@@ -1112,7 +1122,7 @@ void TELA_Render_Interface_STANDBY()
   
 			//tft.setCursor (195, 310);
 			//TELA_SetFontSize(1); 
-			TELA_Texto_Centralizado(String(F(" Toque na tela para iniciar")), F("BRANCO"), 1, 330);
+			TELA_Texto_Centralizado(String(F("Toque na tela para iniciar")), F("BRANCO"), 1, 350);
 
 			//tft.print (F("Toque na tela para iniciar"));   
 
@@ -1429,6 +1439,80 @@ void TELA_Render_Interface_ADMIN()
 void TELA_Render_Interface_ADMIN_USUARIOS()
 {
 
+
+	if (gTelaRenderizada_ADMIN_USUARIOS == false)
+	{
+		// Inicia a contagem do tempo
+		Timeout_TelaAtiva_time_inicio = millis();
+	}
+	else
+	{
+		if ((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
+		{
+			Timeout_TelaAtiva_time_inicio = millis();
+
+			gTelaRenderizada_ADMIN_USUARIOS = false;
+
+		}
+	}
+
+
+    Timeout_TelaAtiva_time_atual = millis();
+    Timeout_TelaAtiva_time_tempo_passado = Timeout_TelaAtiva_time_atual - Timeout_TelaAtiva_time_inicio;
+
+    Timeout_TelaAtiva_SegundosPassados = floor(Timeout_TelaAtiva_time_tempo_passado / 1000);
+
+
+	// Renderiza os segundos
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{  		
+
+	    if (Timeout_TelaAtiva_SegundosPassados != Timeout_Operacao_Last_SegundosPassados)
+	    {	
+
+				TELA_SetFontSize(0); 
+				tft.setTextColor(CinzaLabels, RA8875_BLACK);
+				tft.setCursor (640, 450);			
+				tft.print (F("Tempo: ")); 
+
+				tft.setCursor (700, 450);
+				tft.print (String((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados) + String(F(" segundos   "))); 
+
+
+		} 
+	}
+
+
+
+
+	// sai se o tempo limite ocorrer
+	if ((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
+	{
+
+
+		// zera as vars para cada tentativa de login
+		// efetua logoff
+		gSessao_Logado = false;
+		gSessao_IDUser = -1;
+		gSessao_Nome = F("");
+		gSessao_Nivel = -1;
+		gSessao_SaldoAtual = -1;
+
+		gTelaRenderizada_ADMIN = false;	
+
+		gModoOperacao = F("STANDBY");  
+		gModoOperacao_SubTela = F("");						
+
+
+
+		LogTerm(F("MAIN: Timeout de tela ADMIN USUARIOS"));
+
+		delay(1000);
+		
+	}
+
+
+
 	if (gTelaRenderizada_ADMIN_USUARIOS == false)
 	{
 
@@ -1546,8 +1630,88 @@ void TELA_Render_Interface_ADMIN_ENGATADOS()
 
 }
 
+
+
 void TELA_Render_Interface_ADMIN_NOVO_CARD()
 {
+
+
+
+	if (gTelaRenderizada_ADMIN_NOVO_CARD == false)
+	{
+		// Inicia a contagem do tempo
+		Timeout_TelaAtiva_time_inicio = millis();
+	}
+	else
+	{
+		if ((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
+		{
+			Timeout_TelaAtiva_time_inicio = millis();
+
+			gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+		}
+	}
+
+
+    Timeout_TelaAtiva_time_atual = millis();
+    Timeout_TelaAtiva_time_tempo_passado = Timeout_TelaAtiva_time_atual - Timeout_TelaAtiva_time_inicio;
+
+    Timeout_TelaAtiva_SegundosPassados = floor(Timeout_TelaAtiva_time_tempo_passado / 1000);
+
+
+	// Renderiza os segundos
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{  		
+
+	    if (Timeout_TelaAtiva_SegundosPassados != Timeout_Operacao_Last_SegundosPassados)
+	    {	
+
+
+
+				TELA_SetFontSize(0); 
+				tft.setTextColor(CinzaLabels, RA8875_BLACK);
+				tft.setCursor (640, 450);			
+				tft.print (F("Tempo: ")); 
+
+				tft.setCursor (700, 450);
+				tft.print (String((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados) + String(F(" segundos   "))); 
+
+
+		} 
+	}
+
+
+
+
+	// sai se o tempo limite ocorrer
+	if ((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
+	{
+
+
+		// zera as vars para cada tentativa de login
+		// efetua logoff
+		gSessao_Logado = false;
+		gSessao_IDUser = -1;
+		gSessao_Nome = F("");
+		gSessao_Nivel = -1;
+		gSessao_SaldoAtual = -1;
+
+		gTelaRenderizada_ADMIN = false;	
+
+		gModoOperacao = F("STANDBY");  
+		gModoOperacao_SubTela = F("");						
+
+
+
+		LogTerm(F("MAIN: Timeout de tela ADMIN NOVO CARD"));
+
+		delay(1000);
+		
+	}
+
+
+
 
 
 	if (gTelaRenderizada_ADMIN_NOVO_CARD == false)
@@ -1657,6 +1821,82 @@ void TELA_Render_Interface_ADMIN_NOVO_CARD()
 void TELA_Render_Interface_ADMIN_OUTROS()
 {
 
+
+
+
+	if (gTelaRenderizada_ADMIN_OUTROS == false)
+	{
+		// Inicia a contagem do tempo
+		Timeout_TelaAtiva_time_inicio = millis();
+	}
+	else
+	{
+		if ((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
+		{
+			Timeout_TelaAtiva_time_inicio = millis();
+
+			gTelaRenderizada_ADMIN_OUTROS = false;
+
+		}
+	}
+
+
+    Timeout_TelaAtiva_time_atual = millis();
+    Timeout_TelaAtiva_time_tempo_passado = Timeout_TelaAtiva_time_atual - Timeout_TelaAtiva_time_inicio;
+
+    Timeout_TelaAtiva_SegundosPassados = floor(Timeout_TelaAtiva_time_tempo_passado / 1000);
+
+
+	// Renderiza os segundos
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{  		
+
+	    if (Timeout_TelaAtiva_SegundosPassados != Timeout_Operacao_Last_SegundosPassados)
+	    {	
+
+				TELA_SetFontSize(0); 
+				tft.setTextColor(CinzaLabels, RA8875_BLACK);
+				tft.setCursor (640, 450);			
+				tft.print (F("Tempo: ")); 
+
+				tft.setCursor (700, 450);
+				tft.print (String((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados) + String(F(" segundos   "))); 
+
+
+		} 
+	}
+
+
+
+
+	// sai se o tempo limite ocorrer
+	if ((ctTIMEOUT_TELA_ADMIN / 1000) - Timeout_TelaAtiva_SegundosPassados <= 0)
+	{
+
+
+		// zera as vars para cada tentativa de login
+		// efetua logoff
+		gSessao_Logado = false;
+		gSessao_IDUser = -1;
+		gSessao_Nome = F("");
+		gSessao_Nivel = -1;
+		gSessao_SaldoAtual = -1;
+
+		gTelaRenderizada_ADMIN = false;	
+
+		gModoOperacao = F("STANDBY");  
+		gModoOperacao_SubTela = F("");						
+
+
+
+		LogTerm(F("MAIN: Timeout de tela ADMIN OUTROS"));
+
+		delay(1000);
+		
+	}
+
+
+
 	if (gTelaRenderizada_ADMIN_OUTROS == false)
 	{
 
@@ -1755,91 +1995,6 @@ void TELA_Render_Interface_ADMIN_OUTROS()
 
 }
 
-
-void TELA_Render_Interface_ADMIN_SANGRIA_OLD()
-{
-
-
-	if (gTelaRenderizada_ADMIN_SANGRIA == false)
-	{
-
-		TELA_Zera_BotaoGenericoTela();
-		
-
-		TELA_PrintNoTerm_BotaoGenericoTela();
-
-
-
-
-	
-		// Cabecalho
-		TELA_Render_Label(F("Administracao"),			  Green, 		2, 0, 10, F("RIGHT"));
-		TELA_Render_Label(F("Outros >> Sangria"),   CinzaClaro,   1, 0, 60, F("RIGHT"));
-		
-
-
-
-		int _Espacamento = 30;
-		int _Offset_X = 20;
-		int _TamW = 145;
-		int _TamH = 145;
-		int _PosX = 0;
-		int _PosY = 230;
-		int _ContaBtn = 0;
-		String _TxtBotao = F("");
-		String _TAG_Botao = F("");
-
-		_Offset_X = _Offset_X - _Espacamento;	// como o primeiro botao ja inclue um espacamento, eu subtraio ele para ter o offset real
-
-
- 
-	    // NumTorneira;DataCad;IDChopp;VolumeAtual;DataExpira;Ativa;NomeFromBanco;Tipo;Valor
-	    for (int x = 0 ; x <= ctMAX_TORNEIRAS; x++)
-	    {
-
-	        if (gaEngatados[x] != "")
-	        {
-
-
-
-
-				_PosX = (_Espacamento * (x + 1)) + (_TamW * x);
-
-				_TxtBotao = String(F("Torneira|")) + String(x);
-				_TAG_Botao = String(F("TORNEIRA_")) + String(x);
-
-
-
-
-	            String tmp_IDChopp = getValue(gaEngatados[x], ';', 2);
-	            String tmp_Nome = getValue(gaEngatados[x], ';', 7);
-	            String tmp_Tipo = getValue(gaEngatados[x], ';', 8);
-	            String tmp_Valor = getValue(gaEngatados[x], ';', 9);
-	            String tmp_Volume = getValue(gaEngatados[x], ';', 3);
-	            //tmp_DataCad = getValue(gaEngatados[x], ';', 1);
-	            //tmp_DataExp = getValue(gaEngatados[x], ';', 4);
-	            String tmp_Ativa = getValue(gaEngatados[x], ';', 5);
-
-
-	            //TELA_Render_BotaoTorneira(x + 1, tmp_Nome, tmp_Tipo, String( FormatNumber(tmp_Valor, F("MONEY")) + String(F(" / Litro")) ), String(FormatNumber(tmp_Volume, F("")) + String(F(" litros")) ), F("AZUL"), F("TORNEIRA") );
-
-	            TELA_Render_BotaoGenerico(x + 1, _TAG_Botao, _TxtBotao, 1, White, Blue, _Offset_X + _PosX, _PosY, _TamW, _TamH);
-
-
-
-	        }
-
-
-	    }		
-
-	    TELA_PrintNoTerm_BotaoGenericoTela();
-
-	}
-
-
-	gTelaRenderizada_ADMIN_SANGRIA = true;
-
-}
 
 
 
@@ -2239,7 +2394,7 @@ void TELA_Render_Interface_OPERACAO()
 
 			//////////////////////////////////////  
 
-			TELA_Texto_Centralizado(F("Escolha a sua torneira:"), F("VERDE"), 2, 105);
+			TELA_Texto_Centralizado(F("Escolha a sua torneira:"), F("VERDE"), 2, 107);
 
 
 
@@ -2266,7 +2421,7 @@ void TELA_Render_Interface_OPERACAO()
 		
 			// Botao ADMIN ///////////////////////////////
 
-		    int BtnAdminTransparente = 0;
+		    int BtnAdminTransparente = 1;
 
 		    int btnAdmin_PosAtual_X = 190;
 			int btnAdmin_PosAtual_Y = 15;
@@ -3136,6 +3291,13 @@ void TELA_VerificaTouch_ADMIN_OUTROS()
 								// BOTAO RESET
 								if (btnGen_TAG == F("RESET"))
 								{
+
+									TELA_LimpaTela();
+
+									TELA_Render_MsgBox(F("Reiniciar Sitema"), F("Reiniciando sistema..."));
+
+									delay(100);
+
 									ResetArduino();
 								}
 
@@ -3435,6 +3597,16 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 
 										bool _ContinuaCriacao = false;
 
+										// oculta os botoes
+										// oculta cancelar
+										tft.fillRoundRect(200, 400, 160, 60, 8, Black);	
+										// oculta salvar
+										tft.fillRoundRect(440, 400, 160, 60, 8, Black);	
+
+										TELA_Render_MsgBox(F("Novo Usuario"), String(F("Cadastrando novo usuario. Por favor, aguarde..."))) ;
+
+
+
 										// cria usuario
 
 										// pega iduser max atual
@@ -3447,6 +3619,8 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 										if (retFunc.substring(0, 2) == F("-1"))
 										{
 											TELA_LimpaTela();
+
+											gTelaRenderizada_MSGBOX = false; 
 
 											TELA_Render_MsgBox(F("Erro Cartao SD"), F("Ocorreu um erro ao acessar o cartao SD. O usuario nao foi cadastrado"));
 
@@ -3465,6 +3639,8 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 										// arquivo nao existe
 										if (retFunc.substring(0, 2) == F("-2"))
 										{
+											gTelaRenderizada_MSGBOX = false; 
+											
 											TELA_Render_MsgBox(F("Arquivo nao localizado"), F("O arquivo de IDUserMax nao foi localizado"));
 
 											delay(6000);
@@ -3505,6 +3681,8 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 											// sucesso
 											if (retFunc.substring(0, 1) != F("1"))
 											{
+												gTelaRenderizada_MSGBOX = false; 
+											
 												TELA_Render_MsgBox(F("Erro ao atualizar Max"), F("Ocorreu um erro ao atualizar o valor Max"));
 
 												delay(6000);
@@ -3545,6 +3723,8 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 											// testa erro e avisa e sai se ocorrer
 											if (retFunc.substring(0, 1) != F("1"))
 											{
+												gTelaRenderizada_MSGBOX = false; 
+											
 												TELA_Render_MsgBox(F("Erro ao cadastrar usuario"), F("Ocorreu um erro ao cadastrar o novo usuario"));
 
 												delay(6000);
@@ -3585,6 +3765,8 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 											// testa erro e avisa e sai se ocorrer
 											if (retFunc.substring(0, 1) != F("1"))
 											{
+												gTelaRenderizada_MSGBOX = false; 
+											
 												TELA_Render_MsgBox(F("Erro ao cadastrar Login"), F("Ocorreu um erro ao cadastrar o novo login"));
 
 												delay(6000);
@@ -3611,6 +3793,10 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 											// exibe msg de ok e retorna para novo admin principal
 											// se chegou aqui eh por que deu tudo certo
 
+											TELA_LimpaTela();
+
+											gTelaRenderizada_MSGBOX = false; 
+											
 											TELA_Render_MsgBox(F("Usuario cadastrado com sucesso !"), String(F("O usuario foi cadastrado com sucesso ! Usuario: ")) + gAdmin_User_Nome + String(F(" - Saldo: ")) + FormatNumber(gAdmin_User_Saldo, F("MONEY")) ) ;
 
 											delay(6000);
@@ -3656,6 +3842,9 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 
 										TELA_LimpaTela();
 
+										gTelaRenderizada_MSGBOX = false; 
+											
+
 										TELA_Render_MsgBox(F("Campos em branco"), _txtErro);
 
 										delay(6000);
@@ -3676,7 +3865,8 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 								}
 
 						
-
+								gTelaRenderizada_MSGBOX = false; 
+											
 								/*
 								gModoOperacao = F("STANDBY");
 								gModoOperacao_SubTela = F("");

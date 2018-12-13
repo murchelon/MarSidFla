@@ -719,9 +719,10 @@ void Exec_ADMIN_NOVO_CARD()
 {
     if (gTelaRenderizada_ADMIN_NOVO_CARD == false)
     {
-        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_NOVO_CARD] =="));
-        TELA_Render_Interface_ADMIN_NOVO_CARD();
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_NOVO_CARD] =="));        
     }  
+
+    TELA_Render_Interface_ADMIN_NOVO_CARD();
 }
 
 
@@ -730,9 +731,10 @@ void Exec_ADMIN_USUARIOS()
 {
     if (gTelaRenderizada_ADMIN_USUARIOS == false)
     {
-        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_USUARIOS] =="));
-        TELA_Render_Interface_ADMIN_USUARIOS();
-    }  
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_USUARIOS] =="));        
+    } 
+
+    TELA_Render_Interface_ADMIN_USUARIOS(); 
 }
 
 
@@ -760,9 +762,10 @@ void Exec_ADMIN_OUTROS()
 {
     if (gTelaRenderizada_ADMIN_OUTROS == false)
     {
-        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_OUTROS] =="));
-        TELA_Render_Interface_ADMIN_OUTROS();
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_OUTROS] =="));        
     }  
+
+    TELA_Render_Interface_ADMIN_OUTROS();
 }
 
 

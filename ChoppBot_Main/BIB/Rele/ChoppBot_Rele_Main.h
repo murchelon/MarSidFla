@@ -834,10 +834,6 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 			useInterrupt_2(true);
 
-			delay(20);
-
-			
-
 		    // LIBERA TORNEIRA -- abre rele
 			digitalWrite(gPinoReleTorneiraAtiva, LOW);
 
@@ -1007,7 +1003,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 				tmp_Volume = String(VolumeAtual);
 
-				delay(50);
+			
 
 
 				if (gFLOW_Fluxo_Iniciado == true)
@@ -1015,9 +1011,12 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 					if (gFLOW_Reinicia_Contador == true)
 					{
+
 						gFLOW_time_inicio = millis();
+
 						gFLOW_Reinicia_Contador = false;
-						gFLOW_PulsosNoInicio = gFlow_Pulses_Atual;
+						gFLOW_PulsosNoInicio = gFlow_Pulses_Atual;	
+
 					}
 
 					gFLOW_time_atual = millis();
@@ -1043,15 +1042,15 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 						//LogTerm("Numero de Pulsos nos ultimos 1 segundos: = " + String(gFLOW_PulsosNosUltimosXseg));
 
 
-						gFLOW_Reinicia_Contador = true;
+
+						gFLOW_Reinicia_Contador = true;	
+						
+
 						//time_inicio = millis();
 						//PulsosNoInicio = Flow_Pulses_3;
 						//SegundosPassados = 0;
 						//time_tempo_passado_semFluxo = 0;
 					}
-
-
-
 
 
 					delay(400);
@@ -1064,7 +1063,13 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 				if (gFLOW_PulsosNosUltimosXseg >= ctLIMITE_IGNORA_PULSOS)
 				{
-					time_inicio = millis();
+
+					// nao reinicia se for em modo sangria
+					if (gModoOperacao != F("ADMIN"))
+					{
+						time_inicio = millis();						
+					}					
+					
 				}
 
 
@@ -1859,9 +1864,6 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 	    }
 
 
-
-
-		delay(1000); 
 
 		//gBounce_time_inicio = millis();
 		//gBounce_ContaClick = 2;

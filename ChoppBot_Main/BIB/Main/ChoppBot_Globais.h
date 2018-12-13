@@ -32,6 +32,7 @@
 // VERSAO DA APLICACAO
 #define NOME_LOJA_LINHA1 F("Tap Hour")
 #define NOME_LOJA_LINHA2 F("")
+#define NOME_LOJA_LINHA3 F("Amigo Ladrao Ex-Periencia!")
 
 
 String gModoOperacao; 
@@ -51,7 +52,7 @@ String gModoOperacao_SubTela;
 #define ctTIMEOUT_TELA_OPERACAO 30000		
 
 // tempo em ms para timeout da tela de ADMIN 
-#define ctTIMEOUT_TELA_ADMIN 15000		
+#define ctTIMEOUT_TELA_ADMIN 30000		
 
 // tempo em ms para timeout de servico de torneira SANGRIA (operacao_servico)
 //#define ctTIMEOUT_SANGRIA 120000		

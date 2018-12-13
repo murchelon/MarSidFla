@@ -525,6 +525,14 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 
 
 
+										if (ModoRetorno == F("ADMIN_USER_NIVEL"))
+										{
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+										}
+
 										if (ModoRetorno == F("ADMIN_USER_CPF"))
 										{
 											gTelaRenderizada_ADMIN_NOVO_CARD = false;

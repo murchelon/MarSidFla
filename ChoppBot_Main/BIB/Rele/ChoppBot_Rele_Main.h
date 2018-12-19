@@ -226,6 +226,157 @@ void TELA_Render_ExibeMsgSaldoZerado()
 
 
 
+void TELA_VerificaTouch_OPERACAO_SERVICO()
+{
+
+
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{  
+
+		if (TELA_touchDetect())
+		{
+
+			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
+
+
+
+			if (gModoOperacao == F("ADMIN"))
+			{
+
+
+
+				for (int ContaBotaoGen = 1 ; ContaBotaoGen <= ctMAX_BOTOES_GEN_TELA; ContaBotaoGen++)
+				{
+					if (gaBotoesGenTela[ContaBotaoGen - 1] != F(""))
+					{
+					
+						//LogTerm( String(F("gaBotoesGenTela[")) + String(ContaBotaoGen - 1) + String(F("] = ")) + gaBotoesGenTela[ContaBotaoGen - 1] );
+
+						String btnGen_TAG = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 1);
+						String btnGen_PosX = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 3);
+						String btnGen_PosY = 	getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 4);
+						String btnGen_W = 		getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 5);
+						String btnGen_H = 		getValue(gaBotoesGenTela[ContaBotaoGen - 1], ';', 6);
+
+
+
+						if (gTouch_X >= btnGen_PosX.toInt() && gTouch_X <= btnGen_W.toInt() + btnGen_PosX.toInt())  
+						{
+
+							if (gTouch_Y >= btnGen_PosY.toInt() && gTouch_Y <= btnGen_H.toInt() + btnGen_PosY.toInt()) 
+							{
+
+
+								// Esquema de DEBounce ---- inicio
+
+								gBounce_ContaClick++;
+								
+
+								if (gBounce_ContaClick == 1)
+								{
+									// Local onde deve ocorrer o evento do clique. Ocorrera apenas 1 vez --------
+
+				
+									LogTerm(String(F("BOTAO GENERICO ")) + String(ContaBotaoGen) + String(F(" APERTADO")) + String(F(" (")) + btnGen_TAG + String(F(")"))  );
+
+
+									//BOTAO SAIR
+									if (btnGen_TAG == F("VOLTAR"))
+									{
+
+										TELA_LimpaTela();
+
+										//gModoOperacao = F("ADMIN");
+										gModoOperacao_SubTela = F("ADMIN_SANGRIA");		
+
+										//gTelaRenderizada_ADMIN = false;	
+										gTelaRenderizada_ADMIN_SANGRIA = false;	
+
+										// fecha a torneira
+									    //digitalWrite(gPinoReleTorneiraAtiva, HIGH);
+										//useInterrupt_2(false);
+										//LED_SetLedState(F("RGB"), false, F(""));
+										//delay(50);
+
+										/*
+										// zera as vars para cada tentativa de login
+										// efetua logoff
+										gSessao_Logado = false;
+										gSessao_IDUser = -1;
+										gSessao_Nome = F("");
+										gSessao_Nivel = -1;
+										gSessao_SaldoAtual = -1;
+
+										gTelaRenderizada_ADMIN = false;	
+
+										gModoOperacao = F("STANDBY");  
+										gModoOperacao_SubTela = F("");						
+									
+										LogTerm(F("MAIN: Usuario clicou em SAIR"));
+
+										*/
+
+									}
+
+		
+									// -----------------------------------
+
+									gBounce_time_inicio = millis();
+
+								}
+
+
+								gBounce_time_atual = millis();
+								gBounce_time_tempo_passado = gBounce_time_atual - gBounce_time_inicio;
+
+								gBounce_SegundosPassados = floor(gBounce_time_tempo_passado / 1000);
+
+								//LogTerm(gBounce_time_tempo_passado);
+
+								if (gBounce_SegundosPassados != gBounce_Last_SegundosPassados)
+								{
+									//LogTerm(time_tempo_passado);
+								}
+
+
+
+								if (gBounce_time_tempo_passado >= ctBOUNCE_SENSIB_BOTAO)
+								{
+									gBounce_ContaClick = 0;	
+								}
+
+								gBounce_Last_SegundosPassados = gBounce_SegundosPassados;
+
+								// Esquema de DEBounce ---- FIM
+
+
+
+							}
+
+						}
+
+
+					}
+				}	    							 
+
+
+
+			}
+
+
+
+
+		}
+
+	}
+
+
+}
+
+
+
+
+
 void TELA_Render_Interface_OPERACAO_SERVICO()
 {
 	
@@ -268,6 +419,22 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 	unsigned long time_TempoInicioTimeoutFluxoBaixo = 0;
 	unsigned long time_TempoTotalTimeoutFluxoBaixo = 0;
 
+
+
+	long _Local_TimeOutTorneira = 0;
+
+    if (gModoOperacao == F("ADMIN"))
+    {
+    	_Local_TimeOutTorneira = ctTIMEOUT_SANGRIA;
+    }
+    else
+    {
+    	_Local_TimeOutTorneira = ctTIMEOUT_TORNEIRA;
+    }
+
+
+
+
 	if (gTelaRenderizada_OPERACAO_SERVICO == false)
 	{
 
@@ -299,9 +466,17 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
         tmp_Valor_float = Temp1.toFloat();
 
-
         LogTerm(String(F("===================================================================")));
-        LogTerm(String(F("SESSAO INICIADA")));
+
+        if (gModoOperacao == F("ADMIN"))
+        {
+        	LogTerm(String(F("SANGRIA INICIADA")));
+        }
+        else
+        {
+        	LogTerm(String(F("SESSAO INICIADA")));
+        }
+                
         LogTerm(String(F("===================================================================")));
         LogTerm(String(F("Torneira: ")) + String(gServico_ID_TorneiraAtual));
         LogTerm(String(F("Chopp Selecionado: (")) + tmp_IDChopp + F(") ") + tmp_Nome);
@@ -315,17 +490,18 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 		time_TempoInicioSessao = millis();
 
+        if (gModoOperacao != F("ADMIN"))
+        {
+		    // se o saldo do usuario for zero, pode sair
+		    if (ValorSaldoAtual <= 0)
+		    {
+		        Exec_Loop_PodeSair = true;
+				LogTerm(F("O saldo do usuario foi totalmente utilizado. Finalizando sessao..."));
 
-	    // se o saldo do usuario for zero, pode sair
-	    if (ValorSaldoAtual <= 0)
-	    {
-	        Exec_Loop_PodeSair = true;
-			LogTerm(F("O saldo do usuario foi totalmente utilizado. Finalizando sessao..."));
+				TELA_Render_ExibeMsgSaldoZerado();
+		    }
+        }
 
-			TELA_Render_ExibeMsgSaldoZerado();
-
-
-	    }
 
 	    if (Exec_Loop_PodeSair == false)
 	    {
@@ -438,7 +614,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 				LogTerm(String(F("Nome: ")) + gSessao_Nome);
 				LogTerm(String(F("Saldo: ")) + FormatNumber(gSessao_SaldoAtual, F("MONEY")));
-				LogTerm(String(F("Tempo: ")) + String(ctTIMEOUT_TORNEIRA / 1000) + String(F(" segundos")));
+				LogTerm(String(F("Tempo: ")) + String(_Local_TimeOutTorneira / 1000) + String(F(" segundos")));
 				LogTerm(String(F("Torneira ")) + String(gServico_ID_TorneiraAtual) + String(F(" liberada!")));
 
 				LogTerm(String(F("Chopp: ")) + tmp_Nome);
@@ -456,31 +632,73 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 			if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 			{  
-				TELA_SetFontSize(1); 
 
-				tft.setTextColor(CinzaLabels);
-				tft.setCursor (10, 10);			
-				tft.print (F("Nome: ")); 
-				tft.setCursor (10, 45);			
-				tft.print (F("Saldo: "));  
+				if (gModoOperacao == F("ADMIN"))
+				{
 
-				tft.setTextColor(RA8875_WHITE);
-				tft.setCursor (120, 10);			
-				tft.print (gSessao_Nome); 
-				tft.setCursor (120, 45);	
-				tft.print (FormatNumber(gSessao_SaldoAtual, F("MONEY")));  
+					TELA_Zera_BotaoGenericoTela();
+
+					TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
+					TELA_Render_Label(F("Outros >> Sangria"),   CinzaClaro,   1, 0, 60, F("RIGHT"));
+
+					// botao voltar
+				    TELA_Render_BotaoGenerico(1, F("VOLTAR"), F("VOLTAR"), 1, White, Red, 10, 15, 130, 60);
+
+
+				}
+				else
+				{
+
+					TELA_SetFontSize(1); 
+
+					tft.setTextColor(CinzaLabels);
+					tft.setCursor (10, 10);			
+					tft.print (F("Nome: ")); 
+					tft.setCursor (10, 45);			
+					tft.print (F("Saldo: "));  
+
+					tft.setTextColor(RA8875_WHITE);
+					tft.setCursor (120, 10);			
+					tft.print (gSessao_Nome); 
+					tft.setCursor (120, 45);	
+					tft.print (FormatNumber(gSessao_SaldoAtual, F("MONEY")));  
+
+					
+
+
+				}
+
+
 
 
 				//////////////////////////////////////  
 				// Tempo Restante
 
+
+							
+
 				TELA_SetFontSize(0); 
 				tft.setTextColor(CinzaLabels);
-				tft.setCursor (620, 10);			
-				tft.print (F("Tempo: ")); 
 
-				tft.setCursor (680, 10);
-				tft.print (String(ctTIMEOUT_TORNEIRA / 1000) + String(F(" segundos   "))); 
+				if (gModoOperacao == F("ADMIN"))
+				{
+					tft.setCursor (240, 20);
+					tft.print (F("Tempo: "));
+					tft.setCursor (300, 20);
+					tft.print (String(_Local_TimeOutTorneira / 1000) + String(F(" segundos   "))); 						
+				}
+				else
+				{
+					tft.setCursor (620, 10);
+					tft.print (F("Tempo: ")); 
+					tft.setCursor (680, 10);
+					tft.print (String(_Local_TimeOutTorneira / 1000) + String(F(" segundos   "))); 									
+				}	
+
+				
+
+
+
 
 
 				//////////////////////////////////////  
@@ -492,8 +710,12 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				tft.setCursor (170, 110);			
 				tft.print (String(F("Torneira ")) + String(gServico_ID_TorneiraAtual) + String(F(" liberada!")));    
 
-				tft.setCursor (220, 160);			
-				tft.print (F("Pode se servir..."));    
+				if (gModoOperacao != F("ADMIN"))
+				{
+					tft.setCursor (220, 160);			
+					tft.print (F("Pode se servir..."));  					
+				}
+  
 
 				//////////////////////////////////////
 
@@ -546,8 +768,16 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				tft.setTextColor(RA8875_WHITE);
 				tft.setCursor (340, 330);	
 
-				//tmp_Volume.replace(".", ",");		
-				tft.print (String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
+
+				if (gModoOperacao == F("ADMIN"))
+				{
+					tft.print (String(F("Sangria")));
+				}
+				else
+				{
+					tft.print (String(FormatNumber(tmp_Volume, F(""))) + String(F(" Litros")));
+				}
+				
 
 
 
@@ -593,7 +823,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 		// libera apenas se existir saldo
-		if (ValorSaldoAtual > 0)
+		if ((ValorSaldoAtual > 0) || (gModoOperacao == F("ADMIN")))
 		{
 			// Liga Led Verde
 			LED_SetLedState(F("RGB"), true, F("GREEN"));
@@ -603,10 +833,6 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 			gLastflowpinstate_Atual = digitalRead(gPinoSensorFluxoAtivo);
 
 			useInterrupt_2(true);
-
-			delay(20);
-
-			
 
 		    // LIBERA TORNEIRA -- abre rele
 			digitalWrite(gPinoReleTorneiraAtiva, LOW);
@@ -628,6 +854,21 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		while (Exec_Loop_PodeSair == false)
 		{
 
+			if (gModoOperacao == F("ADMIN"))
+			{
+				TELA_VerificaTouch_OPERACAO_SERVICO();
+
+				if (gModoOperacao_SubTela == F("ADMIN_SANGRIA"))
+				{
+					// botao sair selecionado no sangria
+			        Exec_Loop_PodeSair = true;
+				    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
+					useInterrupt_2(false);		
+					LED_SetLedState(F("RGB"), false, F(""));  
+					LogTerm(F("Usuario clicou em SAIR da Sangria")); 					
+				}
+			}
+			
 
 		    time_atual = millis();
 		    time_tempo_passado_semFluxo = time_atual - time_inicio;
@@ -643,17 +884,35 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				if (ctTELA_HARDWARE == F("TERMINAL"))
 				{  
 
-					LogTerm(String((ctTIMEOUT_TORNEIRA / 1000) - SegundosPassados) + String(F(" segundos   ")));
+					LogTerm(String((_Local_TimeOutTorneira / 1000) - SegundosPassados) + String(F(" segundos   ")));
 
 				}
 
 				if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 				{  
 				
-					TELA_SetFontSize(0); 
-					tft.setTextColor(CinzaLabels, RA8875_BLACK);
-					tft.setCursor (680, 10);			
-					tft.print (String((ctTIMEOUT_TORNEIRA / 1000) - SegundosPassados) + String(F(" segundos   "))); 	
+					
+					if (gModoOperacao == F("ADMIN"))
+					{
+
+						TELA_SetFontSize(0); 
+						tft.setTextColor(CinzaLabels, RA8875_BLACK);
+						tft.setCursor (300, 20);			
+						tft.print (String((_Local_TimeOutTorneira / 1000) - SegundosPassados) + String(F(" segundos   "))); 
+
+					}
+					else
+					{
+						TELA_SetFontSize(0); 
+						tft.setTextColor(CinzaLabels, RA8875_BLACK);
+						tft.setCursor (680, 10);			
+						tft.print (String((_Local_TimeOutTorneira / 1000) - SegundosPassados) + String(F(" segundos   "))); 								
+					}	
+
+
+
+
+	
 
 				}
 
@@ -661,7 +920,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 		    // se ocorrer timeout do uso, pode sair
-		    if (time_tempo_passado_semFluxo >= ctTIMEOUT_TORNEIRA)
+		    if (time_tempo_passado_semFluxo >= _Local_TimeOutTorneira)
 		    {
 		        Exec_Loop_PodeSair = true;
 			    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
@@ -671,24 +930,26 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		    }
 
 
-		    // se o saldo do usuario for zero, pode sair
-		    if (ValorSaldoAtual <= 0)
+		    if (gModoOperacao != F("ADMIN"))
 		    {
-		        Exec_Loop_PodeSair = true;
-			    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
-				useInterrupt_2(false);
-				LED_SetLedState(F("RGB"), false, F(""));
 
-				LogTerm(F("O saldo do usuario foi totalmente utilizado. Finalizando sessao..."));
+			    // se o saldo do usuario for zero, pode sair
+			    if (ValorSaldoAtual <= 0)
+			    {
+			        Exec_Loop_PodeSair = true;
+				    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
+					useInterrupt_2(false);
+					LED_SetLedState(F("RGB"), false, F(""));
 
-				delay(1500);
+					LogTerm(F("O saldo do usuario foi totalmente utilizado. Finalizando sessao..."));
 
-				TELA_Render_ExibeMsgSaldoZerado();
+					delay(1500);
 
-
-
+					TELA_Render_ExibeMsgSaldoZerado();
+			    }
 
 		    }
+
 
 
 		    /*
@@ -714,6 +975,8 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		    	time_DuracaoSessao = millis() - time_TempoInicioSessao;
 
 
+
+
 			    // Se os pulsos foram maiores do que o limite baixo de ignorar, soma saida em litros
 			    if (gFLOW_PulsosNosUltimosXseg >= ctLIMITE_IGNORA_PULSOS)
 			   	{
@@ -723,6 +986,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 					liters_Atual /= 60.0;
 
 				}
+
 
 
 				if (tmp_VolumeInicialBarril - liters_Atual <= 0)
@@ -739,7 +1003,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 				tmp_Volume = String(VolumeAtual);
 
-				delay(50);
+			
 
 
 				if (gFLOW_Fluxo_Iniciado == true)
@@ -747,9 +1011,12 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 					if (gFLOW_Reinicia_Contador == true)
 					{
+
 						gFLOW_time_inicio = millis();
+
 						gFLOW_Reinicia_Contador = false;
-						gFLOW_PulsosNoInicio = gFlow_Pulses_Atual;
+						gFLOW_PulsosNoInicio = gFlow_Pulses_Atual;	
+
 					}
 
 					gFLOW_time_atual = millis();
@@ -775,15 +1042,15 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 						//LogTerm("Numero de Pulsos nos ultimos 1 segundos: = " + String(gFLOW_PulsosNosUltimosXseg));
 
 
-						gFLOW_Reinicia_Contador = true;
+
+						gFLOW_Reinicia_Contador = true;	
+						
+
 						//time_inicio = millis();
 						//PulsosNoInicio = Flow_Pulses_3;
 						//SegundosPassados = 0;
 						//time_tempo_passado_semFluxo = 0;
 					}
-
-
-
 
 
 					delay(400);
@@ -796,7 +1063,13 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 				if (gFLOW_PulsosNosUltimosXseg >= ctLIMITE_IGNORA_PULSOS)
 				{
-					time_inicio = millis();
+
+					// nao reinicia se for em modo sangria
+					if (gModoOperacao != F("ADMIN"))
+					{
+						time_inicio = millis();						
+					}					
+					
 				}
 
 
@@ -1081,7 +1354,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				//LogTerm("gFLOW_PulsosNosUltimosXseg = " + String(gFLOW_PulsosNosUltimosXseg));
 
 				/*
-				if ((gFaixaVelAtual <= -3) && (time_DuracaoSessao >= ctTIMEOUT_TORNEIRA))
+				if ((gFaixaVelAtual <= -3) && (time_DuracaoSessao >= _Local_TimeOutTorneira))
 				{
 					time_TempoInicioTimeoutFluxoBaixo = millis();
 				}
@@ -1090,7 +1363,7 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 
 
-				if (time_DuracaoSessao >= ctTIMEOUT_TORNEIRA)
+				if (time_DuracaoSessao >= _Local_TimeOutTorneira)
 				{
 					if (gFaixaVelAtual >= -5)
 					{
@@ -1106,15 +1379,21 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 				time_TempoTotalTimeoutFluxoBaixo = millis() - time_TempoInicioTimeoutFluxoBaixo;
 
 
-			    // Se esta tirando chopp devagar, entao fecha torneira --  timeout fluxo baixo
-			    if (time_TempoTotalTimeoutFluxoBaixo >= 5000)
+			    if (gModoOperacao != F("ADMIN"))
 			    {
-			        Exec_Loop_PodeSair = true;
-				    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
-					useInterrupt_2(false);		
-					LED_SetLedState(F("RGB"), false, F(""));  
-					LogTerm(F("Chopp muito devagar. Finalizando sessao..."));      
-			    }	
+
+				    // Se esta tirando chopp devagar, entao fecha torneira --  timeout fluxo baixo
+				    if (time_TempoTotalTimeoutFluxoBaixo >= 5000)
+				    {
+				        Exec_Loop_PodeSair = true;
+					    digitalWrite(gPinoReleTorneiraAtiva, HIGH);
+						useInterrupt_2(false);		
+						LED_SetLedState(F("RGB"), false, F(""));  
+						LogTerm(F("Chopp muito devagar. Finalizando sessao..."));      
+				    }	
+
+			    }
+
 	
 
 
@@ -1195,9 +1474,15 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 					if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 					{  
 
-						tft.setTextColor(RA8875_WHITE, RA8875_BLACK);
-						tft.setCursor (120, 45);	
-						tft.print (FormatNumber(ValorSaldoAtual, F("MONEY")) + String(F("     ")));  
+					    if (gModoOperacao != F("ADMIN"))
+					    {
+		    
+							tft.setTextColor(RA8875_WHITE, RA8875_BLACK);
+							tft.setCursor (120, 45);	
+							tft.print (FormatNumber(ValorSaldoAtual, F("MONEY")) + String(F("     "))); 
+					    }
+
+ 
 
 					}
 
@@ -1208,9 +1493,14 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 					if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
 					{  
 
-						tft.setTextColor(RA8875_WHITE, RA8875_BLACK);
-						tft.setCursor (340, 330);			
-						tft.print (FormatNumber(VolumeAtual, F("")) + String(F(" Litros")) + String(F("     ")));
+					    if (gModoOperacao != F("ADMIN"))
+					    {
+							tft.setTextColor(RA8875_WHITE, RA8875_BLACK);
+							tft.setCursor (340, 330);			
+							tft.print (FormatNumber(VolumeAtual, F("")) + String(F(" Litros")) + String(F("     ")));
+					    }
+
+
 
 					}
 
@@ -1242,27 +1532,44 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+	    if (gModoOperacao == F("ADMIN"))
+	    {
+	    	LogTerm(String(F("-- Sangria - EXTRATO ------------------------------------------------")));
+		    LogTerm(String(F("Torneira (gServico_ID_TorneiraAtual) = ")) + String(gServico_ID_TorneiraAtual));
+		    LogTerm(String(F("IDChopp (tmp_IDChopp) = ")) + tmp_IDChopp);
+		    LogTerm(String(F("Nome Chopp (tmp_Nome) = ")) + tmp_Nome);
+		    LogTerm(String(F("Preco Chopp (tmp_Valor) = ")) + tmp_Valor);
+		    LogTerm(String(F("Pulsos (gFlow_Pulses_Corrigido_Atual) = ")) + String(gFlow_Pulses_Corrigido_Atual));
+			
+			LogTerm(String(F("ValorSessaoChopp = ")) + String(ValorSessaoChopp));
+			LogTerm(String(F("Saldo Atual (ValorSaldoAtual) = ")) + String(ValorSaldoAtual));		
+			LogTerm(String(F("Consumido (liters_Atual) = ")) + String(liters_Atual));
+		}
+	    else
+	    {
+	    	LogTerm(String(F("-- Sessao - EXTRATO ------------------------------------------------")));
+		    LogTerm(String(F("Torneira (gServico_ID_TorneiraAtual) = ")) + String(gServico_ID_TorneiraAtual));
+		    LogTerm(String(F("IDChopp (tmp_IDChopp) = ")) + tmp_IDChopp);
+		    LogTerm(String(F("Nome Chopp (tmp_Nome) = ")) + tmp_Nome);
+		    LogTerm(String(F("Preco Chopp (tmp_Valor) = ")) + tmp_Valor);
+		    LogTerm(String(F("IDUser = ")) + String(gSessao_IDUser));
+			LogTerm(String(F("gSessao_Nome = ")) + gSessao_Nome);
+			LogTerm(String(F("gSessao_CPF = ")) + gSessao_CPF);
+			LogTerm(String(F("gSessao_DataCad = ")) + gSessao_DataCad);
+			LogTerm(String(F("Saldo Original (gSessao_SaldoAtual) = ")) + String(gSessao_SaldoAtual));
+			LogTerm(String(F("Pulsos (gFlow_Pulses_Corrigido_Atual) = ")) + String(gFlow_Pulses_Corrigido_Atual));
+			
+			LogTerm(String(F("ValorSessaoChopp = ")) + String(ValorSessaoChopp));
+			LogTerm(String(F("Saldo Atual (ValorSaldoAtual) = ")) + String(ValorSaldoAtual));		
+			LogTerm(String(F("Chopp Barril Inicial (tmp_VolumeInicialBarril) = ")) + String(tmp_VolumeInicialBarril));
+			LogTerm(String(F("Consumido (liters_Atual) = ")) + String(liters_Atual));
+			LogTerm(String(F("Chopp Restante string (tmp_Volume) = ")) + tmp_Volume);
+			LogTerm(String(F("Chopp Restante float (VolumeAtual) = ")) + String(VolumeAtual));	    	
+	    }
 
-
-	    LogTerm(String(F("-- Sessao - EXTRATO ------------------------------------------------")));
 	    
-	    LogTerm(String(F("Torneira (gServico_ID_TorneiraAtual) = ")) + String(gServico_ID_TorneiraAtual));
-	    LogTerm(String(F("IDChopp (tmp_IDChopp) = ")) + tmp_IDChopp);
-	    LogTerm(String(F("Nome Chopp (tmp_Nome) = ")) + tmp_Nome);
-	    LogTerm(String(F("Preco Chopp (tmp_Valor) = ")) + tmp_Valor);
-	    LogTerm(String(F("IDUser = ")) + String(gSessao_IDUser));
-		LogTerm(String(F("gSessao_Nome = ")) + gSessao_Nome);
-		LogTerm(String(F("gSessao_CPF = ")) + gSessao_CPF);
-		LogTerm(String(F("gSessao_DataCad = ")) + gSessao_DataCad);
-		LogTerm(String(F("Saldo Original (gSessao_SaldoAtual) = ")) + String(gSessao_SaldoAtual));
-		LogTerm(String(F("Pulsos (gFlow_Pulses_Corrigido_Atual) = ")) + String(gFlow_Pulses_Corrigido_Atual));
-		
-		LogTerm(String(F("ValorSessaoChopp = ")) + String(ValorSessaoChopp));
-		LogTerm(String(F("Saldo Atual (ValorSaldoAtual) = ")) + String(ValorSaldoAtual));		
-		LogTerm(String(F("Chopp Barril Inicial (tmp_VolumeInicialBarril) = ")) + String(tmp_VolumeInicialBarril));
-		LogTerm(String(F("Consumido (liters_Atual) = ")) + String(liters_Atual));
-		LogTerm(String(F("Chopp Restante string (tmp_Volume) = ")) + tmp_Volume);
-		LogTerm(String(F("Chopp Restante float (VolumeAtual) = ")) + String(VolumeAtual));
+	    
+
 
 		LogTerm(String(F("===================================================================")));
 
@@ -1400,85 +1707,92 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 	    }
 
 
+	    if (gModoOperacao != F("ADMIN"))
+	    {
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// SALVA DADOS DO USUARIO
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	    String retFunc = F("");
-
-	    // atualiza dados apenas se realmente foi retirado algum chopp
- 		if (ValorSessaoChopp > 0)
- 		{
-			retFunc = F("");
-			retFunc = BANCO_AtualizaSaldoUserLogado(ValorSaldoAtual);
-
-
-			if (retFunc.substring(0, 1) == F("1"))
-			{
-			    LogTerm(F("Saldo/Sessao de usuario atualizado com sucesso !"));
-			}
-			else
-			{
-			    LogTerm(String(F("Falha na atualizacao do Saldo/Sessao: ")) + retFunc);
-			} 			
- 		}
- 		else
- 		{
- 			LogTerm(F("Nao foi retirado chopp. Nenhuma atualizacao de Usuario sera feita"));
- 		}
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// SALVA DADOS DO USUARIO
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+		    
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// SALVA DADOS DE ENGATADOS
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		    String retFunc = F("");
 
-
-
-	    // atualiza dados apenas se realmente foi retirado algum chopp
- 		if (ValorSessaoChopp > 0)
- 		{
-			retFunc = F("");
-			retFunc = BANCO_AtualizaSaldoEngatadosSessao(VolumeAtual);
+		    // atualiza dados apenas se realmente foi retirado algum chopp
+	 		if (ValorSessaoChopp > 0)
+	 		{
+				retFunc = F("");
+				retFunc = BANCO_AtualizaSaldoUserLogado(ValorSaldoAtual);
 
 
-
-			if (retFunc.substring(0, 1) == F("1"))
-			{
-			    LogTerm(F("Saldo do Chopp atualizado com sucesso !"));
-			}
-			else
-			{
-			    LogTerm(String(F("Falha na atualizacao do Saldo do Chopp: ")) + retFunc);
-			}			
- 		}
- 		else
- 		{
- 			LogTerm(F("Nao foi retirado chopp. Nenhuma atualizacao de Engatados sera feita"));
- 		}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// RECARREGA VARIAVEL COM CHOPPS ENGATADOS E ZERA DEMAIS VARIAVEIS
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				if (retFunc.substring(0, 1) == F("1"))
+				{
+				    LogTerm(F("Saldo/Sessao de usuario atualizado com sucesso !"));
+				}
+				else
+				{
+				    LogTerm(String(F("Falha na atualizacao do Saldo/Sessao: ")) + retFunc);
+				} 			
+	 		}
+	 		else
+	 		{
+	 			LogTerm(F("Nao foi retirado chopp. Nenhuma atualizacao de Usuario sera feita"));
+	 		}
 
 
-	    // atualiza dados apenas se realmente foi retirado algum chopp
- 		if (ValorSessaoChopp > 0)
- 		{
-		
-			// atualiza a variavel de chopps engatados
-			CORE_ExecRotinaDefineChoppEngatados();	
 
- 		}
- 		else
- 		{
- 			// apenas exibe a lista de chopps atual
- 			CORE_PrintChoppEngatados();
- 		}
 
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// SALVA DADOS DE ENGATADOS
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+		    // atualiza dados apenas se realmente foi retirado algum chopp
+	 		if (ValorSessaoChopp > 0)
+	 		{
+				retFunc = F("");
+				retFunc = BANCO_AtualizaSaldoEngatadosSessao(VolumeAtual);
+
+
+
+				if (retFunc.substring(0, 1) == F("1"))
+				{
+				    LogTerm(F("Saldo do Chopp atualizado com sucesso !"));
+				}
+				else
+				{
+				    LogTerm(String(F("Falha na atualizacao do Saldo do Chopp: ")) + retFunc);
+				}			
+	 		}
+	 		else
+	 		{
+	 			LogTerm(F("Nao foi retirado chopp. Nenhuma atualizacao de Engatados sera feita"));
+	 		}
+
+
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// RECARREGA VARIAVEL COM CHOPPS ENGATADOS E ZERA DEMAIS VARIAVEIS
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		    // atualiza dados apenas se realmente foi retirado algum chopp
+	 		if (ValorSessaoChopp > 0)
+	 		{
+			
+				// atualiza a variavel de chopps engatados
+				CORE_ExecRotinaDefineChoppEngatados();	
+
+	 		}
+	 		else
+	 		{
+	 			// apenas exibe a lista de chopps atual
+	 			CORE_PrintChoppEngatados();
+	 		}
+
+	 	}
 		
 
 
@@ -1522,25 +1836,34 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 		gPinoReleTorneiraAtiva = -1;
 
 
+	    if (gModoOperacao == F("ADMIN"))
+	    {
+			
+			gTelaRenderizada_OPERACAO_SERVICO = false;
+  			gTelaRenderizada_ADMIN_SANGRIA = false;
+  
+			gModoOperacao_SubTela = F("ADMIN_SANGRIA");	
+	    }
+	    else
+	    {
+			// zera as vars para cada tentativa de login
+			// efetua logoff
+			gSessao_Logado = false;
+			gSessao_IDUser = -1;
+			gSessao_Nome = F("");
+			gSessao_Nivel = -1;
+			gSessao_SaldoAtual = -1;
+			gSessao_CPF = F("");
+			gSessao_DataCad = F("");
+			
+			gTelaRenderizada_OPERACAO_SERVICO = false;
+			gTelaRenderizada_OPERACAO = false;	
 
-		// zera as vars para cada tentativa de login
-		// efetua logoff
-		gSessao_Logado = false;
-		gSessao_IDUser = -1;
-		gSessao_Nome = F("");
-		gSessao_Nivel = -1;
-		gSessao_SaldoAtual = -1;
-		gSessao_CPF = F("");
-		gSessao_DataCad = F("");
-		
-		gTelaRenderizada_OPERACAO_SERVICO = false;
-		gTelaRenderizada_OPERACAO = false;	
-
-		gModoOperacao = F("STANDBY");  
-		gModoOperacao_SubTela = F("");	
+			gModoOperacao = F("STANDBY");  
+			gModoOperacao_SubTela = F("");	
+	    }
 
 
-		delay(2000); 
 
 		//gBounce_time_inicio = millis();
 		//gBounce_ContaClick = 2;
@@ -1559,50 +1882,6 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 	
 
 }
-
-
-
-void TELA_VerificaTouch_OPERACAO_SERVICO()
-{
-
-	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
-	{  
-
-
-
-		//tft.changeMode(GRAPHIC);
-
-		/*
-
-		if (TELA_touchDetect())
-		{
-
-			TELA_touchReadPixel(&gTouch_X, &gTouch_Y);
-
-
-			//TELA_LogTerm_XY(); 
-
-			//botao 1:
-			if (gTouch_X >= 100 && gTouch_X <= 100 + 170)  
-			{
-
-				if (gTouch_Y >= 250 && gTouch_Y <= 250 + 60) 
-				{
-
-
-
-				}
-
-			}
-
-		}
-
-		*/
-
-	}
-
-}
-
 
 
 

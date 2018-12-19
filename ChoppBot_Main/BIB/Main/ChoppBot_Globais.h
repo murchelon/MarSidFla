@@ -30,8 +30,9 @@
 // TECLADO
 
 // VERSAO DA APLICACAO
-#define NOME_LOJA_LINHA1 F("Experiencia")
-#define NOME_LOJA_LINHA2 F("Cervejeira")
+#define NOME_LOJA_LINHA1 F("Tap Hour")
+#define NOME_LOJA_LINHA2 F("")
+#define NOME_LOJA_LINHA3 F("Amigo Ladrao Ex-Periencia!")
 
 
 String gModoOperacao; 
@@ -53,7 +54,9 @@ String gModoOperacao_SubTela;
 // tempo em ms para timeout da tela de ADMIN 
 #define ctTIMEOUT_TELA_ADMIN 30000		
 
-
+// tempo em ms para timeout de servico de torneira SANGRIA (operacao_servico)
+//#define ctTIMEOUT_SANGRIA 120000		
+#define ctTIMEOUT_SANGRIA 60000		
 
 
 
@@ -330,6 +333,7 @@ bool gTelaRenderizada_ADMIN_USUARIOS;
 bool gTelaRenderizada_ADMIN_CHOPPS;
 bool gTelaRenderizada_ADMIN_ENGATADOS;
 bool gTelaRenderizada_ADMIN_OUTROS;
+bool gTelaRenderizada_ADMIN_SANGRIA;
 
 
 
@@ -506,7 +510,7 @@ void InicializaVars()
 	gTelaRenderizada_ADMIN_ENGATADOS = false;
 	gTelaRenderizada_ADMIN_OUTROS = false;
 
-
+	gTelaRenderizada_ADMIN_SANGRIA = false;
 
 
 

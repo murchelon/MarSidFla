@@ -83,6 +83,7 @@ void InitApp()
     LogTerm(_outVersao);
     LogTerm(F("///                                               ///"));
     LogTerm(F("///  by Murch & Cebola                            ///"));
+    LogTerm(F("///  (& Renata valeu os jantares e pizzas!)       ///"));
     LogTerm(F("///                                               ///"));
     LogTerm(F("///  Hardware: Margarida 2                        ///"));
     LogTerm(F("///                                               ///"));
@@ -695,7 +696,15 @@ void Exec_OPERACAO_SERVICO()
 
     if (gTelaRenderizada_OPERACAO_SERVICO == false)
     {
-        LogTerm(F("== [Modo Atual: OPERACAO -- SubTela: OPERACAO_SERVICO] =="));
+        if (gModoOperacao == F("ADMIN"))
+        {
+            LogTerm(F("== [Modo Atual: ADMIN -- SubTela: OPERACAO_SERVICO] (Sangria) =="));
+        }
+        else
+        {
+            LogTerm(F("== [Modo Atual: OPERACAO -- SubTela: OPERACAO_SERVICO] ==")); 
+        }
+        
         TELA_Render_Interface_OPERACAO_SERVICO();
     }  
 
@@ -710,9 +719,10 @@ void Exec_ADMIN_NOVO_CARD()
 {
     if (gTelaRenderizada_ADMIN_NOVO_CARD == false)
     {
-        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_NOVO_CARD] =="));
-        TELA_Render_Interface_ADMIN_NOVO_CARD();
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_NOVO_CARD] =="));        
     }  
+
+    TELA_Render_Interface_ADMIN_NOVO_CARD();
 }
 
 
@@ -721,9 +731,10 @@ void Exec_ADMIN_USUARIOS()
 {
     if (gTelaRenderizada_ADMIN_USUARIOS == false)
     {
-        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_USUARIOS] =="));
-        TELA_Render_Interface_ADMIN_USUARIOS();
-    }  
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_USUARIOS] =="));        
+    } 
+
+    TELA_Render_Interface_ADMIN_USUARIOS(); 
 }
 
 
@@ -751,10 +762,24 @@ void Exec_ADMIN_OUTROS()
 {
     if (gTelaRenderizada_ADMIN_OUTROS == false)
     {
-        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_OUTROS] =="));
-        TELA_Render_Interface_ADMIN_OUTROS();
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_OUTROS] =="));        
     }  
+
+    TELA_Render_Interface_ADMIN_OUTROS();
 }
+
+
+
+void Exec_ADMIN_SANGRIA()
+{
+    if (gTelaRenderizada_ADMIN_SANGRIA == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_SANGRIA] =="));        
+    }  
+
+    TELA_Render_Interface_ADMIN_SANGRIA();
+}
+
 
 
 void Exec_TECLADO()
@@ -842,11 +867,6 @@ void TestaInterrupts()
             TELA_VerificaTouch_ADMIN();
         }
 
-        if (gModoOperacao_SubTela == F("ADMIN_NOVO_CARD"))
-        {
-            TELA_VerificaTouch_ADMIN_NOVO_CARD();
-        }
-
         if (gModoOperacao_SubTela == F("ADMIN_USUARIOS"))
         {
             TELA_VerificaTouch_ADMIN_USUARIOS();
@@ -866,6 +886,25 @@ void TestaInterrupts()
         {
             TELA_VerificaTouch_ADMIN_OUTROS();
         }                        
+
+
+
+        if (gModoOperacao_SubTela == F("ADMIN_NOVO_CARD"))
+        {
+            TELA_VerificaTouch_ADMIN_NOVO_CARD();
+        }
+
+        if (gModoOperacao_SubTela == F("ADMIN_SANGRIA"))
+        {
+            TELA_VerificaTouch_ADMIN_SANGRIA();
+        }
+
+
+        if (gModoOperacao_SubTela == F("OPERACAO_SERVICO"))
+        {
+            TELA_VerificaTouch_OPERACAO_SERVICO();
+        }
+
 
     }
 
@@ -1006,8 +1045,8 @@ void loop()
         {
             Exec_OPERACAO();  
         }
-        
-       if (gModoOperacao_SubTela == F("OPERACAO_SERVICO"))
+
+        if (gModoOperacao_SubTela == F("OPERACAO_SERVICO"))
         {
             Exec_OPERACAO_SERVICO();  
         }        
@@ -1047,6 +1086,17 @@ void loop()
        if (gModoOperacao_SubTela == F("ADMIN_OUTROS"))
         {
             Exec_ADMIN_OUTROS();  
+        }   
+
+       if (gModoOperacao_SubTela == F("ADMIN_SANGRIA"))
+        {
+            Exec_ADMIN_SANGRIA();  
+        }   
+
+
+        if (gModoOperacao_SubTela == F("OPERACAO_SERVICO"))
+        {
+            Exec_OPERACAO_SERVICO();  
         }   
 
     }

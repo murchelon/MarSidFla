@@ -40,7 +40,8 @@
 
 
 // LEITOR SD Adafruit - Engine
-#include <SdFat.h>
+//#include <SdFat.h>
+#include "../SD/SDFat/src/SdFat.h" 
 
 // LEITOR SD MAIN
 #include "../SD/ChoppBot_SD_Main.h" 
@@ -52,6 +53,7 @@
 // LEITOR RFID PN532 (Com NFC) - Engine
 #include <Wire.h>
 #include <Adafruit_PN532.h>
+//#include "../RFID/Adafruit_PN532/Adafruit_PN532.h" 
 #include "../RFID/ChoppBot_RFID_Engine_PN532.h" 
 
 // LEITOR RFID MAIN -- inserido pelo include da tela main
@@ -63,12 +65,16 @@
 
 #ifdef ctTELA_BIB_USADA_Adafruit_RA8875
 
-	#include "Adafruit_GFX.h"
-	#include "Adafruit_RA8875.h"	
+	//#include "Adafruit_GFX.h"
+	//#include "Adafruit_RA8875.h"	
+
+	#include "../Tela/Adafruit_RA8875/Adafruit_GFX.h"
+	#include "../Tela/Adafruit_RA8875/Adafruit_RA8875.h"
 	
 #elif ctTELA_BIB_USADA_RA8875
 
 	#include <RA8875.h>
+	//#include "../Tela/RA8875/RA8875.h"
 
 #endif
 
@@ -90,6 +96,9 @@
 
 // LEITOR BIOMETRICO ADAFRUIT - Engine
 #include <Adafruit_Fingerprint.h>
+//#include "../Biometrico/Adafruit_Fingerprint_Sensor_Library/Adafruit_Fingerprint.h" 
+
+
 #include <SoftwareSerial.h>
 #include "../Biometrico/ChoppBot_Bio_Engine_Adafruit_Fingerprint.h" 
 

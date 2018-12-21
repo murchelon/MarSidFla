@@ -111,9 +111,6 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 		    Botao_PosAtual_Y = Inicio_Y;
 
 
-
-
-
 		    for (ContaLinha = 0 ; ContaLinha <= 3 ; ContaLinha++)
 		    {
 			    for (ContaBotao = 0 ; ContaBotao <= 2 ; ContaBotao++)
@@ -224,6 +221,20 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 			    }
 			}
 		    
+
+			if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR"))
+			{
+				TELA_Render_Label(F("Saldo Anterior:"), CinzaLabels, 0, Inicio_X - 430, 235, F(""));
+				TELA_Render_Label(FormatNumber(F("1000"), F("MONEY")), White, 0, Inicio_X - 430 + 140, 235, F(""));
+
+				TELA_Render_Label(F("Saldo Atual:"), CinzaLabels, 0, Inicio_X - 430, 260, F(""));
+				TELA_Render_Label(FormatNumber(F("1000"), F("MONEY")), White, 0, Inicio_X - 430 + 140, 260, F(""));			
+			}
+
+
+
+
+
 			// Texto da tela:
 		    tft.setTextColor(RA8875_WHITE);
 		    TELA_SetFontSize(2); 
@@ -494,6 +505,84 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 
 
 
+										if (ModoRetorno == F("ADMIN_ADD_VALOR"))
+										{
+											String temp_valor_str = F("");
+											temp_valor_str = Left(gTecladoNum_ValAtual, 8);
+
+											float temp_valor_flt = gAdmin_User_Saldo.toFloat();
+											temp_valor_flt = temp_valor_flt + temp_valor_str.toFloat();
+
+											LogTerm(String(F("gAdmin_User_Saldo = ")) + String(gAdmin_User_Saldo));
+											LogTerm(String(F("gTecladoNum_ValAtual = ")) + String(gTecladoNum_ValAtual));
+											LogTerm(String(F("temp_valor_flt = ")) + String(temp_valor_flt));
+
+
+											TELA_LimpaTela();
+
+
+											TELA_Render_MsgBox(F("Atualizar Saldo"), String(F("Adicionando valor para o usuario. Por favor, aguarde... (Valor adicionado: )")) + gTecladoNum_ValAtual);
+
+
+											String retFunc;
+
+											retFunc = SD_CreateNewUserFile(gAdmin_User_IDUser, 
+																			gAdmin_User_Nome, 
+																			gAdmin_User_Nivel, 
+																			gAdmin_User_CPF, 
+																			String(temp_valor_flt),
+																			gAdmin_User_Datacad);
+										
+
+
+											// testa erro e avisa e sai se ocorrer
+											if (retFunc.substring(0, 1) != F("1"))
+											{
+												TELA_LimpaTela();
+
+												gTelaRenderizada_MSGBOX = false; 
+											
+												TELA_Render_MsgBox(F("Erro ao atualizar usuario"), F("Ocorreu um erro ao adicionar valor ao usuario"));
+
+												delay(6000);
+
+												TELA_LimpaTela();
+
+												gTelaRenderizada_MSGBOX = false;
+												//gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+												//gTelaRenderizada_TecAlfa = false;
+												gTelaRenderizada_TecNum = false;	
+												gTelaRenderizada_TECLADO = false;	
+
+											}	
+										
+
+
+
+
+
+
+
+
+
+											gAdmin_User_Saldo = F("");
+
+											gTecladoNum_ValAtual = F("");
+
+											gTelaRenderizada_ADMIN_NOVO_CARD = false;
+
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+
+											gTelaRenderizada_MSGBOX = false;
+
+											TELA_LimpaTela();
+
+										}
+
+
+
 										break;
 
 
@@ -539,6 +628,25 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 
 											gModoOperacao = F("ADMIN");
 											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+										}
+
+
+										if (ModoRetorno == F("ADMIN_ADD_VALOR"))
+										{
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_USUARIOS");	
+										}
+
+										if (ModoRetorno == F("ADMIN_SUB_VALOR"))
+										{
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_USUARIOS");	
+										}
+
+										if (ModoRetorno == F("ADMIN_SET_SALDO"))
+										{
+											gModoOperacao = F("ADMIN");
+											gModoOperacao_SubTela = F("ADMIN_USUARIOS");	
 										}
 
 

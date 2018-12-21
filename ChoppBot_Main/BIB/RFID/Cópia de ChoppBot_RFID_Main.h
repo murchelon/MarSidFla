@@ -278,12 +278,7 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 
 			//LogTerm(ret);	
 
-
-			if (ModoRetorno == String(F("ADMIN_NOVO_CARD")) || ModoRetorno == String(F("ADMIN_ADD_VALOR")) || ModoRetorno == String(F("ADMIN_SUB_VALOR")) || ModoRetorno == String(F("ADMIN_SET_SALDO")) )
-			{
-
-			}
-			else
+			if (ModoRetorno != String(F("ADMIN_NOVO_CARD")))
 			{
 				// zera as vars para cada tentativa de login
 				gSessao_Logado = false;
@@ -349,21 +344,17 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 					
 				}
 
-
-
-
-				if (ModoRetorno == String(F("ADMIN_NOVO_CARD")) || ModoRetorno == String(F("ADMIN_ADD_VALOR")) || ModoRetorno == String(F("ADMIN_SUB_VALOR")) || ModoRetorno == String(F("ADMIN_SET_SALDO")) )
+				if (ModoRetorno == String(F("ADMIN_NOVO_CARD")))
 				{
 					gModoOperacao = F("ADMIN");
 					gModoOperacao_SubTela = F("ADMIN_USUARIOS");	
 
-					gTelaRenderizada_ADMIN_USUARIOS = false;	
+					gTelaRenderizada_ADMIN_USUARIOS = false;					
 				}
 				else
 				{
 					gModoOperacao = F("STANDBY");
-					gModoOperacao_SubTela = F("");	
-					gTelaRenderizada_ADMIN_USUARIOS = false;	
+					gModoOperacao_SubTela = F("");					
 				}
 
 
@@ -412,52 +403,20 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 
 						TELA_LimpaTela();
 
-						if (ModoRetorno == String(F("ADMIN_ADD_VALOR")) || ModoRetorno == String(F("ADMIN_SUB_VALOR")) || ModoRetorno == String(F("ADMIN_SET_SALDO")) )
+						
+
+						if (ctMODO_DEBUG == false)
 						{
-
-							if (ctMODO_DEBUG == false)
-							{
-								TELA_Render_MsgBox(F("Cartao nao cadastrado"), F("O cartao utilizado nao esta cadastrado. Por favor selecione um cartao ja cadastrado"));
-							}
-							else
-							{
-								TELA_Render_MsgBox(F("Cartao nao cadastrado"), String(F("O cartao utilizado nao esta cadastrado. Por favor selecione um cartao ja cadastrado. Cartao lido: ")) + retIDUser);
-							}
-
-							delay(4000);
-
-							TELA_LimpaTela();
-
-				
-							gModoOperacao = F("ADMIN");
-							gModoOperacao_SubTela = F("ADMIN_USUARIOS");	
-
-							gTelaRenderizada_ADMIN_USUARIOS = false;						
-
+							TELA_Render_MsgBox(F("Cartao nao cadastrado"), F("O cartao utilizado nao esta cadastrado. Por favor procure o caixa para maiores  informacoes."));
 						}
 						else
 						{
-
-							if (ctMODO_DEBUG == false)
-							{
-								TELA_Render_MsgBox(F("Cartao nao cadastrado"), F("O cartao utilizado nao esta cadastrado. Por favor procure o caixa para maiores  informacoes."));
-							}
-							else
-							{
-								TELA_Render_MsgBox(F("Cartao nao cadastrado"), String(F("O cartao utilizado nao esta cadastrado. Por favor procure o caixa para maiores  informacoes: ")) + retIDUser);
-							}
-
-							delay(6000);
-
-							TELA_LimpaTela();
-
-							gModoOperacao = F("STANDBY");
-							gModoOperacao_SubTela = F("");	
-
+							TELA_Render_MsgBox(F("Cartao nao cadastrado"), String(F("O cartao utilizado nao esta cadastrado. Por favor procure o caixa para maiores  informacoes: ")) + retIDUser);
 						}
-						
 
+						delay(6000);
 
+						TELA_LimpaTela();
 
 						gTelaRenderizada_MSGBOX = false;
 						gTelaRenderizada_LER_RFID = false;
@@ -465,7 +424,8 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 					}
 
 
-				
+					gModoOperacao = F("STANDBY");
+					gModoOperacao_SubTela = F("");					
 				}
 
 
@@ -534,7 +494,7 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 					}
 
 
-					if (ModoRetorno == String(F("ADMIN_NOVO_CARD")) || ModoRetorno == String(F("ADMIN_ADD_VALOR")) || ModoRetorno == String(F("ADMIN_SUB_VALOR")) || ModoRetorno == String(F("ADMIN_SET_SALDO")) )
+					if (ModoRetorno == String(F("ADMIN_NOVO_CARD")))
 					{
 						gModoOperacao = F("ADMIN");
 						gModoOperacao_SubTela = F("ADMIN_USUARIOS");	
@@ -612,21 +572,8 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 							
 						}
 
-
-						if (ModoRetorno == String(F("ADMIN_ADD_VALOR")) || ModoRetorno == String(F("ADMIN_SUB_VALOR")) || ModoRetorno == String(F("ADMIN_SET_SALDO")) )
-						{
-							gModoOperacao = F("ADMIN");
-							gModoOperacao_SubTela = F("ADMIN_USUARIOS");	
-
-							gTelaRenderizada_ADMIN_USUARIOS = false;
-						}
-						else
-						{
-							gModoOperacao = F("STANDBY");
-							gModoOperacao_SubTela = F("");									
-						}
-						
-			
+						gModoOperacao = F("STANDBY");
+						gModoOperacao_SubTela = F("");				
 					}
 
 
@@ -678,149 +625,22 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 						
 
 
-						if (ModoRetorno == String(F("ADMIN_ADD_VALOR")))
-						{
+						gSessao_Logado = true;
 
-							gAdmin_User_Saldo = getValue(retUserData.substring(2), ';', 5).toFloat();
-
-							gAdmin_User_IDUser = retIDUser.substring(2).toInt();
-							gAdmin_User_Nome = getValue(retUserData.substring(2), ';', 3);
-							gAdmin_User_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
-							gAdmin_User_CPF = getValue(retUserData.substring(2), ';', 1);
-							gAdmin_User_Datacad = getValue(retUserData.substring(2), ';', 2);
+						gSessao_IDUser = retIDUser.substring(2).toInt();
+						gSessao_Nome = getValue(retUserData.substring(2), ';', 3);
+						gSessao_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
+						gSessao_SaldoAtual = getValue(retUserData.substring(2), ';', 5).toFloat();
+						gSessao_CPF = getValue(retUserData.substring(2), ';', 1);
+						gSessao_DataCad = getValue(retUserData.substring(2), ';', 2);
 
 
 
-							gTelaRenderizada_TecNum = false;
-							gTelaRenderizada_TECLADO = false;
-
-							gTecladoNum_ValAtual = F("");
-
-							gModoOperacao = F("TECLADO");
-							gModoOperacao_SubTela = F("TECLADO_ADMIN_ADD_VALOR");	
-							
-							TELA_LimpaTela();
-
-						}
-						else if (ModoRetorno == String(F("ADMIN_SUB_VALOR")))
-						{
-
-
-						}
-						else if (ModoRetorno == String(F("ADMIN_SET_SALDO")))
-						{
-
-
-						}
-						else if (ModoRetorno == String(F("OPERACAO")))
-						{
-
-							gModoOperacao = F("OPERACAO");
-							gModoOperacao_SubTela = F("OPERACAO_SERVICO");	
-
-							gSessao_Logado = true;
-
-							gSessao_IDUser = retIDUser.substring(2).toInt();
-							gSessao_Nome = getValue(retUserData.substring(2), ';', 3);
-							gSessao_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
-							gSessao_SaldoAtual = getValue(retUserData.substring(2), ';', 5).toFloat();
-							gSessao_CPF = getValue(retUserData.substring(2), ';', 1);
-							gSessao_DataCad = getValue(retUserData.substring(2), ';', 2);
-
-
-
-							LogTerm(F("MAIN: Usuario LOGADO -- OPERACAO"));
-							//LogTerm("gSessao_IDUser: " + String(gSessao_IDUser));
-							LogTerm(String(F("MAIN: Nome: ")) + gSessao_Nome);	
-							LogTerm(String(F("MAIN: Nivel: ")) + String(gSessao_Nivel));
-							LogTerm(String(F("MAIN: Saldo: ")) + String(gSessao_SaldoAtual));							
-
-						}
-						else if (ModoRetorno == String(F("ADMIN")))
-						{
-
-							gSessao_Logado = true;
-
-							gSessao_IDUser = retIDUser.substring(2).toInt();
-							gSessao_Nome = getValue(retUserData.substring(2), ';', 3);
-							gSessao_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
-							gSessao_SaldoAtual = getValue(retUserData.substring(2), ';', 5).toFloat();
-							gSessao_CPF = getValue(retUserData.substring(2), ';', 1);
-							gSessao_DataCad = getValue(retUserData.substring(2), ';', 2);
-
-
-
-							LogTerm(F("MAIN: Usuario LOGADO -- ADMIN"));
-							//LogTerm("gSessao_IDUser: " + String(gSessao_IDUser));
-							LogTerm(String(F("MAIN: Nome: ")) + gSessao_Nome);	
-							LogTerm(String(F("MAIN: Nivel: ")) + String(gSessao_Nivel));
-							LogTerm(String(F("MAIN: Saldo: ")) + String(gSessao_SaldoAtual));
-
-
-							if (gSessao_Nivel < 500)
-							{
-							
-								if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
-								{  
-
-									TELA_LimpaTela();
-
-									TELA_Render_MsgBox(F("Acesso nao autorizado"), F("Este usuario nao tem acesso ao ambiente de administracao"));		
-
-									delay(6000);
-
-									TELA_LimpaTela();
-
-								}
-
-
-								if (ctTELA_HARDWARE == F("TERMINAL"))
-								{  
-									LogTerm(F("Acesso nao autorizado: Este usuario nao tem acesso ao ambiente de administracao"));
-
-								}	
-
-								gTelaRenderizada_MSGBOX = false;
-
-								gModoOperacao = F("STANDBY");
-								gModoOperacao_SubTela = F("");	
-
-							}
-							else
-							{
-								gModoOperacao = F("ADMIN");
-								gModoOperacao_SubTela = F("");								
-							}
-							
-
-							gTelaRenderizada_LER_RFID = false;
-						
-						}
-						else
-						{
-
-						
-
-							gSessao_Logado = true;
-
-							gSessao_IDUser = retIDUser.substring(2).toInt();
-							gSessao_Nome = getValue(retUserData.substring(2), ';', 3);
-							gSessao_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
-							gSessao_SaldoAtual = getValue(retUserData.substring(2), ';', 5).toFloat();
-							gSessao_CPF = getValue(retUserData.substring(2), ';', 1);
-							gSessao_DataCad = getValue(retUserData.substring(2), ';', 2);
-
-
-
-							LogTerm(F("MAIN: Usuario LOGADO -- NEM SEI"));
-							//LogTerm("gSessao_IDUser: " + String(gSessao_IDUser));
-							LogTerm(String(F("MAIN: Nome: ")) + gSessao_Nome);	
-							LogTerm(String(F("MAIN: Nivel: ")) + String(gSessao_Nivel));
-							LogTerm(String(F("MAIN: Saldo: ")) + String(gSessao_SaldoAtual));
-						}
-
-
-
+						LogTerm(F("MAIN: Usuario LOGADO"));
+						//LogTerm("gSessao_IDUser: " + String(gSessao_IDUser));
+						LogTerm(String(F("MAIN: Nome: ")) + gSessao_Nome);	
+						LogTerm(String(F("MAIN: Nivel: ")) + String(gSessao_Nivel));
+						LogTerm(String(F("MAIN: Saldo: ")) + String(gSessao_SaldoAtual));
 							
 
 
@@ -843,6 +663,62 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 						}
 
 			
+						if (ModoRetorno == String(F("OPERACAO")))
+						{
+							gModoOperacao = F("OPERACAO");
+							gModoOperacao_SubTela = F("OPERACAO_SERVICO");						
+						}
+
+
+			
+						if (ModoRetorno == String(F("ADMIN")))
+						{
+							if (gSessao_Nivel < 500)
+							{
+								
+
+
+								if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+								{  
+
+									TELA_LimpaTela();
+
+									
+
+									TELA_Render_MsgBox(F("Acesso nao autorizado"), F("Este usuario nao tem acesso ao ambiente de administracao"));		
+
+
+									delay(6000);
+
+									TELA_LimpaTela();
+
+								}
+
+
+								if (ctTELA_HARDWARE == F("TERMINAL"))
+								{  
+									LogTerm(F("Acesso nao autorizado: Este usuario nao tem acesso ao ambiente de administracao"));
+
+								}							
+								gTelaRenderizada_MSGBOX = false;
+
+
+
+								gModoOperacao = F("STANDBY");
+								gModoOperacao_SubTela = F("");												
+							}
+							else
+							{
+								
+
+								gModoOperacao = F("ADMIN");
+								gModoOperacao_SubTela = F("");								
+							}
+							
+							gTelaRenderizada_LER_RFID = false;
+
+						
+						}
 
 
 					}
@@ -881,23 +757,18 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 				
 			}
 
-
-
-			if (ModoRetorno == String(F("ADMIN_NOVO_CARD")) || ModoRetorno == String(F("ADMIN_ADD_VALOR")) || ModoRetorno == String(F("ADMIN_SUB_VALOR")) || ModoRetorno == String(F("ADMIN_SET_SALDO")) )
+			if (ModoRetorno == String(F("ADMIN_NOVO_CARD")))
 			{
 				gModoOperacao = F("ADMIN");
 				gModoOperacao_SubTela = F("ADMIN_USUARIOS");	
 
-				gTelaRenderizada_ADMIN_USUARIOS = false;	
+				gTelaRenderizada_ADMIN_USUARIOS = false;					
 			}
 			else
 			{
 				gModoOperacao = F("STANDBY");
-				gModoOperacao_SubTela = F("");	
-				gTelaRenderizada_ADMIN_USUARIOS = false;	
+				gModoOperacao_SubTela = F("");					
 			}
-
-
 
 
 

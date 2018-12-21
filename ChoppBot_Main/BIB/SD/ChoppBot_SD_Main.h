@@ -412,17 +412,12 @@ String SD_GetFirstRegFromFile(String FullPathFile, String RetryOrCheck)
 }
 
 
-
-String SD_CreateNewUserFile(String IDUser, String Nome, String Nivel, String CPF, String Saldo)
+String SD_ApagaArquivo(String FullPathFile)
 {
 
-	String ret = F("1|");
+	String ret = F("");
 
-	String FullPathFile_TEMP = String(F("CB/BD/Usuarios/USU_")) + IDUser + String(F(".csv"));
-
-	File ArquivoUser_Temp;
-
-	String DataCad = Now();
+	File Arquivo_Temp;
 
 
 	SdFat SD;
@@ -435,6 +430,50 @@ String SD_CreateNewUserFile(String IDUser, String Nome, String Nivel, String CPF
 		return retSD;
 	}
 
+
+	Arquivo_Temp = SD.open(FullPathFile, O_WRITE);
+
+	if (Arquivo_Temp.remove())
+	{
+		ret = String(F("1|Arquivo apagado com sucesso: ")) + FullPathFile;
+	}
+	else
+	{
+		ret = String(F("0|Nao foi possivel apagar o arquivo: ")) + FullPathFile;
+	}
+
+	return ret;
+}
+
+
+
+
+String SD_CreateNewUserFile(String IDUser, String Nome, String Nivel, String CPF, String Saldo, String DataCad)
+{
+
+	String ret = F("1|");
+
+	String FullPathFile_TEMP = String(F("CB/BD/Usuarios/USU_")) + IDUser + String(F(".csv"));
+
+	File ArquivoUser_Temp;
+
+
+	SdFat SD;
+	String retSD = F("");
+
+
+
+	SD_ApagaArquivo(FullPathFile_TEMP);
+	
+
+
+
+	retSD = SD_InicializaCartaoSD(SD);
+
+	if (retSD.substring(0, 1) != F("1"))
+	{
+		return retSD;
+	}
 
 
 
@@ -470,6 +509,7 @@ String SD_CreateNewUserFile(String IDUser, String Nome, String Nivel, String CPF
 	return ret;
 
 }
+
 
 
 
@@ -534,41 +574,6 @@ String SD_CreateNewLoginFile(String IDUser, String CPF, String IDCartao)
 
 
 
-
-
-
-String SD_ApagaArquivo(String FullPathFile)
-{
-
-	String ret = F("");
-
-	File Arquivo_Temp;
-
-
-	SdFat SD;
-	String retSD = F("");
-
-	retSD = SD_InicializaCartaoSD(SD);
-
-	if (retSD.substring(0, 1) != F("1"))
-	{
-		return retSD;
-	}
-
-
-	Arquivo_Temp = SD.open(FullPathFile, O_WRITE);
-
-	if (Arquivo_Temp.remove())
-	{
-		ret = String(F("1|Arquivo apagado com sucesso: ")) + FullPathFile;
-	}
-	else
-	{
-		ret = String(F("0|Nao foi possivel apagar o arquivo: ")) + FullPathFile;
-	}
-
-	return ret;
-}
 
 
 

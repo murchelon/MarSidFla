@@ -32,7 +32,7 @@
 // VERSAO DA APLICACAO
 #define NOME_LOJA_LINHA1 F("Tap Hour")
 #define NOME_LOJA_LINHA2 F("")
-#define NOME_LOJA_LINHA3 F("Amigo Ladrao Ex-Periencia!")
+#define NOME_LOJA_LINHA3 F("Teste de campo Margarida!")
 
 
 String gModoOperacao; 
@@ -335,7 +335,9 @@ bool gTelaRenderizada_ADMIN_ENGATADOS;
 bool gTelaRenderizada_ADMIN_OUTROS;
 bool gTelaRenderizada_ADMIN_SANGRIA;
 
-
+bool gTelaRenderizada_ADMIN_ADD_VALOR;
+bool gTelaRenderizada_ADMIN_SUB_VALOR;
+bool gTelaRenderizada_ADMIN_SET_SALDO;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,6 +457,7 @@ String gAdmin_User_Nivel;
 String gAdmin_User_CPF;
 String gAdmin_User_Saldo;
 String gAdmin_User_IDUser;
+String gAdmin_User_Datacad;
 
 
 
@@ -511,6 +514,10 @@ void InicializaVars()
 	gTelaRenderizada_ADMIN_OUTROS = false;
 
 	gTelaRenderizada_ADMIN_SANGRIA = false;
+
+	gTelaRenderizada_ADMIN_ADD_VALOR = false;
+	gTelaRenderizada_ADMIN_SUB_VALOR = false;
+	gTelaRenderizada_ADMIN_SET_SALDO = false;
 
 
 

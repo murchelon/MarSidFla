@@ -572,6 +572,44 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 
 
 
+void TELA_Render_Label(String Texto, uint16_t CorTexto, int Tamanho, uint16_t PosX, uint16_t PosY, String Align)
+{
+
+	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
+	{
+
+		int TamanhoLetra_W = 0;
+		if (Tamanho == 0){TamanhoLetra_W = 7.5;}
+		if (Tamanho == 1){TamanhoLetra_W = 16;}
+		if (Tamanho == 2){TamanhoLetra_W = 24;}
+		if (Tamanho == 3){TamanhoLetra_W = 33;}
+
+
+		if (CorTexto == 0)
+		{
+			CorTexto = CinzaLabels;
+		}
+
+		tft.setTextColor(CorTexto);
+
+
+		if (Align == F("RIGHT"))
+		{
+			PosX = 800 - (Texto.length() * TamanhoLetra_W) - 10;
+		}
+
+
+		TELA_SetFontSize(Tamanho);
+
+		tft.setCursor(PosX, PosY);
+
+		tft.print(Texto);
+
+	}
+}
+
+
+
 
 
 //Estes includes tem de ficar neste local devido a ordem das chamadas das funcoes. Senao, da erro
@@ -814,43 +852,6 @@ void TELA_Render_BotaoTorneira(int IndexBotao, String Texto, String Texto2, Stri
 
 
  
-void TELA_Render_Label(String Texto, uint16_t CorTexto, int Tamanho, uint16_t PosX, uint16_t PosY, String Align)
-{
-
-	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
-	{
-
-		int TamanhoLetra_W = 0;
-		if (Tamanho == 0){TamanhoLetra_W = 7.5;}
-		if (Tamanho == 1){TamanhoLetra_W = 16;}
-		if (Tamanho == 2){TamanhoLetra_W = 24;}
-		if (Tamanho == 3){TamanhoLetra_W = 33;}
-
-
-		if (CorTexto == 0)
-		{
-			CorTexto = CinzaLabels;
-		}
-
-		tft.setTextColor(CorTexto);
-
-
-		if (Align == F("RIGHT"))
-		{
-			PosX = 800 - (Texto.length() * TamanhoLetra_W) - 10;
-		}
-
-
-		TELA_SetFontSize(Tamanho);
-
-		tft.setCursor(PosX, PosY);
-
-		tft.print(Texto);
-
-	}
-}
-
-
 
 
 
@@ -1112,7 +1113,19 @@ void TELA_Render_Interface_STANDBY()
 
 			if (NOME_LOJA_LINHA3 != F(""))
 			{
-				TELA_Texto_Centralizado(String(NOME_LOJA_LINHA3), F("CINZA"), 2, 210);
+
+				if (String(NOME_LOJA_LINHA2) == String(F("")))
+				{
+					TELA_Texto_Centralizado(String(NOME_LOJA_LINHA3), F("CINZA"), 2, 210);
+				}
+				else
+				{
+					TELA_Texto_Centralizado(String(NOME_LOJA_LINHA3), F("CINZA"), 2, 260);
+				}
+
+
+
+				
 			}
 
 
@@ -1122,7 +1135,7 @@ void TELA_Render_Interface_STANDBY()
   
 			//tft.setCursor (195, 310);
 			//TELA_SetFontSize(1); 
-			TELA_Texto_Centralizado(String(F("Toque na tela para iniciar")), F("BRANCO"), 1, 350);
+			TELA_Texto_Centralizado(String(F("Toque na tela para iniciar")), F("BRANCO"), 1, 360);
 
 			//tft.print (F("Toque na tela para iniciar"));   
 
@@ -1588,7 +1601,7 @@ void TELA_Render_Interface_ADMIN_USUARIOS()
 						break;
 					case 4:
 						_TxtBotao = F("Definir|Saldo");
-						_TAG_Botao = F("DEF_SALDO");
+						_TAG_Botao = F("SET_SALDO");
 						break;
 					case 5:
 						_TxtBotao = F("Trocar|Cartao");
@@ -2217,18 +2230,23 @@ void TELA_Render_Interface_ADMIN_SANGRIA()
 
 	}
 
-
-
-
-
-    
-
-
-
-
 }
 
 
+void TELA_Render_Interface_ADMIN_ADD_VALOR()
+{
+
+}
+
+void TELA_Render_Interface_ADMIN_SUB_VALOR()
+{
+
+}
+
+void TELA_Render_Interface_ADMIN_SET_SALDO()
+{
+
+}
 
 
 void TELA_Render_Interface_OPERACAO()
@@ -3110,19 +3128,34 @@ void TELA_VerificaTouch_ADMIN_USUARIOS()
 								// BOTAO ADICIONAR VALOR
 								if (btnGen_TAG == F("ADD_VALOR"))
 								{
+									TELA_LimpaTela();
 
+									gModoOperacao = F("LOGIN");
+									gModoOperacao_SubTela = F("LER_RFID_ADMIN_ADD_VALOR");
+
+									gTelaRenderizada_ADMIN_USUARIOS = false;
 								}
 
 								// BOTAO SUBTRAIR VALOR
 								if (btnGen_TAG == F("SUB_VALOR"))
 								{
+									TELA_LimpaTela();
 
+									gModoOperacao = F("LOGIN");
+									gModoOperacao_SubTela = F("LER_RFID_ADMIN_SUB_VALOR");
+
+									gTelaRenderizada_ADMIN_USUARIOS = false;
 								}
 
 								// BOTAO DEFINIR SALDO
-								if (btnGen_TAG == F("DEF_SALDO"))
+								if (btnGen_TAG == F("SET_SALDO"))
 								{
+									TELA_LimpaTela();
 
+									gModoOperacao = F("LOGIN");
+									gModoOperacao_SubTela = F("LER_RFID_ADMIN_SET_SALDO");
+
+									gTelaRenderizada_ADMIN_USUARIOS = false;
 								}
 
 								// BOTAO TROCAR / CANCELAR CARTAO
@@ -3530,7 +3563,9 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 									gAdmin_User_CPF = F("");
 									gAdmin_User_Nivel = F("");									
 									gAdmin_User_Saldo = F("");
-									gAdmin_User_IDUser = F("");									
+									gAdmin_User_IDUser = F("");	
+									gAdmin_User_Datacad = F("");	
+
  
 									gModoOperacao_SubTela = F("ADMIN_USUARIOS");
 
@@ -3594,6 +3629,8 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 										String IDUserMax = F("");
 										String IDUserMax_Novo = F("");
 										String retFunc = F("");
+
+										gAdmin_User_Datacad = Now();
 
 										bool _ContinuaCriacao = false;
 
@@ -3716,7 +3753,8 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 																			gAdmin_User_Nome, 
 																			gAdmin_User_Nivel, 
 																			gAdmin_User_CPF, 
-																			gAdmin_User_Saldo);
+																			gAdmin_User_Saldo,
+																			gAdmin_User_Datacad);
 										
 
 
@@ -3811,7 +3849,8 @@ void TELA_VerificaTouch_ADMIN_NOVO_CARD()
 											gAdmin_User_Nivel = F("");
 											gAdmin_User_CPF = F("");
 											gAdmin_User_Saldo = F("");
-											gAdmin_User_IDUser = F("");									
+											gAdmin_User_IDUser = F("");	
+											gAdmin_User_Datacad = F("");								
 		 
 											gModoOperacao_SubTela = F("ADMIN_USUARIOS");
 
@@ -4317,14 +4356,6 @@ void TELA_VerificaTouch_ADMIN_SANGRIA()
 
 
 
-								
-
-								
-
-
-
-
-
 						}
 
 					}
@@ -4343,6 +4374,26 @@ void TELA_VerificaTouch_ADMIN_SANGRIA()
 
 
 }
+
+
+
+
+void TELA_VerificaTouch_ADMIN_ADD_VALOR()
+{
+
+}
+
+void TELA_VerificaTouch_ADMIN_SUB_VALOR()
+{
+
+}
+
+void TELA_VerificaTouch_ADMIN_SET_SALDO()
+{
+
+}
+
+
 
 
 

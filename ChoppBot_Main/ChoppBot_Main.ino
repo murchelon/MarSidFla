@@ -279,9 +279,6 @@ void InitApp()
 
 
 
-
-    // todo: inicializa hardware, fecha valvulas, etc
-
     LogTerm(F("MAIN: Sistema Inicializado."));
 
 
@@ -780,6 +777,38 @@ void Exec_ADMIN_SANGRIA()
     TELA_Render_Interface_ADMIN_SANGRIA();
 }
 
+void Exec_ADMIN_ADD_VALOR()
+{
+    if (gTelaRenderizada_ADMIN_ADD_VALOR == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_ADD_VALOR] =="));        
+    }  
+
+    TELA_Render_Interface_ADMIN_ADD_VALOR();
+}
+
+
+void Exec_ADMIN_SUB_VALOR()
+{
+    if (gTelaRenderizada_ADMIN_SUB_VALOR == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_SUB_VALOR] =="));        
+    }  
+
+    TELA_Render_Interface_ADMIN_SUB_VALOR();
+}
+
+
+void Exec_ADMIN_SET_SALDO()
+{
+    if (gTelaRenderizada_ADMIN_SET_SALDO == false)
+    {
+        LogTerm(F("== [Modo Atual: ADMIN -- SubTela: ADMIN_SET_SALDO] =="));        
+    }  
+
+    TELA_Render_Interface_ADMIN_SET_SALDO();
+}
+
 
 
 void Exec_TECLADO()
@@ -906,6 +935,24 @@ void TestaInterrupts()
         }
 
 
+        if (gModoOperacao_SubTela == F("ADMIN_ADD_VALOR"))
+        {
+            TELA_VerificaTouch_ADMIN_ADD_VALOR();
+        }
+
+
+        if (gModoOperacao_SubTela == F("ADMIN_SUB_VALOR"))
+        {
+            TELA_VerificaTouch_ADMIN_SUB_VALOR();
+        }
+
+
+        if (gModoOperacao_SubTela == F("ADMIN_SET_SALDO"))
+        {
+            TELA_VerificaTouch_ADMIN_SET_SALDO();
+        }
+
+
     }
 
     if (gModoOperacao == F("TECLADO"))
@@ -934,6 +981,23 @@ void TestaInterrupts()
         {
             TELA_VerificaTouch_TECLADO_ALFA(F("TESTE_STANDBY"));
         } 
+
+
+        if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR"))
+        {
+            TELA_VerificaTouch_TECLADO_NUM(F("ADMIN_ADD_VALOR"));
+        } 
+
+        if (gModoOperacao_SubTela == F("TECLADO_ADMIN_SUB_VALOR"))
+        {
+            TELA_VerificaTouch_TECLADO_NUM(F("ADMIN_SUB_VALOR"));
+        } 
+
+        if (gModoOperacao_SubTela == F("TECLADO_ADMIN_SET_SALDO"))
+        {
+            TELA_VerificaTouch_TECLADO_NUM(F("ADMIN_SET_SALDO"));
+        } 
+
 
        
     }
@@ -1034,6 +1098,21 @@ void loop()
             Exec_LER_RFID(String(F("ADMIN_NOVO_CARD")));  
         }        
 
+        if (gModoOperacao_SubTela == F("LER_RFID_ADMIN_ADD_VALOR"))
+        {
+            Exec_LER_RFID(String(F("ADMIN_ADD_VALOR")));  
+        }        
+
+        if (gModoOperacao_SubTela == F("LER_RFID_ADMIN_SUB_VALOR"))
+        {
+            Exec_LER_RFID(String(F("ADMIN_SUB_VALOR")));  
+        }        
+
+        if (gModoOperacao_SubTela == F("LER_RFID_ADMIN_SET_SALDO"))
+        {
+            Exec_LER_RFID(String(F("ADMIN_SET_SALDO")));  
+        }        
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1099,6 +1178,21 @@ void loop()
             Exec_OPERACAO_SERVICO();  
         }   
 
+       if (gModoOperacao_SubTela == F("ADMIN_ADD_VALOR"))
+        {
+            Exec_ADMIN_ADD_VALOR();  
+        }   
+
+       if (gModoOperacao_SubTela == F("ADMIN_SUB_VALOR"))
+        {
+            Exec_ADMIN_SUB_VALOR();  
+        }   
+
+       if (gModoOperacao_SubTela == F("ADMIN_SET_SALDO"))
+        {
+            Exec_ADMIN_SET_SALDO();  
+        }   
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1148,6 +1242,27 @@ void loop()
                 LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_TESTE_STANDBY] =="));
                 TELA_RenderTecUnificado_ALFA();
             }
+
+
+
+            if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR"))
+            {
+                LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_ADMIN_ADD_VALOR] =="));
+                TELA_RenderTecUnificado_NUM();
+            }
+
+            if (gModoOperacao_SubTela == F("TECLADO_ADMIN_SUB_VALOR"))
+            {
+                LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_ADMIN_SUB_VALOR] =="));
+                TELA_RenderTecUnificado_NUM();
+            }
+
+            if (gModoOperacao_SubTela == F("TECLADO_ADMIN_SET_SALDO"))
+            {
+                LogTerm(F("== [Modo Atual: TECLADO -- SubTela: TECLADO_ADMIN_SET_SALDO] =="));
+                TELA_RenderTecUnificado_NUM();
+            }
+            
 
         }
 

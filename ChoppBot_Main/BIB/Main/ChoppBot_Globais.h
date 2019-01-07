@@ -234,7 +234,7 @@ String aTecladoAlfa_PosBotoes[ctTECLADO_ALFA_TOTAL_BOTOES]={"X01,TAM,Y01,TAM",
 
 //  numero de clicks de sensibilidade dos botoes em uma determinada tela. Para evitar o double press
 //const int ctBOUNCE_SENSIB_BOTAO = 80 //	350 foi bom	
-#define ctBOUNCE_SENSIB_BOTAO 260
+#define ctBOUNCE_SENSIB_BOTAO 200
 
 	
 

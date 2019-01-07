@@ -705,11 +705,49 @@ void TELA_Render_Interface_LER_RFID(String ModoRetorno)
 						else if (ModoRetorno == String(F("ADMIN_SUB_VALOR")))
 						{
 
+							gAdmin_User_Saldo = getValue(retUserData.substring(2), ';', 5).toFloat();
+
+							gAdmin_User_IDUser = retIDUser.substring(2).toInt();
+							gAdmin_User_Nome = getValue(retUserData.substring(2), ';', 3);
+							gAdmin_User_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
+							gAdmin_User_CPF = getValue(retUserData.substring(2), ';', 1);
+							gAdmin_User_Datacad = getValue(retUserData.substring(2), ';', 2);
+
+
+
+							gTelaRenderizada_TecNum = false;
+							gTelaRenderizada_TECLADO = false;
+
+							gTecladoNum_ValAtual = F("");
+
+							gModoOperacao = F("TECLADO");
+							gModoOperacao_SubTela = F("TECLADO_ADMIN_SUB_VALOR");	
+							
+							TELA_LimpaTela();
 
 						}
 						else if (ModoRetorno == String(F("ADMIN_SET_SALDO")))
 						{
 
+							gAdmin_User_Saldo = getValue(retUserData.substring(2), ';', 5).toFloat();
+
+							gAdmin_User_IDUser = retIDUser.substring(2).toInt();
+							gAdmin_User_Nome = getValue(retUserData.substring(2), ';', 3);
+							gAdmin_User_Nivel = getValue(retUserData.substring(2), ';', 4).toInt();
+							gAdmin_User_CPF = getValue(retUserData.substring(2), ';', 1);
+							gAdmin_User_Datacad = getValue(retUserData.substring(2), ';', 2);
+
+
+
+							gTelaRenderizada_TecNum = false;
+							gTelaRenderizada_TECLADO = false;
+
+							gTecladoNum_ValAtual = F("");
+
+							gModoOperacao = F("TECLADO");
+							gModoOperacao_SubTela = F("TECLADO_ADMIN_SET_SALDO");	
+							
+							TELA_LimpaTela();
 
 						}
 						else if (ModoRetorno == String(F("OPERACAO")))

@@ -24,7 +24,7 @@ int gTotalBotoes = 0;
 volatile uint16_t gTouch_X;
 volatile uint16_t gTouch_Y;
 
-
+	
 
 //bool gBotao1_Apertado = false;
 //bool gBotao2_Apertado = false;
@@ -572,7 +572,7 @@ void TELA_Render_MsgBox(String Titulo, String Texto)
 
 
 
-void TELA_Render_Label(String Texto, uint16_t CorTexto, int Tamanho, uint16_t PosX, uint16_t PosY, String Align)
+void TELA_Render_Label(String Texto, uint16_t CorTexto, uint16_t CorTextoBack, int Tamanho, uint16_t PosX, uint16_t PosY, String Align)
 {
 
 	if (String(ctTELA_HARDWARE) == String(F("ER-TFTM070-5")))
@@ -590,7 +590,15 @@ void TELA_Render_Label(String Texto, uint16_t CorTexto, int Tamanho, uint16_t Po
 			CorTexto = CinzaLabels;
 		}
 
-		tft.setTextColor(CorTexto);
+		if (CorTextoBack == -1)
+		{
+			tft.setTextColor(CorTexto);
+		}
+		else
+		{
+			tft.setTextColor(CorTexto, CorTextoBack);
+		}
+		
 
 
 		if (Align == F("RIGHT"))
@@ -1383,7 +1391,7 @@ void TELA_Render_Interface_ADMIN()
 
 
 			// Cabecalho
-			TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
+			TELA_Render_Label(F("Administracao"), Green, -1, 2, 0, 10, F("RIGHT"));
 
 
 			
@@ -1557,8 +1565,8 @@ void TELA_Render_Interface_ADMIN_USUARIOS()
 
 
 			// Cabecalho
-			TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
-			TELA_Render_Label(F("Usuarios"),   	  CinzaClaro,   1, 0, 60, F("RIGHT"));
+			TELA_Render_Label(F("Administracao"), Green, -1, 2, 0, 10, F("RIGHT"));
+			TELA_Render_Label(F("Usuarios"), CinzaClaro, -1, 1, 0, 60, F("RIGHT"));
 
 			// botao voltar
 		    TELA_Render_BotaoGenerico(1, F("VOLTAR"), F("VOLTAR"), 1, White, Red, 10, 15, 130, 60);
@@ -1740,69 +1748,69 @@ void TELA_Render_Interface_ADMIN_NOVO_CARD()
 
 	
 		// Cabecalho
-		TELA_Render_Label(F("Administracao"),			  Green, 		2, 0, 10, F("RIGHT"));
-		TELA_Render_Label(F("Usuarios >> Novo Cartao"),   CinzaClaro,   1, 0, 60, F("RIGHT"));
+		TELA_Render_Label(F("Administracao"),			  Green, 		 -1, 2, 0, 10, F("RIGHT"));
+		TELA_Render_Label(F("Usuarios >> Novo Cartao"),   CinzaClaro,    -1, 1, 0, 60, F("RIGHT"));
 		
 
 		// Campos da tela
 		
-		TELA_Render_Label(F("Cartao:"), CinzaLabels, 1, 210, 130, F(""));
+		TELA_Render_Label(F("Cartao:"), CinzaLabels, -1, 1, 210, 130, F(""));
 		
 		//TELA_Render_Label(gAdmin_ID_Cartao_Scan, White, 1, 350, 130, F(""));
-		TELA_Render_Label(F("Identificado"), White, 1, 350, 130, F(""));
+		TELA_Render_Label(F("Identificado"), White, -1, 1, 350, 130, F(""));
 
 
 
 
-		TELA_Render_Label(F("Nome:"), CinzaLabels, 1, 210, 180, F(""));
+		TELA_Render_Label(F("Nome:"), CinzaLabels, -1, 1, 210, 180, F(""));
 
 		if (gAdmin_User_Nome == F(""))
 		{
-			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 180, F(""));
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, -1, 1, 350, 180, F(""));
 		}
 		else
 		{
-			TELA_Render_Label(gAdmin_User_Nome, White, 1, 350, 180, F(""));
+			TELA_Render_Label(gAdmin_User_Nome, White, -1, 1, 350, 180, F(""));
 		}
 
 
 
-		TELA_Render_Label(F("Nivel:"), CinzaLabels, 1, 210, 230, F(""));
+		TELA_Render_Label(F("Nivel:"), CinzaLabels, -1, 1, 210, 230, F(""));
 		
 		if (gAdmin_User_Nivel == F(""))
 		{
-			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 230, F(""));
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, -1, 1, 350, 230, F(""));
 		}
 		else
 		{
-			TELA_Render_Label(gAdmin_User_Nivel, White, 1, 350, 230, F(""));
+			TELA_Render_Label(gAdmin_User_Nivel, White, -1, 1, 350, 230, F(""));
 		}
 
 
 
 
-		TELA_Render_Label(F("CPF:"), CinzaLabels, 1, 210, 280, F(""));
+		TELA_Render_Label(F("CPF:"), CinzaLabels, -1, 1, 210, 280, F(""));
 		
 		if (gAdmin_User_CPF == F(""))
 		{
-			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 280, F(""));
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, -1, 1, 350, 280, F(""));
 		}
 		else
 		{
-			TELA_Render_Label(gAdmin_User_CPF, White, 1, 350, 280, F(""));
+			TELA_Render_Label(gAdmin_User_CPF, White, -1, 1, 350, 280, F(""));
 		}
 
 
 		
-		TELA_Render_Label(F("Saldo:"), CinzaLabels, 1, 210, 330, F(""));
+		TELA_Render_Label(F("Saldo:"), CinzaLabels, -1, 1, 210, 330, F(""));
 
 		if (gAdmin_User_Saldo == F(""))
 		{
-			TELA_Render_Label(F("[Em branco]"), CinzaClaro, 1, 350, 330, F(""));
+			TELA_Render_Label(F("[Em branco]"), CinzaClaro, -1, 1, 350, 330, F(""));
 		}
 		else
 		{
-			TELA_Render_Label(FormatNumber(gAdmin_User_Saldo, F("MONEY")), White, 1, 350, 330, F(""));
+			TELA_Render_Label(FormatNumber(gAdmin_User_Saldo, F("MONEY")), White, -1, 1, 350, 330, F(""));
 		}
 
 		
@@ -1941,8 +1949,8 @@ void TELA_Render_Interface_ADMIN_OUTROS()
 
 
 			// Cabecalho
-			TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
-			TELA_Render_Label(F("Outros"),   	  CinzaClaro,   1, 0, 60, F("RIGHT"));
+			TELA_Render_Label(F("Administracao"), Green, 		 -1, 2, 0, 10, F("RIGHT"));
+			TELA_Render_Label(F("Outros"),   	  CinzaClaro,    -1, 1, 0, 60, F("RIGHT"));
 
 			// botao voltar
 		    TELA_Render_BotaoGenerico(1, F("VOLTAR"), F("VOLTAR"), 1, White, Red, 10, 15, 130, 60);
@@ -2156,8 +2164,8 @@ void TELA_Render_Interface_ADMIN_SANGRIA()
 
 
 			// Cabecalho
-			TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
-			TELA_Render_Label(F("Outros >> Sangria"),   CinzaClaro,   1, 0, 60, F("RIGHT"));
+			TELA_Render_Label(F("Administracao"), Green, -1 ,2, 0, 10, F("RIGHT"));
+			TELA_Render_Label(F("Outros >> Sangria"),   CinzaClaro, -1 ,1, 0, 60, F("RIGHT"));
 
 
 			TELA_Texto_Centralizado(F("SANGRIA: Escolha a sua torneira:"), F("VERDE"), 1, 117);

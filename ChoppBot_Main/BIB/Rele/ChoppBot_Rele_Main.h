@@ -638,8 +638,8 @@ void TELA_Render_Interface_OPERACAO_SERVICO()
 
 					TELA_Zera_BotaoGenericoTela();
 
-					TELA_Render_Label(F("Administracao"), Green, 		2, 0, 10, F("RIGHT"));
-					TELA_Render_Label(F("Outros >> Sangria"),   CinzaClaro,   1, 0, 60, F("RIGHT"));
+					TELA_Render_Label(F("Administracao"), Green, -1, 2, 0, 10, F("RIGHT"));
+					TELA_Render_Label(F("Outros >> Sangria"), CinzaClaro, -1, 1, 0, 60, F("RIGHT"));
 
 					// botao voltar
 				    TELA_Render_BotaoGenerico(1, F("VOLTAR"), F("VOLTAR"), 1, White, Red, 10, 15, 130, 60);

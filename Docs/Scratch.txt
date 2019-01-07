@@ -1,0 +1,12 @@
+gAdmin_User_Saldo
+
+			if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR"))
+			{
+				TELA_Render_Label(F("Saldo Ant.:"), CinzaLabels, 1, Inicio_X - 430, 235, F(""));
+				TELA_Render_Label(FormatNumber(gAdmin_User_Saldo, F("MONEY")), CinzaClaro, 1, Inicio_X - 430 + 204, 235, F(""));
+
+				TELA_Render_Label(F("Saldo Atual:"), CinzaLabels, 1, Inicio_X - 430, 280, F(""));
+				TELA_Render_Label(FormatNumber(gAdmin_User_Saldo, F("MONEY")), White, 1, Inicio_X - 430 + 204, 280, F(""));			
+			}
+
+

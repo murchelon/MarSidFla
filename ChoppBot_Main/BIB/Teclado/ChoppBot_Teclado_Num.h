@@ -222,13 +222,15 @@ void TELA_Render_Interface_TECLADO_NUM(int Param_Inicio_X, int Param_Inicio_Y)
 			}
 		    
 
-			if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR"))
-			{
-				TELA_Render_Label(F("Saldo Anterior:"), CinzaLabels, 0, Inicio_X - 430, 235, F(""));
-				TELA_Render_Label(FormatNumber(F("1000"), F("MONEY")), White, 0, Inicio_X - 430 + 140, 235, F(""));
+			
 
-				TELA_Render_Label(F("Saldo Atual:"), CinzaLabels, 0, Inicio_X - 430, 260, F(""));
-				TELA_Render_Label(FormatNumber(F("1000"), F("MONEY")), White, 0, Inicio_X - 430 + 140, 260, F(""));			
+			if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR") || gModoOperacao_SubTela == F("TECLADO_ADMIN_SUB_VALOR") || gModoOperacao_SubTela == F("TECLADO_ADMIN_SET_SALDO") )
+			{
+				TELA_Render_Label(F("Saldo Ant.:"), CinzaLabels, -1, 1, Inicio_X - 430, 235, F(""));
+				TELA_Render_Label(FormatNumber(gAdmin_User_Saldo, F("MONEY")), CinzaClaro, -1, 1, Inicio_X - 430 + 210, 235, F(""));
+
+				TELA_Render_Label(F("Saldo Atual:"), CinzaLabels, -1, 1, Inicio_X - 430, 280, F(""));
+				TELA_Render_Label(FormatNumber(gAdmin_User_Saldo, F("MONEY")), White, -1, 1, Inicio_X - 430 + 210, 280, F(""));			
 			}
 
 
@@ -305,9 +307,50 @@ void TELA_Render_ValorTec_TECLADO_NUM()
 	    tft.setTextColor(RA8875_BLACK, RA8875_YELLOW);
 	    TELA_SetFontSize(2); 
 	    tft.setCursor (temp_pos_X.toInt() + 3, temp_pos_Y.toInt() + 2); 
-	    tft.print (gTecladoNum_ValAtual);	
 
 
+ 
+	    	
+		tft.print (gTecladoNum_ValAtual);
+
+
+	    float _local_SaldoAtual = -1;
+		float _local_valAtual = -1;
+
+		if (gTecladoNum_ValAtual == F(""))
+		{
+			_local_valAtual = 0;
+		}
+		else
+		{
+			_local_valAtual = gTecladoNum_ValAtual.toFloat();
+		}
+		
+		if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR"))
+		{
+			_local_SaldoAtual = gAdmin_User_Saldo.toFloat() + _local_valAtual;
+		}
+		else if (gModoOperacao_SubTela == F("TECLADO_ADMIN_SUB_VALOR"))
+		{
+			_local_SaldoAtual = gAdmin_User_Saldo.toFloat() - _local_valAtual;
+
+			if (_local_SaldoAtual < 0)
+			{
+				_local_SaldoAtual = 0;
+			}
+		} 
+		else if (gModoOperacao_SubTela == F("TECLADO_ADMIN_SET_SALDO"))
+		{
+			_local_SaldoAtual = _local_valAtual;
+		}
+		
+	    
+
+		if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR") || gModoOperacao_SubTela == F("TECLADO_ADMIN_SUB_VALOR") || gModoOperacao_SubTela == F("TECLADO_ADMIN_SET_SALDO") )
+		{
+			TELA_Render_Label(String(F("             ")), Yellow, Black, 1, temp_pos_X.toInt() + 211, 280, F(""));			
+			TELA_Render_Label(FormatNumber(String(_local_SaldoAtual), F("MONEY")), Yellow, Black, 1, temp_pos_X.toInt() + 211, 280, F(""));			
+		}
 
 
 	  	
@@ -505,23 +548,59 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 
 
 
-										if (ModoRetorno == F("ADMIN_ADD_VALOR"))
+
+										if (ModoRetorno == F("ADMIN_ADD_VALOR") || ModoRetorno == F("ADMIN_SUB_VALOR") || ModoRetorno == F("ADMIN_SET_SALDO"))
 										{
 											String temp_valor_str = F("");
 											temp_valor_str = Left(gTecladoNum_ValAtual, 8);
 
+
+
+
+										    float _local_SaldoAtual = -1;
+											float _local_valAtual = -1;
+
+											if (gTecladoNum_ValAtual == F(""))
+											{
+												_local_valAtual = 0;
+											}
+											else
+											{
+												_local_valAtual = gTecladoNum_ValAtual.toFloat();
+											}
+											
+											if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR"))
+											{
+												_local_SaldoAtual = gAdmin_User_Saldo.toFloat() + _local_valAtual;
+											}
+											else if (gModoOperacao_SubTela == F("TECLADO_ADMIN_SUB_VALOR"))
+											{
+												_local_SaldoAtual = gAdmin_User_Saldo.toFloat() - _local_valAtual;
+
+												if (_local_SaldoAtual < 0)
+												{
+													_local_SaldoAtual = 0;
+												}
+											} 
+											else if (gModoOperacao_SubTela == F("TECLADO_ADMIN_SET_SALDO"))
+											{
+												_local_SaldoAtual = _local_valAtual;
+											}
+		
+
+		
 											float temp_valor_flt = gAdmin_User_Saldo.toFloat();
 											temp_valor_flt = temp_valor_flt + temp_valor_str.toFloat();
 
 											LogTerm(String(F("gAdmin_User_Saldo = ")) + String(gAdmin_User_Saldo));
 											LogTerm(String(F("gTecladoNum_ValAtual = ")) + String(gTecladoNum_ValAtual));
-											LogTerm(String(F("temp_valor_flt = ")) + String(temp_valor_flt));
+											LogTerm(String(F("_local_SaldoAtual = ")) + String(_local_SaldoAtual));
 
 
 											TELA_LimpaTela();
 
 
-											TELA_Render_MsgBox(F("Atualizar Saldo"), String(F("Adicionando valor para o usuario. Por favor, aguarde... (Valor adicionado: )")) + gTecladoNum_ValAtual);
+											TELA_Render_MsgBox(F("Atualizar Saldo"), String(F("Atualizando dados do usuario. Por favor, aguarde... ")));
 
 
 											String retFunc;
@@ -530,7 +609,7 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 																			gAdmin_User_Nome, 
 																			gAdmin_User_Nivel, 
 																			gAdmin_User_CPF, 
-																			String(temp_valor_flt),
+																			String(_local_SaldoAtual),
 																			gAdmin_User_Datacad);
 										
 
@@ -556,14 +635,7 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 												gTelaRenderizada_TECLADO = false;	
 
 											}	
-										
-
-
-
-
-
-
-
+									
 
 
 											gAdmin_User_Saldo = F("");
@@ -573,7 +645,7 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 											gTelaRenderizada_ADMIN_NOVO_CARD = false;
 
 											gModoOperacao = F("ADMIN");
-											gModoOperacao_SubTela = F("ADMIN_NOVO_CARD");	
+											gModoOperacao_SubTela = F("ADMIN_USUARIOS");	
 
 											gTelaRenderizada_MSGBOX = false;
 
@@ -655,10 +727,24 @@ void TELA_VerificaTouch_TECLADO_NUM(String ModoRetorno)
 
 									default:
 
-										if (gTecladoNum_ValAtual.length() <= 14)
+
+										if (gModoOperacao_SubTela == F("TECLADO_ADMIN_ADD_VALOR") || gModoOperacao_SubTela == F("TECLADO_ADMIN_SUB_VALOR") || gModoOperacao_SubTela == F("TECLADO_ADMIN_SET_SALDO") )
 										{
-											gTecladoNum_ValAtual = gTecladoNum_ValAtual + String(x + 1);
+											if (gTecladoNum_ValAtual.length() <= 5)
+											{
+												gTecladoNum_ValAtual = gTecladoNum_ValAtual + String(x + 1);
+											}	
+
+										}									
+										else
+										{
+											if (gTecladoNum_ValAtual.length() <= 14)
+											{
+												gTecladoNum_ValAtual = gTecladoNum_ValAtual + String(x + 1);
+											}
 										}
+					
+
 
 								}
 

@@ -81,6 +81,9 @@
 
 #include "../Tela/ChoppBot_Tela_Engine_RTP_ER-TFTM070-5.h" 
 
+// GUIduino
+#include "../GUIduino/GUI_Main.h" 
+
 // BANCO DE DADOS - MAIN
 #include "../BancoDados/ChoppBot_BancoDados_Main.h" 
 

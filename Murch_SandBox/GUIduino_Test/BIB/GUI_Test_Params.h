@@ -1,0 +1,5 @@
+
+// TELA
+#define TELA_PINO_INT 	4
+#define TELA_PINO_CS	10
+#define TELA_PINO_RESET 9

@@ -1,12 +1,9 @@
 /*
-  ChoppBot 1.0
 
-  By Marcelo Rocha, Sidnei Conrad and Flavio Liberal
+ChoppBot 
 
-  Main program to an automated chopp dispenser with several
-  features like touchscreen, biometrical recognition and RFID
-  recognition. More to came....
-  teste chopp 
+By Marcelo Rocha, Sidnei Conrad 
+
 */
 
 
@@ -290,7 +287,7 @@ void InitApp()
 
 
 
-
+    //GUI_Render_SelectList();
     
 
 

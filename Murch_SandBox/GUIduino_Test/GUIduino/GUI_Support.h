@@ -37,7 +37,7 @@
 #define CinzaClaro			    rgb565_from_triplet(190, 190, 190)     
 #define VerdeOK			    	rgb565_from_triplet(137, 255, 157)     
 #define LaranjaAlerta	    	rgb565_from_triplet(255, 216, 181)     
-
+#define AzulClaro            	rgb565_from_triplet(155, 155, 255)
 
 
 

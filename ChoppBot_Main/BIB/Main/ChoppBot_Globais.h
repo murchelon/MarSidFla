@@ -85,7 +85,8 @@ String gaEngatados[ctMAX_TORNEIRAS];
 // SD
 #define SD_MAX_TENTATIVA_READ 	2
 #define SD_DELAY_TENTATIVA_READ 1000
-#define SD_PINO 				24
+//#define SD_PINO 				24
+#define SD_PINO 				53
 
 // RFID
 #define RFID_PINO_SCK 	52

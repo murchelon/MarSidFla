@@ -249,7 +249,13 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 	File file;
 	String retFile = F("");
 
+
+	
+
 	retFile = SD_AbreArqTexto(FullPathFile, SD, file, F("RETRY"));
+
+	
+
 
 	if (retFile.substring(0, 1) != F("1"))
 	{
@@ -311,7 +317,9 @@ String SD_GetAllRegsFromFile(String FullPathFile, String aRetRegs[], int MaxSize
 
 			//LogTerm(CharAtual);
 			
-		}		
+		}	
+
+		LogTerm(F("Aquixpo2"));	
 
 	}
 

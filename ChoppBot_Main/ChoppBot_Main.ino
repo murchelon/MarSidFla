@@ -215,8 +215,8 @@ void InitApp()
 
 
     // Inicia o SD
-    digitalWrite(SD_MAX_TENTATIVA_READ, HIGH);
-    digitalWrite(SD_DELAY_TENTATIVA_READ, HIGH);
+    //digitalWrite(SD_MAX_TENTATIVA_READ, HIGH);
+    //digitalWrite(SD_DELAY_TENTATIVA_READ, HIGH);
     digitalWrite(SD_PINO, HIGH);
 
 
@@ -269,6 +269,8 @@ void InitApp()
 
     CORE_ExecRotinaDefineChoppEngatados();
     
+    LogTerm(F("ToAquifinal"));
+
     BUZZER_TocaSom(F("LIGAR"));
 
 
